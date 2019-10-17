@@ -1,0 +1,33 @@
+language: scala
+
+before_install:
+  - git fetch --tags
+
+stages:
+  - name: tests
+  - name: release
+    if: ((branch = master AND type = push) OR (tag IS present)) AND NOT fork
+
+jobs:
+  include:
+    - stage: tests
+      name: "Scalafmt"
+      script: sbt "all scalafmtCheckAll; all scalafmtSbtCheck"
+    - name: "Scalafix"
+      script: sbt "all scalafix --check"
+    - name: "Rule tests"
+      script: sbt "all test"
+    - stage: release
+      env: RELEASE="true"
+      script: sbt ci-release
+
+cache:
+  directories:
+    - $HOME/.cache/coursier
+    - $HOME/.ivy2/cache
+    - $HOME/.sbt
+
+before_cache:
+  - rm -fv $HOME/.ivy2/.sbt.ivy.lock
+  - find $HOME/.ivy2/cache -name "ivydata-*.properties" -print -delete
+  - find $HOME/.sbt        -name "*.lock"               -print -delete
