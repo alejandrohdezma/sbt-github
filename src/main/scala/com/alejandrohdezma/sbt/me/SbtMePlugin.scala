@@ -30,13 +30,15 @@ object SbtMePlugin extends AutoPlugin {
 
   import autoImport._
 
-  override def projectSettings: Seq[Setting[_]] = onReleaseStage(
-    description  := repo.value.map(_.description).orEmpty,
-    organization := "com.alejandrohdezma",
-    homepage     := Some(url(s"${me.url}/${repository.value}")),
-    licenses     := repo.value.map(_.licenses).orEmpty,
-    developers   := List(me)
-  )
+  override def projectSettings: Seq[Setting[_]] =
+    Seq(
+      organization := "com.alejandrohdezma",
+      homepage     := Some(url(s"${me.url}/${repository.value}")),
+      developers   := List(me)
+    ) ++ onReleaseStage(
+      description := repo.value.map(_.description).orEmpty,
+      licenses    := repo.value.map(_.licenses).orEmpty
+    )
 
   private val repo: Def.Initialize[Option[Repository]] = Def.setting {
     repository.?.value.map { name =>
