@@ -5,11 +5,12 @@ import cats.implicits._
 import com.alejandrohdezma.sbt.me.github.Repository
 import sbt.Def.Setting
 import sbt.Keys._
+import sbt.nio.Keys.{onChangedBuildSource, ReloadOnSourceChanges}
 import sbt.{url, AutoPlugin, Def, Developer, PluginTrigger, SettingKey}
 
 /**
- * This plugin automatically adds POM-related settings like description,
- * organization, license, homepage...
+ * This plugin automatically enables reloading on sbt source changes and
+ * adds POM-related settings like description, organization, license, homepage...
  *
  * Both description and licenses are downloaded from the repository information
  * on github once the `repository` settings has been set.
@@ -29,6 +30,10 @@ object SbtMePlugin extends AutoPlugin {
   }
 
   import autoImport._
+
+  override def globalSettings: Seq[Def.Setting[_]] = Seq(
+    onChangedBuildSource := ReloadOnSourceChanges
+  )
 
   override def projectSettings: Seq[Setting[_]] =
     Seq(
