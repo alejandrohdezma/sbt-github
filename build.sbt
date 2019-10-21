@@ -1,5 +1,6 @@
 ThisBuild / scalaVersion := "2.12.10"
 ThisBuild / repository   := "sbt-me"
+ThisBuild / name         := "sbt-me"
 
 enablePlugins(SbtPlugin)
 
