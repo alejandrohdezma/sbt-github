@@ -6,7 +6,8 @@ import com.alejandrohdezma.sbt.me.github.Repository
 import sbt.Def.Setting
 import sbt.Keys._
 import sbt.nio.Keys.{onChangedBuildSource, ReloadOnSourceChanges}
-import sbt.{url, AutoPlugin, Def, Developer, PluginTrigger, SettingKey}
+import sbt.plugins.JvmPlugin
+import sbt.{url, AutoPlugin, Def, Developer, PluginTrigger, Plugins, SettingKey}
 
 /**
  * This plugin automatically enables reloading on sbt source changes and
@@ -21,6 +22,8 @@ import sbt.{url, AutoPlugin, Def, Developer, PluginTrigger, SettingKey}
 object SbtMePlugin extends AutoPlugin {
 
   override def trigger: PluginTrigger = allRequirements
+
+  override def requires: Plugins = JvmPlugin
 
   object autoImport {
 
