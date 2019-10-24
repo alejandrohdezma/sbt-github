@@ -15,7 +15,7 @@ This repository enables several plugins:
 Add the following line to your `plugins.sbt` file:
 
 ```sbt
-addSbtPlugin("com.alejandrohdezma" %% "sbt-me" % "0.1.0")
+addSbtPlugin("com.alejandrohdezma" %% "sbt-me" % "0.1.1")
 ```
 
 [travis]: https://travis-ci.com/alejandrohdezma/sbt-me
