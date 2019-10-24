@@ -22,7 +22,7 @@ addSbtPlugin("com.alejandrohdezma" %% "sbt-me" % "0.1.0")
 [travis-badge]: https://travis-ci.com/alejandrohdezma/sbt-me.svg?branch=master
 
 [maven]: https://search.maven.org/search?q=g:%20com.alejandrohdezma%20AND%20a:sbt-me_2.12
-[maven-badge]: https://img.shields.io/maven-central/v/com.alejandrohdezma/sbt-me_2.12?color=green
+[maven-badge]: https://maven-badges.herokuapp.com/maven-central/com.alejandrohdezma/sbt-me/badge.svg?kill_cache=1
 
 [mergify]: https://mergify.io
 [mergify-badge]: https://img.shields.io/endpoint.svg?url=https://gh.mergify.io/badges/alejandrohdezma/sbt-me&style=flat
