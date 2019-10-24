@@ -50,7 +50,7 @@ object SbtMePlugin extends AutoPlugin {
 
   private val repo: Def.Initialize[Option[Repository]] = Def.setting {
     repository.?.value.map { name =>
-      val message = s"You forgot to set `$TOKEN` in Travis environment variable. " +
+      val message = s"You forgot to set `$TOKEN` in Travis environment variables. " +
         s"Go to https://travis-ci.com/alejandrohdezma/$name/settings and add it."
 
       val repository = for {

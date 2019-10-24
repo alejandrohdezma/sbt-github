@@ -15,7 +15,7 @@ jobs:
       script: sbt "all scalafmtCheckAll; all scalafmtSbtCheck"
     - name: "Scalafix"
       script: sbt "all scalafix --check"
-    - name: "Rule tests"
+    - name: "Plugin tests"
       script: sbt "all test"
     - stage: release
       env: RELEASE="true"
