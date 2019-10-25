@@ -1,27 +1,13 @@
 package com.alejandrohdezma.sbt.me.github
 
 import cats.syntax.either._
-
 import io.circe.CursorOp.{DownField => ⬂}
 import io.circe.generic.auto._
 import io.circe.parser.decode
 import io.circe.{DecodingFailure => Fail}
-import sbt.{file, File, IO}
 import scalaj.http.Http
 
 object api {
-
-  /**
-   * Downloads a remote file from the provided URL and
-   * stores in the provided path.
-   */
-  def copyRemoteConfigFile(uri: String, to: String): File = {
-    val localFile = file(to)
-
-    IO.write(localFile, Http(configUrl + uri).asBytes.body)
-
-    localFile
-  }
 
   /** Download repository information from github, or returns a string containing the error */
   def retrieveRepository(name: String, token: String): Either[String, Repository] = {
@@ -37,7 +23,5 @@ object api {
       case _                                         => "Unable to get repository information"
     }
   }
-
-  private val configUrl = "https://raw.githubusercontent.com/alejandrohdezma/sbt-me/master/"
 
 }
