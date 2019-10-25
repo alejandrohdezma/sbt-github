@@ -5,8 +5,6 @@
 This repository enables several plugins:
 
 - **SbtMePlugin**: This plugin automatically adds POM-related settings like description, organization, license, homepage...
-- **ScalafixWithDefaultRulesPlugin**: This plugin enables Scalafix plugin with several extra rules and downloads configuration from remote url and stores it in a `.scalafix.conf` file.
-- **ScalafmtWithDefaultConfigurationPlugin**: This plugin downloads scalafmt configuration and stores it in a `.scalafmt.conf` file.
 - [sbt-ci-release](https://github.com/olafurpg/sbt-ci-release)
 - [sbt-tpolecat](https://github.com/olafurpg/sbt-ci-release)
 
