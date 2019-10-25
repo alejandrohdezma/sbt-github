@@ -1,6 +1,7 @@
 package com.alejandrohdezma.sbt.me.github
 
 import cats.syntax.either._
+
 import io.circe.CursorOp.{DownField => ⬂}
 import io.circe.generic.auto._
 import io.circe.parser.decode

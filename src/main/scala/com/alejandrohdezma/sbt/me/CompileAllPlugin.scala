@@ -12,6 +12,7 @@ import sbt.{
   ScopeFilter,
   TaskKey
 }
+
 import xsbti.compile.CompileAnalysis
 
 /**

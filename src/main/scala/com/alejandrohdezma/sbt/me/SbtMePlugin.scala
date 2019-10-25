@@ -2,12 +2,13 @@ package com.alejandrohdezma.sbt.me
 
 import cats.implicits._
 
-import com.alejandrohdezma.sbt.me.github.Repository
 import sbt.Def.Setting
 import sbt.Keys._
 import sbt.nio.Keys.{onChangedBuildSource, ReloadOnSourceChanges}
 import sbt.plugins.JvmPlugin
 import sbt.{url, AutoPlugin, Def, Developer, PluginTrigger, Plugins, SettingKey}
+
+import com.alejandrohdezma.sbt.me.github.Repository
 
 /**
  * This plugin automatically enables reloading on sbt source changes and
