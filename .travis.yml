@@ -12,11 +12,11 @@ jobs:
   include:
     - stage: tests
       name: "Scalafmt"
-      script: sbt "all scalafmtCheckAll; all scalafmtSbtCheck"
+      script: sbt "all scalafmtCheckAll scalafmtSbtCheck"
     - name: "Scalafix"
-      script: sbt "all scalafix --check"
+      script: sbt "scalafixAll --check"
     - name: "Plugin tests"
-      script: sbt "all test"
+      script: sbt test
     - stage: release
       env: RELEASE="true"
       script: sbt ci-release
