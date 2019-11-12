@@ -2,13 +2,11 @@ package com.alejandrohdezma.sbt.me
 
 import scala.sys.process._
 
-import cats.implicits._
-
 import sbt.Def.Setting
 import sbt.Keys._
 import sbt.nio.Keys.{onChangedBuildSource, ReloadOnSourceChanges}
 import sbt.plugins.JvmPlugin
-import sbt.{url, AutoPlugin, Def, Developer, PluginTrigger, Plugins, SettingKey}
+import sbt.{url, AutoPlugin, Def, Developer, PluginTrigger, Plugins}
 
 import com.alejandrohdezma.sbt.me.github.Repository
 
@@ -17,7 +15,7 @@ import com.alejandrohdezma.sbt.me.github.Repository
  * adds POM-related settings like description, organization, license, homepage...
  *
  * Both description and licenses are downloaded from the repository information
- * on github once the `repository` settings has been set.
+ * on github.
  *
  * This will only happen during the release stage in Travis CI, since its only
  * needed during this phase.
@@ -28,15 +26,6 @@ object SbtMePlugin extends AutoPlugin {
 
   override def requires: Plugins = JvmPlugin
 
-  object autoImport {
-
-    val repository: SettingKey[String] =
-      SettingKey[String]("repository", "Name of the repository where this project is hosted")
-
-  }
-
-  import autoImport._
-
   override def globalSettings: Seq[Def.Setting[_]] = Seq(
     onChangedBuildSource := ReloadOnSourceChanges
   )
@@ -44,25 +33,23 @@ object SbtMePlugin extends AutoPlugin {
   override def projectSettings: Seq[Setting[_]] =
     Seq(
       organization := "com.alejandrohdezma",
-      homepage     := repo.value.map(_.html_url).map(url),
+      homepage     := Some(url(repository.value.html_url)),
       developers   := List(me)
     ) ++ onReleaseStage(
-      description := repo.value.map(_.description).orEmpty,
-      licenses    := repo.value.map(_.licenses).orEmpty
+      description := repository.value.description,
+      licenses    := repository.value.licenses
     )
 
-  private val repo: Def.Initialize[Option[Repository]] = Def.setting {
-    repository.?.value.map { name =>
-      val message = s"You forgot to set `$TOKEN` in Travis environment variables. " +
-        s"Go to https://travis-ci.com/alejandrohdezma/$name/settings and add it."
+  private val repository: Def.Initialize[Repository] = Def.setting {
+    val message = s"You forgot to set `$TOKEN` in Travis environment variables. " +
+      s"Go to https://travis-ci.com/alejandrohdezma/$name/settings and add it."
 
-      val repository = for {
-        token      <- sys.env.get(TOKEN).toRight(message)
-        repository <- github.api.retrieveRepository("alejandrohdezma", name, token)
-      } yield repository
+    val repository = for {
+      token      <- sys.env.get(TOKEN).toRight(message)
+      repository <- github.api.retrieveRepository(user, repo, token)
+    } yield repository
 
-      repository.fold(sys.error, identity)
-    }
+    repository.fold(sys.error, identity)
   }
 
   /** Gets the Github user and repository from the git remote info */
