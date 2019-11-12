@@ -1,4 +1,5 @@
 language: scala
+os: linux
 
 before_install:
   - git fetch --tags
