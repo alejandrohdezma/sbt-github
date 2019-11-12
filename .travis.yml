@@ -26,6 +26,7 @@ jobs:
       before_deploy: mv target/mdoc/README.md .
       deploy:
         provider: pages:git
+        commit_message: Upload README.md to latest version
         edge: true
         token: $GITHUB_PERSONAL_ACCESS_TOKEN
         target_branch: master
