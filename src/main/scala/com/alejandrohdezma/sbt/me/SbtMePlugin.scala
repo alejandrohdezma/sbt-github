@@ -34,16 +34,15 @@ object SbtMePlugin extends AutoPlugin {
   override def projectSettings: Seq[Setting[_]] =
     Seq(
       organization := "com.alejandrohdezma",
-      homepage     := Some(url(repository.value.html_url)),
+      homepage     := Some(url(repository.html_url)),
       developers   := List(me)
     ) ++ onReleaseStage(
-      description := repository.value.description,
-      licenses    := repository.value.licenses
+      description := repository.description,
+      licenses    := repository.licenses
     )
 
-  private val repository: Def.Initialize[Repository] = Def.setting {
+  private lazy val repository: Repository =
     github.api.retrieveRepository(user, repo).fold(sys.error, identity)
-  }
 
   /** Gets the Github user and repository from the git remote info */
   private lazy val (user, repo): (String, String) = {
