@@ -6,7 +6,7 @@ import sbt.Def.Setting
 import sbt.Keys._
 import sbt.nio.Keys.{onChangedBuildSource, ReloadOnSourceChanges}
 import sbt.plugins.JvmPlugin
-import sbt.{url, AutoPlugin, Def, PluginTrigger, Plugins}
+import sbt.{settingKey, url, AutoPlugin, Def, PluginTrigger, Plugins, SettingKey}
 
 import com.alejandrohdezma.sbt.me.github.api.GithubToken
 import com.alejandrohdezma.sbt.me.github.{CurrentUser, Repository}
@@ -23,6 +23,15 @@ import com.alejandrohdezma.sbt.me.github.{CurrentUser, Repository}
  */
 object SbtMePlugin extends AutoPlugin {
 
+  object autoImport {
+
+    val downloadInfoFromGithub: SettingKey[Boolean] =
+      settingKey[Boolean]("Whether sbt-me should download information from Github or not")
+
+  }
+
+  import autoImport._
+
   override def trigger: PluginTrigger = allRequirements
 
   override def requires: Plugins = JvmPlugin
@@ -31,12 +40,28 @@ object SbtMePlugin extends AutoPlugin {
     onChangedBuildSource := ReloadOnSourceChanges
   )
 
-  override def projectSettings: Seq[Setting[_]] = onReleaseStage(
-    organization := currentUser.organization,
-    homepage     := Some(url(repository.html_url)),
-    developers   := List(currentUser.developer),
-    description  := repository.description,
-    licenses     := repository.licenses
+  override def projectSettings: Seq[Setting[_]] = Seq(
+    downloadInfoFromGithub := sys.env.contains("RELEASE"),
+    organization := {
+      if (downloadInfoFromGithub.value) currentUser.organization
+      else organization.value
+    },
+    homepage := {
+      if (downloadInfoFromGithub.value) Some(url(repository.html_url))
+      else homepage.value
+    },
+    developers := {
+      if (downloadInfoFromGithub.value) List(currentUser.developer)
+      else developers.value
+    },
+    description := {
+      if (downloadInfoFromGithub.value) repository.description
+      else description.value
+    },
+    licenses := {
+      if (downloadInfoFromGithub.value) repository.licenses
+      else licenses.value
+    }
   )
 
   private lazy val repository: Repository =
@@ -58,9 +83,6 @@ object SbtMePlugin extends AutoPlugin {
       case _                       => sys.error("Unable to get info from `git ls-remote --get-url origin`")
     }
   }
-
-  private def onReleaseStage(settings: Setting[_]*): Seq[Setting[_]] =
-    if (sys.env.contains("RELEASE")) settings else Nil
 
   /** The token used to authenticate to Github API */
   implicit private lazy val token: GithubToken = {
