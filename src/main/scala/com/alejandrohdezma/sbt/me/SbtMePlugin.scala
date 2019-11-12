@@ -1,5 +1,7 @@
 package com.alejandrohdezma.sbt.me
 
+import scala.sys.process._
+
 import cats.implicits._
 
 import sbt.Def.Setting
@@ -60,6 +62,20 @@ object SbtMePlugin extends AutoPlugin {
       } yield repository
 
       repository.fold(sys.error, identity)
+    }
+  }
+
+  /** Gets the Github user and repository from the git remote info */
+  private lazy val (user, repo): (String, String) = {
+    val identifier = """([^\/]+)"""
+
+    val GithubHttps = s"https://github.com/$identifier/$identifier.git".r
+    val GithubSsh   = s"git@github.com:$identifier/$identifier.git".r
+
+    "git ls-remote --get-url origin".!!.trim() match {
+      case GithubHttps(user, repo) => (user, repo)
+      case GithubSsh(user, repo)   => (user, repo)
+      case _                       => sys.error("Unable to get info from `git ls-remote --get-url origin`")
     }
   }
 
