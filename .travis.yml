@@ -21,6 +21,16 @@ jobs:
       name: "Release to Sonatype"
       env: RELEASE="true"
       script: sbt ci-release
+    - name: "Update README.md"
+      script: sbt mdoc
+      before_deploy: mv target/mdoc/README.md .
+      deploy:
+        provider: pages:git
+        edge: true
+        token: $GITHUB_PERSONAL_ACCESS_TOKEN
+        target_branch: master
+        on:
+          tags: true
 
 cache:
   directories:
