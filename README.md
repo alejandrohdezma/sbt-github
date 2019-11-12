@@ -15,7 +15,7 @@ This plugin enables several settings automatically by downloaded them from Githu
 Add the following line to your `plugins.sbt` file:
 
 ```sbt
-addSbtPlugin("com.alejandrohdezma" %% "sbt-me" % "0.2.0")
+addSbtPlugin("com.alejandrohdezma" %% "sbt-me" % "0.3.0")
 ```
 
 ## Configuration
