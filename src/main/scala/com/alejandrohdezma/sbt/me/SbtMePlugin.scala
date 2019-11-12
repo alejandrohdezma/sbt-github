@@ -6,17 +6,17 @@ import sbt.Def.Setting
 import sbt.Keys._
 import sbt.nio.Keys.{onChangedBuildSource, ReloadOnSourceChanges}
 import sbt.plugins.JvmPlugin
-import sbt.{url, AutoPlugin, Def, Developer, PluginTrigger, Plugins}
+import sbt.{url, AutoPlugin, Def, PluginTrigger, Plugins}
 
-import com.alejandrohdezma.sbt.me.github.Repository
 import com.alejandrohdezma.sbt.me.github.api.GithubToken
+import com.alejandrohdezma.sbt.me.github.{CurrentUser, Repository}
 
 /**
  * This plugin automatically enables reloading on sbt source changes and
  * adds POM-related settings like description, organization, license, homepage...
  *
- * Both description and licenses are downloaded from the repository information
- * on github.
+ * All the settings values are downloaded from the repository and current user
+ * information from the Github API.
  *
  * This will only happen during the release stage in Travis CI, since its only
  * needed during this phase.
@@ -31,18 +31,19 @@ object SbtMePlugin extends AutoPlugin {
     onChangedBuildSource := ReloadOnSourceChanges
   )
 
-  override def projectSettings: Seq[Setting[_]] =
-    Seq(
-      organization := "com.alejandrohdezma",
-      homepage     := Some(url(repository.html_url)),
-      developers   := List(me)
-    ) ++ onReleaseStage(
-      description := repository.description,
-      licenses    := repository.licenses
-    )
+  override def projectSettings: Seq[Setting[_]] = onReleaseStage(
+    organization := currentUser.organization,
+    homepage     := Some(url(repository.html_url)),
+    developers   := List(currentUser.developer),
+    description  := repository.description,
+    licenses     := repository.licenses
+  )
 
   private lazy val repository: Repository =
     github.api.retrieveRepository(user, repo).fold(sys.error, identity)
+
+  private lazy val currentUser: CurrentUser =
+    github.api.retrieveCurrentUser.fold(sys.error, identity)
 
   /** Gets the Github user and repository from the git remote info */
   private lazy val (user, repo): (String, String) = {
@@ -60,13 +61,6 @@ object SbtMePlugin extends AutoPlugin {
 
   private def onReleaseStage(settings: Setting[_]*): Seq[Setting[_]] =
     if (sys.env.contains("RELEASE")) settings else Nil
-
-  private val me = Developer(
-    "alejandrohdezma",
-    "Alejandro Hernández",
-    "info@alejandrohdezma.com",
-    url("https://github.com/alejandrohdezma")
-  )
 
   /** The token used to authenticate to Github API */
   implicit private lazy val token: GithubToken = {
