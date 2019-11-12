@@ -4,7 +4,7 @@ import sbt.URL
 
 import com.alejandrohdezma.sbt.me.github.Repository.License
 
-/** Relevant information about a repository for a POM file */
+/** Represents a repository in Github */
 final case class Repository(description: String, license: License, html_url: String) {
 
   /** Returns the license extracted from github in the format that SBT is expecting */
@@ -14,6 +14,7 @@ final case class Repository(description: String, license: License, html_url: Str
 
 object Repository {
 
+  /** Represents a repository's license */
   final case class License(spdx_id: String, url: String)
 
 }

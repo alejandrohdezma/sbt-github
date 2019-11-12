@@ -13,7 +13,7 @@ object api {
   /** Represents the Github API token used to authenticate to the Github API */
   final case class GithubToken(value: String) extends AnyVal
 
-  /** Download repository information from github, or returns a string containing the error */
+  /** Download repository information from Github, or returns a string containing the error */
   def retrieveRepository(user: String, name: String)(
       implicit token: GithubToken
   ): Either[String, Repository] = {
@@ -23,10 +23,13 @@ object api {
       .body
 
     decode[Repository](body).leftMap {
-      case Fail(_, List(⬂("description")))           => "Repository doesn't have a description!"
-      case Fail(_, List(⬂("spdx_id"), ⬂("license"))) => "Repository doesn't have a license!"
-      case Fail(_, List(⬂("url"), ⬂("license")))     => "Repository's license couldn't be inferred!"
-      case _                                         => "Unable to get repository information"
+      case Fail(_, List(⬂("description"))) =>
+        s"Repository doesn't have a description! Go to https://github.com/$user/$name and add it"
+      case Fail(_, List(⬂("spdx_id"), ⬂("license"))) =>
+        s"Repository doesn't have a license! Go to https://github.com/$user/$name and add one"
+      case Fail(_, List(⬂("url"), ⬂("license"))) =>
+        s"Repository's license couldn't be inferred! Go to https://github.com/$user/$name and check it"
+      case _ => "Unable to get repository information"
     }
   }
 
