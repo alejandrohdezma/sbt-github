@@ -42,7 +42,7 @@ object SbtMePlugin extends AutoPlugin {
   override def projectSettings: Seq[Setting[_]] =
     Seq(
       organization := "com.alejandrohdezma",
-      homepage     := Some(url(s"${me.url}/${repository.value}")),
+      homepage     := repo.value.map(_.html_url).map(url),
       developers   := List(me)
     ) ++ onReleaseStage(
       description := repo.value.map(_.description).orEmpty,
