@@ -1,5 +1,4 @@
 ThisBuild / scalaVersion := "2.12.10"
-ThisBuild / name         := "sbt-me"
 
 enablePlugins(SbtPlugin, MdocPlugin)
 
