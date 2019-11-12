@@ -56,7 +56,7 @@ object SbtMePlugin extends AutoPlugin {
 
       val repository = for {
         token      <- sys.env.get(TOKEN).toRight(message)
-        repository <- github.api.retrieveRepository(name, token)
+        repository <- github.api.retrieveRepository("alejandrohdezma", name, token)
       } yield repository
 
       repository.fold(sys.error, identity)

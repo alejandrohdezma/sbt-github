@@ -11,8 +11,8 @@ import scalaj.http.Http
 object api {
 
   /** Download repository information from github, or returns a string containing the error */
-  def retrieveRepository(name: String, token: String): Either[String, Repository] = {
-    val body = Http(s"https://api.github.com/repos/alejandrohdezma/$name")
+  def retrieveRepository(user: String, name: String, token: String): Either[String, Repository] = {
+    val body = Http(s"https://api.github.com/repos/$user/$name")
       .header("Authorization", s"token $token")
       .asString
       .body
