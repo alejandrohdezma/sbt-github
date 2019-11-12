@@ -1,12 +1,14 @@
-# SBT plugin for my libraries
+# SBT plugin to read several settings from Github
 
 [![][travis-badge]][travis] [![][maven-badge]][maven] [![][steward-badge]][steward] [![][mergify-badge]][mergify]
 
-This repository enables several plugins:
+This plugin enables several settings automatically by downloaded them from Github:
 
-- **SbtMePlugin**: This plugin automatically adds POM-related settings like description, organization, license, homepage...
-- [sbt-ci-release](https://github.com/olafurpg/sbt-ci-release)
-- [sbt-tpolecat](https://github.com/olafurpg/sbt-ci-release)
+- `organization`: Retrieved from the current Github user's email (e.g. `info@alejandrohdezma.com` => `com.alejandrohdezma`).
+- `homepage`: Retrieved from the Github repository's information.
+- `developers`: A list containing the current Github user information.
+- `description`: Retrieved from the Github repository.
+- `licenses`: Retrieved from the Github repository.
 
 ## Installation
 
@@ -15,6 +17,18 @@ Add the following line to your `plugins.sbt` file:
 ```sbt
 addSbtPlugin("com.alejandrohdezma" %% "sbt-me" % "@VERSION@")
 ```
+
+## Configuration
+
+By default, the plugin only downloads the information if an environment variable named `RELEASE` is present in the system SBT is running (the content of the variable is not important). This behaviour can be tweaked by using the `downloadInfoFromGithub` setting:
+
+```sbt
+downloadInfoFromGithub := true
+```
+
+#### Github API token
+
+In order for this plugin to work you'll need to add an environment variable named `GITHUB_PERSONAL_ACCESS_TOKEN` with a [personal access content](https://github.com/settings/tokens).
 
 [travis]: https://travis-ci.com/alejandrohdezma/sbt-me
 [travis-badge]: https://travis-ci.com/alejandrohdezma/sbt-me.svg?branch=master
