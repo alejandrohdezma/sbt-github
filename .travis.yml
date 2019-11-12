@@ -18,6 +18,7 @@ jobs:
     - name: "Scalafix"
       script: sbt "scalafixAll --check"
     - stage: release
+      name: "Release to Sonatype"
       env: RELEASE="true"
       script: sbt ci-release
 
