@@ -9,6 +9,7 @@ import sbt.plugins.JvmPlugin
 import sbt.{url, AutoPlugin, Def, Developer, PluginTrigger, Plugins}
 
 import com.alejandrohdezma.sbt.me.github.Repository
+import com.alejandrohdezma.sbt.me.github.api.GithubToken
 
 /**
  * This plugin automatically enables reloading on sbt source changes and
@@ -41,15 +42,7 @@ object SbtMePlugin extends AutoPlugin {
     )
 
   private val repository: Def.Initialize[Repository] = Def.setting {
-    val message = s"You forgot to set `$TOKEN` in Travis environment variables. " +
-      s"Go to https://travis-ci.com/alejandrohdezma/$name/settings and add it."
-
-    val repository = for {
-      token      <- sys.env.get(TOKEN).toRight(message)
-      repository <- github.api.retrieveRepository(user, repo, token)
-    } yield repository
-
-    repository.fold(sys.error, identity)
+    github.api.retrieveRepository(user, repo).fold(sys.error, identity)
   }
 
   /** Gets the Github user and repository from the git remote info */
@@ -76,6 +69,19 @@ object SbtMePlugin extends AutoPlugin {
     url("https://github.com/alejandrohdezma")
   )
 
-  private val TOKEN: String = "GITHUB_PERSONAL_ACCESS_TOKEN"
+  /** The token used to authenticate to Github API */
+  implicit private lazy val token: GithubToken = {
+    val key = "GITHUB_PERSONAL_ACCESS_TOKEN"
+
+    sys.env
+      .get(key)
+      .map(GithubToken)
+      .getOrElse(
+        sys.error {
+          s"You forgot to set `$key` in Travis environment variables. " +
+            s"Go to https://travis-ci.com/$user/$repo/settings and add it."
+        }
+      )
+  }
 
 }

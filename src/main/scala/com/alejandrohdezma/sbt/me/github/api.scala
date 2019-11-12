@@ -10,10 +10,15 @@ import scalaj.http.Http
 
 object api {
 
+  /** Represents the Github API token used to authenticate to the Github API */
+  final case class GithubToken(value: String) extends AnyVal
+
   /** Download repository information from github, or returns a string containing the error */
-  def retrieveRepository(user: String, name: String, token: String): Either[String, Repository] = {
+  def retrieveRepository(user: String, name: String)(
+      implicit token: GithubToken
+  ): Either[String, Repository] = {
     val body = Http(s"https://api.github.com/repos/$user/$name")
-      .header("Authorization", s"token $token")
+      .header("Authorization", s"token ${token.value}")
       .asString
       .body
 
