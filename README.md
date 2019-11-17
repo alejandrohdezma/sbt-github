@@ -2,7 +2,7 @@
 
 [![][travis-badge]][travis] [![][maven-badge]][maven] [![][steward-badge]][steward] [![][mergify-badge]][mergify]
 
-This plugin enables several settings automatically by downloaded them from Github:
+This plugin enables several settings automatically by downloading them from Github:
 
 - `organization`: Retrieved from the current Github user's email (e.g. `info@alejandrohdezma.com` => `com.alejandrohdezma`).
 - `homepage`: Retrieved from the Github repository's information.
