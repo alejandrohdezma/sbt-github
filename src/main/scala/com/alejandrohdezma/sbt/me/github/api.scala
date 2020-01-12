@@ -2,12 +2,11 @@ package com.alejandrohdezma.sbt.me.github
 
 import cats.syntax.either._
 
-import com.alejandrohdezma.sbt.me.http.Authentication
+import com.alejandrohdezma.sbt.me.http._
 import io.circe.CursorOp.{DownField => ⬂}
 import io.circe.generic.auto._
 import io.circe.parser.decode
 import io.circe.{DecodingFailure => Fail}
-import scalaj.http.Http
 
 object api {
 
@@ -15,10 +14,7 @@ object api {
   def retrieveRepository(user: String, name: String)(
       implicit auth: Authentication
   ): Either[String, Repository] = {
-    val body = Http(s"https://api.github.com/repos/$user/$name")
-      .header("Authorization", auth.header)
-      .asString
-      .body
+    val body = client.get(s"https://api.github.com/repos/$user/$name")
 
     decode[Repository](body).leftMap {
       case Fail(_, List(⬂("description"))) =>
@@ -33,10 +29,7 @@ object api {
 
   /** Download current user information from Github, or returns a string containing the error */
   def retrieveCurrentUser(implicit auth: Authentication): Either[String, CurrentUser] = {
-    val body = Http(s"https://api.github.com/user")
-      .header("Authorization", auth.header)
-      .asString
-      .body
+    val body = client.get(s"https://api.github.com/user")
 
     decode[CurrentUser](body).leftMap {
       case Fail(_, List(⬂("name"))) =>
