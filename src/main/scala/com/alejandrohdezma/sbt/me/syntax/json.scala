@@ -1,7 +1,8 @@
 package com.alejandrohdezma.sbt.me.syntax
 
-import com.alejandrohdezma.sbt.me.json.Json.Result
+import com.alejandrohdezma.sbt.me.json.Json._
 import com.alejandrohdezma.sbt.me.json.{Decoder, Json}
+import com.alejandrohdezma.sbt.me.syntax.either._
 
 object json {
 
@@ -9,6 +10,18 @@ object json {
 
     /** Tries to decode this [[Json.Value]] as the provided type `A` using its implicit [[Decoder]] */
     def as[A: Decoder]: Result[A] = Decoder[A].decode(json)
+
+    /**
+     * Tries to decode the [[Json.Value]] at the provided path as the provided type `A` using
+     * its implicit [[Decoder]].
+     *
+     * Returns [[Left]] with the error in case this is not a [[Json.Object]] or the decoding fails.
+     */
+    def get[A: Decoder](path: String): Result[A] = json match {
+      case json: Json.Object => json.get(path).as[A].leftMap(Fail.Path(path, _))
+      case Json.Null         => Left(Fail.NotFound)
+      case value             => Left(Fail.NotAJSONObject(value))
+    }
 
   }
 
