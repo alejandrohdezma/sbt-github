@@ -1,5 +1,6 @@
 package com.alejandrohdezma.sbt.me.syntax
 
+import com.alejandrohdezma.sbt.me.json.Json.Fail.Path
 import com.alejandrohdezma.sbt.me.json.Json._
 import com.alejandrohdezma.sbt.me.json.{Decoder, Json}
 import com.alejandrohdezma.sbt.me.syntax.either._
@@ -40,6 +41,21 @@ object json {
     /** Returns the value for the provided field, if present; otherwise returns [[Json.Null]] */
     def get(path: String): Json.Value = json.fields.getOrElse(path, Json.Null)
 
+  }
+
+  object / {
+
+    /**
+     * Json.Fail extractor:
+     * {{{
+     *   fail match {
+     *     case "license" / ("url" / NotFound) => ...
+     * }}}
+     */
+    def unapply(fail: Json.Fail): Option[(String, Json.Fail)] = fail match {
+      case Path(value, fail) => Some(value -> fail)
+      case _                 => None
+    }
   }
 
 }

@@ -52,4 +52,26 @@ class JsonSyntaxSpec extends Specification {
 
   }
 
+  "`/` extractor" should {
+
+    "allow matching path failures" >> {
+      val fail: Fail = Path("miau", NotFound)
+
+      fail must be like { case "miau" / NotFound => ok }
+    }
+
+    "allow matching nested Path failures" >> {
+      val fail: Fail = Path("miau", Path("cat", NotFound))
+
+      fail must be like { case "miau" / ("cat" / NotFound) => ok }
+    }
+
+    "not match other failures" >> {
+      val fail: Fail = NotFound
+
+      /.unapply(fail) must be none
+    }
+
+  }
+
 }
