@@ -59,8 +59,7 @@ object SbtMePlugin extends AutoPlugin {
     }
   )
 
-  private lazy val repository: Repository =
-    github.api.retrieveRepository(user, repo).fold(sys.error, identity)
+  private lazy val repository: Repository = Repository.get(user, repo).fold(sys.error, identity)
 
   /** Gets the Github user and repository from the git remote info */
   private lazy val (user, repo): (String, String) = {
