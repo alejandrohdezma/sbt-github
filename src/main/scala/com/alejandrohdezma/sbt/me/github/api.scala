@@ -27,17 +27,4 @@ object api {
     }
   }
 
-  /** Download current user information from Github, or returns a string containing the error */
-  def retrieveCurrentUser(implicit auth: Authentication): Either[String, CurrentUser] = {
-    val body = client.get(s"https://api.github.com/user")
-
-    decode[CurrentUser](body).leftMap {
-      case Fail(_, List(⬂("name"))) =>
-        "Current user doesn't have a name! Go to https://github.com/settings/profile and add it"
-      case Fail(_, List(⬂("email"))) =>
-        "Current user doesn't have a name! Go to https://github.com/settings/profile and add it"
-      case _ => "Unable to get current user information"
-    }
-  }
-
 }
