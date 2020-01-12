@@ -2,6 +2,7 @@ package com.alejandrohdezma.sbt.me.json
 
 import com.alejandrohdezma.sbt.me.json.Json.Fail
 import com.alejandrohdezma.sbt.me.json.Json.Fail._
+import com.alejandrohdezma.sbt.me.syntax.json._
 import org.specs2.mutable.Specification
 
 class DecoderSpec extends Specification {
@@ -13,19 +14,19 @@ class DecoderSpec extends Specification {
 
       val expected = "miau"
 
-      Decoder[String].decode(json) must beRight(expected)
+      json.as[String] must beRight(expected)
     }
 
     "return NotFound on null" >> {
       val json = Json.Null
 
-      Decoder[String].decode(json) must beLeft[Fail](NotFound)
+      json.as[String] must beLeft[Fail](NotFound)
     }
 
     "return NotAString for everything else" >> {
       val json = Json.Number(42)
 
-      Decoder[String].decode(json) must beLeft[Fail](NotAString(json))
+      json.as[String] must beLeft[Fail](NotAString(json))
     }
 
   }
@@ -37,19 +38,19 @@ class DecoderSpec extends Specification {
 
       val expected = 42L
 
-      Decoder[Long].decode(json) must beRight(expected)
+      json.as[Long] must beRight(expected)
     }
 
     "return NotFound on null" >> {
       val json = Json.Null
 
-      Decoder[Long].decode(json) must beLeft[Fail](NotFound)
+      json.as[Long] must beLeft[Fail](NotFound)
     }
 
     "return NotANumber for everything else" >> {
       val json = Json.Text("miau")
 
-      Decoder[Long].decode(json) must beLeft[Fail](NotANumber(json))
+      json.as[Long] must beLeft[Fail](NotANumber(json))
     }
 
   }
@@ -61,19 +62,19 @@ class DecoderSpec extends Specification {
 
       val expected = 42
 
-      Decoder[Int].decode(json) must beRight(expected)
+      json.as[Int] must beRight(expected)
     }
 
     "return NotFound on null" >> {
       val json = Json.Null
 
-      Decoder[Int].decode(json) must beLeft[Fail](NotFound)
+      json.as[Int] must beLeft[Fail](NotFound)
     }
 
     "return NotANumber for everything else" >> {
       val json = Json.Text("miau")
 
-      Decoder[Int].decode(json) must beLeft[Fail](NotANumber(json))
+      json.as[Int] must beLeft[Fail](NotANumber(json))
     }
 
   }
@@ -85,19 +86,19 @@ class DecoderSpec extends Specification {
 
       val expected = 42d
 
-      Decoder[Double].decode(json) must beRight(expected)
+      json.as[Double] must beRight(expected)
     }
 
     "return NotFound on null" >> {
       val json = Json.Null
 
-      Decoder[Double].decode(json) must beLeft[Fail](NotFound)
+      json.as[Double] must beLeft[Fail](NotFound)
     }
 
     "return NotANumber for everything else" >> {
       val json = Json.Text("miau")
 
-      Decoder[Double].decode(json) must beLeft[Fail](NotANumber(json))
+      json.as[Double] must beLeft[Fail](NotANumber(json))
     }
 
   }
@@ -107,25 +108,25 @@ class DecoderSpec extends Specification {
     "decode Json.True" >> {
       val json = Json.True
 
-      Decoder[Boolean].decode(json) must beRight(true)
+      json.as[Boolean] must beRight(true)
     }
 
     "decode Json.False" >> {
       val json = Json.False
 
-      Decoder[Boolean].decode(json) must beRight(false)
+      json.as[Boolean] must beRight(false)
     }
 
     "return NotFound on null" >> {
       val json = Json.Null
 
-      Decoder[Boolean].decode(json) must beLeft[Fail](NotFound)
+      json.as[Boolean] must beLeft[Fail](NotFound)
     }
 
     "return NotABoolean for everything else" >> {
       val json = Json.Text("miau")
 
-      Decoder[Boolean].decode(json) must beLeft[Fail](NotABoolean(json))
+      json.as[Boolean] must beLeft[Fail](NotABoolean(json))
     }
 
   }
