@@ -23,7 +23,7 @@ class ClientSpec extends Specification with IOMatchers {
 
   }
 
-  implicit private val auth: Authentication = Token("1234")
+  implicit private val auth: Authentication = Authentication.Token("1234")
 
   private def withServer[A](f: Uri => A): IO[A] = {
     val routes = HttpRoutes.of[IO] {

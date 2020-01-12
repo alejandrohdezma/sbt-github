@@ -9,7 +9,6 @@ import sbt.plugins.JvmPlugin
 import sbt.{settingKey, url, AutoPlugin, Def, PluginTrigger, Plugins, SettingKey}
 
 import com.alejandrohdezma.sbt.me.github.Repository
-import com.alejandrohdezma.sbt.me.http.{Authentication, Token}
 
 /**
  * This plugin automatically enables reloading on sbt source changes and
@@ -75,21 +74,6 @@ object SbtMePlugin extends AutoPlugin {
       case GithubSsh(user, repo)   => (user, repo)
       case _                       => sys.error("Unable to get info from `git ls-remote --get-url origin`")
     }
-  }
-
-  /** The authentication to the Github API */
-  implicit private lazy val authentication: Authentication = {
-    val key = "GITHUB_PERSONAL_ACCESS_TOKEN"
-
-    sys.env
-      .get(key)
-      .map(Token)
-      .getOrElse(
-        sys.error {
-          s"You forgot to set `$key` in Travis environment variables. " +
-            s"Go to https://travis-ci.com/$user/$repo/settings and add it."
-        }
-      )
   }
 
 }
