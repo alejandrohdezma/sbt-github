@@ -22,4 +22,11 @@ object json {
 
   }
 
+  implicit class JsonObjectOps(private val json: Json.Object) extends AnyVal {
+
+    /** Returns the value for the provided field, if present; otherwise returns [[Json.Null]] */
+    def get(path: String): Json.Value = json.fields.getOrElse(path, Json.Null)
+
+  }
+
 }
