@@ -42,7 +42,7 @@ object SbtMePlugin extends AutoPlugin {
   override def projectSettings: Seq[Setting[_]] = Seq(
     downloadInfoFromGithub := sys.env.contains("RELEASE"),
     homepage := {
-      if (downloadInfoFromGithub.value) Some(url(repository.html_url))
+      if (downloadInfoFromGithub.value) Some(url(repository.url))
       else homepage.value
     },
     developers := {
