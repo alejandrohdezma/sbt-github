@@ -3,6 +3,8 @@ package com.alejandrohdezma.sbt.me.http
 import cats.effect._
 import cats.implicits._
 
+import com.alejandrohdezma.sbt.me.json.Decoder
+import com.alejandrohdezma.sbt.me.syntax.json.JsonValueOps
 import org.http4s._
 import org.http4s.dsl.io._
 import org.http4s.headers.Authorization
@@ -16,19 +18,25 @@ class ClientSpec extends Specification with IOMatchers {
   "client.get" should {
 
     "make `GET` call using auth and returning content as `String`" >> {
-      val result = withServer(uri => client.get((uri / "hello").renderString))
+      final case class Auth(auth: String)
 
-      result must returnValue("Authorization: token 1234")
+      implicit val decoder: Decoder[Auth] = _.get[String]("auth").map(Auth)
+
+      val result = withServer(uri => client.get[Auth]((uri / "hello").renderString))
+
+      result must beRight(Auth("Authorization: token 1234"))
     }
 
   }
 
   implicit private val auth: Authentication = Authentication.Token("1234")
 
-  private def withServer[A](f: Uri => A): IO[A] = {
+  private def withServer[A](f: Uri => A): A = {
     val routes = HttpRoutes.of[IO] {
       case req @ GET -> Root / "hello" =>
-        Ok(req.headers.get(Authorization).map(_.renderString).orEmpty)
+        Ok(s"""{
+          "auth": "${req.headers.get(Authorization).map(_.renderString).orEmpty}"
+        }""")
     }
 
     BlazeServerBuilder[IO]
@@ -38,6 +46,7 @@ class ClientSpec extends Specification with IOMatchers {
       .map(_.baseUri)
       .map(f)
       .use(IO.pure)
+      .unsafeRunSync()
   }
 
 }

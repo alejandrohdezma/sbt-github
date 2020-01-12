@@ -3,8 +3,8 @@ package com.alejandrohdezma.sbt.me.github
 import sbt.URL
 
 import com.alejandrohdezma.sbt.me.http.{client, Authentication}
+import com.alejandrohdezma.sbt.me.json.Decoder
 import com.alejandrohdezma.sbt.me.json.Json.Fail.NotFound
-import com.alejandrohdezma.sbt.me.json.{Decoder, Json}
 import com.alejandrohdezma.sbt.me.syntax.either._
 import com.alejandrohdezma.sbt.me.syntax.json._
 
@@ -21,10 +21,8 @@ object Repository {
   /** Download repository information from Github, or returns a string containing the error */
   def get(user: String, name: String)(
       implicit auth: Authentication
-  ): Either[String, Repository] = {
-    val body = client.get(s"https://api.github.com/repos/$user/$name")
-
-    Json.parse(body).as[Repository].leftMap {
+  ): Either[String, Repository] =
+    client.get[Repository](s"https://api.github.com/repos/$user/$name").leftMap {
       case "description" / NotFound =>
         s"Repository doesn't have a description! Go to https://github.com/$user/$name and add it"
       case "license" / NotFound =>
@@ -35,7 +33,6 @@ object Repository {
         s"Repository's license url couldn't be inferred! Go to https://github.com/$user/$name and check it"
       case _ => "Unable to get repository information"
     }
-  }
 
   implicit val RepositoryDecoder: Decoder[Repository] = json =>
     for {
