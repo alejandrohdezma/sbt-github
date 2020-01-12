@@ -2,6 +2,7 @@ package com.alejandrohdezma.sbt.me.github
 
 import cats.syntax.either._
 
+import com.alejandrohdezma.sbt.me.http.Authentication
 import io.circe.CursorOp.{DownField => ⬂}
 import io.circe.generic.auto._
 import io.circe.parser.decode
@@ -10,15 +11,12 @@ import scalaj.http.Http
 
 object api {
 
-  /** Represents the Github API token used to authenticate to the Github API */
-  final case class GithubToken(value: String) extends AnyVal
-
   /** Download repository information from Github, or returns a string containing the error */
   def retrieveRepository(user: String, name: String)(
-      implicit token: GithubToken
+      implicit auth: Authentication
   ): Either[String, Repository] = {
     val body = Http(s"https://api.github.com/repos/$user/$name")
-      .header("Authorization", s"token ${token.value}")
+      .header("Authorization", auth.header)
       .asString
       .body
 
@@ -34,9 +32,9 @@ object api {
   }
 
   /** Download current user information from Github, or returns a string containing the error */
-  def retrieveCurrentUser(implicit token: GithubToken): Either[String, CurrentUser] = {
+  def retrieveCurrentUser(implicit auth: Authentication): Either[String, CurrentUser] = {
     val body = Http(s"https://api.github.com/user")
-      .header("Authorization", s"token ${token.value}")
+      .header("Authorization", auth.header)
       .asString
       .body
 

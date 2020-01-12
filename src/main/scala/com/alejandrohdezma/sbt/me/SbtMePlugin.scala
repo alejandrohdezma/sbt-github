@@ -8,8 +8,8 @@ import sbt.nio.Keys.{onChangedBuildSource, ReloadOnSourceChanges}
 import sbt.plugins.JvmPlugin
 import sbt.{settingKey, url, AutoPlugin, Def, PluginTrigger, Plugins, SettingKey}
 
-import com.alejandrohdezma.sbt.me.github.api.GithubToken
 import com.alejandrohdezma.sbt.me.github.{CurrentUser, Repository}
+import com.alejandrohdezma.sbt.me.http.{Authentication, Token}
 
 /**
  * This plugin automatically enables reloading on sbt source changes and
@@ -84,13 +84,13 @@ object SbtMePlugin extends AutoPlugin {
     }
   }
 
-  /** The token used to authenticate to Github API */
-  implicit private lazy val token: GithubToken = {
+  /** The authentication to the Github API */
+  implicit private lazy val authentication: Authentication = {
     val key = "GITHUB_PERSONAL_ACCESS_TOKEN"
 
     sys.env
       .get(key)
-      .map(GithubToken)
+      .map(Token)
       .getOrElse(
         sys.error {
           s"You forgot to set `$key` in Travis environment variables. " +
