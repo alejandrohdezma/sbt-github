@@ -43,4 +43,9 @@ object Decoder {
     case Json.False => false
   }
 
+  implicit def OptionDecoder[A: Decoder]: Decoder[Option[A]] = {
+    case Json.Null => Right(None)
+    case value     => Decoder[A].decode(value).map(Some(_))
+  }
+
 }

@@ -131,4 +131,26 @@ class DecoderSpec extends Specification {
 
   }
 
+  "Decoder[Option]" should {
+
+    "not fail on Json.Null" >> {
+      val json = Json.Null
+
+      json.as[Option[Boolean]] must beRight(Option.empty[Boolean])
+    }
+
+    "use A's Decoder in case of non-null" >> {
+      val json = Json.True
+
+      json.as[Option[Boolean]] must beRight(some(true))
+    }
+
+    "propagate Decoder[A] failure" >> {
+      val json = Json.Text("miau")
+
+      json.as[Option[Boolean]] must beLeft[Fail](NotABoolean(json))
+    }
+
+  }
+
 }
