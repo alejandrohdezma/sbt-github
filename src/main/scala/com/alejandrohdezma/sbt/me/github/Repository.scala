@@ -20,9 +20,10 @@ object Repository {
 
   /** Download repository information from Github, or returns a string containing the error */
   def get(user: String, name: String)(
-      implicit auth: Authentication
+      implicit auth: Authentication,
+      url: urls.Repository
   ): Either[String, Repository] =
-    client.get[Repository](s"https://api.github.com/repos/$user/$name").leftMap {
+    client.get[Repository](url.get(user, name)).leftMap {
       case "description" / NotFound =>
         s"Repository doesn't have a description! Go to https://github.com/$user/$name and add it"
       case "license" / NotFound =>
