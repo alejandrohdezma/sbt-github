@@ -153,4 +153,32 @@ class DecoderSpec extends Specification {
 
   }
 
+  "Decoder[List]" should {
+
+    "decode Json.Collection" >> {
+      val json = Json.Collection(List(1d, 2d, 3d).map(Json.Number))
+
+      json.as[List[Int]] must beRight(List(1, 2, 3))
+    }
+
+    "return NotFound on null" >> {
+      val json = Json.Null
+
+      json.as[List[Int]] must beLeft[Fail](NotFound)
+    }
+
+    "return NotAList for everything else" >> {
+      val json = Json.Text("miau")
+
+      json.as[List[Int]] must beLeft[Fail](NotAList(json))
+    }
+
+    "propagate Decoder[A] failure" >> {
+      val json = Json.Collection(List("miau").map(Json.Text))
+
+      json.as[List[Int]] must beLeft[Fail](NotANumber(Json.Text("miau")))
+    }
+
+  }
+
 }

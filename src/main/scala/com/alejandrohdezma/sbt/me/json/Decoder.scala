@@ -2,6 +2,7 @@ package com.alejandrohdezma.sbt.me.json
 
 import com.alejandrohdezma.sbt.me.json.Json.Fail._
 import com.alejandrohdezma.sbt.me.json.Json.Result
+import com.alejandrohdezma.sbt.me.syntax.list._
 
 /**
  * A type class that provides a way to produce a value of type `A` from a [[Json.Value]].
@@ -46,6 +47,12 @@ object Decoder {
   implicit def OptionDecoder[A: Decoder]: Decoder[Option[A]] = {
     case Json.Null => Right(None)
     case value     => Decoder[A].decode(value).map(Some(_))
+  }
+
+  implicit def ListDecoder[A: Decoder]: Decoder[List[A]] = {
+    case Json.Collection(list) => list.traverse(Decoder[A].decode)
+    case Json.Null             => Left(NotFound)
+    case value                 => Left(NotAList(value))
   }
 
 }

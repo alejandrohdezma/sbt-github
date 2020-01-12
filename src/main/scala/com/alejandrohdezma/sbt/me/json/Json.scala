@@ -35,6 +35,7 @@ object Json extends JavaTokenParsers {
 
   object Fail {
 
+    final case class NotAList(value: Json.Value)    extends Fail
     final case class NotAString(value: Json.Value)  extends Fail
     final case class NotANumber(value: Json.Value)  extends Fail
     final case class NotABoolean(value: Json.Value) extends Fail
