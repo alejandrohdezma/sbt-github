@@ -42,13 +42,15 @@ final case class Repository(
   }
 
   /**
-   * Returns the list of repository collaborators, alphabetically ordered.
+   * Returns the list of repository collaborators, filtered by those who have contributed
+   * at least once to the project, alphabetically ordered.
    */
-  def collaborators(
+  def collaborators(allowed: List[String])(
       implicit auth: Authentication
   ): Either[String, Collaborators] =
     client
       .get[List[Collaborator]](collaboratorsUrl)
+      .map(_.filter(m => allowed.contains(m.login)))
       .map(_.sortBy(_.login))
       .map(Collaborators)
       .leftMap(_ => "Unable to get repository collaborators")

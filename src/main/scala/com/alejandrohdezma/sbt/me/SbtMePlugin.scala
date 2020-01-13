@@ -69,7 +69,7 @@ object SbtMePlugin extends AutoPlugin {
       _.contributors(excludedContributors.value).fold(sys.error, identity)
     },
     collaborators := repository.value.fold(Collaborators(Nil)) {
-      _.collaborators.fold(sys.error, identity)
+      _.collaborators(contributors.value.list.map(_.login)).fold(sys.error, identity)
     },
     homepage  := repository.value.map(r => url(r.url)).orElse(homepage.value),
     licenses  := repository.value.map(_.licenses).getOrElse(licenses.value),

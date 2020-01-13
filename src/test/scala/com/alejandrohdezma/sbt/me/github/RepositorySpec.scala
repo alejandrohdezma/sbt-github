@@ -243,12 +243,11 @@ class RepositorySpec extends Specification {
             "avatar_url": null,
             "html_url": "http://example.com/him"
           }
-        ]
-        """)
+        ]""")
     } { uri =>
       val repository = Repository("", License("", ""), "", 0, "", s"${uri}collaborators")
 
-      val collaborators = repository.collaborators
+      val collaborators = repository.collaborators(List("me", "you", "him"))
 
       val expected = Collaborators(
         List(
@@ -261,12 +260,37 @@ class RepositorySpec extends Specification {
       collaborators must beRight(expected)
     }
 
+    "exclude collaborators not in provided list" >> withServer {
+      case GET -> Root / "collaborators" =>
+        Ok("""[
+          {
+            "login": "me",
+            "avatar_url": "http://example.com/me.png",
+            "html_url": "http://example.com/me"
+          },
+          {
+            "login": "you",
+            "html_url": "http://example.com/you"
+          }
+        ]""")
+    } { uri =>
+      val repository = Repository("", License("", ""), "", 0, "", s"${uri}collaborators")
+
+      val collaborators = repository.collaborators(List("me"))
+
+      val expected = Collaborators(
+        List(Collaborator("me", "http://example.com/me", Some("http://example.com/me.png")))
+      )
+
+      collaborators must beRight(expected)
+    }
+
     "return generic error on any error" >> withServer {
       case GET -> Root / "collaborators" => Ok("""{"hello": "hi"}""")
     } { uri =>
       val repository = Repository("", License("", ""), "", 0, "", s"${uri}collaborators")
 
-      val collaborators = repository.collaborators
+      val collaborators = repository.collaborators(Nil)
 
       collaborators must beLeft("Unable to get repository collaborators")
     }
