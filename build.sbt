@@ -12,5 +12,8 @@ lazy val `sbt-me` = project
       "org.http4s" %% "http4s-dsl"          % "0.20.15" % Test,
       "org.http4s" %% "http4s-blaze-server" % "0.20.15" % Test
     ),
-    mdocVariables := Map("VERSION" -> version.value.replaceAll("\\+.*", ""))
+    mdocVariables := Map(
+      "VERSION"      -> version.value.replaceAll("\\+.*", ""),
+      "CONTRIBUTORS" -> contributors.value.markdown
+    )
   )
