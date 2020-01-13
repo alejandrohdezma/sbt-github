@@ -30,6 +30,10 @@ object SbtMePlugin extends AutoPlugin {
       "List of contributors downloaded from Github"
     )
 
+    val excludedContributors = settingKey[List[String]] {
+      "ID (Github login) of the contributors that should be excluded from the list, like bots"
+    }
+
     val repository = settingKey[Option[Repository]] {
       "Repository information downloaded from Github"
     }
@@ -48,15 +52,17 @@ object SbtMePlugin extends AutoPlugin {
 
   override def globalSettings: Seq[Setting[_]] = Seq(
     downloadInfoFromGithub := sys.env.contains("RELEASE"),
+    excludedContributors   := List("scala-steward", "mergify[bot]"),
     repository := {
       if (downloadInfoFromGithub.value)
         Some(Repository.get(user, repo).fold(sys.error, identity))
       else None
     },
-    contributors := repository.value.map(_.contributors.fold(sys.error, identity)),
-    homepage     := repository.value.map(r => url(r.url)).orElse(homepage.value),
-    licenses     := repository.value.map(_.licenses).getOrElse(licenses.value),
-    startYear    := repository.value.map(_.startYear).orElse(startYear.value)
+    contributors := repository.value
+      .map(_.contributors(excludedContributors.value).fold(sys.error, identity)),
+    homepage  := repository.value.map(r => url(r.url)).orElse(homepage.value),
+    licenses  := repository.value.map(_.licenses).getOrElse(licenses.value),
+    startYear := repository.value.map(_.startYear).orElse(startYear.value)
   )
 
   override def projectSettings: Seq[Def.Setting[_]] = Seq(

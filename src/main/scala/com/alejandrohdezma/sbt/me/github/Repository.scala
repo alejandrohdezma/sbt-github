@@ -25,11 +25,17 @@ final case class Repository(
   /**
    * Returns the list of users who have contributed to a repository order by the number
    * of contributions.
+   *
+   * Excludes from the list those whose login ID appears in the provided list of
+   * excluded contributors.
    */
-  def contributors(implicit auth: Authentication): Either[String, Contributors] = {
+  def contributors(
+      excluded: List[String]
+  )(implicit auth: Authentication): Either[String, Contributors] = {
     client
       .get[List[Contributor]](contributorsUrl)
       .map(_.sortBy(-_.contributions))
+      .map(_.filterNot(contributor => excluded.contains(contributor.login)))
       .map(Contributors)
       .leftMap(_ => "Unable to get repository contributors")
   }

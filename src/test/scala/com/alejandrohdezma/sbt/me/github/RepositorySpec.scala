@@ -167,7 +167,7 @@ class RepositorySpec extends Specification {
     } { uri =>
       val repository = Repository("", License("", ""), "", 0, s"${uri}contributors")
 
-      val contributors = repository.contributors
+      val contributors = repository.contributors(Nil)
 
       val expected = Contributors(
         List(
@@ -180,12 +180,37 @@ class RepositorySpec extends Specification {
       contributors must beRight(expected)
     }
 
+    "exclude provided contributors" >> withServer {
+      case GET -> Root / "contributors" =>
+        Ok("""[
+          {
+            "login": "me",
+            "html_url": "http://example.com/me",
+            "contributions": 42
+          },
+          {
+            "login": "you",
+            "html_url": "http://example.com/you",
+            "contributions": 2
+          }
+        ]
+        """)
+    } { uri =>
+      val repository = Repository("", License("", ""), "", 0, s"${uri}contributors")
+
+      val contributors = repository.contributors(List("you"))
+
+      val expected = Contributors(List(Contributor("me", 42, "http://example.com/me", None)))
+
+      contributors must beRight(expected)
+    }
+
     "return generic error on any error" >> withServer {
       case GET -> Root / "contributors" => Ok("""{"hello": "hi"}""")
     } { uri =>
       val repository = Repository("", License("", ""), "", 0, s"${uri}contributors")
 
-      val contributors = repository.contributors
+      val contributors = repository.contributors(Nil)
 
       contributors must beLeft("Unable to get repository contributors")
     }
