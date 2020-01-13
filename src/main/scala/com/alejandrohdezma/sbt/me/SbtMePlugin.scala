@@ -26,7 +26,7 @@ object SbtMePlugin extends AutoPlugin {
     type Contributors = github.Contributors
     val Contributors = github.Contributors
 
-    val contributors = settingKey[Option[Contributors]](
+    val contributors = settingKey[Contributors](
       "List of contributors downloaded from Github"
     )
 
@@ -58,8 +58,9 @@ object SbtMePlugin extends AutoPlugin {
         Some(Repository.get(user, repo).fold(sys.error, identity))
       else None
     },
-    contributors := repository.value
-      .map(_.contributors(excludedContributors.value).fold(sys.error, identity)),
+    contributors := repository.value.fold(Contributors(Nil)) {
+      _.contributors(excludedContributors.value).fold(sys.error, identity)
+    },
     homepage  := repository.value.map(r => url(r.url)).orElse(homepage.value),
     licenses  := repository.value.map(_.licenses).getOrElse(licenses.value),
     startYear := repository.value.map(_.startYear).orElse(startYear.value)
