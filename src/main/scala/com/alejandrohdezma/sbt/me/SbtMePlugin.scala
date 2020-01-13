@@ -1,10 +1,12 @@
 package com.alejandrohdezma.sbt.me
 
 import scala.sys.process._
+
 import sbt.Def.Setting
 import sbt.Keys._
 import sbt.plugins.JvmPlugin
-import sbt.{AutoPlugin, Def, PluginTrigger, Plugins, SettingKey, settingKey, url}
+import sbt.{settingKey, url, AutoPlugin, Def, PluginTrigger, Plugins}
+
 import com.alejandrohdezma.sbt.me.github.Repository
 
 /**
@@ -21,8 +23,13 @@ object SbtMePlugin extends AutoPlugin {
 
   object autoImport {
 
-    val downloadInfoFromGithub: SettingKey[Boolean] =
-      settingKey[Boolean]("Whether sbt-me should download information from Github or not")
+    val repository = settingKey[Option[Repository]] {
+      "Repository information downloaded from Github"
+    }
+
+    val downloadInfoFromGithub = settingKey[Boolean] {
+      "Whether sbt-me should download information from Github or not"
+    }
 
   }
 
@@ -34,29 +41,18 @@ object SbtMePlugin extends AutoPlugin {
 
   override def globalSettings: Seq[Setting[_]] = Seq(
     downloadInfoFromGithub := sys.env.contains("RELEASE"),
-    homepage := {
-      if (downloadInfoFromGithub.value) Some(url(repository.url))
-      else homepage.value
+    repository := {
+      if (downloadInfoFromGithub.value)
+        Some(Repository.get(user, repo).fold(sys.error, identity))
+      else None
     },
-    developers := {
-      if (downloadInfoFromGithub.value) List()
-      else developers.value
-    },
-    licenses := {
-      if (downloadInfoFromGithub.value) repository.licenses
-      else licenses.value
-    }
+    homepage := repository.value.map(r => url(r.url)).orElse(homepage.value),
+    licenses := repository.value.map(_.licenses).getOrElse(licenses.value)
   )
-
 
   override def projectSettings: Seq[Def.Setting[_]] = Seq(
-    description := {
-      if (downloadInfoFromGithub.value) repository.description
-      else description.value
-    }
+    description := repository.value.map(_.description).getOrElse(description.value)
   )
-
-  private lazy val repository: Repository = Repository.get(user, repo).fold(sys.error, identity)
 
   /** Gets the Github user and repository from the git remote info */
   private lazy val (user, repo): (String, String) = {
