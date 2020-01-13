@@ -1,12 +1,10 @@
 package com.alejandrohdezma.sbt.me
 
 import scala.sys.process._
-
 import sbt.Def.Setting
 import sbt.Keys._
 import sbt.plugins.JvmPlugin
-import sbt.{settingKey, url, AutoPlugin, PluginTrigger, Plugins, SettingKey}
-
+import sbt.{AutoPlugin, Def, PluginTrigger, Plugins, SettingKey, settingKey, url}
 import com.alejandrohdezma.sbt.me.github.Repository
 
 /**
@@ -34,7 +32,7 @@ object SbtMePlugin extends AutoPlugin {
 
   override def requires: Plugins = JvmPlugin
 
-  override def projectSettings: Seq[Setting[_]] = Seq(
+  override def globalSettings: Seq[Setting[_]] = Seq(
     downloadInfoFromGithub := sys.env.contains("RELEASE"),
     homepage := {
       if (downloadInfoFromGithub.value) Some(url(repository.url))
@@ -44,13 +42,17 @@ object SbtMePlugin extends AutoPlugin {
       if (downloadInfoFromGithub.value) List()
       else developers.value
     },
-    description := {
-      if (downloadInfoFromGithub.value) repository.description
-      else description.value
-    },
     licenses := {
       if (downloadInfoFromGithub.value) repository.licenses
       else licenses.value
+    }
+  )
+
+
+  override def projectSettings: Seq[Def.Setting[_]] = Seq(
+    description := {
+      if (downloadInfoFromGithub.value) repository.description
+      else description.value
     }
   )
 
