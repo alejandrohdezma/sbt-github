@@ -13,6 +13,7 @@ class RepositorySpec extends Specification {
         Ok("""{
             "description": "The description",
             "html_url": "http://example.com/repository",
+            "created_at": "2011-01-26T19:01:12Z",
             "license": {
               "spdx_id": "id",
               "url": "http://example.com"
@@ -26,7 +27,8 @@ class RepositorySpec extends Specification {
       val expected = Repository(
         "The description",
         License("id", "http://example.com"),
-        "http://example.com/repository"
+        "http://example.com/repository",
+        2011
       )
 
       repository must beRight(expected)
@@ -37,6 +39,7 @@ class RepositorySpec extends Specification {
         Ok("""{
             "description": null,
             "html_url": "http://example.com/repository",
+            "created_at": "2011-01-26T19:01:12Z",
             "license": {
               "spdx_id": "id",
               "url": "http://example.com"
@@ -57,6 +60,7 @@ class RepositorySpec extends Specification {
         Ok("""{
             "description": "The description",
             "html_url": "http://example.com/repository",
+            "created_at": "2011-01-26T19:01:12Z",
             "license": null
           }""")
     } { uri =>
@@ -74,6 +78,7 @@ class RepositorySpec extends Specification {
         Ok("""{
             "description": "The description",
             "html_url": "http://example.com/repository",
+            "created_at": "2011-01-26T19:01:12Z",
             "license": {
               "spdx_id": null,
               "url": "http://example.com"
@@ -94,6 +99,7 @@ class RepositorySpec extends Specification {
         Ok("""{
             "description": "The description",
             "html_url": "http://example.com/repository",
+            "created_at": "2011-01-26T19:01:12Z",
             "license": {
               "spdx_id": "id",
               "url": null
@@ -114,6 +120,7 @@ class RepositorySpec extends Specification {
         Ok("""{
             "description": "The description",
             "html_url": "http://example.com/repository",
+            "created_at": "2011-01-26T19:01:12Z",
             "license": 42
           }""")
     } { uri =>

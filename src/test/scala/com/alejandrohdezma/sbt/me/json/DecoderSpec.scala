@@ -1,5 +1,8 @@
 package com.alejandrohdezma.sbt.me.json
 
+import java.time.ZoneOffset.UTC
+import java.time.ZonedDateTime
+
 import com.alejandrohdezma.sbt.me.json.Json.Fail
 import com.alejandrohdezma.sbt.me.json.Json.Fail._
 import com.alejandrohdezma.sbt.me.syntax.json._
@@ -177,6 +180,36 @@ class DecoderSpec extends Specification {
       val json = Json.Collection(List("miau").map(Json.Text))
 
       json.as[List[Int]] must beLeft[Fail](NotANumber(Json.Text("miau")))
+    }
+
+  }
+
+  "Decoder[ZonedDateTime]" should {
+
+    "decode date time" >> {
+      val json = Json.Text("2011-01-26T19:01:12Z")
+
+      val expected = ZonedDateTime.of(2011, 1, 26, 19, 1, 12, 0, UTC)
+
+      json.as[ZonedDateTime] must beRight(expected)
+    }
+
+    "return NotFound on null" >> {
+      val json = Json.Null
+
+      json.as[ZonedDateTime] must beLeft[Fail](NotFound)
+    }
+
+    "return NotADateTime for texts not containing date times" >> {
+      val json = Json.Text("miau")
+
+      json.as[ZonedDateTime] must beLeft[Fail](NotADateTime(json))
+    }
+
+    "return NotADateTime for everything else" >> {
+      val json = Json.True
+
+      json.as[ZonedDateTime] must beLeft[Fail](NotADateTime(json))
     }
 
   }

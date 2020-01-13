@@ -1,7 +1,13 @@
 package com.alejandrohdezma.sbt.me.json
 
+import java.time.ZonedDateTime
+import java.time.ZonedDateTime.parse
+
+import scala.util.Try
+
 import com.alejandrohdezma.sbt.me.json.Json.Fail._
 import com.alejandrohdezma.sbt.me.json.Json.Result
+import com.alejandrohdezma.sbt.me.syntax.either._
 import com.alejandrohdezma.sbt.me.syntax.list._
 
 /**
@@ -42,6 +48,12 @@ object Decoder {
   implicit val BooleanDecoder: Decoder[Boolean] = nonNull(NotABoolean) {
     case Json.True  => true
     case Json.False => false
+  }
+
+  implicit val ZonedDateTimeDecoder: Decoder[ZonedDateTime] = {
+    case Json.Null            => Left(NotFound)
+    case a @ Json.Text(value) => Try(parse(value)).toEither.leftMap(_ => NotADateTime(a))
+    case value                => Left(NotADateTime(value))
   }
 
   implicit def OptionDecoder[A: Decoder]: Decoder[Option[A]] = {
