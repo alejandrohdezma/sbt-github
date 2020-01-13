@@ -41,6 +41,18 @@ final case class Repository(
       .leftMap(_ => "Unable to get repository contributors")
   }
 
+  /**
+   * Returns the list of repository collaborators, alphabetically ordered.
+   */
+  def collaborators(
+      implicit auth: Authentication
+  ): Either[String, Collaborators] =
+    client
+      .get[List[Collaborator]](collaboratorsUrl)
+      .map(_.sortBy(_.login))
+      .map(Collaborators)
+      .leftMap(_ => "Unable to get repository collaborators")
+
 }
 
 object Repository {
@@ -70,6 +82,13 @@ object Repository {
       startYear     <- json.get[ZonedDateTime]("created_at")
       contributors  <- json.get[String]("contributors_url")
       collaborators <- json.get[String]("collaborators_url")
-    } yield Repository(description, license, url, startYear.getYear, contributors, collaborators)
+    } yield Repository(
+      description,
+      license,
+      url,
+      startYear.getYear,
+      contributors,
+      collaborators.replace("{/collaborator}", "")
+    )
 
 }

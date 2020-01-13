@@ -224,4 +224,53 @@ class RepositorySpec extends Specification {
 
   }
 
+  "repository.collaborators" should {
+
+    "return list of collaborators (alphabetically ordered) from Github API" >> withServer {
+      case GET -> Root / "collaborators" =>
+        Ok("""[
+          {
+            "login": "me",
+            "avatar_url": "http://example.com/me.png",
+            "html_url": "http://example.com/me"
+          },
+          {
+            "login": "you",
+            "html_url": "http://example.com/you"
+          },
+          {
+            "login": "him",
+            "avatar_url": null,
+            "html_url": "http://example.com/him"
+          }
+        ]
+        """)
+    } { uri =>
+      val repository = Repository("", License("", ""), "", 0, "", s"${uri}collaborators")
+
+      val collaborators = repository.collaborators
+
+      val expected = Collaborators(
+        List(
+          Collaborator("him", "http://example.com/him", None),
+          Collaborator("me", "http://example.com/me", Some("http://example.com/me.png")),
+          Collaborator("you", "http://example.com/you", None)
+        )
+      )
+
+      collaborators must beRight(expected)
+    }
+
+    "return generic error on any error" >> withServer {
+      case GET -> Root / "collaborators" => Ok("""{"hello": "hi"}""")
+    } { uri =>
+      val repository = Repository("", License("", ""), "", 0, "", s"${uri}collaborators")
+
+      val collaborators = repository.collaborators
+
+      collaborators must beLeft("Unable to get repository collaborators")
+    }
+
+  }
+
 }
