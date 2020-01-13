@@ -23,6 +23,13 @@ object SbtMePlugin extends AutoPlugin {
 
   object autoImport {
 
+    type Contributors = github.Contributors
+    val Contributors = github.Contributors
+
+    val contributors = settingKey[Option[Contributors]](
+      "List of contributors downloaded from Github"
+    )
+
     val repository = settingKey[Option[Repository]] {
       "Repository information downloaded from Github"
     }
@@ -46,9 +53,10 @@ object SbtMePlugin extends AutoPlugin {
         Some(Repository.get(user, repo).fold(sys.error, identity))
       else None
     },
-    homepage  := repository.value.map(r => url(r.url)).orElse(homepage.value),
-    licenses  := repository.value.map(_.licenses).getOrElse(licenses.value),
-    startYear := repository.value.map(_.startYear).orElse(startYear.value)
+    contributors := repository.value.map(_.contributors.fold(sys.error, identity)),
+    homepage     := repository.value.map(r => url(r.url)).orElse(homepage.value),
+    licenses     := repository.value.map(_.licenses).getOrElse(licenses.value),
+    startYear    := repository.value.map(_.startYear).orElse(startYear.value)
   )
 
   override def projectSettings: Seq[Def.Setting[_]] = Seq(
