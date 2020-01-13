@@ -17,6 +17,8 @@ jobs:
       script: sbt "all scalafmtCheckAll scalafmtSbtCheck"
     - name: "Scalafix"
       script: sbt "scalafixAll --check"
+    - name: "Tests"
+      script: sbt test
     - stage: release
       name: "Release to Sonatype"
       env: RELEASE="true"
