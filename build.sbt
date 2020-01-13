@@ -1,5 +1,7 @@
 ThisBuild / scalaVersion := "2.12.10"
 
+organization := "com.alejandrohdezma"
+
 enablePlugins(SbtPlugin, MdocPlugin)
 
 mdocVariables := Map("VERSION" -> version.value.replaceAll("\\+.*", ""))
