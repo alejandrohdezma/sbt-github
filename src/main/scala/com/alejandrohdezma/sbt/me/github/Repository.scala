@@ -9,6 +9,7 @@ import com.alejandrohdezma.sbt.me.json.Decoder
 import com.alejandrohdezma.sbt.me.json.Json.Fail.NotFound
 import com.alejandrohdezma.sbt.me.syntax.either._
 import com.alejandrohdezma.sbt.me.syntax.json._
+import com.alejandrohdezma.sbt.me.syntax.list._
 
 /** Represents a repository in Github */
 final case class Repository(
@@ -51,7 +52,12 @@ final case class Repository(
     client
       .get[List[Collaborator]](collaboratorsUrl)
       .map(_.filter(m => allowed.contains(m.login)))
-      .map(_.sortBy(_.login))
+      .flatMap(_.traverse { collaborator =>
+        client.get[User](collaborator.userUrl).map { user =>
+          collaborator.copy(name = user.name, email = user.email)
+        }
+      })
+      .map(_.sortBy(collaborator => collaborator.name -> collaborator.login))
       .map(Collaborators)
       .leftMap(_ => "Unable to get repository collaborators")
 

@@ -8,6 +8,8 @@ final case class Collaborator(
     login: String,
     url: String,
     userUrl: String,
+    name: Option[String],
+    email: Option[String],
     avatar: Option[String]
 )
 
@@ -19,6 +21,6 @@ object Collaborator {
       url     <- json.get[String]("html_url")
       userUrl <- json.get[String]("url")
       avatar  <- json.get[Option[String]]("avatar_url")
-    } yield Collaborator(login, url, userUrl, avatar.filter(_.nonEmpty))
+    } yield Collaborator(login, url, userUrl, None, None, avatar.filter(_.nonEmpty))
 
 }

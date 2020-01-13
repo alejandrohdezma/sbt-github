@@ -2,6 +2,7 @@ package com.alejandrohdezma.sbt.me.github
 
 import com.alejandrohdezma.sbt.me.withServer
 import org.http4s.dsl.io._
+import org.http4s.headers.Host
 import org.specs2.mutable.Specification
 
 class RepositorySpec extends Specification {
@@ -226,25 +227,32 @@ class RepositorySpec extends Specification {
 
   "repository.collaborators" should {
 
-    "return list of collaborators (alphabetically ordered) from Github API" >> withServer {
-      case GET -> Root / "collaborators" =>
-        Ok("""[
+    "return list of collaborators (alphabetically ordered) with user info from Github API" >> withServer {
+      case GET -> Root / "me"  => Ok("""{"name": "Me", "email": "me@example.com"}""")
+      case GET -> Root / "you" => Ok("""{"name": "You"}""")
+      case GET -> Root / "him" => Ok("""{"email": "him@example.com"}""")
+      case req @ GET -> Root / "collaborators" =>
+        val host = req.headers.get(Host).getOrElse(Host(""))
+
+        val root = s"${host.host}:${host.port.getOrElse(8080)}"
+
+        Ok(s"""[
           {
             "login": "me",
             "avatar_url": "example.com/me.png",
             "html_url": "example.com/me",
-            "url": "api.example.com/me"
+            "url": "http://$root/me"
           },
           {
             "login": "you",
             "html_url": "example.com/you",
-            "url": "api.example.com/you"
+            "url": "http://$root/you"
           },
           {
             "login": "him",
             "avatar_url": null,
             "html_url": "example.com/him",
-            "url": "api.example.com/him"
+            "url": "http://$root/him"
           }
         ]""")
     } { uri =>
@@ -254,24 +262,35 @@ class RepositorySpec extends Specification {
 
       val expected = Collaborators(
         List(
-          Collaborator("him", "example.com/him", "api.example.com/him", None),
-          Collaborator("me", "example.com/me", "api.example.com/me", Some("example.com/me.png")),
-          Collaborator("you", "example.com/you", "api.example.com/you", None)
+          Collaborator("him", "example.com/him", s"${uri}him", None, Some("him@example.com"), None),
+          Collaborator(
+            "me",
+            "example.com/me",
+            s"${uri}me",
+            Some("Me"),
+            Some("me@example.com"),
+            Some("example.com/me.png")
+          ),
+          Collaborator("you", "example.com/you", s"${uri}you", Some("You"), None, None)
         )
       )
 
       collaborators must beRight(expected)
     }
 
-    "exclude collaborators not in provided list" >> withServer {
-      case GET -> Root / "collaborators" =>
-        Ok("""[
+    "exclude collaborators not in provided list and don't retrieve user info for them" >> withServer {
+      case GET -> Root / "me" => Ok("""{"name": "Me", "email": "me@example.com"}""")
+      case req @ GET -> Root / "collaborators" =>
+        val host = req.headers.get(Host).getOrElse(Host(""))
+
+        val root = s"${host.host}:${host.port.getOrElse(8080)}"
+
+        Ok(s"""[
           {
             "login": "me",
             "avatar_url": "example.com/me.png",
             "html_url": "example.com/me",
-            "url": "api.example.com/me"
-
+            "url": "http://$root/me"
           },
           {
             "login": "you",
@@ -285,7 +304,16 @@ class RepositorySpec extends Specification {
       val collaborators = repository.collaborators(List("me"))
 
       val expected = Collaborators(
-        List(Collaborator("me", "example.com/me", "api.example.com/me", Some("example.com/me.png")))
+        List(
+          Collaborator(
+            "me",
+            "example.com/me",
+            s"${uri}me",
+            Some("Me"),
+            Some("me@example.com"),
+            Some("example.com/me.png")
+          )
+        )
       )
 
       collaborators must beRight(expected)
