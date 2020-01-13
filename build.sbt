@@ -4,6 +4,6 @@ enablePlugins(SbtPlugin, MdocPlugin)
 
 mdocVariables := Map("VERSION" -> version.value.replaceAll("\\+.*", ""))
 
-libraryDependencies += "io.circe"   %% "circe-generic" % "0.12.3"
-libraryDependencies += "io.circe"   %% "circe-parser"  % "0.12.3"
-libraryDependencies += "org.scalaj" %% "scalaj-http"   % "2.4.2"
+libraryDependencies += "org.specs2" %% "specs2-core"         % "4.8.3"   % Test
+libraryDependencies += "org.http4s" %% "http4s-dsl"          % "0.20.15" % Test
+libraryDependencies += "org.http4s" %% "http4s-blaze-server" % "0.20.15" % Test

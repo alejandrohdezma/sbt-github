@@ -4,12 +4,10 @@ import scala.sys.process._
 
 import sbt.Def.Setting
 import sbt.Keys._
-import sbt.nio.Keys.{onChangedBuildSource, ReloadOnSourceChanges}
 import sbt.plugins.JvmPlugin
-import sbt.{settingKey, url, AutoPlugin, Def, PluginTrigger, Plugins, SettingKey}
+import sbt.{settingKey, url, AutoPlugin, Def, PluginTrigger, Plugins}
 
-import com.alejandrohdezma.sbt.me.github.api.GithubToken
-import com.alejandrohdezma.sbt.me.github.{CurrentUser, Repository}
+import com.alejandrohdezma.sbt.me.github.Repository
 
 /**
  * This plugin automatically enables reloading on sbt source changes and
@@ -25,8 +23,13 @@ object SbtMePlugin extends AutoPlugin {
 
   object autoImport {
 
-    val downloadInfoFromGithub: SettingKey[Boolean] =
-      settingKey[Boolean]("Whether sbt-me should download information from Github or not")
+    val repository = settingKey[Option[Repository]] {
+      "Repository information downloaded from Github"
+    }
+
+    val downloadInfoFromGithub = settingKey[Boolean] {
+      "Whether sbt-me should download information from Github or not"
+    }
 
   }
 
@@ -36,39 +39,21 @@ object SbtMePlugin extends AutoPlugin {
 
   override def requires: Plugins = JvmPlugin
 
-  override def globalSettings: Seq[Def.Setting[_]] = Seq(
-    onChangedBuildSource := ReloadOnSourceChanges
-  )
-
-  override def projectSettings: Seq[Setting[_]] = Seq(
+  override def globalSettings: Seq[Setting[_]] = Seq(
     downloadInfoFromGithub := sys.env.contains("RELEASE"),
-    organization := {
-      if (downloadInfoFromGithub.value) currentUser.organization
-      else organization.value
+    repository := {
+      if (downloadInfoFromGithub.value)
+        Some(Repository.get(user, repo).fold(sys.error, identity))
+      else None
     },
-    homepage := {
-      if (downloadInfoFromGithub.value) Some(url(repository.html_url))
-      else homepage.value
-    },
-    developers := {
-      if (downloadInfoFromGithub.value) List(currentUser.developer)
-      else developers.value
-    },
-    description := {
-      if (downloadInfoFromGithub.value) repository.description
-      else description.value
-    },
-    licenses := {
-      if (downloadInfoFromGithub.value) repository.licenses
-      else licenses.value
-    }
+    homepage  := repository.value.map(r => url(r.url)).orElse(homepage.value),
+    licenses  := repository.value.map(_.licenses).getOrElse(licenses.value),
+    startYear := repository.value.map(_.startYear).orElse(startYear.value)
   )
 
-  private lazy val repository: Repository =
-    github.api.retrieveRepository(user, repo).fold(sys.error, identity)
-
-  private lazy val currentUser: CurrentUser =
-    github.api.retrieveCurrentUser.fold(sys.error, identity)
+  override def projectSettings: Seq[Def.Setting[_]] = Seq(
+    description := repository.value.map(_.description).getOrElse(description.value)
+  )
 
   /** Gets the Github user and repository from the git remote info */
   private lazy val (user, repo): (String, String) = {
@@ -82,21 +67,6 @@ object SbtMePlugin extends AutoPlugin {
       case GithubSsh(user, repo)   => (user, repo)
       case _                       => sys.error("Unable to get info from `git ls-remote --get-url origin`")
     }
-  }
-
-  /** The token used to authenticate to Github API */
-  implicit private lazy val token: GithubToken = {
-    val key = "GITHUB_PERSONAL_ACCESS_TOKEN"
-
-    sys.env
-      .get(key)
-      .map(GithubToken)
-      .getOrElse(
-        sys.error {
-          s"You forgot to set `$key` in Travis environment variables. " +
-            s"Go to https://travis-ci.com/$user/$repo/settings and add it."
-        }
-      )
   }
 
 }
