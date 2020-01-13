@@ -26,8 +26,15 @@ object SbtMePlugin extends AutoPlugin {
     type Contributors = github.Contributors
     val Contributors = github.Contributors
 
+    type Collaborators = github.Collaborators
+    val Collaborators = github.Collaborators
+
     val contributors = settingKey[Contributors](
       "List of contributors downloaded from Github"
+    )
+
+    val collaborators = settingKey[Collaborators](
+      "List of collaborators downloaded from Github"
     )
 
     val excludedContributors = settingKey[List[String]] {
@@ -60,6 +67,9 @@ object SbtMePlugin extends AutoPlugin {
     },
     contributors := repository.value.fold(Contributors(Nil)) {
       _.contributors(excludedContributors.value).fold(sys.error, identity)
+    },
+    collaborators := repository.value.fold(Collaborators(Nil)) {
+      _.collaborators.fold(sys.error, identity)
     },
     homepage  := repository.value.map(r => url(r.url)).orElse(homepage.value),
     licenses  := repository.value.map(_.licenses).getOrElse(licenses.value),
