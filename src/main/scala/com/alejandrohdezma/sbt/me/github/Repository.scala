@@ -16,7 +16,8 @@ final case class Repository(
     license: License,
     url: String,
     startYear: Int,
-    contributorsUrl: String
+    contributorsUrl: String,
+    collaboratorsUrl: String
 ) {
 
   /** Returns the license extracted from github in the format that SBT is expecting */
@@ -63,11 +64,12 @@ object Repository {
 
   implicit val RepositoryDecoder: Decoder[Repository] = json =>
     for {
-      description     <- json.get[String]("description")
-      license         <- json.get[License]("license")
-      url             <- json.get[String]("html_url")
-      startYear       <- json.get[ZonedDateTime]("created_at")
-      contributorsUrl <- json.get[String]("contributors_url")
-    } yield Repository(description, license, url, startYear.getYear, contributorsUrl)
+      description   <- json.get[String]("description")
+      license       <- json.get[License]("license")
+      url           <- json.get[String]("html_url")
+      startYear     <- json.get[ZonedDateTime]("created_at")
+      contributors  <- json.get[String]("contributors_url")
+      collaborators <- json.get[String]("collaborators_url")
+    } yield Repository(description, license, url, startYear.getYear, contributors, collaborators)
 
 }
