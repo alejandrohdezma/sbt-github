@@ -46,8 +46,9 @@ object SbtMePlugin extends AutoPlugin {
         Some(Repository.get(user, repo).fold(sys.error, identity))
       else None
     },
-    homepage := repository.value.map(r => url(r.url)).orElse(homepage.value),
-    licenses := repository.value.map(_.licenses).getOrElse(licenses.value)
+    homepage  := repository.value.map(r => url(r.url)).orElse(homepage.value),
+    licenses  := repository.value.map(_.licenses).getOrElse(licenses.value),
+    startYear := repository.value.map(_.startYear).orElse(startYear.value)
   )
 
   override def projectSettings: Seq[Def.Setting[_]] = Seq(
