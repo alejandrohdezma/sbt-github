@@ -22,6 +22,18 @@ final case class Repository(
   /** Returns the license extracted from github in the format that SBT is expecting */
   def licenses: List[(String, URL)] = List(license.id -> sbt.url(license.url))
 
+  /**
+   * Returns the list of users who have contributed to a repository order by the number
+   * of contributions.
+   */
+  def contributors(implicit auth: Authentication): Either[String, Contributors] = {
+    client
+      .get[List[Contributor]](contributorsUrl)
+      .map(_.sortBy(-_.contributions))
+      .map(Contributors)
+      .leftMap(_ => "Unable to get repository contributors")
+  }
+
 }
 
 object Repository {

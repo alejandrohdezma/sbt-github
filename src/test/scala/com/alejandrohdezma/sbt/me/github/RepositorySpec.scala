@@ -140,4 +140,56 @@ class RepositorySpec extends Specification {
 
   }
 
+  "repository.contributors" should {
+
+    "return list of contributors (ordered by contributions) from Github API" >> withServer {
+      case GET -> Root / "contributors" =>
+        Ok("""[
+          {
+            "login": "me",
+            "avatar_url": "http://example.com/me.png",
+            "html_url": "http://example.com/me",
+            "contributions": 42
+          },
+          {
+            "login": "you",
+            "html_url": "http://example.com/you",
+            "contributions": 2
+          },
+          {
+            "login": "him",
+            "avatar_url": null,
+            "html_url": "http://example.com/him",
+            "contributions": 6
+          }
+        ]
+        """)
+    } { uri =>
+      val repository = Repository("", License("", ""), "", 0, s"${uri}contributors")
+
+      val contributors = repository.contributors
+
+      val expected = Contributors(
+        List(
+          Contributor("me", 42, "http://example.com/me", Some("http://example.com/me.png")),
+          Contributor("him", 6, "http://example.com/him", None),
+          Contributor("you", 2, "http://example.com/you", None)
+        )
+      )
+
+      contributors must beRight(expected)
+    }
+
+    "return generic error on any error" >> withServer {
+      case GET -> Root / "contributors" => Ok("""{"hello": "hi"}""")
+    } { uri =>
+      val repository = Repository("", License("", ""), "", 0, s"${uri}contributors")
+
+      val contributors = repository.contributors
+
+      contributors must beLeft("Unable to get repository contributors")
+    }
+
+  }
+
 }
