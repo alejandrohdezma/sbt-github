@@ -231,17 +231,20 @@ class RepositorySpec extends Specification {
         Ok("""[
           {
             "login": "me",
-            "avatar_url": "http://example.com/me.png",
-            "html_url": "http://example.com/me"
+            "avatar_url": "example.com/me.png",
+            "html_url": "example.com/me",
+            "url": "api.example.com/me"
           },
           {
             "login": "you",
-            "html_url": "http://example.com/you"
+            "html_url": "example.com/you",
+            "url": "api.example.com/you"
           },
           {
             "login": "him",
             "avatar_url": null,
-            "html_url": "http://example.com/him"
+            "html_url": "example.com/him",
+            "url": "api.example.com/him"
           }
         ]""")
     } { uri =>
@@ -251,9 +254,9 @@ class RepositorySpec extends Specification {
 
       val expected = Collaborators(
         List(
-          Collaborator("him", "http://example.com/him", None),
-          Collaborator("me", "http://example.com/me", Some("http://example.com/me.png")),
-          Collaborator("you", "http://example.com/you", None)
+          Collaborator("him", "example.com/him", "api.example.com/him", None),
+          Collaborator("me", "example.com/me", "api.example.com/me", Some("example.com/me.png")),
+          Collaborator("you", "example.com/you", "api.example.com/you", None)
         )
       )
 
@@ -265,12 +268,15 @@ class RepositorySpec extends Specification {
         Ok("""[
           {
             "login": "me",
-            "avatar_url": "http://example.com/me.png",
-            "html_url": "http://example.com/me"
+            "avatar_url": "example.com/me.png",
+            "html_url": "example.com/me",
+            "url": "api.example.com/me"
+
           },
           {
             "login": "you",
-            "html_url": "http://example.com/you"
+            "html_url": "example.com/you",
+            "url": "api.example.com/you"
           }
         ]""")
     } { uri =>
@@ -279,7 +285,7 @@ class RepositorySpec extends Specification {
       val collaborators = repository.collaborators(List("me"))
 
       val expected = Collaborators(
-        List(Collaborator("me", "http://example.com/me", Some("http://example.com/me.png")))
+        List(Collaborator("me", "example.com/me", "api.example.com/me", Some("example.com/me.png")))
       )
 
       collaborators must beRight(expected)
