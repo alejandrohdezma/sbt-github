@@ -14,6 +14,7 @@ class RepositorySpec extends Specification {
             "description": "The description",
             "html_url": "http://example.com/repository",
             "created_at": "2011-01-26T19:01:12Z",
+            "contributors_url": "http://api.github.com/repos/example/example/contributors",
             "license": {
               "spdx_id": "id",
               "url": "http://example.com"
@@ -28,7 +29,8 @@ class RepositorySpec extends Specification {
         "The description",
         License("id", "http://example.com"),
         "http://example.com/repository",
-        2011
+        2011,
+        "http://api.github.com/repos/example/example/contributors"
       )
 
       repository must beRight(expected)
@@ -40,6 +42,7 @@ class RepositorySpec extends Specification {
             "description": null,
             "html_url": "http://example.com/repository",
             "created_at": "2011-01-26T19:01:12Z",
+            "contributors_url": "http://api.github.com/repos/example/example/contributors",
             "license": {
               "spdx_id": "id",
               "url": "http://example.com"
@@ -61,6 +64,7 @@ class RepositorySpec extends Specification {
             "description": "The description",
             "html_url": "http://example.com/repository",
             "created_at": "2011-01-26T19:01:12Z",
+            "contributors_url": "http://api.github.com/repos/example/example/contributors",
             "license": null
           }""")
     } { uri =>
@@ -79,6 +83,7 @@ class RepositorySpec extends Specification {
             "description": "The description",
             "html_url": "http://example.com/repository",
             "created_at": "2011-01-26T19:01:12Z",
+            "contributors_url": "http://api.github.com/repos/example/example/contributors",
             "license": {
               "spdx_id": null,
               "url": "http://example.com"
@@ -100,6 +105,7 @@ class RepositorySpec extends Specification {
             "description": "The description",
             "html_url": "http://example.com/repository",
             "created_at": "2011-01-26T19:01:12Z",
+            "contributors_url": "http://api.github.com/repos/example/example/contributors",
             "license": {
               "spdx_id": "id",
               "url": null
@@ -121,6 +127,7 @@ class RepositorySpec extends Specification {
             "description": "The description",
             "html_url": "http://example.com/repository",
             "created_at": "2011-01-26T19:01:12Z",
+            "contributors_url": "http://api.github.com/repos/example/example/contributors",
             "license": 42
           }""")
     } { uri =>
