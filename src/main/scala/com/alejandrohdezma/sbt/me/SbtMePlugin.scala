@@ -4,9 +4,8 @@ import scala.sys.process._
 
 import sbt.Def.Setting
 import sbt.Keys._
-import sbt.nio.Keys.{onChangedBuildSource, ReloadOnSourceChanges}
 import sbt.plugins.JvmPlugin
-import sbt.{settingKey, url, AutoPlugin, Def, PluginTrigger, Plugins, SettingKey}
+import sbt.{settingKey, url, AutoPlugin, PluginTrigger, Plugins, SettingKey}
 
 import com.alejandrohdezma.sbt.me.github.Repository
 
@@ -34,10 +33,6 @@ object SbtMePlugin extends AutoPlugin {
   override def trigger: PluginTrigger = allRequirements
 
   override def requires: Plugins = JvmPlugin
-
-  override def globalSettings: Seq[Def.Setting[_]] = Seq(
-    onChangedBuildSource := ReloadOnSourceChanges
-  )
 
   override def projectSettings: Seq[Setting[_]] = Seq(
     downloadInfoFromGithub := sys.env.contains("RELEASE"),
