@@ -9,14 +9,14 @@ object json {
 
   implicit class JsonValueOps(private val json: Json.Value) extends AnyVal {
 
-    /** Tries to decode this [[Json.Value]] as the provided type `A` using its implicit [[Decoder]] */
+    /** Tries to decode this `Json.Value` as the provided type `A` using its implicit `Decoder` */
     def as[A: Decoder]: Result[A] = Decoder[A].decode(json)
 
     /**
-     * Tries to decode the [[Json.Value]] at the provided path as the provided type `A` using
-     * its implicit [[Decoder]].
+     * Tries to decode the `Json.Value` at the provided path as the provided type `A` using
+     * its implicit `Decoder`.
      *
-     * Returns [[Left]] with the error in case this is not a [[Json.Object]] or the decoding fails.
+     * Returns `Left` with the error in case this is not a `Json.Object` or the decoding fails.
      */
     def get[A: Decoder](path: String): Result[A] = json match {
       case json: Json.Object => json.get(path).as[A].leftMap(Fail.Path(path, _))
@@ -29,8 +29,8 @@ object json {
   implicit class ResultJsonValueOps(private val result: Result[Json.Value]) extends AnyVal {
 
     /**
-     * If the [[Result]] is [[Right]], tries to decode its [[Json.Value]] as the provided
-     * type `A` using its implicit [[Decoder]]; otherwise returns the [[Result]].
+     * If the result is `Right`, tries to decode its `Json.Value` as the provided
+     * type `A` using its implicit `Decoder`; otherwise returns the `Result`.
      */
     def as[A: Decoder]: Result[A] = result.flatMap(Decoder[A].decode)
 
@@ -38,7 +38,7 @@ object json {
 
   implicit class JsonObjectOps(private val json: Json.Object) extends AnyVal {
 
-    /** Returns the value for the provided field, if present; otherwise returns [[Json.Null]] */
+    /** Returns the value for the provided field, if present; otherwise returns `Json.Null` */
     def get(path: String): Json.Value = json.fields.getOrElse(path, Json.Null)
 
   }
@@ -46,7 +46,7 @@ object json {
   object / {
 
     /**
-     * Json.Fail extractor:
+     * `Json.Fail` extractor:
      * {{{
      *   fail match {
      *     case "license" / ("url" / NotFound) => ...
