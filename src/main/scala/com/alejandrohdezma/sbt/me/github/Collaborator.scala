@@ -4,7 +4,7 @@ import com.alejandrohdezma.sbt.me.json.Decoder
 import com.alejandrohdezma.sbt.me.syntax.json._
 
 /** Represents a repository collaborator */
-final case class Collaborator(
+final case class Collaborator private[me] (
     login: String,
     url: String,
     userUrl: String,
@@ -14,6 +14,26 @@ final case class Collaborator(
 )
 
 object Collaborator {
+
+  /**
+   * Creates a new collaborator
+   *
+   * @param login the Github login ID for the collaborator
+   * @param url the collaborator's URL. It may link to its Github profile or personal webpage, optional
+   * @param name the collaborator's full name
+   * @param email the collaborator's email
+   * @param avatar the collaborator's avatar URL, optional
+   * @return a new collaborator
+   */
+  @SuppressWarnings(Array("scalafix:DisableSyntax.defaultArgs"))
+  def apply(
+      login: String,
+      name: String,
+      email: String,
+      url: Option[String] = None,
+      avatar: Option[String] = None
+  ): Collaborator =
+    new Collaborator(login, url.getOrElse(""), "", Some(name), Some(email), avatar)
 
   implicit val CollaboratorDecoder: Decoder[Collaborator] = json =>
     for {
