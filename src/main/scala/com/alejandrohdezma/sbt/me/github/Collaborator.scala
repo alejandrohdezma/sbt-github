@@ -21,17 +21,39 @@ object Collaborator {
    * @param login the Github login ID for the collaborator
    * @param name the collaborator's full name
    * @param url the collaborator's URL. It may link to its Github profile or personal webpage.
+   * @return a new collaborator
+   */
+  def apply(login: String, name: String, url: String): Collaborator =
+    new Collaborator(login, url, "", Some(name), None, None)
+
+  /**
+   * Creates a new collaborator
+   *
+   * @param login the Github login ID for the collaborator
+   * @param name the collaborator's full name
+   * @param url the collaborator's URL. It may link to its Github profile or personal webpage.
+   * @param email the collaborator's email
+   * @return a new collaborator
+   */
+  def apply(login: String, name: String, url: String, email: String): Collaborator =
+    new Collaborator(login, url, "", Some(name), Some(email), None)
+
+  /**
+   * Creates a new collaborator
+   *
+   * @param login the Github login ID for the collaborator
+   * @param name the collaborator's full name
+   * @param url the collaborator's URL. It may link to its Github profile or personal webpage.
    * @param email the collaborator's email, optional
    * @param avatar the collaborator's avatar URL, optional
    * @return a new collaborator
    */
-  @SuppressWarnings(Array("scalafix:DisableSyntax.defaultArgs"))
   def apply(
       login: String,
       name: String,
       url: String,
-      email: Option[String] = None,
-      avatar: Option[String] = None
+      email: Option[String],
+      avatar: Option[String]
   ): Collaborator =
     new Collaborator(login, url, "", Some(name), email, avatar)
 

@@ -54,7 +54,7 @@ class CollaboratorsSpec extends Specification {
     "return collaborator list as markdown" >> {
       val collaborators = Collaborators(
         List(
-          Collaborator("her", "Her", "example.com/her", avatar = Some("example.com/her.png")),
+          Collaborator("her", "Her", "example.com/her", None, Some("example.com/her.png")),
           Collaborator("him", "Him", "example.com/him"),
           Collaborator(
             "it",
@@ -63,7 +63,7 @@ class CollaboratorsSpec extends Specification {
             Some("it@example.com"),
             Some("example.com/it.png")
           ),
-          Collaborator("me", "Me", "example.com/me", Some("me@example.com")),
+          Collaborator("me", "Me", "example.com/me", "me@example.com"),
           Collaborator("you", "", "example.com/you")
         )
       )
