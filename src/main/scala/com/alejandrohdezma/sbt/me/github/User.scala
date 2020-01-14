@@ -11,6 +11,6 @@ object User {
     for {
       name  <- json.get[Option[String]]("name")
       email <- json.get[Option[String]]("email")
-    } yield User(name, email)
+    } yield User(name.filter(_.nonEmpty), email.filter(_.nonEmpty))
 
 }
