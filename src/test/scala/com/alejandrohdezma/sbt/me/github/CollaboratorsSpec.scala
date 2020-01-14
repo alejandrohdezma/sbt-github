@@ -1,5 +1,7 @@
 package com.alejandrohdezma.sbt.me.github
 
+import sbt.librarymanagement.Developer
+
 import org.specs2.mutable.Specification
 
 class CollaboratorsSpec extends Specification {
@@ -86,6 +88,32 @@ class CollaboratorsSpec extends Specification {
           |- [**you**](example.com/you)""".stripMargin
 
       markdown must be equalTo expected
+    }
+
+  }
+
+  "Collaborators.developers" should {
+
+    "return collaborators as list of developers" >> {
+      val collaborators = Collaborators(
+        List(
+          new Collaborator("her", "http://example.com/her", "", Some("Her"), None, None),
+          new Collaborator("him", "http://example.com/him", "", Some("Him"), None, None),
+          new Collaborator("it", "http://example.com/it", "", None, Some("it@example.com"), None),
+          new Collaborator("me", "http://example.com/me", "", Some("Me"), None, None),
+          new Collaborator("you", "http://example.com/you", "", Some(""), None, None)
+        )
+      )
+
+      val expected = List(
+        Developer("her", "Her", "", sbt.url("http://example.com/her")),
+        Developer("him", "Him", "", sbt.url("http://example.com/him")),
+        Developer("it", "it", "it@example.com", sbt.url("http://example.com/it")),
+        Developer("me", "Me", "", sbt.url("http://example.com/me")),
+        Developer("you", "", "", sbt.url("http://example.com/you"))
+      )
+
+      collaborators.developers must be equalTo expected
     }
 
   }
