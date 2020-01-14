@@ -9,18 +9,18 @@ class CollaboratorsSpec extends Specification {
     "return list of collaborators including new ones" >> {
       val collaborators = Collaborators(
         List(
-          Collaborator("me", "Me", "example.com/me"),
-          Collaborator("you", "You", "example.com/you")
+          new Collaborator("me", "example.com/me", "", Some("Me"), None, None),
+          new Collaborator("you", "example.com/you", "", Some("You"), None, None)
         )
       )
 
-      val extra = List(Collaborator("him", "Him", "example.com/him"))
+      val extra = List(new Collaborator("him", "example.com/him", "", Some("Him"), None, None))
 
       val expected = Collaborators(
         List(
-          Collaborator("him", "Him", "example.com/him"),
-          Collaborator("me", "Me", "example.com/me"),
-          Collaborator("you", "You", "example.com/you")
+          new Collaborator("him", "example.com/him", "", Some("Him"), None, None),
+          new Collaborator("me", "example.com/me", "", Some("Me"), None, None),
+          new Collaborator("you", "example.com/you", "", Some("You"), None, None)
         )
       )
 
@@ -30,17 +30,17 @@ class CollaboratorsSpec extends Specification {
     "remove duplicates" >> {
       val collaborators = Collaborators(
         List(
-          Collaborator("me", "Me", "example.com/me"),
-          Collaborator("you", "You", "example.com/you")
+          new Collaborator("me", "example.com/me", "", Some("Me"), None, None),
+          new Collaborator("you", "example.com/you", "", Some("You"), None, None)
         )
       )
 
-      val extra = List(Collaborator("me", "MeMe", "example.com/meme"))
+      val extra = List(new Collaborator("me", "example.com/meme", "", Some("MeMe"), None, None))
 
       val expected = Collaborators(
         List(
-          Collaborator("me", "Me", "example.com/me"),
-          Collaborator("you", "You", "example.com/you")
+          new Collaborator("me", "example.com/me", "", Some("Me"), None, None),
+          new Collaborator("you", "example.com/you", "", Some("You"), None, None)
         )
       )
 
@@ -54,17 +54,25 @@ class CollaboratorsSpec extends Specification {
     "return collaborator list as markdown" >> {
       val collaborators = Collaborators(
         List(
-          Collaborator("her", "Her", "example.com/her", None, Some("example.com/her.png")),
-          Collaborator("him", "Him", "example.com/him"),
-          Collaborator(
+          new Collaborator(
+            "her",
+            "example.com/her",
+            "",
+            Some("Her"),
+            None,
+            Some("example.com/her.png")
+          ),
+          new Collaborator("him", "example.com/him", "", Some("Him"), None, None),
+          new Collaborator(
             "it",
-            "It",
             "example.com/it",
+            "",
+            Some("It"),
             Some("it@example.com"),
             Some("example.com/it.png")
           ),
-          Collaborator("me", "Me", "example.com/me", "me@example.com"),
-          Collaborator("you", "", "example.com/you")
+          new Collaborator("me", "example.com/me", "", Some("Me"), Some("me@example.com"), None),
+          new Collaborator("you", "example.com/you", "", Some(""), None, None)
         )
       )
 

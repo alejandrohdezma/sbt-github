@@ -1,5 +1,6 @@
 package com.alejandrohdezma.sbt.me.github
 
+import com.alejandrohdezma.sbt.me.Lazy
 import com.alejandrohdezma.sbt.me.json.Decoder
 import com.alejandrohdezma.sbt.me.syntax.json._
 
@@ -23,8 +24,9 @@ object Collaborator {
    * @param url the collaborator's URL. It may link to its Github profile or personal webpage.
    * @return a new collaborator
    */
-  def apply(login: String, name: String, url: String): Collaborator =
+  def apply(login: String, name: String, url: String): Lazy[Collaborator] = Lazy {
     new Collaborator(login, url, "", Some(name), None, None)
+  }
 
   /**
    * Creates a new collaborator
@@ -35,8 +37,9 @@ object Collaborator {
    * @param email the collaborator's email
    * @return a new collaborator
    */
-  def apply(login: String, name: String, url: String, email: String): Collaborator =
+  def apply(login: String, name: String, url: String, email: String): Lazy[Collaborator] = Lazy {
     new Collaborator(login, url, "", Some(name), Some(email), None)
+  }
 
   /**
    * Creates a new collaborator
@@ -54,8 +57,9 @@ object Collaborator {
       url: String,
       email: Option[String],
       avatar: Option[String]
-  ): Collaborator =
+  ): Lazy[Collaborator] = Lazy {
     new Collaborator(login, url, "", Some(name), email, avatar)
+  }
 
   implicit val CollaboratorDecoder: Decoder[Collaborator] = json =>
     for {
