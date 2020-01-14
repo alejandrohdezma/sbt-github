@@ -1,6 +1,7 @@
 package com.alejandrohdezma.sbt.me.github
 
 import com.alejandrohdezma.sbt.me.Lazy
+import com.alejandrohdezma.sbt.me.http.client
 import com.alejandrohdezma.sbt.me.json.Decoder
 import com.alejandrohdezma.sbt.me.syntax.json._
 
@@ -15,6 +16,15 @@ final case class Collaborator private[me] (
 )
 
 object Collaborator {
+
+  /** Obtains a collaborator information from its Github login ID */
+  def github(id: String): Lazy[Collaborator] = Lazy {
+    val userUrl = implicitly[urls.User].get(id)
+
+    client.get[User](userUrl).map { user =>
+      new Collaborator(user.login, user.url, userUrl, user.name, user.email, user.avatar)
+    } fold (_ => sys.error(s"Unable to get info for user $id"), identity)
+  }
 
   /**
    * Creates a new collaborator
