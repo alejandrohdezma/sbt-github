@@ -3,14 +3,29 @@ package com.alejandrohdezma.sbt.me.github
 import com.alejandrohdezma.sbt.me.json.Decoder
 import com.alejandrohdezma.sbt.me.syntax.json._
 
-final case class User(name: Option[String], email: Option[String])
+final case class User(
+    login: String,
+    url: String,
+    name: Option[String],
+    email: Option[String],
+    avatar: Option[String]
+)
 
 object User {
 
   implicit val decoder: Decoder[User] = json =>
     for {
-      name  <- json.get[Option[String]]("name")
-      email <- json.get[Option[String]]("email")
-    } yield User(name.filter(_.nonEmpty), email.filter(_.nonEmpty))
+      login  <- json.get[String]("login")
+      url    <- json.get[String]("html_url")
+      name   <- json.get[Option[String]]("name")
+      email  <- json.get[Option[String]]("email")
+      avatar <- json.get[Option[String]]("avatar_url")
+    } yield User(
+      login,
+      url,
+      name.filter(_.nonEmpty),
+      email.filter(_.nonEmpty),
+      avatar.filter(_.nonEmpty)
+    )
 
 }

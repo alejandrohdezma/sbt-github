@@ -8,13 +8,18 @@ class UserSpec extends Specification {
 
   "Decoder[User]" should {
 
-    "treat empty email/name as None" >> {
+    "treat empty email/name/avatar as None" >> {
       val json = Json.parse("""{
+        "login": "me",
+        "html_url": "example.com/me",
+        "avatar": "",
         "name": "",
         "email": ""
       }""")
 
-      json.as[User] must beRight(User(None, None))
+      val expected = User("me", "example.com/me", None, None, None)
+
+      json.as[User] must beRight(expected)
     }
 
   }
