@@ -9,18 +9,18 @@ class CollaboratorsSpec extends Specification {
     "return list of collaborators including new ones" >> {
       val collaborators = Collaborators(
         List(
-          Collaborator("me", "Me", "me@example.com"),
-          Collaborator("you", "You", "you@example.com")
+          Collaborator("me", "Me", "example.com/me"),
+          Collaborator("you", "You", "example.com/you")
         )
       )
 
-      val extra = List(Collaborator("him", "Him", "him@example.com"))
+      val extra = List(Collaborator("him", "Him", "example.com/him"))
 
       val expected = Collaborators(
         List(
-          Collaborator("him", "Him", "him@example.com"),
-          Collaborator("me", "Me", "me@example.com"),
-          Collaborator("you", "You", "you@example.com")
+          Collaborator("him", "Him", "example.com/him"),
+          Collaborator("me", "Me", "example.com/me"),
+          Collaborator("you", "You", "example.com/you")
         )
       )
 
@@ -30,17 +30,17 @@ class CollaboratorsSpec extends Specification {
     "remove duplicates" >> {
       val collaborators = Collaborators(
         List(
-          Collaborator("me", "Me", "me@example.com"),
-          Collaborator("you", "You", "you@example.com")
+          Collaborator("me", "Me", "example.com/me"),
+          Collaborator("you", "You", "example.com/you")
         )
       )
 
-      val extra = List(Collaborator("me", "MeMe", "meme@example.com"))
+      val extra = List(Collaborator("me", "MeMe", "example.com/meme"))
 
       val expected = Collaborators(
         List(
-          Collaborator("me", "Me", "me@example.com"),
-          Collaborator("you", "You", "you@example.com")
+          Collaborator("me", "Me", "example.com/me"),
+          Collaborator("you", "You", "example.com/you")
         )
       )
 
@@ -51,31 +51,31 @@ class CollaboratorsSpec extends Specification {
 
   "Collaborators.markdown" should {
 
-    "return contributor list as markdown" >> {
+    "return collaborator list as markdown" >> {
       val collaborators = Collaborators(
         List(
-          Collaborator("her", "Her", "her@example.com", avatar = Some("example.com/her.png")),
-          Collaborator("him", "Him", "him@example.com"),
+          Collaborator("her", "Her", "example.com/her", avatar = Some("example.com/her.png")),
+          Collaborator("him", "Him", "example.com/him"),
           Collaborator(
             "it",
             "It",
-            "it@example.com",
-            Some("example.com/it"),
+            "example.com/it",
+            Some("it@example.com"),
             Some("example.com/it.png")
           ),
-          Collaborator("me", "Me", "me@example.com", Some("example.com/me")),
-          Collaborator("you", "", "you@example.com")
+          Collaborator("me", "Me", "example.com/me", Some("me@example.com")),
+          Collaborator("you", "", "example.com/you")
         )
       )
 
       val markdown = collaborators.markdown
 
       val expected =
-        """- ![her](example.com/her.png&s=20) **Her (her)**
-          |- **Him (him)**
+        """- [![her](example.com/her.png&s=20) **Her (her)**](example.com/her)
+          |- [**Him (him)**](example.com/him)
           |- [![it](example.com/it.png&s=20) **It (it)**](example.com/it)
           |- [**Me (me)**](example.com/me)
-          |- **you**""".stripMargin
+          |- [**you**](example.com/you)""".stripMargin
 
       markdown must be equalTo expected
     }
