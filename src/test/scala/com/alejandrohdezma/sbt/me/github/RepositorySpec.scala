@@ -2,6 +2,7 @@ package com.alejandrohdezma.sbt.me.github
 
 import com.alejandrohdezma.sbt.me.withServer
 import org.http4s.dsl.io._
+import org.http4s.headers.Host
 import org.specs2.mutable.Specification
 
 class RepositorySpec extends Specification {
@@ -15,6 +16,7 @@ class RepositorySpec extends Specification {
             "html_url": "http://example.com/repository",
             "created_at": "2011-01-26T19:01:12Z",
             "contributors_url": "http://api.github.com/repos/example/example/contributors",
+            "collaborators_url": "http://api.github.com/repos/example/example/collaborators",
             "license": {
               "spdx_id": "id",
               "url": "http://example.com"
@@ -30,7 +32,8 @@ class RepositorySpec extends Specification {
         License("id", "http://example.com"),
         "http://example.com/repository",
         2011,
-        "http://api.github.com/repos/example/example/contributors"
+        "http://api.github.com/repos/example/example/contributors",
+        "http://api.github.com/repos/example/example/collaborators"
       )
 
       repository must beRight(expected)
@@ -43,6 +46,7 @@ class RepositorySpec extends Specification {
             "html_url": "http://example.com/repository",
             "created_at": "2011-01-26T19:01:12Z",
             "contributors_url": "http://api.github.com/repos/example/example/contributors",
+            "collaborators_url": "http://api.github.com/repos/example/example/collaborators",
             "license": {
               "spdx_id": "id",
               "url": "http://example.com"
@@ -65,6 +69,7 @@ class RepositorySpec extends Specification {
             "html_url": "http://example.com/repository",
             "created_at": "2011-01-26T19:01:12Z",
             "contributors_url": "http://api.github.com/repos/example/example/contributors",
+            "collaborators_url": "http://api.github.com/repos/example/example/collaborators",
             "license": null
           }""")
     } { uri =>
@@ -84,6 +89,7 @@ class RepositorySpec extends Specification {
             "html_url": "http://example.com/repository",
             "created_at": "2011-01-26T19:01:12Z",
             "contributors_url": "http://api.github.com/repos/example/example/contributors",
+            "collaborators_url": "http://api.github.com/repos/example/example/collaborators",
             "license": {
               "spdx_id": null,
               "url": "http://example.com"
@@ -106,6 +112,7 @@ class RepositorySpec extends Specification {
             "html_url": "http://example.com/repository",
             "created_at": "2011-01-26T19:01:12Z",
             "contributors_url": "http://api.github.com/repos/example/example/contributors",
+            "collaborators_url": "http://api.github.com/repos/example/example/collaborators",
             "license": {
               "spdx_id": "id",
               "url": null
@@ -128,6 +135,7 @@ class RepositorySpec extends Specification {
             "html_url": "http://example.com/repository",
             "created_at": "2011-01-26T19:01:12Z",
             "contributors_url": "http://api.github.com/repos/example/example/contributors",
+            "collaborators_url": "http://api.github.com/repos/example/example/collaborators",
             "license": 42
           }""")
     } { uri =>
@@ -165,7 +173,7 @@ class RepositorySpec extends Specification {
         ]
         """)
     } { uri =>
-      val repository = Repository("", License("", ""), "", 0, s"${uri}contributors")
+      val repository = Repository("", License("", ""), "", 0, s"${uri}contributors", "")
 
       val contributors = repository.contributors(Nil)
 
@@ -196,7 +204,7 @@ class RepositorySpec extends Specification {
         ]
         """)
     } { uri =>
-      val repository = Repository("", License("", ""), "", 0, s"${uri}contributors")
+      val repository = Repository("", License("", ""), "", 0, s"${uri}contributors", "")
 
       val contributors = repository.contributors(List("you"))
 
@@ -208,11 +216,117 @@ class RepositorySpec extends Specification {
     "return generic error on any error" >> withServer {
       case GET -> Root / "contributors" => Ok("""{"hello": "hi"}""")
     } { uri =>
-      val repository = Repository("", License("", ""), "", 0, s"${uri}contributors")
+      val repository = Repository("", License("", ""), "", 0, s"${uri}contributors", "")
 
       val contributors = repository.contributors(Nil)
 
       contributors must beLeft("Unable to get repository contributors")
+    }
+
+  }
+
+  "repository.collaborators" should {
+
+    "return list of collaborators (alphabetically ordered) with user info from Github API" >> withServer {
+      case GET -> Root / "me"  => Ok("""{"name": "Me", "email": "me@example.com"}""")
+      case GET -> Root / "you" => Ok("""{"name": "You"}""")
+      case GET -> Root / "him" => Ok("""{"email": "him@example.com"}""")
+      case req @ GET -> Root / "collaborators" =>
+        val host = req.headers.get(Host).getOrElse(Host(""))
+
+        val root = s"${host.host}:${host.port.getOrElse(8080)}"
+
+        Ok(s"""[
+          {
+            "login": "me",
+            "avatar_url": "example.com/me.png",
+            "html_url": "example.com/me",
+            "url": "http://$root/me"
+          },
+          {
+            "login": "you",
+            "html_url": "example.com/you",
+            "url": "http://$root/you"
+          },
+          {
+            "login": "him",
+            "avatar_url": null,
+            "html_url": "example.com/him",
+            "url": "http://$root/him"
+          }
+        ]""")
+    } { uri =>
+      val repository = Repository("", License("", ""), "", 0, "", s"${uri}collaborators")
+
+      val collaborators = repository.collaborators(List("me", "you", "him"))
+
+      val expected = Collaborators(
+        List(
+          Collaborator("him", "example.com/him", s"${uri}him", None, Some("him@example.com"), None),
+          Collaborator(
+            "me",
+            "example.com/me",
+            s"${uri}me",
+            Some("Me"),
+            Some("me@example.com"),
+            Some("example.com/me.png")
+          ),
+          Collaborator("you", "example.com/you", s"${uri}you", Some("You"), None, None)
+        )
+      )
+
+      collaborators must beRight(expected)
+    }
+
+    "exclude collaborators not in provided list and don't retrieve user info for them" >> withServer {
+      case GET -> Root / "me" => Ok("""{"name": "Me", "email": "me@example.com"}""")
+      case req @ GET -> Root / "collaborators" =>
+        val host = req.headers.get(Host).getOrElse(Host(""))
+
+        val root = s"${host.host}:${host.port.getOrElse(8080)}"
+
+        Ok(s"""[
+          {
+            "login": "me",
+            "avatar_url": "example.com/me.png",
+            "html_url": "example.com/me",
+            "url": "http://$root/me"
+          },
+          {
+            "login": "you",
+            "html_url": "example.com/you",
+            "url": "api.example.com/you"
+          }
+        ]""")
+    } { uri =>
+      val repository = Repository("", License("", ""), "", 0, "", s"${uri}collaborators")
+
+      val collaborators = repository.collaborators(List("me"))
+
+      val expected = Collaborators(
+        List(
+          Collaborator(
+            "me",
+            "example.com/me",
+            s"${uri}me",
+            Some("Me"),
+            Some("me@example.com"),
+            Some("example.com/me.png")
+          )
+        )
+      )
+
+      collaborators must beRight(expected)
+    }
+
+    "return generic error on any error" >> withServer {
+      case GET -> Root / "collaborators" => Ok("""{"hello": "hi"}""")
+    } { uri =>
+      val repository = Repository("", License("", ""), "", 0, "", s"${uri}collaborators")
+
+      val collaborators = repository.collaborators(Nil)
+
+      collaborators must beLeft("Unable to get repository collaborators")
     }
 
   }

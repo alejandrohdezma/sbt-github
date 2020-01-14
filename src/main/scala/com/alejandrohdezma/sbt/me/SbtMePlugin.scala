@@ -26,9 +26,23 @@ object SbtMePlugin extends AutoPlugin {
     type Contributors = github.Contributors
     val Contributors = github.Contributors
 
+    type Collaborators = github.Collaborators
+    val Collaborators = github.Collaborators
+
+    type Collaborator = github.Collaborator
+    val Collaborator = github.Collaborator
+
     val contributors = settingKey[Contributors](
       "List of contributors downloaded from Github"
     )
+
+    val collaborators = settingKey[Collaborators](
+      "List of collaborators downloaded from Github"
+    )
+
+    val extraCollaborators = settingKey[List[Collaborator]] {
+      "Extra collaborators that should be always included (independent of whether they are contributors or not)"
+    }
 
     val excludedContributors = settingKey[List[String]] {
       "ID (Github login) of the contributors that should be excluded from the list, like bots"
@@ -53,6 +67,7 @@ object SbtMePlugin extends AutoPlugin {
   override def globalSettings: Seq[Setting[_]] = Seq(
     downloadInfoFromGithub := sys.env.contains("RELEASE"),
     excludedContributors   := List("scala-steward", "mergify[bot]"),
+    extraCollaborators     := List(),
     repository := {
       if (downloadInfoFromGithub.value)
         Some(Repository.get(user, repo).fold(sys.error, identity))
@@ -60,6 +75,11 @@ object SbtMePlugin extends AutoPlugin {
     },
     contributors := repository.value.fold(Contributors(Nil)) {
       _.contributors(excludedContributors.value).fold(sys.error, identity)
+    },
+    collaborators := repository.value.fold(Collaborators(Nil)) {
+      _.collaborators(contributors.value.list.map(_.login))
+        .fold(sys.error, identity)
+        .include(extraCollaborators.value)
     },
     homepage  := repository.value.map(r => url(r.url)).orElse(homepage.value),
     licenses  := repository.value.map(_.licenses).getOrElse(licenses.value),

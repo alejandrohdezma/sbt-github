@@ -9,6 +9,7 @@ import com.alejandrohdezma.sbt.me.json.Decoder
 import com.alejandrohdezma.sbt.me.json.Json.Fail.NotFound
 import com.alejandrohdezma.sbt.me.syntax.either._
 import com.alejandrohdezma.sbt.me.syntax.json._
+import com.alejandrohdezma.sbt.me.syntax.list._
 
 /** Represents a repository in Github */
 final case class Repository(
@@ -16,7 +17,8 @@ final case class Repository(
     license: License,
     url: String,
     startYear: Int,
-    contributorsUrl: String
+    contributorsUrl: String,
+    collaboratorsUrl: String
 ) {
 
   /** Returns the license extracted from github in the format that SBT is expecting */
@@ -39,6 +41,25 @@ final case class Repository(
       .map(Contributors)
       .leftMap(_ => "Unable to get repository contributors")
   }
+
+  /**
+   * Returns the list of repository collaborators, filtered by those who have contributed
+   * at least once to the project, alphabetically ordered.
+   */
+  def collaborators(allowed: List[String])(
+      implicit auth: Authentication
+  ): Either[String, Collaborators] =
+    client
+      .get[List[Collaborator]](collaboratorsUrl)
+      .map(_.filter(m => allowed.contains(m.login)))
+      .flatMap(_.traverse { collaborator =>
+        client.get[User](collaborator.userUrl).map { user =>
+          collaborator.copy(name = user.name, email = user.email)
+        }
+      })
+      .map(_.sortBy(collaborator => collaborator.name -> collaborator.login))
+      .map(Collaborators)
+      .leftMap(_ => "Unable to get repository collaborators")
 
 }
 
@@ -63,11 +84,19 @@ object Repository {
 
   implicit val RepositoryDecoder: Decoder[Repository] = json =>
     for {
-      description     <- json.get[String]("description")
-      license         <- json.get[License]("license")
-      url             <- json.get[String]("html_url")
-      startYear       <- json.get[ZonedDateTime]("created_at")
-      contributorsUrl <- json.get[String]("contributors_url")
-    } yield Repository(description, license, url, startYear.getYear, contributorsUrl)
+      description   <- json.get[String]("description")
+      license       <- json.get[License]("license")
+      url           <- json.get[String]("html_url")
+      startYear     <- json.get[ZonedDateTime]("created_at")
+      contributors  <- json.get[String]("contributors_url")
+      collaborators <- json.get[String]("collaborators_url")
+    } yield Repository(
+      description,
+      license,
+      url,
+      startYear.getYear,
+      contributors,
+      collaborators.replace("{/collaborator}", "")
+    )
 
 }
