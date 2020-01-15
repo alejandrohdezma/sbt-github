@@ -17,6 +17,9 @@ class RepositorySpec extends Specification {
             "created_at": "2011-01-26T19:01:12Z",
             "contributors_url": "http://api.github.com/repos/example/example/contributors",
             "collaborators_url": "http://api.github.com/repos/example/example/collaborators",
+            "organization": {
+              "url": "http://api.github.com/users/example"
+            },
             "license": {
               "spdx_id": "id",
               "url": "http://example.com"
@@ -33,7 +36,39 @@ class RepositorySpec extends Specification {
         "http://example.com/repository",
         2011,
         "http://api.github.com/repos/example/example/contributors",
-        "http://api.github.com/repos/example/example/collaborators"
+        "http://api.github.com/repos/example/example/collaborators",
+        Some("http://api.github.com/users/example")
+      )
+
+      repository must beRight(expected)
+    }
+
+    "return None organization if it is not present" >> withServer {
+      case GET -> Root / "user" / "repo" =>
+        Ok("""{
+            "description": "The description",
+            "html_url": "http://example.com/repository",
+            "created_at": "2011-01-26T19:01:12Z",
+            "contributors_url": "http://api.github.com/repos/example/example/contributors",
+            "collaborators_url": "http://api.github.com/repos/example/example/collaborators",
+            "license": {
+              "spdx_id": "id",
+              "url": "http://example.com"
+            }
+          }""")
+    } { uri =>
+      implicit val url: urls.Repository = urls.Repository(s"$uri{owner}/{repo}")
+
+      val repository = Repository.get("user", "repo")
+
+      val expected = Repository(
+        "The description",
+        License("id", "http://example.com"),
+        "http://example.com/repository",
+        2011,
+        "http://api.github.com/repos/example/example/contributors",
+        "http://api.github.com/repos/example/example/collaborators",
+        None
       )
 
       repository must beRight(expected)
@@ -47,6 +82,9 @@ class RepositorySpec extends Specification {
             "created_at": "2011-01-26T19:01:12Z",
             "contributors_url": "http://api.github.com/repos/example/example/contributors",
             "collaborators_url": "http://api.github.com/repos/example/example/collaborators",
+            "organization": {
+              "url": "http://api.github.com/users/example"
+            },
             "license": {
               "spdx_id": "id",
               "url": "http://example.com"
@@ -70,6 +108,9 @@ class RepositorySpec extends Specification {
             "created_at": "2011-01-26T19:01:12Z",
             "contributors_url": "http://api.github.com/repos/example/example/contributors",
             "collaborators_url": "http://api.github.com/repos/example/example/collaborators",
+            "organization": {
+              "url": "http://api.github.com/users/example"
+            },
             "license": null
           }""")
     } { uri =>
@@ -90,6 +131,9 @@ class RepositorySpec extends Specification {
             "created_at": "2011-01-26T19:01:12Z",
             "contributors_url": "http://api.github.com/repos/example/example/contributors",
             "collaborators_url": "http://api.github.com/repos/example/example/collaborators",
+            "organization": {
+              "url": "http://api.github.com/users/example"
+            },
             "license": {
               "spdx_id": null,
               "url": "http://example.com"
@@ -113,6 +157,9 @@ class RepositorySpec extends Specification {
             "created_at": "2011-01-26T19:01:12Z",
             "contributors_url": "http://api.github.com/repos/example/example/contributors",
             "collaborators_url": "http://api.github.com/repos/example/example/collaborators",
+            "organization": {
+              "url": "http://api.github.com/users/example"
+            },
             "license": {
               "spdx_id": "id",
               "url": null
@@ -136,6 +183,9 @@ class RepositorySpec extends Specification {
             "created_at": "2011-01-26T19:01:12Z",
             "contributors_url": "http://api.github.com/repos/example/example/contributors",
             "collaborators_url": "http://api.github.com/repos/example/example/collaborators",
+            "organization": {
+              "url": "http://api.github.com/users/example"
+            },
             "license": 42
           }""")
     } { uri =>
@@ -173,7 +223,7 @@ class RepositorySpec extends Specification {
         ]
         """)
     } { uri =>
-      val repository = Repository("", License("", ""), "", 0, s"${uri}contributors", "")
+      val repository = Repository("", License("", ""), "", 0, s"${uri}contributors", "", None)
 
       val contributors = repository.contributors(Nil)
 
@@ -204,7 +254,7 @@ class RepositorySpec extends Specification {
         ]
         """)
     } { uri =>
-      val repository = Repository("", License("", ""), "", 0, s"${uri}contributors", "")
+      val repository = Repository("", License("", ""), "", 0, s"${uri}contributors", "", None)
 
       val contributors = repository.contributors(List("you"))
 
@@ -216,7 +266,7 @@ class RepositorySpec extends Specification {
     "return generic error on any error" >> withServer {
       case GET -> Root / "contributors" => Ok("""{"hello": "hi"}""")
     } { uri =>
-      val repository = Repository("", License("", ""), "", 0, s"${uri}contributors", "")
+      val repository = Repository("", License("", ""), "", 0, s"${uri}contributors", "", None)
 
       val contributors = repository.contributors(Nil)
 
@@ -269,7 +319,7 @@ class RepositorySpec extends Specification {
           }
         ]""")
     } { uri =>
-      val repository = Repository("", License("", ""), "", 0, "", s"${uri}collaborators")
+      val repository = Repository("", License("", ""), "", 0, "", s"${uri}collaborators", None)
 
       val collaborators = repository.collaborators(List("me", "you", "him"))
 
@@ -313,7 +363,7 @@ class RepositorySpec extends Specification {
           }
         ]""")
     } { uri =>
-      val repository = Repository("", License("", ""), "", 0, "", s"${uri}collaborators")
+      val repository = Repository("", License("", ""), "", 0, "", s"${uri}collaborators", None)
 
       val collaborators = repository.collaborators(List("me"))
 
@@ -336,7 +386,7 @@ class RepositorySpec extends Specification {
     "return generic error on any error" >> withServer {
       case GET -> Root / "collaborators" => Ok("""{"hello": "hi"}""")
     } { uri =>
-      val repository = Repository("", License("", ""), "", 0, "", s"${uri}collaborators")
+      val repository = Repository("", License("", ""), "", 0, "", s"${uri}collaborators", None)
 
       val collaborators = repository.collaborators(Nil)
 

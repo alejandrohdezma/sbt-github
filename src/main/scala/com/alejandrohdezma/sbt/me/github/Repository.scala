@@ -18,7 +18,8 @@ final case class Repository(
     url: String,
     startYear: Int,
     contributorsUrl: String,
-    collaboratorsUrl: String
+    collaboratorsUrl: String,
+    organizationUrl: Option[String]
 ) {
 
   /** Returns the license extracted from github in the format that SBT is expecting */
@@ -84,19 +85,26 @@ object Repository {
 
   implicit val RepositoryDecoder: Decoder[Repository] = json =>
     for {
-      description   <- json.get[String]("description")
-      license       <- json.get[License]("license")
-      url           <- json.get[String]("html_url")
-      startYear     <- json.get[ZonedDateTime]("created_at")
-      contributors  <- json.get[String]("contributors_url")
-      collaborators <- json.get[String]("collaborators_url")
+      description     <- json.get[String]("description")
+      license         <- json.get[License]("license")
+      url             <- json.get[String]("html_url")
+      startYear       <- json.get[ZonedDateTime]("created_at")
+      contributors    <- json.get[String]("contributors_url")
+      collaborators   <- json.get[String]("collaborators_url")
+      organizationUrl <- json.get[Option[OrganizationUrl]]("organization")
     } yield Repository(
       description,
       license,
       url,
       startYear.getYear,
       contributors,
-      collaborators.replace("{/collaborator}", "")
+      collaborators.replace("{/collaborator}", ""),
+      organizationUrl.map(_.value)
     )
+
+  final private case class OrganizationUrl(value: String) extends AnyVal
+
+  implicit private val OrganizationUrlDecoder: Decoder[OrganizationUrl] =
+    _.get[String]("url").map(OrganizationUrl)
 
 }
