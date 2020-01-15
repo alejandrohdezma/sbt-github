@@ -228,9 +228,22 @@ class RepositorySpec extends Specification {
   "repository.collaborators" should {
 
     "return list of collaborators (alphabetically ordered) with user info from Github API" >> withServer {
-      case GET -> Root / "me"  => Ok("""{"name": "Me", "email": "me@example.com"}""")
-      case GET -> Root / "you" => Ok("""{"name": "You"}""")
-      case GET -> Root / "him" => Ok("""{"email": "him@example.com"}""")
+      case GET -> Root / "me"  => Ok("""{
+        "name": "Me",
+        "login": "me",
+        "html_url": "example.com/me",
+        "email": "me@example.com"
+      }""")
+      case GET -> Root / "you" => Ok("""{
+        "login": "you",
+        "html_url": "example.com/you",
+        "avatar_url": "example.com/you.png"
+      }""")
+      case GET -> Root / "him" => Ok("""{
+        "name": "Him",
+        "login": "him",
+        "html_url": "example.com/him"
+      }""")
       case req @ GET -> Root / "collaborators" =>
         val host = req.headers.get(Host).getOrElse(Host(""))
 
@@ -262,7 +275,8 @@ class RepositorySpec extends Specification {
 
       val expected = Collaborators(
         List(
-          Collaborator("him", "example.com/him", s"${uri}him", None, Some("him@example.com"), None),
+          Collaborator("you", "example.com/you", s"${uri}you", None, None, None),
+          Collaborator("him", "example.com/him", s"${uri}him", Some("Him"), None, None),
           Collaborator(
             "me",
             "example.com/me",
@@ -270,8 +284,7 @@ class RepositorySpec extends Specification {
             Some("Me"),
             Some("me@example.com"),
             Some("example.com/me.png")
-          ),
-          Collaborator("you", "example.com/you", s"${uri}you", Some("You"), None, None)
+          )
         )
       )
 
@@ -279,7 +292,8 @@ class RepositorySpec extends Specification {
     }
 
     "exclude collaborators not in provided list and don't retrieve user info for them" >> withServer {
-      case GET -> Root / "me" => Ok("""{"name": "Me", "email": "me@example.com"}""")
+      case GET -> Root / "me" =>
+        Ok("""{"login": "me", "html_url": "example.com/me", "name": "Me"}""")
       case req @ GET -> Root / "collaborators" =>
         val host = req.headers.get(Host).getOrElse(Host(""))
 
@@ -305,12 +319,12 @@ class RepositorySpec extends Specification {
 
       val expected = Collaborators(
         List(
-          Collaborator(
+          new Collaborator(
             "me",
             "example.com/me",
             s"${uri}me",
             Some("Me"),
-            Some("me@example.com"),
+            None,
             Some("example.com/me.png")
           )
         )

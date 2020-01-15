@@ -40,7 +40,7 @@ object SbtMePlugin extends AutoPlugin {
       "List of collaborators downloaded from Github"
     )
 
-    val extraCollaborators = settingKey[List[Collaborator]] {
+    val extraCollaborators = settingKey[List[Lazy[Collaborator]]] {
       "Extra collaborators that should be always included (independent of whether they are contributors or not)"
     }
 
@@ -79,11 +79,12 @@ object SbtMePlugin extends AutoPlugin {
     collaborators := repository.value.fold(Collaborators(Nil)) {
       _.collaborators(contributors.value.list.map(_.login))
         .fold(sys.error, identity)
-        .include(extraCollaborators.value)
+        .include(extraCollaborators.value.map(_.value))
     },
-    homepage  := repository.value.map(r => url(r.url)).orElse(homepage.value),
-    licenses  := repository.value.map(_.licenses).getOrElse(licenses.value),
-    startYear := repository.value.map(_.startYear).orElse(startYear.value)
+    developers := collaborators.value.developers,
+    homepage   := repository.value.map(r => url(r.url)).orElse(homepage.value),
+    licenses   := repository.value.map(_.licenses).getOrElse(licenses.value),
+    startYear  := repository.value.map(_.startYear).orElse(startYear.value)
   )
 
   override def projectSettings: Seq[Def.Setting[_]] = Seq(

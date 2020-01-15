@@ -1,5 +1,7 @@
 package com.alejandrohdezma.sbt.me.github
 
+import com.alejandrohdezma.sbt.me.Lazy
+import com.alejandrohdezma.sbt.me.http.client
 import com.alejandrohdezma.sbt.me.json.Decoder
 import com.alejandrohdezma.sbt.me.syntax.json._
 
@@ -15,25 +17,59 @@ final case class Collaborator private[me] (
 
 object Collaborator {
 
+  /** Obtains a collaborator information from its Github login ID */
+  def github(id: String): Lazy[Collaborator] = Lazy {
+    val userUrl = implicitly[urls.User].get(id)
+
+    client.get[User](userUrl).map { user =>
+      new Collaborator(user.login, user.url, userUrl, user.name, user.email, user.avatar)
+    } fold (_ => sys.error(s"Unable to get info for user $id"), identity)
+  }
+
   /**
    * Creates a new collaborator
    *
    * @param login the Github login ID for the collaborator
-   * @param url the collaborator's URL. It may link to its Github profile or personal webpage, optional
    * @param name the collaborator's full name
+   * @param url the collaborator's URL. It may link to its Github profile or personal webpage.
+   * @return a new collaborator
+   */
+  def apply(login: String, name: String, url: String): Lazy[Collaborator] = Lazy {
+    new Collaborator(login, url, "", Some(name), None, None)
+  }
+
+  /**
+   * Creates a new collaborator
+   *
+   * @param login the Github login ID for the collaborator
+   * @param name the collaborator's full name
+   * @param url the collaborator's URL. It may link to its Github profile or personal webpage.
    * @param email the collaborator's email
+   * @return a new collaborator
+   */
+  def apply(login: String, name: String, url: String, email: String): Lazy[Collaborator] = Lazy {
+    new Collaborator(login, url, "", Some(name), Some(email), None)
+  }
+
+  /**
+   * Creates a new collaborator
+   *
+   * @param login the Github login ID for the collaborator
+   * @param name the collaborator's full name
+   * @param url the collaborator's URL. It may link to its Github profile or personal webpage.
+   * @param email the collaborator's email, optional
    * @param avatar the collaborator's avatar URL, optional
    * @return a new collaborator
    */
-  @SuppressWarnings(Array("scalafix:DisableSyntax.defaultArgs"))
   def apply(
       login: String,
       name: String,
-      email: String,
-      url: Option[String] = None,
-      avatar: Option[String] = None
-  ): Collaborator =
-    new Collaborator(login, url.getOrElse(""), "", Some(name), Some(email), avatar)
+      url: String,
+      email: Option[String],
+      avatar: Option[String]
+  ): Lazy[Collaborator] = Lazy {
+    new Collaborator(login, url, "", Some(name), email, avatar)
+  }
 
   implicit val CollaboratorDecoder: Decoder[Collaborator] = json =>
     for {

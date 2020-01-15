@@ -1,5 +1,7 @@
 package com.alejandrohdezma.sbt.me.github
 
+import sbt.librarymanagement.Developer
+
 /** Represents a repository's list of collaborators */
 final case class Collaborators(list: List[Collaborator]) {
 
@@ -11,6 +13,13 @@ final case class Collaborators(list: List[Collaborator]) {
       .toList
       .map(_.head) /* scalafix:ok */
       .sortBy(collaborator => collaborator.name -> collaborator.login)
+  }
+
+  /** Returns this list of collaborators as SBT developers */
+  lazy val developers: List[Developer] = list.map { collaborator =>
+    import collaborator._
+
+    Developer(login, name.getOrElse(login), email.getOrElse(""), sbt.url(url))
   }
 
   /** Returns this list of collaborators in markdown format */

@@ -1,5 +1,7 @@
 package com.alejandrohdezma.sbt.me.github
 
+import sbt.librarymanagement.Developer
+
 import org.specs2.mutable.Specification
 
 class CollaboratorsSpec extends Specification {
@@ -9,18 +11,18 @@ class CollaboratorsSpec extends Specification {
     "return list of collaborators including new ones" >> {
       val collaborators = Collaborators(
         List(
-          Collaborator("me", "Me", "me@example.com"),
-          Collaborator("you", "You", "you@example.com")
+          new Collaborator("me", "example.com/me", "", Some("Me"), None, None),
+          new Collaborator("you", "example.com/you", "", Some("You"), None, None)
         )
       )
 
-      val extra = List(Collaborator("him", "Him", "him@example.com"))
+      val extra = List(new Collaborator("him", "example.com/him", "", Some("Him"), None, None))
 
       val expected = Collaborators(
         List(
-          Collaborator("him", "Him", "him@example.com"),
-          Collaborator("me", "Me", "me@example.com"),
-          Collaborator("you", "You", "you@example.com")
+          new Collaborator("him", "example.com/him", "", Some("Him"), None, None),
+          new Collaborator("me", "example.com/me", "", Some("Me"), None, None),
+          new Collaborator("you", "example.com/you", "", Some("You"), None, None)
         )
       )
 
@@ -30,17 +32,17 @@ class CollaboratorsSpec extends Specification {
     "remove duplicates" >> {
       val collaborators = Collaborators(
         List(
-          Collaborator("me", "Me", "me@example.com"),
-          Collaborator("you", "You", "you@example.com")
+          new Collaborator("me", "example.com/me", "", Some("Me"), None, None),
+          new Collaborator("you", "example.com/you", "", Some("You"), None, None)
         )
       )
 
-      val extra = List(Collaborator("me", "MeMe", "meme@example.com"))
+      val extra = List(new Collaborator("me", "example.com/meme", "", Some("MeMe"), None, None))
 
       val expected = Collaborators(
         List(
-          Collaborator("me", "Me", "me@example.com"),
-          Collaborator("you", "You", "you@example.com")
+          new Collaborator("me", "example.com/me", "", Some("Me"), None, None),
+          new Collaborator("you", "example.com/you", "", Some("You"), None, None)
         )
       )
 
@@ -51,33 +53,67 @@ class CollaboratorsSpec extends Specification {
 
   "Collaborators.markdown" should {
 
-    "return contributor list as markdown" >> {
+    "return collaborator list as markdown" >> {
       val collaborators = Collaborators(
         List(
-          Collaborator("her", "Her", "her@example.com", avatar = Some("example.com/her.png")),
-          Collaborator("him", "Him", "him@example.com"),
-          Collaborator(
+          new Collaborator(
+            "her",
+            "example.com/her",
+            "",
+            Some("Her"),
+            None,
+            Some("example.com/her.png")
+          ),
+          new Collaborator("him", "example.com/him", "", Some("Him"), None, None),
+          new Collaborator(
             "it",
-            "It",
-            "it@example.com",
-            Some("example.com/it"),
+            "example.com/it",
+            "",
+            Some("It"),
+            Some("it@example.com"),
             Some("example.com/it.png")
           ),
-          Collaborator("me", "Me", "me@example.com", Some("example.com/me")),
-          Collaborator("you", "", "you@example.com")
+          new Collaborator("me", "example.com/me", "", Some("Me"), Some("me@example.com"), None),
+          new Collaborator("you", "example.com/you", "", Some(""), None, None)
         )
       )
 
       val markdown = collaborators.markdown
 
       val expected =
-        """- ![her](example.com/her.png&s=20) **Her (her)**
-          |- **Him (him)**
+        """- [![her](example.com/her.png&s=20) **Her (her)**](example.com/her)
+          |- [**Him (him)**](example.com/him)
           |- [![it](example.com/it.png&s=20) **It (it)**](example.com/it)
           |- [**Me (me)**](example.com/me)
-          |- **you**""".stripMargin
+          |- [**you**](example.com/you)""".stripMargin
 
       markdown must be equalTo expected
+    }
+
+  }
+
+  "Collaborators.developers" should {
+
+    "return collaborators as list of developers" >> {
+      val collaborators = Collaborators(
+        List(
+          new Collaborator("her", "http://example.com/her", "", Some("Her"), None, None),
+          new Collaborator("him", "http://example.com/him", "", Some("Him"), None, None),
+          new Collaborator("it", "http://example.com/it", "", None, Some("it@example.com"), None),
+          new Collaborator("me", "http://example.com/me", "", Some("Me"), None, None),
+          new Collaborator("you", "http://example.com/you", "", Some(""), None, None)
+        )
+      )
+
+      val expected = List(
+        Developer("her", "Her", "", sbt.url("http://example.com/her")),
+        Developer("him", "Him", "", sbt.url("http://example.com/him")),
+        Developer("it", "it", "it@example.com", sbt.url("http://example.com/it")),
+        Developer("me", "Me", "", sbt.url("http://example.com/me")),
+        Developer("you", "", "", sbt.url("http://example.com/you"))
+      )
+
+      collaborators.developers must be equalTo expected
     }
 
   }
