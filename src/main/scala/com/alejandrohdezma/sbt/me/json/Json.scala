@@ -44,6 +44,7 @@ object Json extends JavaTokenParsers {
     final case class Path(value: String, fail: Fail)   extends Fail
     case object NotAValidJSON                          extends Fail
     case object NotFound                               extends Fail
+    case object Unknown                                extends Fail
 
   }
 

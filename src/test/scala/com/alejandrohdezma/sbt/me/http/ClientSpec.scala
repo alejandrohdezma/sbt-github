@@ -3,6 +3,7 @@ package com.alejandrohdezma.sbt.me.http
 import cats.implicits._
 
 import com.alejandrohdezma.sbt.me.json.Decoder
+import com.alejandrohdezma.sbt.me.json.Json.Fail
 import com.alejandrohdezma.sbt.me.syntax.json.JsonValueOps
 import com.alejandrohdezma.sbt.me.withServer
 import org.http4s.dsl.io._
@@ -27,6 +28,24 @@ class ClientSpec extends Specification {
       val result = client.get[Auth](s"${uri}hello")
 
       result must beRight(Auth("Authorization: token 1234"))
+    }
+
+    "returns NotFound for unreachable urls" >> withServer {
+      case GET -> Root / "hello" => NotFound()
+    } { uri =>
+      final case class Auth(auth: String)
+
+      val result = client.get[String](s"${uri}hello")
+
+      result must beLeft[Fail](Fail.NotFound)
+    }
+
+    "returns Unknown for every other failure (http-related)" >> {
+      final case class Auth(auth: String)
+
+      val result = client.get[String]("miau")
+
+      result must beLeft[Fail](Fail.Unknown)
     }
 
   }
