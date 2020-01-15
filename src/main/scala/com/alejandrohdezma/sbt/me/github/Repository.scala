@@ -62,6 +62,14 @@ final case class Repository(
       .map(Collaborators)
       .leftMap(_ => "Unable to get repository collaborators")
 
+  /**
+   * Returns the repository's organization information, if present.
+   */
+  def organization(implicit auth: Authentication): Option[Either[String, Organization]] =
+    organizationUrl
+      .map(client.get[Organization])
+      .map(_.leftMap(_ => "Unable to get repository organization"))
+
 }
 
 object Repository {

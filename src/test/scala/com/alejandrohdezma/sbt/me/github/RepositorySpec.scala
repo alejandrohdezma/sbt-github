@@ -395,4 +395,57 @@ class RepositorySpec extends Specification {
 
   }
 
+  "repository.organization" should {
+
+    "return repository's organization from Github API" >> withServer {
+      case GET -> Root / "organization" =>
+        Ok(s"""{ "name": "My Organization", "blog": "http://example.com" }""")
+    } { uri =>
+      val repository = Repository("", License("", ""), "", 0, "", "", Some(s"${uri}organization"))
+
+      val organization = repository.organization
+
+      val expected = Organization(Some("My Organization"), Some("http://example.com"))
+
+      organization must be some right(expected)
+    }
+
+    "not return url if not present" >> withServer {
+      case GET -> Root / "organization" =>
+        Ok(s"""{ "name": "My Organization"}""")
+    } { uri =>
+      val repository = Repository("", License("", ""), "", 0, "", "", Some(s"${uri}organization"))
+
+      val organization = repository.organization
+
+      val expected = Organization(Some("My Organization"), None)
+
+      organization must be some right(expected)
+    }
+
+    "not return name if not present" >> withServer {
+      case GET -> Root / "organization" =>
+        Ok(s"""{ "blog": "http://example.com" }""")
+    } { uri =>
+      val repository = Repository("", License("", ""), "", 0, "", "", Some(s"${uri}organization"))
+
+      val organization = repository.organization
+
+      val expected = Organization(None, Some("http://example.com"))
+
+      organization must be some right(expected)
+    }
+
+    "return generic error on any error" >> withServer {
+      case GET -> Root / "organization" => NotFound()
+    } { uri =>
+      val repository = Repository("", License("", ""), "", 0, "", "", Some(s"${uri}organization"))
+
+      val collaborators = repository.organization
+
+      collaborators must be some left("Unable to get repository organization")
+    }
+
+  }
+
 }
