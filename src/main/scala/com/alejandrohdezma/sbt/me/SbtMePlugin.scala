@@ -88,7 +88,16 @@ object SbtMePlugin extends AutoPlugin {
   )
 
   override def projectSettings: Seq[Def.Setting[_]] = Seq(
-    description := repository.value.map(_.description).getOrElse(description.value)
+    description := repository.value.map(_.description).getOrElse(description.value),
+    organizationName := repository.value
+      .flatMap(_.organization)
+      .flatMap(_.fold(sys.error, identity).name)
+      .getOrElse(organizationName.value),
+    organizationHomepage := repository.value
+      .flatMap(_.organization)
+      .flatMap(_.fold(sys.error, identity).url)
+      .map(sbt.url)
+      .orElse(organizationHomepage.value)
   )
 
   /** Gets the Github user and repository from the git remote info */
