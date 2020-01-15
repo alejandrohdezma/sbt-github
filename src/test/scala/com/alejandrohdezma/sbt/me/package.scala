@@ -15,6 +15,7 @@ package object me {
     implicit val timer: Timer[IO]     = IO.timer(global)
 
     BlazeServerBuilder[IO]
+      .withNio2(true)
       .bindAny()
       .withHttpApp(HttpRoutes.of[IO](pf).orNotFound)
       .resource

@@ -8,9 +8,10 @@ lazy val `sbt-me` = project
   .enablePlugins(SbtPlugin)
   .settings(
     libraryDependencies ++= Seq(
-      "org.specs2" %% "specs2-core"         % "4.8.3"   % Test,
-      "org.http4s" %% "http4s-dsl"          % "0.20.15" % Test,
-      "org.http4s" %% "http4s-blaze-server" % "0.20.15" % Test
+      "org.specs2"     %% "specs2-core"         % "4.8.3"   % Test,
+      "org.http4s"     %% "http4s-dsl"          % "0.20.15" % Test,
+      "org.http4s"     %% "http4s-blaze-server" % "0.20.15" % Test,
+      "ch.qos.logback" % "logback-classic"      % "1.2.3"   % Test
     )
   )
 
