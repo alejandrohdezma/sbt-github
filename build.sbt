@@ -8,13 +8,6 @@ lazy val root = project
   .aggregate(`sbt-me`, `sbt-me-mdoc`)
   .enablePlugins(MdocPlugin)
   .settings(skip in publish := true)
-  .settings(
-    mdocVariables := Map(
-      "VERSION"       -> version.value.replaceAll("\\+.*", ""),
-      "CONTRIBUTORS"  -> contributors.value.markdown,
-      "COLLABORATORS" -> collaborators.value.markdown
-    )
-  )
 
 lazy val `sbt-me` = project
   .enablePlugins(SbtPlugin)
