@@ -1,5 +1,7 @@
 package com.alejandrohdezma.sbt.me
 
+import java.time.Year
+
 import sbt.Def.Setting
 import sbt.Keys._
 import sbt._
@@ -17,6 +19,7 @@ import com.alejandrohdezma.sbt.me.github.Repository
  * This will only happen during the release stage in Travis CI, since its only
  * needed during this phase.
  */
+@SuppressWarnings(Array("scalafix:DisableSyntax.=="))
 object SbtMePlugin extends AutoPlugin {
 
   object autoImport {
@@ -54,6 +57,10 @@ object SbtMePlugin extends AutoPlugin {
       "Whether sbt-me should download information from Github or not"
     }
 
+    val yearRange = settingKey[Option[String]] {
+      "Range of years in which the project has been active"
+    }
+
   }
 
   import autoImport._
@@ -82,7 +89,11 @@ object SbtMePlugin extends AutoPlugin {
     developers := collaborators.value.developers,
     homepage   := repository.value.map(r => url(r.url)).orElse(homepage.value),
     licenses   := repository.value.map(_.licenses).getOrElse(licenses.value),
-    startYear  := repository.value.map(_.startYear).orElse(startYear.value)
+    startYear  := repository.value.map(_.startYear).orElse(startYear.value),
+    yearRange := startYear.value.collect {
+      case start if start == Year.now.getValue => s"$start"
+      case start                               => s"$start-${Year.now.getValue}"
+    }
   )
 
   override def projectSettings: Seq[Def.Setting[_]] = Seq(
