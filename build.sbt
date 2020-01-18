@@ -3,9 +3,9 @@ ThisBuild / organization := "com.alejandrohdezma"
 
 Global / onChangedBuildSource := ReloadOnSourceChanges
 
-lazy val `root` = project
+lazy val root = project
   .in(file("."))
-  .aggregate(`sbt-me`)
+  .aggregate(`sbt-me`, `sbt-me-mdoc`)
   .enablePlugins(MdocPlugin)
   .settings(skip in publish := true)
   .settings(
@@ -27,3 +27,7 @@ lazy val `sbt-me` = project
       "ch.qos.logback" % "logback-classic"      % "1.2.3"   % Test
     )
   )
+
+lazy val `sbt-me-mdoc` = project
+  .enablePlugins(SbtPlugin)
+  .dependsOn(`sbt-me`)
