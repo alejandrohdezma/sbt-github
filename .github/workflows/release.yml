@@ -8,7 +8,6 @@ on:
 jobs:
   release:
     runs-on: ubuntu-latest
-    if: "!contains(github.event.head_commit.message, 'ci skip')"
     steps:
       - uses: actions/checkout@v1
         name: Checkout project
@@ -25,10 +24,13 @@ jobs:
           PGP_SECRET: ${{ secrets.PGP_SECRET }}
           SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
           SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
-      - name: Update markdown files
-        uses: stefanzweifel/git-auto-commit-action@v2.5.0
+      - run: mv target/mdoc/*.md .
+        name: Move generated markdown files
+      - uses: stefanzweifel/git-auto-commit-action@v2.5.0
+        name: Update markdown files
         with:
           branch: master
+          file_pattern: '*.md'
           commit_message: Update markdown files
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
