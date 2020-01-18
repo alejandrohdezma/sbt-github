@@ -33,7 +33,7 @@ class ClientSpec extends Specification {
     "returns NotFound for unreachable urls" >> withServer {
       case GET -> Root / "hello" => NotFound()
     } { uri =>
-      final case class Auth(auth: String)
+      implicit val auth: Authentication = Authentication.Token("1234")
 
       val result = client.get[String](s"${uri}hello")
 
@@ -41,7 +41,7 @@ class ClientSpec extends Specification {
     }
 
     "returns Unknown for every other failure (http-related)" >> {
-      final case class Auth(auth: String)
+      implicit val auth: Authentication = Authentication.Token("1234")
 
       val result = client.get[String]("miau")
 
