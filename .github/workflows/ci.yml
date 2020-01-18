@@ -7,13 +7,13 @@ jobs:
     runs-on: ubuntu-latest
     if: "!contains(github.event.head_commit.message, 'ci skip')"
     steps:
-    - uses: actions/checkout@v1
-      name: Checkout project
-    - uses: olafurpg/setup-scala@v2
-      name: Setup Scala
-    - run: csbt "all scalafmtCheckAll scalafmtSbtCheck"
-      name: Run scalafmt
-    - run: csbt "scalafixAll --check"
-      name: Run scalafix
-    - run: csbt test
-      name: Run tests
+      - uses: actions/checkout@v1
+        name: Checkout project
+      - uses: olafurpg/setup-scala@v2
+        name: Setup Scala
+      - run: csbt "all scalafmtCheckAll scalafmtSbtCheck"
+        name: Run scalafmt
+      - run: csbt "scalafixAll --check"
+        name: Run scalafix
+      - run: csbt test
+        name: Run tests

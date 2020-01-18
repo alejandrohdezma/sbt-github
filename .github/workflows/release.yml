@@ -10,26 +10,25 @@ jobs:
     runs-on: ubuntu-latest
     if: "!contains(github.event.head_commit.message, 'ci skip')"
     steps:
-    - uses: actions/checkout@v1
-      name: Checkout project
-    - uses: olafurpg/setup-scala@v2
-      name: Setup Scala
-    - uses: olafurpg/setup-gpg@v2
-      name: Setup GPG
-    - run: csbt mdoc ci-release
-      name: Release new version
-      env:
-        RELEASE: true
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        PGP_PASSPHRASE: ${{ secrets.PGP_PASSPHRASE }}
-        PGP_SECRET: ${{ secrets.PGP_SECRET }}
-        SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
-        SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
-    - uses: crazy-max/ghaction-github-pages@v1.2.5
-      name: Update markdown files
-      with:
-        target_branch: master
-        keep_history: true
-        allow_empty_commit: false
-        build_dir: .
-        commit_message: Update markdown files [ci skip]
+      - uses: actions/checkout@v1
+        name: Checkout project
+      - uses: olafurpg/setup-scala@v2
+        name: Setup Scala
+      - uses: olafurpg/setup-gpg@v2
+        name: Setup GPG
+      - run: csbt mdoc ci-release
+        name: Release new version
+        env:
+          RELEASE: true
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PGP_PASSPHRASE: ${{ secrets.PGP_PASSPHRASE }}
+          PGP_SECRET: ${{ secrets.PGP_SECRET }}
+          SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
+          SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
+      - name: Update markdown files
+        uses: stefanzweifel/git-auto-commit-action@v2.5.0
+        with:
+          branch: master
+          commit_message: Update markdown files
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
