@@ -1,11 +1,9 @@
 package com.alejandrohdezma.sbt.me
 
-import scala.sys.process._
-
 import sbt.Def.Setting
 import sbt.Keys._
+import sbt._
 import sbt.plugins.JvmPlugin
-import sbt.{settingKey, url, AutoPlugin, Def, PluginTrigger, Plugins}
 
 import com.alejandrohdezma.sbt.me.github.Repository
 
@@ -64,13 +62,13 @@ object SbtMePlugin extends AutoPlugin {
 
   override def requires: Plugins = JvmPlugin
 
-  override def globalSettings: Seq[Setting[_]] = Seq(
+  override def buildSettings: Seq[Setting[_]] = Seq(
     downloadInfoFromGithub := sys.env.contains("RELEASE"),
     excludedContributors   := List("scala-steward", "mergify[bot]"),
     extraCollaborators     := List(),
     repository := {
       if (downloadInfoFromGithub.value)
-        Some(Repository.get(user, repo).fold(sys.error, identity))
+        Some(Repository.get(info.value._1, info.value._2).fold(sys.error, identity))
       else None
     },
     contributors := repository.value.fold(Contributors(Nil)) {
@@ -101,16 +99,15 @@ object SbtMePlugin extends AutoPlugin {
   )
 
   /** Gets the Github user and repository from the git remote info */
-  private lazy val (user, repo): (String, String) = {
+  private val info = Def.setting {
     val identifier = """([^\/]+)"""
 
-    val GithubHttps = s"https://github.com/$identifier/$identifier.git".r
-    val GithubSsh   = s"git@github.com:$identifier/$identifier.git".r
+    val Connection = s"scm:git:https://github.com/$identifier/$identifier.git".r
 
-    "git ls-remote --get-url origin".!!.trim() match {
-      case GithubHttps(user, repo) => (user, repo)
-      case GithubSsh(user, repo)   => (user, repo)
-      case _                       => sys.error("Unable to get info from `git ls-remote --get-url origin`")
+    scmInfo.value.map(_.connection) match {
+      case Some(Connection(owner, repo)) => (owner, repo)
+      case None                          => sys.error("`scmInfo` is mandatory for this plugin to work")
+      case Some(s)                       => sys.error(s"Invalid `scmInfo` connection value: $s")
     }
   }
 

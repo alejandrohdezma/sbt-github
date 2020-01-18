@@ -1,5 +1,7 @@
 package com.alejandrohdezma.sbt.me.github
 
+import com.alejandrohdezma.sbt.me.http.Authentication
+import com.alejandrohdezma.sbt.me.http.Authentication.Token
 import com.alejandrohdezma.sbt.me.withServer
 import org.http4s.dsl.io._
 import org.http4s.headers.Host
@@ -447,5 +449,7 @@ class RepositorySpec extends Specification {
     }
 
   }
+
+  implicit val authentication: Authentication = Token("1234")
 
 }

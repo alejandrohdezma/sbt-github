@@ -9,7 +9,7 @@ trait Authentication {
 object Authentication {
 
   implicit def apply: Authentication = {
-    val key = "GITHUB_PERSONAL_ACCESS_TOKEN"
+    val key = "GITHUB_TOKEN"
 
     sys.env
       .get(key)
