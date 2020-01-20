@@ -24,10 +24,19 @@ jobs:
           PGP_SECRET: ${{ secrets.PGP_SECRET }}
           SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
           SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
+      - name: Generate changelog
+        uses: charmixer/auto-changelog-action@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
       - name: Update markdown files
         run: |
           mv target/mdoc/*.md .
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git diff-index --quiet HEAD || git commit -m "Update markdown files" -a
-          git push
+          git commit -a -m 'Updated markdown files' && echo ::set-env name=push::1 || echo "No changes to markdown files"
+      - name: Push changes
+        if: env.push == 1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git push "https://alejandrohdezma:$GITHUB_TOKEN@github.com/$GITHUB_REPOSITORY.git" HEAD:master
