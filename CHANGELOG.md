@@ -6,6 +6,7 @@
 
 **Merged pull requests:**
 
+- Retrieve organization email from Github [\#33](https://github.com/alejandrohdezma/sbt-me/pull/33) ([alejandrohdezma](https://github.com/alejandrohdezma))
 - Add `yearRange` setting with year range of the project [\#32](https://github.com/alejandrohdezma/sbt-me/pull/32) ([alejandrohdezma](https://github.com/alejandrohdezma))
 - Build settings instead of global, replace Travis with github actions [\#31](https://github.com/alejandrohdezma/sbt-me/pull/31) ([alejandrohdezma](https://github.com/alejandrohdezma))
 - Update sbt to 1.3.7 [\#30](https://github.com/alejandrohdezma/sbt-me/pull/30) ([scala-steward](https://github.com/scala-steward))
