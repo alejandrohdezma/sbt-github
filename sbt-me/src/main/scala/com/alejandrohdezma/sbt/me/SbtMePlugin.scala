@@ -61,6 +61,10 @@ object SbtMePlugin extends AutoPlugin {
       "Range of years in which the project has been active"
     }
 
+    val organizationEmail = settingKey[Option[String]] {
+      "Organization email"
+    }
+
   }
 
   import autoImport._
@@ -106,7 +110,10 @@ object SbtMePlugin extends AutoPlugin {
       .flatMap(_.organization)
       .flatMap(_.fold(sys.error, identity).url)
       .map(sbt.url)
-      .orElse(organizationHomepage.value)
+      .orElse(organizationHomepage.value),
+    organizationEmail := repository.value
+      .flatMap(_.organization)
+      .flatMap(_.fold(sys.error, identity).email)
   )
 
   /** Gets the Github user and repository from the git remote info */
