@@ -1,8 +1,14 @@
 name: Update changelog
 
 on:
-  push:
-    branches: master
+  pull_request:
+    types: [closed]
+
+  release:
+    types: [published]
+
+  issues:
+    types: [closed, edited]
 
 jobs:
   changelog:
