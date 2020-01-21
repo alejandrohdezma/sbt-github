@@ -1,0 +1,24 @@
+name: Update changelog
+
+on:
+  push:
+    branches: master
+
+jobs:
+  changelog:
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - uses: actions/checkout@v1
+        name: Checkout project
+      - name: Generate changelog
+        uses: charmixer/auto-changelog-action@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Update changelog
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git commit -a -m 'Update changelog' || echo "No changes to changelog"
+          git push "https://alejandrohdezma:$GITHUB_TOKEN@github.com/$GITHUB_REPOSITORY.git" HEAD:master

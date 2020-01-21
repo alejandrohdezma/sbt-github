@@ -1,4 +1,4 @@
-name: CI
+name: Formatters & Tests
 
 on:
   push:
@@ -9,13 +9,15 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
-        name: Checkout project
-      - uses: olafurpg/setup-scala@v2
-        name: Setup Scala
-      - run: csbt "all scalafmtCheckAll scalafmtSbtCheck"
-        name: Run scalafmt
-      - run: csbt "scalafixAll --check"
-        name: Run scalafix
-      - run: csbt test
-        name: Run tests
+      - name: Checkout project
+        uses: actions/checkout@v1
+      - name: Setup Scala
+        uses: olafurpg/setup-scala@v2
+      - name: Run scalafmt
+        run: csbt "all scalafmtCheckAll scalafmtSbtCheck"
+      - name: Run scalafix
+        run: csbt "scalafixAll --check"
+      - name: Compile documentation
+        run: csbt mdoc
+      - name: Run tests
+        run: csbt test
