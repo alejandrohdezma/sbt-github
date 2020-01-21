@@ -401,39 +401,57 @@ class RepositorySpec extends Specification {
 
     "return repository's organization from Github API" >> withServer {
       case GET -> Root / "organization" =>
-        Ok(s"""{ "name": "My Organization", "blog": "http://example.com" }""")
+        Ok(s"""{
+          "name": "My Organization",
+          "blog": "http://example.com",
+          "email": "org@example.com"
+        }""")
     } { uri =>
       val repository = Repository("", License("", ""), "", 0, "", "", Some(s"${uri}organization"))
 
       val organization = repository.organization
 
-      val expected = Organization(Some("My Organization"), Some("http://example.com"))
+      val expected =
+        Organization(Some("My Organization"), Some("http://example.com"), Some("org@example.com"))
 
       organization must be some right(expected)
     }
 
     "not return url if not present" >> withServer {
       case GET -> Root / "organization" =>
-        Ok(s"""{ "name": "My Organization"}""")
+        Ok(s"""{ "name": "My Organization", "email": "org@example.com" }""")
     } { uri =>
       val repository = Repository("", License("", ""), "", 0, "", "", Some(s"${uri}organization"))
 
       val organization = repository.organization
 
-      val expected = Organization(Some("My Organization"), None)
+      val expected = Organization(Some("My Organization"), None, Some("org@example.com"))
 
       organization must be some right(expected)
     }
 
     "not return name if not present" >> withServer {
       case GET -> Root / "organization" =>
-        Ok(s"""{ "blog": "http://example.com" }""")
+        Ok(s"""{ "blog": "http://example.com", "email": "org@example.com" }""")
     } { uri =>
       val repository = Repository("", License("", ""), "", 0, "", "", Some(s"${uri}organization"))
 
       val organization = repository.organization
 
-      val expected = Organization(None, Some("http://example.com"))
+      val expected = Organization(None, Some("http://example.com"), Some("org@example.com"))
+
+      organization must be some right(expected)
+    }
+
+    "not return email if not present" >> withServer {
+      case GET -> Root / "organization" =>
+        Ok(s"""{ "blog": "http://example.com", "name": "My Organization" }""")
+    } { uri =>
+      val repository = Repository("", License("", ""), "", 0, "", "", Some(s"${uri}organization"))
+
+      val organization = repository.organization
+
+      val expected = Organization(Some("My Organization"), Some("http://example.com"), None)
 
       organization must be some right(expected)
     }

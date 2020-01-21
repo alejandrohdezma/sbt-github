@@ -7,7 +7,7 @@ import sbt.Keys._
 import sbt._
 import sbt.plugins.JvmPlugin
 
-import com.alejandrohdezma.sbt.me.github.Repository
+import com.alejandrohdezma.sbt.me.github.{Organization, Repository}
 
 /**
  * This plugin automatically enables reloading on sbt source changes and
@@ -41,6 +41,10 @@ object SbtMePlugin extends AutoPlugin {
       "List of collaborators downloaded from Github"
     )
 
+    val organizationMetadata = settingKey[Option[Organization]] {
+      "Organization information downloaded from Github"
+    }
+
     val extraCollaborators = settingKey[List[Lazy[Collaborator]]] {
       "Extra collaborators that should be always included (independent of whether they are contributors or not)"
     }
@@ -61,6 +65,10 @@ object SbtMePlugin extends AutoPlugin {
       "Range of years in which the project has been active"
     }
 
+    val organizationEmail = settingKey[Option[String]] {
+      "Organization email"
+    }
+
   }
 
   import autoImport._
@@ -78,6 +86,9 @@ object SbtMePlugin extends AutoPlugin {
         Some(Repository.get(info.value._1, info.value._2).fold(sys.error, identity))
       else None
     },
+    organizationMetadata := repository.value
+      .flatMap(_.organization)
+      .map(_.fold(sys.error, identity)),
     contributors := repository.value.fold(Contributors(Nil)) {
       _.contributors(excludedContributors.value).fold(sys.error, identity)
     },
@@ -98,15 +109,13 @@ object SbtMePlugin extends AutoPlugin {
 
   override def projectSettings: Seq[Def.Setting[_]] = Seq(
     description := repository.value.map(_.description).getOrElse(description.value),
-    organizationName := repository.value
-      .flatMap(_.organization)
-      .flatMap(_.fold(sys.error, identity).name)
+    organizationName := organizationMetadata.value
+      .flatMap(_.name)
       .getOrElse(organizationName.value),
-    organizationHomepage := repository.value
-      .flatMap(_.organization)
-      .flatMap(_.fold(sys.error, identity).url)
-      .map(sbt.url)
-      .orElse(organizationHomepage.value)
+    organizationHomepage := organizationMetadata.value
+      .flatMap(_.url.map(sbt.url))
+      .orElse(organizationHomepage.value),
+    organizationEmail := organizationMetadata.value.flatMap(_.email)
   )
 
   /** Gets the Github user and repository from the git remote info */
