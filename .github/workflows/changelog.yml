@@ -1,14 +1,8 @@
 name: Update changelog
 
 on:
-  pull_request:
-    types: [closed]
-
-  release:
-    types: [published]
-
-  issues:
-    types: [closed, edited]
+  push:
+    tags: v**
 
 jobs:
   changelog:
