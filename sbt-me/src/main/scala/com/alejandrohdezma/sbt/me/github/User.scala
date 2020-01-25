@@ -9,7 +9,12 @@ final case class User(
     name: Option[String],
     email: Option[String],
     avatar: Option[String]
-)
+) {
+
+  /** Returns this user as a Github organization */
+  def asOrganization: Organization = Organization(name, Some(url), email)
+
+}
 
 object User {
 
