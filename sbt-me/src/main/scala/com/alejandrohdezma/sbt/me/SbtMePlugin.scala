@@ -45,6 +45,10 @@ object SbtMePlugin extends AutoPlugin {
       "Organization information downloaded from Github"
     }
 
+    val populateOrganizationWithOwner = settingKey[Boolean] {
+      "Populate organization info with the owner one in case there is no organization, default to `true`"
+    }
+
     val extraCollaborators = settingKey[List[Lazy[Collaborator]]] {
       "Extra collaborators that should be always included (independent of whether they are contributors or not)"
     }
@@ -78,9 +82,10 @@ object SbtMePlugin extends AutoPlugin {
   override def requires: Plugins = JvmPlugin
 
   override def buildSettings: Seq[Setting[_]] = Seq(
-    downloadInfoFromGithub := sys.env.contains("RELEASE"),
-    excludedContributors   := List("scala-steward", "mergify[bot]"),
-    extraCollaborators     := List(),
+    downloadInfoFromGithub        := sys.env.contains("RELEASE"),
+    populateOrganizationWithOwner := true,
+    excludedContributors          := List("scala-steward", "mergify[bot]"),
+    extraCollaborators            := List(),
     repository := {
       if (downloadInfoFromGithub.value)
         Some(Repository.get(info.value._1, info.value._2).fold(sys.error, identity))
@@ -88,6 +93,7 @@ object SbtMePlugin extends AutoPlugin {
     },
     organizationMetadata := repository.value
       .flatMap(_.organization)
+      .orElse(repository.value.map(_.owner.map(_.asOrganization)))
       .map(_.fold(sys.error, identity)),
     contributors := repository.value.fold(Contributors(Nil)) {
       _.contributors(excludedContributors.value).fold(sys.error, identity)

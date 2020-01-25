@@ -19,7 +19,8 @@ final case class Repository(
     startYear: Int,
     contributorsUrl: String,
     collaboratorsUrl: String,
-    organizationUrl: Option[String]
+    organizationUrl: Option[String],
+    ownerUrl: String
 ) {
 
   /** Returns the license extracted from github in the format that SBT is expecting */
@@ -70,6 +71,12 @@ final case class Repository(
       .map(client.get[Organization])
       .map(_.leftMap(_ => "Unable to get repository organization"))
 
+  /**
+   * Returns the repository's owner information.
+   */
+  def owner(implicit auth: Authentication): Either[String, User] =
+    client.get[User](ownerUrl).leftMap(_ => "Unable to get repository owner")
+
 }
 
 object Repository {
@@ -100,6 +107,7 @@ object Repository {
       contributors    <- json.get[String]("contributors_url")
       collaborators   <- json.get[String]("collaborators_url")
       organizationUrl <- json.get[Option[OrganizationUrl]]("organization")
+      ownerUrl        <- json.get[OwnerUrl]("owner")
     } yield Repository(
       description,
       license,
@@ -107,12 +115,18 @@ object Repository {
       startYear.getYear,
       contributors,
       collaborators.replace("{/collaborator}", ""),
-      organizationUrl.map(_.value)
+      organizationUrl.map(_.value),
+      ownerUrl.value
     )
 
   final private case class OrganizationUrl(value: String) extends AnyVal
 
   implicit private val OrganizationUrlDecoder: Decoder[OrganizationUrl] =
     _.get[String]("url").map(OrganizationUrl)
+
+  final private case class OwnerUrl(value: String) extends AnyVal
+
+  implicit private val OwnerUrlDecoder: Decoder[OwnerUrl] =
+    _.get[String]("url").map(OwnerUrl)
 
 }
