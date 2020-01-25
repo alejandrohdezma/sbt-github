@@ -5,6 +5,7 @@ Global / onChangedBuildSource := ReloadOnSourceChanges
 
 lazy val root = project
   .in(file("."))
+  .settings(name := "sbt-me")
   .aggregate(`sbt-me`, `sbt-me-mdoc`)
   .enablePlugins(MdocPlugin)
   .settings(skip in publish := true)
