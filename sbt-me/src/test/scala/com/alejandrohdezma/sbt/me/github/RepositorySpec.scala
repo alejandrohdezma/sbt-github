@@ -496,6 +496,103 @@ class RepositorySpec extends Specification {
 
   }
 
+  "repository.owner" should {
+
+    "return repository's owner from Github API" >> withServer {
+      case GET -> Root / "owner" =>
+        Ok(s"""{
+          "login": "owner",
+          "html_url": "example.com/owner",
+          "name": "Owner",
+          "email": "owner@example.com",
+          "avatar_url": "example.com/owner.png"
+        }""")
+    } { uri =>
+      val repository =
+        Repository("", License("", ""), "", 0, "", "", None, s"${uri}owner")
+
+      val owner = repository.owner
+
+      val expected = User(
+        "owner",
+        "example.com/owner",
+        Some("Owner"),
+        Some("owner@example.com"),
+        Some("example.com/owner.png")
+      )
+
+      owner must beRight(expected)
+    }
+
+    "not return name if not present" >> withServer {
+      case GET -> Root / "owner" =>
+        Ok(s"""{
+          "login": "owner",
+          "html_url": "example.com/owner",
+          "email": "owner@example.com"
+        }""")
+    } { uri =>
+      val repository =
+        Repository("", License("", ""), "", 0, "", "", None, s"${uri}owner")
+
+      val owner = repository.owner
+
+      val expected = User("owner", "example.com/owner", None, Some("owner@example.com"), None)
+
+      owner must beRight(expected)
+    }
+
+    "not return email if not present" >> withServer {
+      case GET -> Root / "owner" =>
+        Ok(s"""{
+          "login": "owner",
+          "html_url": "example.com/owner",
+          "name": "Owner"
+        }""")
+    } { uri =>
+      val repository =
+        Repository("", License("", ""), "", 0, "", "", None, s"${uri}owner")
+
+      val owner = repository.owner
+
+      val expected = User("owner", "example.com/owner", Some("Owner"), None, None)
+
+      owner must beRight(expected)
+    }
+
+    "not return avatar if not present" >> withServer {
+      case GET -> Root / "owner" =>
+        Ok(s"""{
+          "login": "owner",
+          "html_url": "example.com/owner",
+          "name": "Owner",
+          "email": "owner@example.com"
+        }""")
+    } { uri =>
+      val repository =
+        Repository("", License("", ""), "", 0, "", "", None, s"${uri}owner")
+
+      val owner = repository.owner
+
+      val expected =
+        User("owner", "example.com/owner", Some("Owner"), Some("owner@example.com"), None)
+
+      owner must beRight(expected)
+    }
+
+    "return generic error on any error" >> withServer {
+      case GET -> Root / "owner" => NotFound()
+    } { uri =>
+      val repository =
+        Repository("", License("", ""), "", 0, "", "", None, s"${uri}owner")
+
+      val owner = repository.owner
+
+      owner must beLeft("Unable to get repository owner")
+    }
+
+  }
+
   implicit val authentication: Authentication = Token("1234")
 
 }

@@ -71,6 +71,12 @@ final case class Repository(
       .map(client.get[Organization])
       .map(_.leftMap(_ => "Unable to get repository organization"))
 
+  /**
+   * Returns the repository's owner information.
+   */
+  def owner(implicit auth: Authentication): Either[String, User] =
+    client.get[User](ownerUrl).leftMap(_ => "Unable to get repository owner")
+
 }
 
 object Repository {
