@@ -9,6 +9,8 @@
   "description": "An awesome description",
   "collaborators_url": "{{base_directory}}/collaborators.json",
   "contributors_url": "{{base_directory}}/contributors.json",
+  "issues_url": "https://github.com/user1/repo/issues{/number}",
+  "pulls_url": "https://github.com/user1/repo/pulls{/number}",
   "license": {
     "spdx_id": "MIT",
     "url": "https://api.github.com/licenses/mit"

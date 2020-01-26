@@ -21,6 +21,8 @@ final case class Repository(
     startYear: Int,
     contributorsUrl: String,
     collaboratorsUrl: String,
+    issuesUrl: String,
+    pullsUrl: String,
     organizationUrl: Option[String],
     ownerUrl: String
 ) {
@@ -130,6 +132,8 @@ object Repository {
       startYear       <- json.get[ZonedDateTime]("created_at")
       contributors    <- json.get[String]("contributors_url")
       collaborators   <- json.get[String]("collaborators_url")
+      issues          <- json.get[String]("issues_url")
+      pulls           <- json.get[String]("pulls_url")
       organizationUrl <- json.get[Option[OrganizationUrl]]("organization")
       ownerUrl        <- json.get[OwnerUrl]("owner")
     } yield Repository(
@@ -140,6 +144,8 @@ object Repository {
       startYear.getYear,
       contributors,
       collaborators.replace("{/collaborator}", ""),
+      issues.replace("{/number}", ""),
+      pulls.replace("{/number}", ""),
       organizationUrl.map(_.value),
       ownerUrl.value
     )
