@@ -21,7 +21,7 @@ object client {
    * returns its contents as `String`.
    */
   @SuppressWarnings(Array("all"))
-  def get[A: Decoder](uri: String)(implicit A: Authentication): Result[A] =
+  def get[A: Decoder](uri: String)(implicit auth: Authentication): Result[A] =
     Try {
       cache.computeIfAbsent(
         uri, { _ =>
@@ -29,7 +29,7 @@ object client {
 
           val connection = url.openConnection.asInstanceOf[HttpURLConnection]
 
-          connection.setRequestProperty("Authorization", A.header)
+          connection.setRequestProperty("Authorization", auth.header)
 
           val inputStream = connection.getInputStream
 
