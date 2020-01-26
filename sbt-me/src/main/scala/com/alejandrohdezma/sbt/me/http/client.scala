@@ -1,7 +1,7 @@
 package com.alejandrohdezma.sbt.me.http
 
 import java.io.FileNotFoundException
-import java.net.{HttpURLConnection, URL}
+import java.net.URL
 import java.util.concurrent.ConcurrentHashMap
 
 import scala.io.Source
@@ -37,7 +37,7 @@ object client {
 
           logger.verbose(s"Content for $uri not found on cache, downloading...")
 
-          val connection = url.openConnection.asInstanceOf[HttpURLConnection]
+          val connection = url.openConnection
 
           connection.setRequestProperty("Authorization", auth.header)
 
