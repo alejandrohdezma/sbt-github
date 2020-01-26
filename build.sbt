@@ -18,6 +18,7 @@ lazy val `root` = project
 
 lazy val `sbt-me` = project
   .enablePlugins(SbtPlugin)
+  .settings(scriptedLaunchOpts += "-Dplugin.version=" + version.value)
   .settings(
     libraryDependencies ++= Seq(
       "org.specs2"     %% "specs2-core"         % "4.8.3"   % Test,
