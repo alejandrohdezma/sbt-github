@@ -1,11 +1,20 @@
 # Changelog
 
-## [Unreleased](https://github.com/alejandrohdezma/sbt-github/tree/HEAD)
+## [v0.4.0](https://github.com/alejandrohdezma/sbt-github/tree/v0.4.0) (2020-01-26)
 
-[Full Changelog](https://github.com/alejandrohdezma/sbt-github/compare/v0.3.0...HEAD)
+[Full Changelog](https://github.com/alejandrohdezma/sbt-github/compare/v0.3.0...v0.4.0)
 
 **Merged pull requests:**
 
+- Rename plugin to `sbt-github` [\#42](https://github.com/alejandrohdezma/sbt-github/pull/42) ([alejandrohdezma](https://github.com/alejandrohdezma))
+- Add `sbt-me-mdoc` plugin [\#41](https://github.com/alejandrohdezma/sbt-github/pull/41) ([alejandrohdezma](https://github.com/alejandrohdezma))
+- Recover issues and pulls url from repository endpoint [\#40](https://github.com/alejandrohdezma/sbt-github/pull/40) ([alejandrohdezma](https://github.com/alejandrohdezma))
+- Add `scripted` tests [\#39](https://github.com/alejandrohdezma/sbt-github/pull/39) ([alejandrohdezma](https://github.com/alejandrohdezma))
+- Make Github entry point URL configurable [\#38](https://github.com/alejandrohdezma/sbt-github/pull/38) ([alejandrohdezma](https://github.com/alejandrohdezma))
+- Add logging to operations [\#37](https://github.com/alejandrohdezma/sbt-github/pull/37) ([alejandrohdezma](https://github.com/alejandrohdezma))
+- Add simple cache to HTTP client [\#36](https://github.com/alejandrohdezma/sbt-github/pull/36) ([alejandrohdezma](https://github.com/alejandrohdezma))
+- Add owner information as organization in case repository doesn't have one [\#35](https://github.com/alejandrohdezma/sbt-github/pull/35) ([alejandrohdezma](https://github.com/alejandrohdezma))
+- Update http4s-blaze-server, http4s-dsl to 0.20.16 [\#34](https://github.com/alejandrohdezma/sbt-github/pull/34) ([scala-steward](https://github.com/scala-steward))
 - Retrieve organization email from Github [\#33](https://github.com/alejandrohdezma/sbt-github/pull/33) ([alejandrohdezma](https://github.com/alejandrohdezma))
 - Add `yearRange` setting with year range of the project [\#32](https://github.com/alejandrohdezma/sbt-github/pull/32) ([alejandrohdezma](https://github.com/alejandrohdezma))
 - Build settings instead of global, replace Travis with github actions [\#31](https://github.com/alejandrohdezma/sbt-github/pull/31) ([alejandrohdezma](https://github.com/alejandrohdezma))
