@@ -13,7 +13,7 @@ final case class Repository(base: String) {
 
 object Repository {
 
-  implicit lazy val repository: Repository =
+  implicit def repository(implicit auth: Authentication): Repository =
     client
       .get[Repository]("https://api.github.com")
       .getOrElse(sys.error("Unable to connect to Github"))

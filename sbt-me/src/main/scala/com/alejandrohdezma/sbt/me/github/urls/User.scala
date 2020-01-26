@@ -1,6 +1,6 @@
 package com.alejandrohdezma.sbt.me.github.urls
 
-import com.alejandrohdezma.sbt.me.http.client
+import com.alejandrohdezma.sbt.me.http.{client, Authentication}
 import com.alejandrohdezma.sbt.me.json.Decoder
 import com.alejandrohdezma.sbt.me.syntax.json._
 
@@ -12,7 +12,7 @@ final case class User(base: String) {
 
 object User {
 
-  implicit lazy val user: User =
+  implicit def user(implicit auth: Authentication): User =
     client
       .get[User]("https://api.github.com")
       .getOrElse(sys.error("Unable to connect to Github"))
