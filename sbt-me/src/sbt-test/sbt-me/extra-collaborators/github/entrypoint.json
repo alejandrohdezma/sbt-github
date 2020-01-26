@@ -1,0 +1,4 @@
+{
+  "repository_url": "{{base_directory}}/repository.json",
+  "user_url": "{{base_directory}}/{user}.json"
+}
