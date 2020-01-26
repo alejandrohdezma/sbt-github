@@ -8,6 +8,6 @@ The maintainers of the project are:
 
 ## Contributors
 
-These are the people that have contributed to the @NAME@ project:
+These are the people that have contributed to the _@NAME@_ project:
 
 @CONTRIBUTORS@
