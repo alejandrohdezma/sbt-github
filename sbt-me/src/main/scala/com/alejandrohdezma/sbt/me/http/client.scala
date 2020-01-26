@@ -2,6 +2,7 @@ package com.alejandrohdezma.sbt.me.http
 
 import java.io.FileNotFoundException
 import java.net.{HttpURLConnection, URL}
+import java.util.concurrent.ConcurrentHashMap
 
 import scala.io.Source
 import scala.util.Try
@@ -22,18 +23,24 @@ object client {
   @SuppressWarnings(Array("all"))
   def get[A: Decoder](uri: String)(implicit A: Authentication): Result[A] =
     Try {
-      val url = new URL(s"$uri")
+      cache.computeIfAbsent(
+        uri, { _ =>
+          val url = new URL(s"$uri")
 
-      val connection = url.openConnection.asInstanceOf[HttpURLConnection]
+          val connection = url.openConnection.asInstanceOf[HttpURLConnection]
 
-      connection.setRequestProperty("Authorization", A.header)
+          connection.setRequestProperty("Authorization", A.header)
 
-      val inputStream = connection.getInputStream
+          val inputStream = connection.getInputStream
 
-      Source.fromInputStream(inputStream, "UTF-8").mkString
+          Source.fromInputStream(inputStream, "UTF-8").mkString
+        }
+      )
     }.toEither.leftMap {
       case _: FileNotFoundException => NotFound
       case NonFatal(_)              => Fail.Unknown
     }.flatMap(Json.parse).as[A]
+
+  private val cache: ConcurrentHashMap[String, String] = new ConcurrentHashMap[String, String]()
 
 }
