@@ -1,0 +1,3 @@
+# this test ensures `sbt-me-mdoc` sets `mdocVariables`
+> mdoc
+$ must-mirror target/mdoc/DOCS.md DOCS.md

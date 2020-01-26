@@ -1,0 +1,32 @@
+[
+  {
+    "login": "user1",
+    "avatar_url": "http://example.com/user1.png",
+    "html_url": "https://github.com/user1",
+    "contributions": 170
+  },
+  {
+    "login": "user2",
+    "avatar_url": "http://example.com/user2.png",
+    "html_url": "https://github.com/user2",
+    "contributions": 60
+  },
+  {
+    "login": "user3",
+    "avatar_url": "http://example.com/user3.png",
+    "html_url": "https://github.com/user3",
+    "contributions": 96
+  },
+  {
+    "login": "scala-steward",
+    "avatar_url": "https://avatars1.githubusercontent.com/u/43047562?v=4",
+    "html_url": "https://github.com/scala-steward",
+    "contributions": 24
+  },
+  {
+    "login": "mergify[bot]",
+    "avatar_url": "https://avatars1.githubusercontent.com/in/10562?v=4",
+    "html_url": "https://github.com/apps/mergify",
+    "contributions": 16
+  }
+]
