@@ -21,4 +21,20 @@ class EitherSyntaxSpec extends Specification {
 
   }
 
+  "onLeft" should {
+
+    "execute consumer if Left" >> {
+      val either = Left(40)
+
+      either.onLeft(_ => sys.error("fail")) must throwA[RuntimeException]("fail")
+    }
+
+    "do nothing if Right" >> {
+      val either = Right[Int, Int](40)
+
+      either.onLeft(_ => sys.error("fail")) must beRight(40)
+    }
+
+  }
+
 }
