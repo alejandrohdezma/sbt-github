@@ -15,9 +15,13 @@ final case class Repository(base: String) {
 
 object Repository {
 
-  implicit def repository(implicit auth: Authentication, logger: Logger): Repository =
+  implicit def repository(
+      implicit auth: Authentication,
+      logger: Logger,
+      entryPoint: GithubEntryPoint
+  ): Repository =
     client
-      .get[Repository]("https://api.github.com")
+      .get[Repository](entryPoint.value)
       .getOrElse(sys.error("Unable to connect to Github"))
 
   implicit val RepositoryUrlDecoder: Decoder[Repository] = json =>

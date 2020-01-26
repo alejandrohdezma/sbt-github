@@ -2,6 +2,7 @@ package com.alejandrohdezma.sbt.me.github
 
 import sbt.util.Logger
 
+import com.alejandrohdezma.sbt.me.github.urls.GithubEntryPoint
 import com.alejandrohdezma.sbt.me.http.{client, Authentication}
 import com.alejandrohdezma.sbt.me.json.Decoder
 import com.alejandrohdezma.sbt.me.syntax.json._
@@ -19,7 +20,9 @@ final case class Collaborator private[me] (
 object Collaborator {
 
   /** Obtains a collaborator information from its Github login ID */
-  def github(id: String)(implicit auth: Authentication): Logger => Collaborator = { implicit log =>
+  def github(id: String)(
+      implicit auth: Authentication
+  ): GithubEntryPoint => Logger => Collaborator = { implicit entrypoint => implicit log =>
     val userUrl = implicitly[urls.User].get(id)
 
     log.info(s"Retrieving `$id` information from Github API")
@@ -37,7 +40,11 @@ object Collaborator {
    * @param url the collaborator's URL. It may link to its Github profile or personal webpage.
    * @return a new collaborator
    */
-  def apply(login: String, name: String, url: String): Logger => Collaborator = { _ =>
+  def apply(
+      login: String,
+      name: String,
+      url: String
+  ): GithubEntryPoint => Logger => Collaborator = { _ => _ =>
     new Collaborator(login, url, "", Some(name), None, None)
   }
 
@@ -50,9 +57,13 @@ object Collaborator {
    * @param email the collaborator's email
    * @return a new collaborator
    */
-  def apply(login: String, name: String, url: String, email: String): Logger => Collaborator = {
-    _ =>
-      new Collaborator(login, url, "", Some(name), Some(email), None)
+  def apply(
+      login: String,
+      name: String,
+      url: String,
+      email: String
+  ): GithubEntryPoint => Logger => Collaborator = { _ => _ =>
+    new Collaborator(login, url, "", Some(name), Some(email), None)
   }
 
   /**
@@ -71,7 +82,7 @@ object Collaborator {
       url: String,
       email: Option[String],
       avatar: Option[String]
-  ): Logger => Collaborator = { _ =>
+  ): GithubEntryPoint => Logger => Collaborator = { _ => _ =>
     new Collaborator(login, url, "", Some(name), email, avatar)
   }
 
