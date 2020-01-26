@@ -1,5 +1,7 @@
 package com.alejandrohdezma.sbt.me.http
 
+import java.net.MalformedURLException
+
 import cats.implicits._
 
 import sbt.util.Logger
@@ -39,7 +41,7 @@ class ClientSpec extends Specification {
 
       val result = client.get[String](s"${uri}hello")
 
-      result must beLeft[Fail](Fail.NotFound)
+      result must beLeft[Fail](Fail.URLNotFound(s"${uri}hello"))
     }
 
     "returns Unknown for every other failure (http-related)" >> {
@@ -47,7 +49,10 @@ class ClientSpec extends Specification {
 
       val result = client.get[String]("miau")
 
-      result must beLeft[Fail](Fail.Unknown)
+      result must be like {
+        case Left(Fail.Unknown(e: MalformedURLException)) =>
+          e.getMessage must be equalTo "no protocol: miau"
+      }
     }
 
   }

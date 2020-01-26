@@ -10,7 +10,7 @@ import scala.util.control.NonFatal
 
 import sbt.util.Logger
 
-import com.alejandrohdezma.sbt.me.json.Json.Fail.NotFound
+import com.alejandrohdezma.sbt.me.json.Json.Fail.URLNotFound
 import com.alejandrohdezma.sbt.me.json.Json.{Fail, Result}
 import com.alejandrohdezma.sbt.me.json.{Decoder, Json}
 import com.alejandrohdezma.sbt.me.syntax.either._
@@ -47,8 +47,8 @@ object client {
         }
       )
     }.toEither.leftMap {
-      case _: FileNotFoundException => NotFound
-      case NonFatal(_)              => Fail.Unknown
+      case _: FileNotFoundException => URLNotFound(uri)
+      case NonFatal(t)              => Fail.Unknown(t)
     }.flatMap(Json.parse).as[A]
 
   private val cache: ConcurrentHashMap[String, String] = new ConcurrentHashMap[String, String]()

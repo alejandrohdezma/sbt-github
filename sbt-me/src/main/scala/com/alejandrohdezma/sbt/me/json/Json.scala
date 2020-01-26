@@ -8,7 +8,7 @@ object Json extends JavaTokenParsers {
 
   /** Parse the provided string into a [[Json.Value]] */
   def parse(s: String): Result[Json.Value] =
-    parseAll(`json-value`, s).map(Right(_)).getOrElse(Left(Fail.NotAValidJSON))
+    parseAll(`json-value`, s).map(Right(_)).getOrElse(Left(Fail.NotAValidJSON(s)))
 
   @SuppressWarnings(Array("all"))
   private def `json-value`: Parser[Json.Value] = {
@@ -31,7 +31,24 @@ object Json extends JavaTokenParsers {
    *
    * Left open so users can add more types of failures.
    */
-  trait Fail
+  trait Fail {
+
+    /** Returns this failure as a readable message */
+    def readableMessage: String = this match {
+      case Fail.NotAJSONObject(value) => s"is not a valid JSON object: $value"
+      case Fail.NotAList(value)       => s"is not a valid JSON array: $value"
+      case Fail.NotAString(value)     => s"is not a valid JSON string: $value"
+      case Fail.NotANumber(value)     => s"is not a valid JSON number: $value"
+      case Fail.NotABoolean(value)    => s"is not a valid JSON boolean: $value"
+      case Fail.NotADateTime(value)   => s"is not a valid date time: $value"
+      case Fail.Path(value, fail)     => s"$value => ${fail.readableMessage}"
+      case Fail.NotAValidJSON(string) => s"$string is not a valid JSON"
+      case Fail.Unknown(cause)        => s"An error occurred: ${cause.getMessage}"
+      case Fail.URLNotFound(url)      => s"$url was not found"
+      case Fail.NotFound              => "was not found"
+    }
+
+  }
 
   object Fail {
 
@@ -42,9 +59,10 @@ object Json extends JavaTokenParsers {
     final case class NotABoolean(value: Json.Value)    extends Fail
     final case class NotADateTime(value: Json.Value)   extends Fail
     final case class Path(value: String, fail: Fail)   extends Fail
-    case object NotAValidJSON                          extends Fail
+    final case class NotAValidJSON(string: String)     extends Fail
+    final case class Unknown(cause: Throwable)         extends Fail
+    final case class URLNotFound(url: String)          extends Fail
     case object NotFound                               extends Fail
-    case object Unknown                                extends Fail
 
   }
 
