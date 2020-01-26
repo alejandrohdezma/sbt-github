@@ -1,5 +1,7 @@
 package com.alejandrohdezma.sbt.me.github
 
+import sbt.util.Logger
+
 import com.alejandrohdezma.sbt.me.Lazy
 import com.alejandrohdezma.sbt.me.http.{client, Authentication}
 import com.alejandrohdezma.sbt.me.json.Decoder
@@ -19,6 +21,8 @@ object Collaborator {
 
   /** Obtains a collaborator information from its Github login ID */
   def github(id: String)(implicit auth: Authentication): Lazy[Collaborator] = Lazy {
+    implicit val logger: Logger = Logger.Null
+
     val userUrl = implicitly[urls.User].get(id)
 
     client.get[User](userUrl).map { user =>

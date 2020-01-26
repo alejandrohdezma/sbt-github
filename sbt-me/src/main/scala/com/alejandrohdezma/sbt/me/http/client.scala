@@ -8,6 +8,8 @@ import scala.io.Source
 import scala.util.Try
 import scala.util.control.NonFatal
 
+import sbt.util.Logger
+
 import com.alejandrohdezma.sbt.me.json.Json.Fail.NotFound
 import com.alejandrohdezma.sbt.me.json.Json.{Fail, Result}
 import com.alejandrohdezma.sbt.me.json.{Decoder, Json}
@@ -21,7 +23,7 @@ object client {
    * returns its contents as `String`.
    */
   @SuppressWarnings(Array("all"))
-  def get[A: Decoder](uri: String)(implicit auth: Authentication): Result[A] =
+  def get[A: Decoder](uri: String)(implicit auth: Authentication, logger: Logger): Result[A] =
     Try {
       cache.computeIfAbsent(
         uri, { _ =>

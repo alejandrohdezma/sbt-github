@@ -87,21 +87,31 @@ object SbtMePlugin extends AutoPlugin {
     excludedContributors          := List("scala-steward", "mergify[bot]"),
     extraCollaborators            := List(),
     repository := {
+      implicit val log: Logger = sLog.value
       if (downloadInfoFromGithub.value)
         Some(Repository.get(info.value._1, info.value._2).fold(sys.error, identity))
       else None
     },
-    organizationMetadata := repository.value
-      .flatMap(_.organization)
-      .orElse(repository.value.map(_.owner.map(_.asOrganization)))
-      .map(_.fold(sys.error, identity)),
-    contributors := repository.value.fold(Contributors(Nil)) {
-      _.contributors(excludedContributors.value).fold(sys.error, identity)
+    organizationMetadata := {
+      implicit val log: Logger = sLog.value
+      repository.value
+        .flatMap(_.organization)
+        .orElse(repository.value.map(_.owner.map(_.asOrganization)))
+        .map(_.fold(sys.error, identity))
     },
-    collaborators := repository.value.fold(Collaborators(Nil)) {
-      _.collaborators(contributors.value.list.map(_.login))
-        .fold(sys.error, identity)
-        .include(extraCollaborators.value.map(_.value))
+    contributors := {
+      implicit val log: Logger = sLog.value
+      repository.value.fold(Contributors(Nil)) {
+        _.contributors(excludedContributors.value).fold(sys.error, identity)
+      }
+    },
+    collaborators := {
+      implicit val log: Logger = sLog.value
+      repository.value.fold(Collaborators(Nil)) {
+        _.collaborators(contributors.value.list.map(_.login))
+          .fold(sys.error, identity)
+          .include(extraCollaborators.value.map(_.value))
+      }
     },
     developers := collaborators.value.developers,
     homepage   := repository.value.map(r => url(r.url)).orElse(homepage.value),

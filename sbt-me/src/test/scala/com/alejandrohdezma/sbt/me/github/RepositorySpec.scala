@@ -1,5 +1,7 @@
 package com.alejandrohdezma.sbt.me.github
 
+import sbt.util.Logger
+
 import com.alejandrohdezma.sbt.me.http.Authentication
 import com.alejandrohdezma.sbt.me.http.Authentication.Token
 import com.alejandrohdezma.sbt.me.withServer
@@ -594,5 +596,6 @@ class RepositorySpec extends Specification {
   }
 
   implicit val authentication: Authentication = Token("1234")
+  implicit val noOpLogger: Logger             = Logger.Null
 
 }

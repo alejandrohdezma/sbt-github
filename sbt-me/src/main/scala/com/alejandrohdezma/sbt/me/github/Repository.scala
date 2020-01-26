@@ -3,6 +3,7 @@ package com.alejandrohdezma.sbt.me.github
 import java.time.ZonedDateTime
 
 import sbt.URL
+import sbt.util.Logger
 
 import com.alejandrohdezma.sbt.me.http.{client, Authentication}
 import com.alejandrohdezma.sbt.me.json.Decoder
@@ -35,7 +36,7 @@ final case class Repository(
    */
   def contributors(
       excluded: List[String]
-  )(implicit auth: Authentication): Either[String, Contributors] = {
+  )(implicit auth: Authentication, logger: Logger): Either[String, Contributors] = {
     client
       .get[List[Contributor]](contributorsUrl)
       .map(_.sortBy(-_.contributions))
@@ -49,7 +50,8 @@ final case class Repository(
    * at least once to the project, alphabetically ordered.
    */
   def collaborators(allowed: List[String])(
-      implicit auth: Authentication
+      implicit auth: Authentication,
+      logger: Logger
   ): Either[String, Collaborators] =
     client
       .get[List[Collaborator]](collaboratorsUrl)
@@ -66,7 +68,10 @@ final case class Repository(
   /**
    * Returns the repository's organization information, if present.
    */
-  def organization(implicit auth: Authentication): Option[Either[String, Organization]] =
+  def organization(
+      implicit auth: Authentication,
+      logger: Logger
+  ): Option[Either[String, Organization]] =
     organizationUrl
       .map(client.get[Organization])
       .map(_.leftMap(_ => "Unable to get repository organization"))
@@ -74,7 +79,7 @@ final case class Repository(
   /**
    * Returns the repository's owner information.
    */
-  def owner(implicit auth: Authentication): Either[String, User] =
+  def owner(implicit auth: Authentication, logger: Logger): Either[String, User] =
     client.get[User](ownerUrl).leftMap(_ => "Unable to get repository owner")
 
 }
@@ -84,6 +89,7 @@ object Repository {
   /** Download repository information from Github, or returns a string containing the error */
   def get(user: String, name: String)(
       implicit auth: Authentication,
+      logger: Logger,
       url: urls.Repository
   ): Either[String, Repository] =
     client.get[Repository](url.get(user, name)).leftMap {

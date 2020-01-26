@@ -2,6 +2,8 @@ package com.alejandrohdezma.sbt.me.http
 
 import cats.implicits._
 
+import sbt.util.Logger
+
 import com.alejandrohdezma.sbt.me.json.Decoder
 import com.alejandrohdezma.sbt.me.json.Json.Fail
 import com.alejandrohdezma.sbt.me.syntax.json.JsonValueOps
@@ -49,5 +51,7 @@ class ClientSpec extends Specification {
     }
 
   }
+
+  implicit val noOpLogger: Logger = Logger.Null
 
 }

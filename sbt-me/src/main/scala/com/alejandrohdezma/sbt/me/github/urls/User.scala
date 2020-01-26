@@ -1,5 +1,7 @@
 package com.alejandrohdezma.sbt.me.github.urls
 
+import sbt.util.Logger
+
 import com.alejandrohdezma.sbt.me.http.{client, Authentication}
 import com.alejandrohdezma.sbt.me.json.Decoder
 import com.alejandrohdezma.sbt.me.syntax.json._
@@ -12,7 +14,7 @@ final case class User(base: String) {
 
 object User {
 
-  implicit def user(implicit auth: Authentication): User =
+  implicit def user(implicit auth: Authentication, logger: Logger): User =
     client
       .get[User]("https://api.github.com")
       .getOrElse(sys.error("Unable to connect to Github"))
