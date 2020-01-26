@@ -22,6 +22,8 @@ object Collaborator {
   def github(id: String)(implicit auth: Authentication): Logger => Collaborator = { implicit log =>
     val userUrl = implicitly[urls.User].get(id)
 
+    log.info(s"Retrieving `$id` information from Github API")
+
     client.get[User](userUrl).map { user =>
       new Collaborator(user.login, user.url, userUrl, user.name, user.email, user.avatar)
     } fold (_ => sys.error(s"Unable to get info for user $id"), identity)
