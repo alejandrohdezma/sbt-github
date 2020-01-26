@@ -5,12 +5,12 @@ Global / onChangedBuildSource := ReloadOnSourceChanges
 
 lazy val root = project
   .in(file("."))
-  .settings(name := "sbt-me")
-  .aggregate(`sbt-me`, `sbt-me-mdoc`)
+  .settings(name := "sbt-github")
+  .aggregate(`sbt-github`, `sbt-github-mdoc`)
   .enablePlugins(MdocPlugin)
   .settings(skip in publish := true)
 
-lazy val `sbt-me` = project
+lazy val `sbt-github` = project
   .enablePlugins(SbtPlugin)
   .settings(scriptedLaunchOpts += "-Dplugin.version=" + version.value)
   .settings(
@@ -22,9 +22,9 @@ lazy val `sbt-me` = project
     )
   )
 
-lazy val `sbt-me-mdoc` = project
+lazy val `sbt-github-mdoc` = project
   .settings(description := "Provides most of the info downloaded by stb-me as mdoc variables")
   .enablePlugins(SbtPlugin)
   .settings(scriptedLaunchOpts += "-Dplugin.version=" + version.value)
-  .dependsOn(`sbt-me`)
+  .dependsOn(`sbt-github`)
   .settings(addSbtPlugin("org.scalameta" % "sbt-mdoc" % "[2.0,)" % Provided))
