@@ -49,7 +49,12 @@ object client {
     }.toEither.leftMap {
       case _: FileNotFoundException => URLNotFound(uri)
       case NonFatal(t)              => Fail.Unknown(t)
-    }.flatMap(Json.parse).as[A]
+    }.flatMap(Json.parse).as[A].onLeft {
+      case f @ Fail.Unknown(cause) =>
+        logger.error(f.readableMessage)
+        logger.trace(cause)
+      case fail => logger.error(fail.readableMessage)
+    }
 
   private val cache: ConcurrentHashMap[String, String] = new ConcurrentHashMap[String, String]()
 
