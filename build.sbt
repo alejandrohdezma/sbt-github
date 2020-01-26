@@ -25,5 +25,6 @@ lazy val `sbt-me` = project
 lazy val `sbt-me-mdoc` = project
   .settings(description := "Provides most of the info downloaded by stb-me as mdoc variables")
   .enablePlugins(SbtPlugin)
+  .settings(scriptedLaunchOpts += "-Dplugin.version=" + version.value)
   .dependsOn(`sbt-me`)
   .settings(addSbtPlugin("org.scalameta" % "sbt-mdoc" % "[2.0,)" % Provided))
