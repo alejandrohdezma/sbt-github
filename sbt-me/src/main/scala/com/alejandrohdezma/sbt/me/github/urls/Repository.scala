@@ -1,5 +1,7 @@
 package com.alejandrohdezma.sbt.me.github.urls
 
+import sbt.util.Logger
+
 import com.alejandrohdezma.sbt.me.http._
 import com.alejandrohdezma.sbt.me.json.Decoder
 import com.alejandrohdezma.sbt.me.syntax.json._
@@ -13,7 +15,7 @@ final case class Repository(base: String) {
 
 object Repository {
 
-  implicit lazy val repository: Repository =
+  implicit def repository(implicit auth: Authentication, logger: Logger): Repository =
     client
       .get[Repository]("https://api.github.com")
       .getOrElse(sys.error("Unable to connect to Github"))

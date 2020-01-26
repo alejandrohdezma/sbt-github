@@ -8,7 +8,9 @@ import scala.io.Source
 import scala.util.Try
 import scala.util.control.NonFatal
 
-import com.alejandrohdezma.sbt.me.json.Json.Fail.NotFound
+import sbt.util.Logger
+
+import com.alejandrohdezma.sbt.me.json.Json.Fail.URLNotFound
 import com.alejandrohdezma.sbt.me.json.Json.{Fail, Result}
 import com.alejandrohdezma.sbt.me.json.{Decoder, Json}
 import com.alejandrohdezma.sbt.me.syntax.either._
@@ -21,15 +23,23 @@ object client {
    * returns its contents as `String`.
    */
   @SuppressWarnings(Array("all"))
-  def get[A: Decoder](uri: String)(implicit A: Authentication): Result[A] =
+  def get[A: Decoder](uri: String)(implicit auth: Authentication, logger: Logger): Result[A] =
     Try {
+      logger.verbose(s"Getting content from URL: $uri")
+
+      if (cache.containsKey(uri)) {
+        logger.verbose(s"$uri contents already stored on cache")
+      }
+
       cache.computeIfAbsent(
         uri, { _ =>
-          val url = new URL(s"$uri")
+          val url = new URL(uri)
+
+          logger.verbose(s"Content for $uri not found on cache, downloading...")
 
           val connection = url.openConnection.asInstanceOf[HttpURLConnection]
 
-          connection.setRequestProperty("Authorization", A.header)
+          connection.setRequestProperty("Authorization", auth.header)
 
           val inputStream = connection.getInputStream
 
@@ -37,9 +47,14 @@ object client {
         }
       )
     }.toEither.leftMap {
-      case _: FileNotFoundException => NotFound
-      case NonFatal(_)              => Fail.Unknown
-    }.flatMap(Json.parse).as[A]
+      case _: FileNotFoundException => URLNotFound(uri)
+      case NonFatal(t)              => Fail.Unknown(t)
+    }.flatMap(Json.parse).as[A].onLeft {
+      case f @ Fail.Unknown(cause) =>
+        logger.error(f.readableMessage)
+        logger.trace(cause)
+      case fail => logger.error(fail.readableMessage)
+    }
 
   private val cache: ConcurrentHashMap[String, String] = new ConcurrentHashMap[String, String]()
 
