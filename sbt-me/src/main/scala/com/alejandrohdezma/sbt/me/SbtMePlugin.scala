@@ -49,7 +49,7 @@ object SbtMePlugin extends AutoPlugin {
       "Populate organization info with the owner one in case there is no organization, default to `true`"
     }
 
-    val extraCollaborators = settingKey[List[Lazy[Collaborator]]] {
+    val extraCollaborators = settingKey[List[Logger => Collaborator]] {
       "Extra collaborators that should be always included (independent of whether they are contributors or not)"
     }
 
@@ -110,7 +110,7 @@ object SbtMePlugin extends AutoPlugin {
       repository.value.fold(Collaborators(Nil)) {
         _.collaborators(contributors.value.list.map(_.login))
           .fold(sys.error, identity)
-          .include(extraCollaborators.value.map(_.value))
+          .include(extraCollaborators.value.map(_(log)))
       }
     },
     developers := collaborators.value.developers,
