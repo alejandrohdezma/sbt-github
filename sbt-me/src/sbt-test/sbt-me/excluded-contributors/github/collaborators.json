@@ -1,0 +1,14 @@
+[
+  {
+    "login": "user1",
+    "url": "{{base_directory}}/user1.json",
+    "avatar_url": "http://example.com/user1.png",
+    "html_url": "https://github.com/user1"
+  },
+  {
+    "login": "user2",
+    "url": "{{base_directory}}/user2.json",
+    "avatar_url": "http://example.com/user2.png",
+    "html_url": "https://github.com/user2"
+  }
+]

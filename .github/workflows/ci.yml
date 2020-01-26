@@ -21,3 +21,7 @@ jobs:
         run: csbt mdoc
       - name: Run tests
         run: csbt test
+      - name: Run scripted tests
+        run: csbt scripted
+        env:
+          GITHUB_TOKEN: "this_should_not_be_used"

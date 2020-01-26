@@ -92,18 +92,24 @@ object SbtMePlugin extends AutoPlugin {
     populateOrganizationWithOwner := true,
     excludedContributors          := List("scala-steward", "mergify[bot]"),
     extraCollaborators            := List(),
-    repository := {
-      implicit val log: Logger                  = sLog.value
-      implicit val entryPoint: GithubEntryPoint = GithubEntryPoint(githubApiEntryPoint.value)
+    repository := Def.settingDyn {
       if (downloadInfoFromGithub.value)
-        Some(Repository.get(info.value._1, info.value._2).fold(sys.error, identity))
-      else None
-    },
+        Def.setting {
+          implicit val log: Logger                  = sLog.value
+          implicit val entryPoint: GithubEntryPoint = GithubEntryPoint(githubApiEntryPoint.value)
+
+          Some(Repository.get(info.value._1, info.value._2).fold(sys.error, identity))
+        } else Def.setting(None)
+    }.value,
     organizationMetadata := {
       implicit val log: Logger = sLog.value
       repository.value
         .flatMap(_.organization)
-        .orElse(repository.value.map(_.owner.map(_.asOrganization)))
+        .orElse {
+          repository.value
+            .filter(_ => populateOrganizationWithOwner.value)
+            .map(_.owner.map(_.asOrganization))
+        }
         .map(_.fold(sys.error, identity))
     },
     contributors := {
