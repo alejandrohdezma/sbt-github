@@ -23,5 +23,6 @@ jobs:
           mv target/mdoc/*.md .
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git commit -a -m 'Update documentation files' || echo "No changes to documentation files"
+          git add *.md
+          git commit -m 'Update documentation files' || echo "No changes to documentation files"
           git push "https://alejandrohdezma:$GITHUB_TOKEN@github.com/$GITHUB_REPOSITORY.git" HEAD:master
