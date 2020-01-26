@@ -14,6 +14,7 @@ import com.alejandrohdezma.sbt.me.syntax.list._
 
 /** Represents a repository in Github */
 final case class Repository(
+    name: String,
     description: String,
     license: License,
     url: String,
@@ -106,6 +107,7 @@ object Repository {
 
   implicit val RepositoryDecoder: Decoder[Repository] = json =>
     for {
+      name            <- json.get[String]("full_name")
       description     <- json.get[String]("description")
       license         <- json.get[License]("license")
       url             <- json.get[String]("html_url")
@@ -115,6 +117,7 @@ object Repository {
       organizationUrl <- json.get[Option[OrganizationUrl]]("organization")
       ownerUrl        <- json.get[OwnerUrl]("owner")
     } yield Repository(
+      name,
       description,
       license,
       url,
