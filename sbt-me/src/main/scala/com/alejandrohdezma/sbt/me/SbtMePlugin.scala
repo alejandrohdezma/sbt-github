@@ -103,7 +103,11 @@ object SbtMePlugin extends AutoPlugin {
       implicit val log: Logger = sLog.value
       repository.value
         .flatMap(_.organization)
-        .orElse(repository.value.map(_.owner.map(_.asOrganization)))
+        .orElse {
+          repository.value
+            .filter(_ => populateOrganizationWithOwner.value)
+            .map(_.owner.map(_.asOrganization))
+        }
         .map(_.fold(sys.error, identity))
     },
     contributors := {
