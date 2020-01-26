@@ -25,9 +25,17 @@ object client {
   @SuppressWarnings(Array("all"))
   def get[A: Decoder](uri: String)(implicit auth: Authentication, logger: Logger): Result[A] =
     Try {
+      logger.verbose(s"Getting content from URL: $uri")
+
+      if (cache.containsKey(uri)) {
+        logger.verbose(s"$uri contents already stored on cache")
+      }
+
       cache.computeIfAbsent(
         uri, { _ =>
-          val url = new URL(s"$uri")
+          val url = new URL(uri)
+
+          logger.verbose(s"Content for $uri not found on cache, downloading...")
 
           val connection = url.openConnection.asInstanceOf[HttpURLConnection]
 
