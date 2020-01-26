@@ -14,9 +14,13 @@ final case class User(base: String) {
 
 object User {
 
-  implicit def user(implicit auth: Authentication, logger: Logger): User =
+  implicit def user(
+      implicit auth: Authentication,
+      logger: Logger,
+      entryPoint: GithubEntryPoint
+  ): User =
     client
-      .get[User]("https://api.github.com")
+      .get[User](entryPoint.value)
       .getOrElse(sys.error("Unable to connect to Github"))
 
   implicit val UserUrlDecoder: Decoder[User] = json => json.get[String]("user_url").map(User(_))

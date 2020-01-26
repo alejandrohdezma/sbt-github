@@ -7,6 +7,7 @@ import sbt.Keys._
 import sbt._
 import sbt.plugins.JvmPlugin
 
+import com.alejandrohdezma.sbt.me.github.urls.GithubEntryPoint
 import com.alejandrohdezma.sbt.me.github.{Organization, Repository}
 
 /**
@@ -33,6 +34,10 @@ object SbtMePlugin extends AutoPlugin {
     type Collaborator = github.Collaborator
     val Collaborator = github.Collaborator
 
+    val githubApiEntryPoint = settingKey[String] {
+      "Entry point for the github API, defaults to `https://api.github.com`"
+    }
+
     val contributors = settingKey[Contributors](
       "List of contributors downloaded from Github"
     )
@@ -49,7 +54,7 @@ object SbtMePlugin extends AutoPlugin {
       "Populate organization info with the owner one in case there is no organization, default to `true`"
     }
 
-    val extraCollaborators = settingKey[List[Logger => Collaborator]] {
+    val extraCollaborators = settingKey[List[GithubEntryPoint => Logger => Collaborator]] {
       "Extra collaborators that should be always included (independent of whether they are contributors or not)"
     }
 
@@ -82,12 +87,14 @@ object SbtMePlugin extends AutoPlugin {
   override def requires: Plugins = JvmPlugin
 
   override def buildSettings: Seq[Setting[_]] = Seq(
+    githubApiEntryPoint           := "https://api.github.com",
     downloadInfoFromGithub        := sys.env.contains("RELEASE"),
     populateOrganizationWithOwner := true,
     excludedContributors          := List("scala-steward", "mergify[bot]"),
     extraCollaborators            := List(),
     repository := {
-      implicit val log: Logger = sLog.value
+      implicit val log: Logger                  = sLog.value
+      implicit val entryPoint: GithubEntryPoint = GithubEntryPoint(githubApiEntryPoint.value)
       if (downloadInfoFromGithub.value)
         Some(Repository.get(info.value._1, info.value._2).fold(sys.error, identity))
       else None
@@ -110,7 +117,9 @@ object SbtMePlugin extends AutoPlugin {
       repository.value.fold(Collaborators(Nil)) {
         _.collaborators(contributors.value.list.map(_.login))
           .fold(sys.error, identity)
-          .include(extraCollaborators.value.map(_(log)))
+          .include(
+            extraCollaborators.value.map(_(GithubEntryPoint(githubApiEntryPoint.value))(log))
+          )
       }
     },
     developers := collaborators.value.developers,
