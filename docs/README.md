@@ -81,7 +81,7 @@ If you use [mdoc](https://scalameta.org/mdoc/) for creating your documentation y
 addSbtPlugin("com.alejandrohdezma" %% "sbt-github-mdoc" % "@VERSION@")
 ```
 
-> Important! So we don't force a version of mdoc, it is requested as a [Provided dependency]() so you'll need to provide your own version of mdoc following [its own tutorial](https://scalameta.org/mdoc/docs/installation.html).
+> Important! So we don't force a version of mdoc, it is requested as a [`Provided`](https://maven.apache.org/guides/introduction/introduction-to-dependency-mechanism.html) dependency so you'll need to provide your own version of mdoc following [its own tutorial](https://scalameta.org/mdoc/docs/installation.html).
 
 The plugin provides the following `mdocVariables`:
 
