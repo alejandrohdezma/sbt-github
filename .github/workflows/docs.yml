@@ -3,6 +3,7 @@ name: Update documentation
 on:
   push:
     branches: master
+    tags: v**
 
 jobs:
   documentation:
