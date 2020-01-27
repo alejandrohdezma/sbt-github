@@ -22,8 +22,10 @@ This plugin enables several settings automatically by downloading them from Gith
 Add the following line to your `plugins.sbt` file:
 
 ```sbt
-addSbtPlugin("com.alejandrohdezma" %% "sbt-github" % "0.3.0")
+addSbtPlugin("com.alejandrohdezma" %% "sbt-github" % "0.4.0")
 ```
+
+If you use [mdoc](https://scalameta.org/mdoc/) there's also available an [mdoc integration module](#mdoc-integration)
 
 ## Configuration
 
@@ -71,6 +73,37 @@ ThisBuild / extraCollaborators += Collaborator.github("alejandrohdezma")
 ### Github API token
 
 In order for this plugin to work you'll need to add an environment variable named `GITHUB_TOKEN` with a [personal access content](https://github.com/settings/tokens).
+
+## mdoc integration
+
+If you use [mdoc](https://scalameta.org/mdoc/) for creating your documentation you can benefit from our mdoc module which provides a several bunch of [`mdocVariables`](https://scalameta.org/mdoc/docs/installation.html#sbt) already pre-filled with values extracted from Github to any project that adds the `MdocPlugin` to replace them in documentation.. To use it, just add the following line to your `plugins.sbt` file
+
+```sbt
+addSbtPlugin("com.alejandrohdezma" %% "sbt-github-mdoc" % "0.4.0")
+```
+
+> Important! So we don't force a version of mdoc, it is requested as a [Provided dependency]() so you'll need to provide your own version of mdoc following [its own tutorial](https://scalameta.org/mdoc/docs/installation.html).
+
+The plugin provides the following `mdocVariables`:
+
+- **VERSION**: Set to the value of the `version` setting by removing the timestamp part
+ (this behavior can be disabled using the `removeVersionTimestampInMdoc` setting).
+- **CONTRIBUTORS**: Set to the value of the `contributors` setting, containing the list
+ of repository contributors in markdown format.
+- **COLLABORATORS**: Set to the value of the `collaborators` setting, containing the list
+ of repository collaborators in markdown format.
+- **NAME**: Set to the project's name.
+- **LICENSE**: Set to the license's name.
+- **ORG_NAME**: Set to the value of `organizationName` setting (Github's organization name,
+ or owner's in case organization is empty and `populateOrganizationWithOwner` is `true`).
+- **ORG_EMAIL**: Set to the value of `organizationEmail` setting (Github's organization email,
+ or owner's in case organization is empty and `populateOrganizationWithOwner` is `true`).
+- **ORG_URL**: Set to the value of `organizationHomepage` setting (Github's organization homepage,
+ or owner's in case organization is empty and `populateOrganizationWithOwner` is `true`).
+- **PULLS_URL**: Set to the repository's pull requests url.
+- **ISSUES_URL**: Set to the repository's issues url.
+- **START_YEAR**: Set to the value of the `startYear` setting.
+- **YEAR_RANGE**: Set to the value of the `yearRange` setting
 
 [github-action]: https://github.com/alejandrohdezma/sbt-github/actions
 [github-action-badge]: https://img.shields.io/endpoint.svg?url=https%3A%2F%2Factions-badge.atrox.dev%2Falejandrohdezma%2Fsbt-github%2Fbadge%3Fref%3Dmaster&style=flat
