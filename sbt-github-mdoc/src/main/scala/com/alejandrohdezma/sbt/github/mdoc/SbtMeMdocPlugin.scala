@@ -21,6 +21,18 @@ import mdoc.MdocPlugin.autoImport.mdocVariables
  *   of repository contributors in markdown format.
  *  - '''COLLABORATORS''': Set to the value of the `collaborators` setting, containing the list
  *   of repository collaborators in markdown format.
+ *  - '''NAME''': Set to the project's name.
+ *  - '''LICENSE''': Set to the license's name.
+ *  - '''ORG_NAME''': Set to the value of `organizationName` setting (Github's organization name,
+ *   or owner's in case organization is empty and `populateOrganizationWithOwner` is `true`).
+ *  - '''ORG_EMAIL''': Set to the value of `organizationEmail` setting (Github's organization email,
+ *   or owner's in case organization is empty and `populateOrganizationWithOwner` is `true`).
+ *  - '''ORG_URL''': Set to the value of `organizationHomepage` setting (Github's organization homepage,
+ *   or owner's in case organization is empty and `populateOrganizationWithOwner` is `true`).
+ *  - '''PULLS_URL''': Set to the repository's pull requests url.
+ *  - '''ISSUES_URL''': Set to the repository's issues url.
+ *  - '''START_YEAR''': Set to the value of the `startYear` setting.
+ *  - '''YEAR_RANGE''': Set to the value of the `yearRange` setting
  */
 object SbtMeMdocPlugin extends AutoPlugin {
 
