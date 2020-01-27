@@ -3,8 +3,8 @@ package com.alejandrohdezma.sbt.github.mdoc
 import sbt.Keys._
 import sbt._
 
-import com.alejandrohdezma.sbt.github.SbtMePlugin
-import com.alejandrohdezma.sbt.github.SbtMePlugin.autoImport._
+import com.alejandrohdezma.sbt.github.SbtGithubPlugin
+import com.alejandrohdezma.sbt.github.SbtGithubPlugin.autoImport._
 import mdoc.MdocPlugin
 import mdoc.MdocPlugin.autoImport.mdocVariables
 
@@ -34,7 +34,7 @@ import mdoc.MdocPlugin.autoImport.mdocVariables
  *  - '''START_YEAR''': Set to the value of the `startYear` setting.
  *  - '''YEAR_RANGE''': Set to the value of the `yearRange` setting
  */
-object SbtMeMdocPlugin extends AutoPlugin {
+object SbtGithubMdocPlugin extends AutoPlugin {
 
   object autoImport {
 
@@ -59,7 +59,7 @@ object SbtMeMdocPlugin extends AutoPlugin {
 
   override def trigger: PluginTrigger = allRequirements
 
-  override def requires: Plugins = SbtMePlugin && MdocPlugin
+  override def requires: Plugins = SbtGithubPlugin && MdocPlugin
 
   override def projectSettings: Seq[Def.Setting[_]] = Seq(
     removeVersionTimestampInMdoc := true,

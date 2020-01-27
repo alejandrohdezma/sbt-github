@@ -21,7 +21,7 @@ import com.alejandrohdezma.sbt.github.github.{Organization, Repository}
  * needed during this phase.
  */
 @SuppressWarnings(Array("scalafix:DisableSyntax.=="))
-object SbtMePlugin extends AutoPlugin {
+object SbtGithubPlugin extends AutoPlugin {
 
   object autoImport {
 
