@@ -75,7 +75,7 @@ In order for this plugin to work you'll need to add an environment variable name
 
 ## mdoc integration
 
-If you use [mdoc](https://scalameta.org/mdoc/) for creating your documentation you can benefit from our mdoc module which provides a several bunch of [`mdocVariables`](https://scalameta.org/mdoc/docs/installation.html#sbt) already pre-filled with values extracted from Github to any project that adds the `MdocPlugin` to replace them in documentation.. To use it, just add the following line to your `plugins.sbt` file
+If you use [mdoc](https://scalameta.org/mdoc/) for creating your documentation you can benefit from our mdoc module which provides a several bunch of [`mdocVariables`](https://scalameta.org/mdoc/docs/installation.html#sbt) already pre-filled with values extracted from Github to any project that adds the `MdocPlugin` to replace them in documentation. To use it, just add the following line to your `plugins.sbt` file
 
 ```sbt
 addSbtPlugin("com.alejandrohdezma" %% "sbt-github-mdoc" % "@VERSION@")
