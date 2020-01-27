@@ -32,7 +32,7 @@ If you use [mdoc](https://scalameta.org/mdoc/) there's also available an [mdoc i
 By default, the plugin only downloads the information if an environment variable named `RELEASE` is present in the system SBT is running (the content of the variable is not important). This behaviour can be tweaked by using the `downloadInfoFromGithub` setting:
 
 ```sbt
-downloadInfoFromGithub := true
+ThisBuild / downloadInfoFromGithub := true
 ```
 
 ### Download owner information if it doesn't have organization
@@ -40,7 +40,7 @@ downloadInfoFromGithub := true
 `sbt-github` will populate `organizationName`, `organizationEmail` and `organizationHomepage` with information from repository's organization. In case the repository doesn't belong to an organization those settings will be populated with the owner information. You can disable this functionallity by setting `populateOrganizationWithOwner` to `false`:
 
 ```sbt
-populateOrganizationWithOwner := false
+ThisBuild / populateOrganizationWithOwner := false
 ```
 
 ### Excluding contributors
@@ -48,7 +48,7 @@ populateOrganizationWithOwner := false
 The `contributors` setting is populated with the information extracted from the repository contributor list. This list will include all Github users who have contributed to the repository, which is not what we always want (including bots, for example). You can exclude certain Github users by using the `excludedContributors` setting.
 
 ```sbt
-excludedContributors += "my-bot"
+ThisBuild / excludedContributors += "my-bot"
 ```
 
 By default the following list is excluded:
