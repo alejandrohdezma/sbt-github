@@ -6,7 +6,8 @@ identity and expression, sexual orientation, disability, personal
 appearance, body size, race, ethnicity, age, religion, nationality, or
 other such characteristics.
 
-Everyone is expected to follow the [Scala Code of Conduct] when
+Everyone is expected to follow the
+[Scala Code of Conduct](https://typelevel.org/code-of-conduct.html) when
 discussing the project on the available communication channels. If you
 are being harassed, please contact us immediately so that we can
 support you.
@@ -15,5 +16,3 @@ support you.
 
 For any questions, concerns, or moderation requests please contact a
 [member of the project](AUTHORS.md#maintainers).
-
-[Scala Code of Conduct]: https://typelevel.org/code-of-conduct.html
