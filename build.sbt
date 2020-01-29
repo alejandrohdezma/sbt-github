@@ -9,6 +9,7 @@ lazy val root = project
   .aggregate(`sbt-github`, `sbt-github-mdoc`)
   .enablePlugins(MdocPlugin)
   .settings(skip in publish := true)
+  .settings(mdocOut := file("."))
   .settings(
     mdocVariables ++= Map(
       "EXCLUDED_CONTRIBUTORS" -> excludedContributors.value.map(c => s"- $c").mkString("\n")
