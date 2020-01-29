@@ -10,18 +10,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout project
-        uses: actions/checkout@v1
+        uses: actions/checkout@v2
       - name: Setup Scala
-        uses: olafurpg/setup-scala@v2
+        uses: olafurpg/setup-scala@v7
       - name: Run scalafmt
-        run: csbt "all scalafmtCheckAll scalafmtSbtCheck"
+        run: sbt "all scalafmtCheckAll scalafmtSbtCheck"
       - name: Run scalafix
-        run: csbt "scalafixAll --check"
+        run: sbt "scalafixAll --check"
       - name: Compile documentation
-        run: csbt mdoc
+        run: sbt mdoc
       - name: Run tests
-        run: csbt test
+        run: sbt test
       - name: Run scripted tests
-        run: csbt scripted
+        run: sbt scripted
         env:
           GITHUB_TOKEN: "this_should_not_be_used"

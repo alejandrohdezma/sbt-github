@@ -8,14 +8,14 @@ jobs:
   changelog:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
         name: Checkout project
       - name: Generate changelog
         uses: charmixer/auto-changelog-action@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
       - name: Update changelog
-        uses: EndBug/add-and-commit@v2
+        uses: EndBug/add-and-commit@v3
         with:
           author_name: GitHub Action
           author_email: action@github.com

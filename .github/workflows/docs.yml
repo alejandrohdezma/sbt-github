@@ -12,15 +12,15 @@ jobs:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - name: Checkout project
-        uses: actions/checkout@v1
+        uses: actions/checkout@v2
       - name: Setup Scala
-        uses: olafurpg/setup-scala@v2
+        uses: olafurpg/setup-scala@v7
       - name: Generate documentation
-        run: csbt mdoc
+        run: sbt mdoc
         env:
           RELEASE: true
       - name: Update documentation
-        uses: EndBug/add-and-commit@v2
+        uses: EndBug/add-and-commit@v3
         with:
           author_name: GitHub Action
           author_email: action@github.com
