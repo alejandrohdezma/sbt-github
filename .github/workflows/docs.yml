@@ -20,9 +20,10 @@ jobs:
         env:
           RELEASE: true
       - name: Update documentation
-        run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-          git add *.md
-          git commit -m 'Update documentation files' || echo "No changes to documentation files"
-          git push "https://alejandrohdezma:$GITHUB_TOKEN@github.com/$GITHUB_REPOSITORY.git" HEAD:master
+        uses: EndBug/add-and-commit@v2
+        with:
+          author_name: GitHub Action
+          author_email: action@github.com
+          message: "Update documentation files"
+          path: "."
+          pattern: "*.md"
