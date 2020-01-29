@@ -29,15 +29,15 @@ If you use [mdoc](https://scalameta.org/mdoc/) there's also available an [mdoc i
 
 ## Configuration
 
-By default, the plugin only downloads the information if an environment variable named `RELEASE` is present in the system SBT is running (the content of the variable is not important). This behaviour can be tweaked by using the `downloadInfoFromGithub` setting:
+By default, the plugin only downloads the information if an environment variable named `RELEASE` is present in the system SBT is running (the content of the variable is not important). This behavior can be tweaked by using the `downloadInfoFromGithub` setting:
 
 ```sbt
 ThisBuild / downloadInfoFromGithub := true
 ```
 
-### Download owner information if it doesn't have organization
+### Download owner information if it doesn't have an organization
 
-`sbt-github` will populate `organizationName`, `organizationEmail` and `organizationHomepage` with information from repository's organization. In case the repository doesn't belong to an organization those settings will be populated with the owner information. You can disable this functionallity by setting `populateOrganizationWithOwner` to `false`:
+`sbt-github` will populate `organizationName`, `organizationEmail` and `organizationHomepage` with information from repository's organization. In case the repository doesn't belong to an organization those settings will be populated with the owner's information. You can disable this functionality by setting `populateOrganizationWithOwner` to `false`:
 
 ```sbt
 ThisBuild / populateOrganizationWithOwner := false
@@ -72,11 +72,11 @@ ThisBuild / extraCollaborators += Collaborator.github("alejandrohdezma")
 
 ### Github API token
 
-In order for this plugin to work you'll need to add an environment variable named `GITHUB_TOKEN` with a [personal access content](https://github.com/settings/tokens).
+For this plugin to work you'll need to add an environment variable named `GITHUB_TOKEN` with a [personal access content](https://github.com/settings/tokens).
 
 ## mdoc integration
 
-If you use [mdoc](https://scalameta.org/mdoc/) for creating your documentation you can benefit from our mdoc module which provides a several bunch of [`mdocVariables`](https://scalameta.org/mdoc/docs/installation.html#sbt) already pre-filled with values extracted from Github to any project that adds the `MdocPlugin` to replace them in documentation. To use it, just add the following line to your `plugins.sbt` file
+If you use [mdoc](https://scalameta.org/mdoc/) for creating your documentation you can benefit from our mdoc module which provides several bunches of [`mdocVariables`](https://scalameta.org/mdoc/docs/installation.html#sbt) already pre-filled with values extracted from Github to any project that adds the `MdocPlugin` to replace them in the documentation. To use it, just add the following line to your `plugins.sbt` file
 
 ```sbt
 addSbtPlugin("com.alejandrohdezma" %% "sbt-github-mdoc" % "0.4.0")
@@ -93,11 +93,11 @@ The plugin provides the following `mdocVariables`:
 | **COLLABORATORS** | Set to the value of the `collaborators` setting, containing the list of repository collaborators in markdown format                                                         |
 | **NAME**          | Set to the project's name                                                                                                                                                   |
 | **LICENSE**       | Set to the license's name                                                                                                                                                   |
-| **ORG_NAME**      | Set to the value of `organizationName` setting (Github's organization name, or owner's in case organization is empty and `populateOrganizationWithOwner` is `true`)         |
+| **ORG_NAME**      | Set to the value of `organizationName` setting (Github's organization name or owner's in case organization is empty and `populateOrganizationWithOwner` is `true`)         |
 | **ORG_EMAIL**     | Set to the value of `organizationEmail` setting (Github's organization email, or owner's in case organization is empty and `populateOrganizationWithOwner` is `true`)       |
-| **ORG_URL**       | Set to the value of `organizationHomepage` setting (Github's organization homepage, or owner's in case organization is empty and `populateOrganizationWithOwner` is `true`) |
-| **PULLS_URL**     | Set to the repository's pull requests url                                                                                                                                   |
-| **ISSUES_URL**    | Set to the repository's issues url                                                                                                                                          |
+| **ORG_URL**       | Set to the value of `organizationHomepage` setting (Github's organization homepage or owner's in case organization is empty and `populateOrganizationWithOwner` is `true`) |
+| **PULLS_URL**     | Set to the repository's pull requests URL                                                                                                                                   |
+| **ISSUES_URL**    | Set to the repository's issues URL                                                                                                                                          |
 | **START_YEAR**    | Set to the value of the `startYear` setting                                                                                                                                 |
 | **YEAR_RANGE**    | Set to the value of the `yearRange` setting                                                                                                                                 |
 
