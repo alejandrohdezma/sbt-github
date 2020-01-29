@@ -3,6 +3,8 @@ ThisBuild / organization := "com.alejandrohdezma"
 
 Global / onChangedBuildSource := ReloadOnSourceChanges
 
+addCommandAlias("ci-test", "fix --check; mdoc; test; scripted")
+
 lazy val root = project
   .in(file("."))
   .settings(name := "sbt-github")

@@ -13,15 +13,5 @@ jobs:
         uses: actions/checkout@v2
       - name: Setup Scala
         uses: olafurpg/setup-scala@v7
-      - name: Run scalafmt
-        run: sbt "all scalafmtCheckAll scalafmtSbtCheck"
-      - name: Run scalafix
-        run: sbt "scalafixAll --check"
-      - name: Compile documentation
-        run: sbt mdoc
-      - name: Run tests
-        run: sbt test
-      - name: Run scripted tests
-        run: sbt scripted
-        env:
-          GITHUB_TOKEN: "this_should_not_be_used"
+      - name: Run checks
+        run: sbt ci-test
