@@ -9,16 +9,16 @@ jobs:
   release:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-        name: Checkout project
+      - name: Checkout project
+        uses: actions/checkout@v2
       - name: Fetch tags
         run: git fetch --tags
-      - uses: olafurpg/setup-scala@v7
-        name: Setup Scala
-      - uses: olafurpg/setup-gpg@v2
-        name: Setup GPG
-      - run: sbt ci-release
-        name: Release new version
+      - name: Setup Scala
+        uses: olafurpg/setup-scala@v7
+      - name: Setup GPG
+        uses: olafurpg/setup-gpg@v2
+      - name: Release new version
+        run: sbt ci-release
         env:
           RELEASE: true
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
