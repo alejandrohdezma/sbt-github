@@ -10,6 +10,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         name: Checkout project
+      - name: Fetch tags
+        run: git fetch --depth=1 origin +refs/tags/*:refs/tags/*
       - name: Generate changelog
         uses: charmixer/auto-changelog-action@v1
         with:

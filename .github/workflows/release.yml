@@ -11,6 +11,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         name: Checkout project
+      - name: Fetch tags
+        run: git fetch --tags
       - uses: olafurpg/setup-scala@v7
         name: Setup Scala
       - uses: olafurpg/setup-gpg@v2
