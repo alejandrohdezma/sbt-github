@@ -31,7 +31,7 @@ lazy val `sbt-github` = project
   )
 
 lazy val `sbt-github-mdoc` = project
-  .settings(description := "Provides most of the info downloaded by stb-me as mdoc variables")
+  .settings(description := "Provides most of the info downloaded by stb-github as mdoc variables")
   .enablePlugins(SbtPlugin)
   .settings(scriptedLaunchOpts += "-Dplugin.version=" + version.value)
   .dependsOn(`sbt-github`)
