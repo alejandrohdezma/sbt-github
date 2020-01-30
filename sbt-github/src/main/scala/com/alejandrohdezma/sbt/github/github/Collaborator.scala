@@ -20,16 +20,15 @@ final case class Collaborator private[github] (
 object Collaborator {
 
   /** Obtains a collaborator information from its Github login ID */
-  def github(id: String)(
-      implicit auth: Authentication
-  ): GithubEntryPoint => Logger => Collaborator = { implicit entrypoint => implicit log =>
-    val userUrl = implicitly[urls.User].get(id)
+  def github(id: String): Authentication => GithubEntryPoint => Logger => Collaborator = {
+    implicit auth => implicit entrypoint => implicit log =>
+      val userUrl = implicitly[urls.User].get(id)
 
-    log.info(s"Retrieving `$id` information from Github API")
+      log.info(s"Retrieving `$id` information from Github API")
 
-    client.get[User](userUrl).map { user =>
-      new Collaborator(user.login, user.url, userUrl, user.name, user.email, user.avatar)
-    } fold (_ => sys.error(s"Unable to get info for user $id"), identity)
+      client.get[User](userUrl).map { user =>
+        new Collaborator(user.login, user.url, userUrl, user.name, user.email, user.avatar)
+      } fold (_ => sys.error(s"Unable to get info for user $id"), identity)
   }
 
   /**
@@ -44,7 +43,7 @@ object Collaborator {
       login: String,
       name: String,
       url: String
-  ): GithubEntryPoint => Logger => Collaborator = { _ => _ =>
+  ): Authentication => GithubEntryPoint => Logger => Collaborator = { _ => _ => _ =>
     new Collaborator(login, url, "", Some(name), None, None)
   }
 
@@ -62,7 +61,7 @@ object Collaborator {
       name: String,
       url: String,
       email: String
-  ): GithubEntryPoint => Logger => Collaborator = { _ => _ =>
+  ): Authentication => GithubEntryPoint => Logger => Collaborator = { _ => _ => _ =>
     new Collaborator(login, url, "", Some(name), Some(email), None)
   }
 
@@ -82,7 +81,7 @@ object Collaborator {
       url: String,
       email: Option[String],
       avatar: Option[String]
-  ): GithubEntryPoint => Logger => Collaborator = { _ => _ =>
+  ): Authentication => GithubEntryPoint => Logger => Collaborator = { _ => _ => _ =>
     new Collaborator(login, url, "", Some(name), email, avatar)
   }
 

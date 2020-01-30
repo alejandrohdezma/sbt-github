@@ -9,6 +9,7 @@ import sbt.plugins.JvmPlugin
 
 import com.alejandrohdezma.sbt.github.github.urls.GithubEntryPoint
 import com.alejandrohdezma.sbt.github.github.{Organization, Repository}
+import com.alejandrohdezma.sbt.github.http.Authentication
 
 /**
  * This plugin automatically enables reloading on sbt source changes and
@@ -34,6 +35,9 @@ object SbtGithubPlugin extends AutoPlugin {
     type Collaborator = github.Collaborator
     val Collaborator = github.Collaborator
 
+    type Token = http.Authentication.Token
+    val Token = http.Authentication.Token
+
     val githubApiEntryPoint = settingKey[String] {
       "Entry point for the github API, defaults to `https://api.github.com`"
     }
@@ -54,9 +58,10 @@ object SbtGithubPlugin extends AutoPlugin {
       "Populate organization info with the owner one in case there is no organization, default to `true`"
     }
 
-    val extraCollaborators = settingKey[List[GithubEntryPoint => Logger => Collaborator]] {
-      "Extra collaborators that should be always included (independent of whether they are contributors or not)"
-    }
+    val extraCollaborators =
+      settingKey[List[Authentication => GithubEntryPoint => Logger => Collaborator]] {
+        "Extra collaborators that should be always included (independent of whether they are contributors or not)"
+      }
 
     val excludedContributors = settingKey[List[String]] {
       "ID (Github login) of the contributors that should be excluded from the list, like bots"
@@ -78,6 +83,10 @@ object SbtGithubPlugin extends AutoPlugin {
       "Organization email"
     }
 
+    val githubToken = settingKey[Token] {
+      "The Github Token used for authenticating into Github API. Defaults to GITHUB_TOKEN environment variable."
+    }
+
   }
 
   import autoImport._
@@ -92,17 +101,24 @@ object SbtGithubPlugin extends AutoPlugin {
     populateOrganizationWithOwner := true,
     excludedContributors          := List("scala-steward", "mergify[bot]"),
     extraCollaborators            := List(),
+    githubToken := Token {
+      sys.env.getOrElse("GITHUB_TOKEN", sys.error {
+        "You need to add an environment variable named GITHUB_TOKEN with a Github personal access token."
+      })
+    },
     repository := Def.settingDyn {
       if (downloadInfoFromGithub.value)
         Def.setting {
           implicit val log: Logger                  = sLog.value
           implicit val entryPoint: GithubEntryPoint = GithubEntryPoint(githubApiEntryPoint.value)
+          implicit val auth: Authentication         = githubToken.value
 
           Some(Repository.get(info.value._1, info.value._2).fold(sys.error, identity))
         } else Def.setting(None)
     }.value,
     organizationMetadata := {
-      implicit val log: Logger = sLog.value
+      implicit val log: Logger          = sLog.value
+      implicit val auth: Authentication = githubToken.value
       repository.value
         .flatMap(_.organization)
         .orElse {
@@ -113,18 +129,20 @@ object SbtGithubPlugin extends AutoPlugin {
         .map(_.fold(sys.error, identity))
     },
     contributors := {
-      implicit val log: Logger = sLog.value
+      implicit val log: Logger          = sLog.value
+      implicit val auth: Authentication = githubToken.value
       repository.value.fold(Contributors(Nil)) {
         _.contributors(excludedContributors.value).fold(sys.error, identity)
       }
     },
     collaborators := {
-      implicit val log: Logger = sLog.value
+      implicit val log: Logger          = sLog.value
+      implicit val auth: Authentication = githubToken.value
       repository.value.fold(Collaborators(Nil)) {
         _.collaborators(contributors.value.list.map(_.login))
           .fold(sys.error, identity)
           .include(
-            extraCollaborators.value.map(_(GithubEntryPoint(githubApiEntryPoint.value))(log))
+            extraCollaborators.value.map(_(auth)(GithubEntryPoint(githubApiEntryPoint.value))(log))
           )
       }
     },
