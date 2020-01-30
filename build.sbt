@@ -4,7 +4,7 @@ ThisBuild / organization := "com.alejandrohdezma"
 Global / onChangedBuildSource := ReloadOnSourceChanges
 
 addCommandAlias("ci-test", "fix --check; mdoc; test; scripted")
-addCommandAlias("ci-docs", "mdoc")
+addCommandAlias("ci-docs", "mdoc headerCreateAll")
 
 lazy val root = project
   .in(file("."))
