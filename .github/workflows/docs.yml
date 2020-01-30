@@ -24,7 +24,7 @@ jobs:
         env:
           RELEASE: true
       - name: Temporarily disable "include administrators" branch protection
-        uses: benjefferies/branch-protection-bot@v1
+        uses: benjefferies/branch-protection-bot@1.0.2
         if: always()
         with:
           enforce_admins: false
@@ -38,7 +38,7 @@ jobs:
           path: "."
           pattern: "*.md"
       - name: Enable "include administrators" branch protection
-        uses: benjefferies/branch-protection-bot@master
+        uses: benjefferies/branch-protection-bot@1.0.2
         if: always()
         with:
           enforce_admins: true
