@@ -20,7 +20,7 @@ jobs:
       - name: Setup Scala
         uses: olafurpg/setup-scala@v7
       - name: Generate documentation
-        run: sbt mdoc
+        run: sbt ci-docs
         env:
           DOWNLOAD_INFO_FROM_GITHUB: true
       - name: Update documentation
