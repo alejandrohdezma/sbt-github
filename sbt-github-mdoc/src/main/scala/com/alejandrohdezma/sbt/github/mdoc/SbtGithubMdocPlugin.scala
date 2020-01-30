@@ -29,8 +29,7 @@ import mdoc.MdocPlugin.autoImport.mdocVariables
  *   or owner's in case organization is empty and `populateOrganizationWithOwner` is `true`).
  *  - '''ORG_URL''': Set to the value of `organizationHomepage` setting (Github's organization homepage,
  *   or owner's in case organization is empty and `populateOrganizationWithOwner` is `true`).
- *  - '''PULLS_URL''': Set to the repository's pull requests url.
- *  - '''ISSUES_URL''': Set to the repository's issues url.
+ *  - '''REPO''': Set to the repository's path: "owner/repo".
  *  - '''START_YEAR''': Set to the value of the `startYear` setting.
  *  - '''YEAR_RANGE''': Set to the value of the `yearRange` setting
  */
@@ -65,12 +64,11 @@ object SbtGithubMdocPlugin extends AutoPlugin {
     removeVersionTimestampInMdoc := true,
     mdocVariables ++= Map(
       "NAME"          -> name.value,
+      "REPO"          -> repository.value.map(_.name).getOrElse(""),
       "LICENSE"       -> licenses.value.headOption.map(_._1).getOrElse(""),
       "ORG_NAME"      -> organizationName.value,
       "ORG_EMAIL"     -> organizationEmail.value.getOrElse(""),
       "ORG_URL"       -> organizationHomepage.value.map(url => s"$url").getOrElse(""),
-      "PULLS_URL"     -> repository.value.map(_.pullsUrl).getOrElse(""),
-      "ISSUES_URL"    -> repository.value.map(_.issuesUrl).getOrElse(""),
       "START_YEAR"    -> startYear.value.fold("")(year => s"$year"),
       "YEAR_RANGE"    -> yearRange.value.getOrElse(""),
       "VERSION"       -> versionForMdoc.value,

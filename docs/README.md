@@ -95,8 +95,7 @@ The plugin provides the following `mdocVariables`:
 | **ORG_NAME**      | Set to the value of `organizationName` setting (Github's organization name or owner's in case organization is empty and `populateOrganizationWithOwner` is `true`)         |
 | **ORG_EMAIL**     | Set to the value of `organizationEmail` setting (Github's organization email, or owner's in case organization is empty and `populateOrganizationWithOwner` is `true`)       |
 | **ORG_URL**       | Set to the value of `organizationHomepage` setting (Github's organization homepage or owner's in case organization is empty and `populateOrganizationWithOwner` is `true`) |
-| **PULLS_URL**     | Set to the repository's pull requests URL                                                                                                                                   |
-| **ISSUES_URL**    | Set to the repository's issues URL                                                                                                                                          |
+| **REPO**          | Set to the repository's path: "owner/repo"                                                                                                                                  |
 | **START_YEAR**    | Set to the value of the `startYear` setting                                                                                                                                 |
 | **YEAR_RANGE**    | Set to the value of the `yearRange` setting                                                                                                                                 |
 

@@ -22,8 +22,6 @@ class RepositorySpec extends Specification {
             "created_at": "2011-01-26T19:01:12Z",
             "contributors_url": "http://api.github.com/repos/example/example/contributors",
             "collaborators_url": "http://api.github.com/repos/example/example/collaborators",
-            "issues_url": "http://api.github.com/repos/example/example/issues",
-            "pulls_url": "http://api.github.com/repos/example/example/pulls",
             "organization": {
               "url": "http://api.github.com/users/example"
             },
@@ -48,8 +46,6 @@ class RepositorySpec extends Specification {
         2011,
         "http://api.github.com/repos/example/example/contributors",
         "http://api.github.com/repos/example/example/collaborators",
-        "http://api.github.com/repos/example/example/issues",
-        "http://api.github.com/repos/example/example/pulls",
         Some("http://api.github.com/users/example"),
         "http://api.github.com/users/owner"
       )
@@ -66,8 +62,6 @@ class RepositorySpec extends Specification {
             "created_at": "2011-01-26T19:01:12Z",
             "contributors_url": "http://api.github.com/repos/example/example/contributors",
             "collaborators_url": "http://api.github.com/repos/example/example/collaborators",
-            "issues_url": "http://api.github.com/repos/example/example/issues",
-            "pulls_url": "http://api.github.com/repos/example/example/pulls",
             "owner": {
               "url": "http://api.github.com/users/owner"
             },
@@ -89,8 +83,6 @@ class RepositorySpec extends Specification {
         2011,
         "http://api.github.com/repos/example/example/contributors",
         "http://api.github.com/repos/example/example/collaborators",
-        "http://api.github.com/repos/example/example/issues",
-        "http://api.github.com/repos/example/example/pulls",
         None,
         "http://api.github.com/users/owner"
       )
@@ -107,8 +99,6 @@ class RepositorySpec extends Specification {
             "created_at": "2011-01-26T19:01:12Z",
             "contributors_url": "http://api.github.com/repos/example/example/contributors",
             "collaborators_url": "http://api.github.com/repos/example/example/collaborators",
-            "issues_url": "http://api.github.com/repos/example/example/issues",
-            "pulls_url": "http://api.github.com/repos/example/example/pulls",
             "owner": {
               "url": "http://api.github.com/users/owner"
             },
@@ -139,8 +129,6 @@ class RepositorySpec extends Specification {
             "created_at": "2011-01-26T19:01:12Z",
             "contributors_url": "http://api.github.com/repos/example/example/contributors",
             "collaborators_url": "http://api.github.com/repos/example/example/collaborators",
-            "issues_url": "http://api.github.com/repos/example/example/issues",
-            "pulls_url": "http://api.github.com/repos/example/example/pulls",
             "owner": {
               "url": "http://api.github.com/users/owner"
             },
@@ -168,8 +156,6 @@ class RepositorySpec extends Specification {
             "created_at": "2011-01-26T19:01:12Z",
             "contributors_url": "http://api.github.com/repos/example/example/contributors",
             "collaborators_url": "http://api.github.com/repos/example/example/collaborators",
-            "issues_url": "http://api.github.com/repos/example/example/issues",
-            "pulls_url": "http://api.github.com/repos/example/example/pulls",
             "owner": {
               "url": "http://api.github.com/users/owner"
             },
@@ -200,8 +186,6 @@ class RepositorySpec extends Specification {
             "created_at": "2011-01-26T19:01:12Z",
             "contributors_url": "http://api.github.com/repos/example/example/contributors",
             "collaborators_url": "http://api.github.com/repos/example/example/collaborators",
-            "issues_url": "http://api.github.com/repos/example/example/issues",
-            "pulls_url": "http://api.github.com/repos/example/example/pulls",
             "owner": {
               "url": "http://api.github.com/users/owner"
             },
@@ -232,8 +216,6 @@ class RepositorySpec extends Specification {
             "created_at": "2011-01-26T19:01:12Z",
             "contributors_url": "http://api.github.com/repos/example/example/contributors",
             "collaborators_url": "http://api.github.com/repos/example/example/collaborators",
-            "issues_url": "http://api.github.com/repos/example/example/issues",
-            "pulls_url": "http://api.github.com/repos/example/example/pulls",
             "owner": {
               "url": "http://api.github.com/users/owner"
             },
@@ -278,7 +260,7 @@ class RepositorySpec extends Specification {
         """)
     } { uri =>
       val repository =
-        Repository("", "", License("", ""), "", 0, s"${uri}contributors", "", "", "", None, "")
+        Repository("", "", License("", ""), "", 0, s"${uri}contributors", "", None, "")
 
       val contributors = repository.contributors(Nil)
 
@@ -310,7 +292,7 @@ class RepositorySpec extends Specification {
         """)
     } { uri =>
       val repository =
-        Repository("", "", License("", ""), "", 0, s"${uri}contributors", "", "", "", None, "")
+        Repository("", "", License("", ""), "", 0, s"${uri}contributors", "", None, "")
 
       val contributors = repository.contributors(List("you"))
 
@@ -323,7 +305,7 @@ class RepositorySpec extends Specification {
       case GET -> Root / "contributors" => Ok("""{"hello": "hi"}""")
     } { uri =>
       val repository =
-        Repository("", "", License("", ""), "", 0, s"${uri}contributors", "", "", "", None, "")
+        Repository("", "", License("", ""), "", 0, s"${uri}contributors", "", None, "")
 
       val contributors = repository.contributors(Nil)
 
@@ -377,7 +359,7 @@ class RepositorySpec extends Specification {
         ]""")
     } { uri =>
       val repository =
-        Repository("", "", License("", ""), "", 0, "", s"${uri}collaborators", "", "", None, "")
+        Repository("", "", License("", ""), "", 0, "", s"${uri}collaborators", None, "")
 
       val collaborators = repository.collaborators(List("me", "you", "him"))
 
@@ -422,7 +404,7 @@ class RepositorySpec extends Specification {
         ]""")
     } { uri =>
       val repository =
-        Repository("", "", License("", ""), "", 0, "", s"${uri}collaborators", "", "", None, "")
+        Repository("", "", License("", ""), "", 0, "", s"${uri}collaborators", None, "")
 
       val collaborators = repository.collaborators(List("me"))
 
@@ -446,7 +428,7 @@ class RepositorySpec extends Specification {
       case GET -> Root / "collaborators" => Ok("""{"hello": "hi"}""")
     } { uri =>
       val repository =
-        Repository("", "", License("", ""), "", 0, "", s"${uri}collaborators", "", "", None, "")
+        Repository("", "", License("", ""), "", 0, "", s"${uri}collaborators", None, "")
 
       val collaborators = repository.collaborators(Nil)
 
@@ -466,7 +448,7 @@ class RepositorySpec extends Specification {
         }""")
     } { uri =>
       val repository =
-        Repository("", "", License("", ""), "", 0, "", "", "", "", Some(s"${uri}organization"), "")
+        Repository("", "", License("", ""), "", 0, "", "", Some(s"${uri}organization"), "")
 
       val organization = repository.organization
 
@@ -481,7 +463,7 @@ class RepositorySpec extends Specification {
         Ok(s"""{ "name": "My Organization", "email": "org@example.com" }""")
     } { uri =>
       val repository =
-        Repository("", "", License("", ""), "", 0, "", "", "", "", Some(s"${uri}organization"), "")
+        Repository("", "", License("", ""), "", 0, "", "", Some(s"${uri}organization"), "")
 
       val organization = repository.organization
 
@@ -495,7 +477,7 @@ class RepositorySpec extends Specification {
         Ok(s"""{ "blog": "http://example.com", "email": "org@example.com" }""")
     } { uri =>
       val repository =
-        Repository("", "", License("", ""), "", 0, "", "", "", "", Some(s"${uri}organization"), "")
+        Repository("", "", License("", ""), "", 0, "", "", Some(s"${uri}organization"), "")
 
       val organization = repository.organization
 
@@ -509,7 +491,7 @@ class RepositorySpec extends Specification {
         Ok(s"""{ "blog": "http://example.com", "name": "My Organization" }""")
     } { uri =>
       val repository =
-        Repository("", "", License("", ""), "", 0, "", "", "", "", Some(s"${uri}organization"), "")
+        Repository("", "", License("", ""), "", 0, "", "", Some(s"${uri}organization"), "")
 
       val organization = repository.organization
 
@@ -522,7 +504,7 @@ class RepositorySpec extends Specification {
       case GET -> Root / "organization" => NotFound()
     } { uri =>
       val repository =
-        Repository("", "", License("", ""), "", 0, "", "", "", "", Some(s"${uri}organization"), "")
+        Repository("", "", License("", ""), "", 0, "", "", Some(s"${uri}organization"), "")
 
       val collaborators = repository.organization
 
@@ -544,7 +526,7 @@ class RepositorySpec extends Specification {
         }""")
     } { uri =>
       val repository =
-        Repository("", "", License("", ""), "", 0, "", "", "", "", None, s"${uri}owner")
+        Repository("", "", License("", ""), "", 0, "", "", None, s"${uri}owner")
 
       val owner = repository.owner
 
@@ -568,7 +550,7 @@ class RepositorySpec extends Specification {
         }""")
     } { uri =>
       val repository =
-        Repository("", "", License("", ""), "", 0, "", "", "", "", None, s"${uri}owner")
+        Repository("", "", License("", ""), "", 0, "", "", None, s"${uri}owner")
 
       val owner = repository.owner
 
@@ -586,7 +568,7 @@ class RepositorySpec extends Specification {
         }""")
     } { uri =>
       val repository =
-        Repository("", "", License("", ""), "", 0, "", "", "", "", None, s"${uri}owner")
+        Repository("", "", License("", ""), "", 0, "", "", None, s"${uri}owner")
 
       val owner = repository.owner
 
@@ -605,7 +587,7 @@ class RepositorySpec extends Specification {
         }""")
     } { uri =>
       val repository =
-        Repository("", "", License("", ""), "", 0, "", "", "", "", None, s"${uri}owner")
+        Repository("", "", License("", ""), "", 0, "", "", None, s"${uri}owner")
 
       val owner = repository.owner
 
@@ -619,7 +601,7 @@ class RepositorySpec extends Specification {
       case GET -> Root / "owner" => NotFound()
     } { uri =>
       val repository =
-        Repository("", "", License("", ""), "", 0, "", "", "", "", None, s"${uri}owner")
+        Repository("", "", License("", ""), "", 0, "", "", None, s"${uri}owner")
 
       val owner = repository.owner
 

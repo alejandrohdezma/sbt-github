@@ -1,5 +1,7 @@
 @NAME@
 
+@REPO@
+
 @LICENSE@
 
 @ORG_NAME@
@@ -7,10 +9,6 @@
 @ORG_EMAIL@
 
 @ORG_URL@
-
-@PULLS_URL@
-
-@ISSUES_URL@
 
 @START_YEAR@
 

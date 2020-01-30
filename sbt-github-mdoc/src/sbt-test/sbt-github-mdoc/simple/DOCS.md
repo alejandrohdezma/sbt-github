@@ -1,5 +1,7 @@
 root
 
+user1/repo
+
 MIT
 
 The First User
@@ -7,10 +9,6 @@ The First User
 user1@example.com
 
 https://github.com/user1
-
-https://github.com/user1/repo/pulls
-
-https://github.com/user1/repo/issues
 
 2018
 
