@@ -97,7 +97,7 @@ object SbtGithubPlugin extends AutoPlugin {
 
   override def buildSettings: Seq[Setting[_]] = Seq(
     githubApiEntryPoint           := "https://api.github.com",
-    downloadInfoFromGithub        := sys.env.contains("RELEASE"),
+    downloadInfoFromGithub        := sys.env.contains("DOWNLOAD_INFO_FROM_GITHUB"),
     populateOrganizationWithOwner := true,
     excludedContributors          := List("scala-steward", "mergify[bot]"),
     extraCollaborators            := List(),
