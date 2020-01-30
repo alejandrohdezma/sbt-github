@@ -29,7 +29,7 @@ If you use [mdoc](https://scalameta.org/mdoc/) there's also available an [mdoc i
 
 ## Configuration
 
-By default, the plugin only downloads the information if an environment variable named `RELEASE` is present in the system SBT is running (the content of the variable is not important). This behavior can be tweaked by using the `downloadInfoFromGithub` setting:
+By default, the plugin only downloads the information if an environment variable named `DOWNLOAD_INFO_FROM_GITHUB` is present in the system SBT is running (the content of the variable is not important). This behavior can be tweaked by using the `downloadInfoFromGithub` setting:
 
 ```sbt
 ThisBuild / downloadInfoFromGithub := true
