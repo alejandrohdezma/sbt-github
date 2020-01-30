@@ -5,7 +5,7 @@ Discussion around _@NAME@_ happens in the [GitHub issues](https://github.com/@RE
 Feel free to open an issue if you notice a bug, have an idea for a feature, or have a question about
 the code. Pull requests are also welcome.
 
-People are expected to follow the [Code of Conduct](CODE_OF_CONDUCT) when discussing _@NAME@_ on the Github page or other venues.
+People are expected to follow the [Code of Conduct](CODE_OF_CONDUCT.md) when discussing _@NAME@_ on the Github page or other venues.
 
 If you are being harassed, please contact one of [us](AUTHORS.md#maintainers) immediately so that we can support you. In case you cannot get in touch with us please write an email to [@ORG_NAME@](mailto:@ORG_EMAIL@).
 
