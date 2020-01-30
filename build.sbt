@@ -9,7 +9,7 @@ addCommandAlias("ci-docs", "mdoc")
 lazy val root = project
   .in(file("."))
   .settings(name := "sbt-github")
-  .aggregate(`sbt-github`, `sbt-github-mdoc`)
+  .aggregate(`sbt-github`, `sbt-github-mdoc`, `sbt-github-header`)
   .enablePlugins(MdocPlugin)
   .settings(skip in publish := true)
   .settings(mdocOut := file("."))
@@ -37,3 +37,10 @@ lazy val `sbt-github-mdoc` = project
   .settings(scriptedLaunchOpts += "-Dplugin.version=" + version.value)
   .dependsOn(`sbt-github`)
   .settings(addSbtPlugin("org.scalameta" % "sbt-mdoc" % "[2.0,)" % Provided))
+
+lazy val `sbt-github-header` = project
+  .settings(description := "Integration between sbt-github and sbt-header")
+  .enablePlugins(SbtPlugin)
+  .settings(scriptedLaunchOpts += "-Dplugin.version=" + version.value)
+  .dependsOn(`sbt-github`)
+  .settings(addSbtPlugin("de.heikoseeberger" % "sbt-header" % "[5.0,)" % Provided))
