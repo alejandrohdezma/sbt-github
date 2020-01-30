@@ -1,6 +1,6 @@
 # Contributing
 
-Discussion around _sbt-github_ happens in the [GitHub issues](https://api.github.com/repos/alejandrohdezma/sbt-github/issues) and [pull requests](https://api.github.com/repos/alejandrohdezma/sbt-github/pulls).
+Discussion around _sbt-github_ happens in the [GitHub issues](https://github.com/alejandrohdezma/sbt-github/issues) and [pull requests](https://github.com/alejandrohdezma/sbt-github/pulls).
 
 Feel free to open an issue if you notice a bug, have an idea for a feature, or have a question about
 the code. Pull requests are also welcome.
