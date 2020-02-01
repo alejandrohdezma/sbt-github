@@ -29,5 +29,3 @@ jobs:
           author_name: GitHub Action
           author_email: action@github.com
           message: "Update documentation files"
-          path: "."
-          pattern: "*.md"
