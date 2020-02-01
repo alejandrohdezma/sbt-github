@@ -13,7 +13,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: Fetch tags
-        run: git fetch --depth=1 origin +refs/tags/*:refs/tags/*
+        run: git fetch --tags
       - name: Generate changelog
         uses: charmixer/auto-changelog-action@v1
         with:
