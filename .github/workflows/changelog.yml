@@ -24,7 +24,7 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           commit-message: Update CHANGELOG.md
-          title: '[auto] Update CHANGELOG.md'
+          title: 'Update CHANGELOG.md'
           labels: auto-update
           branch: auto-update-changelog
           body: Update CHANGELOG.md with information from latest release
