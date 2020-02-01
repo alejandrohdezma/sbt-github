@@ -6,7 +6,7 @@ pull_request_rules:
       delete_head_branch: {}
   - name: automatic merge for github-action's PRs
     conditions:
-      - author=github-action
+      - author=github-actions
       - base=master
       - label=auto-update
     actions:
