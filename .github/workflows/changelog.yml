@@ -19,13 +19,12 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           exclude-labels: duplicate,question,invalid,wontfix,auto-update
-      - name: Update changelog
-        uses: EndBug/add-and-commit@v3
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v2
         with:
-          author_name: GitHub Action
-          author_email: action@github.com
-          message: "Update changelog"
-          path: "."
-          pattern: "CHANGELOG.md"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: Update CHANGELOG.md
+          title: '[auto] Update CHANGELOG.md'
+          labels: auto-update
+          branch: auto-update-changelog
+          body: Update CHANGELOG.md with information from latest release

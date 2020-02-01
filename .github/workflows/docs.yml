@@ -23,9 +23,12 @@ jobs:
         run: sbt ci-docs
         env:
           DOWNLOAD_INFO_FROM_GITHUB: true
-      - name: Update documentation
-        uses: EndBug/add-and-commit@v3
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v2
         with:
-          author_name: GitHub Action
-          author_email: action@github.com
-          message: "Update documentation files"
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: Update documentation and other files
+          title: '[auto] Update documentation and other files'
+          labels: auto-update,documentation
+          branch: auto-update-docs
+          body: Update documentation and other files with latest changes.
