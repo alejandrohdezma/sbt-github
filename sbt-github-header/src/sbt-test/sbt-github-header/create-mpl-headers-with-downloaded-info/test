@@ -1,0 +1,2 @@
+> headerCreateAll
+$ must-mirror src/main/scala/MyFile.scala src/main/resources/MyFile.scala_expected

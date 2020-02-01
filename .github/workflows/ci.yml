@@ -11,6 +11,10 @@ jobs:
     steps:
       - name: Checkout project
         uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Fetch tags
+        run: git fetch --tags
       - name: Setup Scala
         uses: olafurpg/setup-scala@v7
       - name: Run checks
