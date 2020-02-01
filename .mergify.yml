@@ -4,28 +4,16 @@ pull_request_rules:
       - merged
     actions:
       delete_head_branch: {}
-  - name: automatic merge for github-action's PRs
+  - name: automatic merge for auto-update PRs
     conditions:
-      - author=github-actions
-      - base=master
       - label=auto-update
     actions:
       merge:
         method: merge
-  - name: automatic merge for scala-steward's patch PRs when CI passes
+  - name: automatic merge for scala-steward's PRs
     conditions:
       - author=scala-steward
       - status-success=test
-      - body~=labels:.*semver-patch
-    actions:
-      merge:
-        method: merge
-  - name: automatic merge for scala-steward's non-patch PRs with at least 1 review
-    conditions:
-      - "#approved-reviews-by>=1"
-      - author=scala-steward
-      - status-success=test
-      - body~=^((?!semver-patch).)*$
     actions:
       merge:
         method: merge
