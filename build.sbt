@@ -13,7 +13,7 @@ lazy val root = project
   .settings(name := "sbt-github")
   .settings(skip in publish := true)
   .settings(mdocOut := file("."))
-  .settings(mdocVariables += "EXCLUDED" -> excludedContributors.value.mkString("- ", "\n-", ""))
+  .settings(mdocVariables += "EXCLUDED" -> excludedContributors.value.mkString("- ", "\n- ", ""))
 
 lazy val `sbt-github` = project
   .enablePlugins(SbtPlugin)
