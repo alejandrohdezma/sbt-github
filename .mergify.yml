@@ -1,9 +1,10 @@
 pull_request_rules:
-  - name: automatically merge scala-steward's PRs
+  - name: automatic merge for master when CI passes and at least 1 review
     conditions:
-      - author=scala-steward
-      - status-success=Travis CI - Pull Request
-      - body~=labels:.*semver-patch
+      - "#approved-reviews-by>=1"
+      - status-success=test
+      - base=master
+      - label=auto-update
     actions:
       merge:
         method: merge
