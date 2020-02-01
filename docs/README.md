@@ -55,7 +55,7 @@ ThisBuild / excludedContributors += "my-bot"
 
 By default the following list is excluded:
 
-@EXCLUDED_CONTRIBUTORS@
+@EXCLUDED@
 
 ### Adding extra collaborators
 
