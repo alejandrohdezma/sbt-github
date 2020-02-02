@@ -57,6 +57,7 @@ By default the following list is excluded:
 
 - scala-steward
 - mergify[bot]
+- github-actions[bot]
 
 ### Adding extra collaborators
 
