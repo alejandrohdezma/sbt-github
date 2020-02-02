@@ -28,3 +28,9 @@ jobs:
           labels: auto-update
           branch: auto-update-changelog
           body: Update CHANGELOG.md with information from latest release
+      - name: Merge Pull Request
+        uses: juliangruber/merge-pull-request-action@v1
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          number: ${{ env.PULL_REQUEST_NUMBER }}
+          method: merge
