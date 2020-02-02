@@ -32,3 +32,9 @@ jobs:
           labels: auto-update,documentation
           branch: auto-update-docs
           body: Update documentation and other files with latest changes.
+      - name: Merge Pull Request
+        uses: juliangruber/merge-pull-request-action@v1
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          number: ${{ env.PULL_REQUEST_NUMBER }}
+          method: merge
