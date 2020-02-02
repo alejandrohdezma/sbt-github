@@ -47,7 +47,7 @@ ThisBuild / populateOrganizationWithOwner := false
 
 ### Excluding contributors
 
-The `contributors` setting is populated with the information extracted from the repository contributor list. This list will include all Github users who have contributed to the repository, which is not what we always want (including bots, for example). You can exclude certain Github users by using the `excludedContributors` setting.
+Taaahe `contributors` setting is populated with the information extracted from the repository contributor list. This list will include all Github users who have contributed to the repository, which is not what we always want (including bots, for example). You can exclude certain Github users by using the `excludedContributors` setting.
 
 ```sbt
 ThisBuild / excludedContributors += "my-bot"
