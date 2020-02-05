@@ -19,7 +19,7 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           exclude-labels: duplicate,question,invalid,wontfix,auto-update
-      - name: Create Pull Request
+      - name: Create Changelog Pull Request
         uses: peter-evans/create-pull-request@v2
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -28,7 +28,7 @@ jobs:
           labels: auto-update
           branch: auto-update-changelog
           body: Update CHANGELOG.md with information from latest release
-      - name: Merge Pull Request
+      - name: Merge Changelog Pull Request
         if: env.PULL_REQUEST_NUMBER != null
         uses: juliangruber/merge-pull-request-action@v1
         with:
