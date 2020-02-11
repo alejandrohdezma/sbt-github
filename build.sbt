@@ -19,8 +19,8 @@ lazy val `sbt-github` = project
   .enablePlugins(SbtPlugin)
   .settings(scriptedLaunchOpts += s"-Dplugin.version=${version.value}")
   .settings(libraryDependencies += "org.specs2" %% "specs2-core" % "4.8.3" % Test)
-  .settings(libraryDependencies += "org.http4s" %% "http4s-dsl" % "0.20.17" % Test)
-  .settings(libraryDependencies += "org.http4s" %% "http4s-blaze-server" % "0.20.17" % Test)
+  .settings(libraryDependencies += "org.http4s" %% "http4s-dsl" % "0.21.0" % Test)
+  .settings(libraryDependencies += "org.http4s" %% "http4s-blaze-server" % "0.21.0" % Test)
   .settings(libraryDependencies += "ch.qos.logback" % "logback-classic" % "1.2.3" % Test)
 
 lazy val `sbt-github-mdoc` = project
