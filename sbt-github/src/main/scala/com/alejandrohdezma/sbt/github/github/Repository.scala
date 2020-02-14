@@ -48,8 +48,8 @@ final case class Repository(
    * Returns the list of users who have contributed to a repository order by the number
    * of contributions.
    *
-   * Excludes from the list those whose login ID appears in the provided list of
-   * excluded contributors.
+   * Excludes from the list those whose login ID matches any in the provided list of
+   * excluded contributors patterns.
    */
   def contributors(
       excluded: List[String]
@@ -59,7 +59,7 @@ final case class Repository(
     client
       .get[List[Contributor]](contributorsUrl)
       .map(_.sortBy(-_.contributions))
-      .map(_.filterNot(contributor => excluded.contains(contributor.login)))
+      .map(_.filterNot(contributor => excluded.exists(contributor.login.matches)))
       .map(Contributors)
       .leftMap(_ => "Unable to get repository contributors")
   }
