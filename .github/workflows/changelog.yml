@@ -23,7 +23,7 @@ jobs:
         uses: charmixer/auto-changelog-action@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          exclude-labels: duplicate,question,invalid,wontfix,auto-update
+          exclude_labels: duplicate,question,invalid,wontfix,auto-update
       - name: Create Changelog Pull Request
         uses: peter-evans/create-pull-request@v2
         with:
