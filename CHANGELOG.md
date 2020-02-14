@@ -1,5 +1,14 @@
 # Changelog
 
+## [Unreleased](https://github.com/alejandrohdezma/sbt-github/tree/HEAD)
+
+[Full Changelog](https://github.com/alejandrohdezma/sbt-github/compare/v0.5.1...HEAD)
+
+**Merged pull requests:**
+
+- Update documentation and other files [\#82](https://github.com/alejandrohdezma/sbt-github/pull/82) ([github-actions[bot]](https://github.com/apps/github-actions))
+- Update CHANGELOG.md [\#81](https://github.com/alejandrohdezma/sbt-github/pull/81) ([github-actions[bot]](https://github.com/apps/github-actions))
+
 ## [v0.5.1](https://github.com/alejandrohdezma/sbt-github/tree/v0.5.1) (2020-02-14)
 
 [Full Changelog](https://github.com/alejandrohdezma/sbt-github/compare/v0.5.0...v0.5.1)
