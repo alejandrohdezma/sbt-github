@@ -57,7 +57,7 @@ In addition you can exclude contributors whose Github ID matches some pattern us
 
 ```sbt
 // Will exclude: my-company[bot], external-app[bot]
-ThisBuild / excludedContributors += "\[bot\]"
+ThisBuild / excludedContributors += """.*\[bot\]"""
 ```
 
 By default the following list is excluded:
