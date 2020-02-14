@@ -73,7 +73,9 @@ ThisBuild / extraCollaborators += Collaborator.github("alejandrohdezma")
 
 ### Github API token
 
-For this plugin to work you'll need to add an environment variable named `GITHUB_TOKEN` with a [personal access content](https://github.com/settings/tokens).
+For this plugin to work you'll need to add an environment variable named `GITHUB_TOKEN` with a [personal access token](https://github.com/settings/tokens).
+
+> If you are using Github Actions, you can use the [provided `GITHUB_TOKEN`](https://help.github.com/en/actions/configuring-and-managing-workflows/authenticating-with-the-github_token#about-the-github_token-secret).
 
 ## Integrations
 
