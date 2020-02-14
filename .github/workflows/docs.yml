@@ -18,6 +18,7 @@ jobs:
       - name: Checkout project
         uses: actions/checkout@v2
         with:
+          ref: master
           fetch-depth: 0
       - name: Fetch tags
         run: git fetch --tags
