@@ -115,7 +115,7 @@ object SbtGithubPlugin extends AutoPlugin {
     githubApiEntryPoint           := "https://api.github.com",
     downloadInfoFromGithub        := sys.env.contains("DOWNLOAD_INFO_FROM_GITHUB"),
     populateOrganizationWithOwner := true,
-    excludedContributors          := List("scala-steward", """.*\[bot\]"""),
+    excludedContributors          := List("scala-steward", """.*\[bot\]""", "traviscibot"),
     extraCollaborators            := List(),
     githubToken := Token {
       sys.env.getOrElse("GITHUB_TOKEN", sys.error {
