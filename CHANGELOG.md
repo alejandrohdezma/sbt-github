@@ -1,5 +1,40 @@
 # Changelog
 
+## [v0.5.1](https://github.com/alejandrohdezma/sbt-github/tree/v0.5.1) (2020-02-14)
+
+[Full Changelog](https://github.com/alejandrohdezma/sbt-github/compare/v0.5.0...v0.5.1)
+
+**Merged pull requests:**
+
+- Update documentation and other files [\#80](https://github.com/alejandrohdezma/sbt-github/pull/80) ([github-actions[bot]](https://github.com/apps/github-actions))
+- Update documentation and other files [\#78](https://github.com/alejandrohdezma/sbt-github/pull/78) ([github-actions[bot]](https://github.com/apps/github-actions))
+- Exclude `traviscibot` from contributors by default [\#77](https://github.com/alejandrohdezma/sbt-github/pull/77) ([alejandrohdezma](https://github.com/alejandrohdezma))
+- Make `exludedContributors` a list of patterns [\#76](https://github.com/alejandrohdezma/sbt-github/pull/76) ([alejandrohdezma](https://github.com/alejandrohdezma))
+
+## [v0.5.0](https://github.com/alejandrohdezma/sbt-github/tree/v0.5.0) (2020-02-14)
+
+[Full Changelog](https://github.com/alejandrohdezma/sbt-github/compare/v0.4.0...v0.5.0)
+
+**Merged pull requests:**
+
+- Update documentation and other files [\#74](https://github.com/alejandrohdezma/sbt-github/pull/74) ([github-actions[bot]](https://github.com/apps/github-actions))
+- Improve README with GITHUB\_TOKEN tips [\#73](https://github.com/alejandrohdezma/sbt-github/pull/73) ([alejandrohdezma](https://github.com/alejandrohdezma))
+- Update http4s-blaze-server, http4s-dsl to 0.21.1 [\#72](https://github.com/alejandrohdezma/sbt-github/pull/72) ([scala-steward](https://github.com/scala-steward))
+- Update documentation and other files [\#71](https://github.com/alejandrohdezma/sbt-github/pull/71) ([github-actions[bot]](https://github.com/apps/github-actions))
+- Update workflows and documentation templates to v0.1 [\#70](https://github.com/alejandrohdezma/sbt-github/pull/70) ([alejandrohdezma](https://github.com/alejandrohdezma))
+- Update http4s-blaze-server, http4s-dsl to 0.21.0 [\#69](https://github.com/alejandrohdezma/sbt-github/pull/69) ([scala-steward](https://github.com/scala-steward))
+- Update sbt-ci-release to 1.5.2 [\#68](https://github.com/alejandrohdezma/sbt-github/pull/68) ([scala-steward](https://github.com/scala-steward))
+- Update workflows and documentation templates to v0.1 [\#66](https://github.com/alejandrohdezma/sbt-github/pull/66) ([alejandrohdezma](https://github.com/alejandrohdezma))
+- Update documentation and other files [\#53](https://github.com/alejandrohdezma/sbt-github/pull/53) ([github-actions[bot]](https://github.com/apps/github-actions))
+- \[auto\] Update documentation and other files [\#51](https://github.com/alejandrohdezma/sbt-github/pull/51) ([github-actions[bot]](https://github.com/apps/github-actions))
+- Create `sbt-header` integration module [\#49](https://github.com/alejandrohdezma/sbt-github/pull/49) ([alejandrohdezma](https://github.com/alejandrohdezma))
+- Make download condition the presence of `DOWNLOAD\_INFO\_FROM\_GITHUB` [\#48](https://github.com/alejandrohdezma/sbt-github/pull/48) ([alejandrohdezma](https://github.com/alejandrohdezma))
+- Fix broken links, errored versions and descriptions [\#47](https://github.com/alejandrohdezma/sbt-github/pull/47) ([alejandrohdezma](https://github.com/alejandrohdezma))
+- Enable/disable include administrators branch protection before pushing [\#46](https://github.com/alejandrohdezma/sbt-github/pull/46) ([alejandrohdezma](https://github.com/alejandrohdezma))
+- Remove pulls & issues urls since they were pointing to API [\#45](https://github.com/alejandrohdezma/sbt-github/pull/45) ([alejandrohdezma](https://github.com/alejandrohdezma))
+- Create plugin for removing test dependencies from POM [\#44](https://github.com/alejandrohdezma/sbt-github/pull/44) ([alejandrohdezma](https://github.com/alejandrohdezma))
+- Update http4s-blaze-server, http4s-dsl to 0.20.17 [\#43](https://github.com/alejandrohdezma/sbt-github/pull/43) ([scala-steward](https://github.com/scala-steward))
+
 ## [v0.4.0](https://github.com/alejandrohdezma/sbt-github/tree/v0.4.0) (2020-01-26)
 
 [Full Changelog](https://github.com/alejandrohdezma/sbt-github/compare/v0.3.0...v0.4.0)
