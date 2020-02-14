@@ -64,6 +64,7 @@ By default the following list is excluded:
 
 - scala-steward
 - .*[bot]
+- traviscibot
 
 ### Adding extra collaborators
 
