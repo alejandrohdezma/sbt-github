@@ -80,7 +80,7 @@ object SbtGithubPlugin extends AutoPlugin {
       }
 
     val excludedContributors = settingKey[List[String]] {
-      "ID (Github login) of the contributors that should be excluded from the list, like bots"
+      "ID (Github login) of the contributors that should be excluded from the list, like bots, it can also be regex patterns"
     }
 
     val repository = settingKey[Option[Repository]] {
@@ -115,7 +115,7 @@ object SbtGithubPlugin extends AutoPlugin {
     githubApiEntryPoint           := "https://api.github.com",
     downloadInfoFromGithub        := sys.env.contains("DOWNLOAD_INFO_FROM_GITHUB"),
     populateOrganizationWithOwner := true,
-    excludedContributors          := List("scala-steward", "mergify[bot]", "github-actions[bot]"),
+    excludedContributors          := List("scala-steward", """.*\[bot\]"""),
     extraCollaborators            := List(),
     githubToken := Token {
       sys.env.getOrElse("GITHUB_TOKEN", sys.error {
