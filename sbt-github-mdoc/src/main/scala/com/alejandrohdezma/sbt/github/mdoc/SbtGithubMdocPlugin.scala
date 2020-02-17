@@ -48,6 +48,8 @@ import mdoc.MdocPlugin.autoImport.mdocVariables
  *  - '''REPO''': Set to the repository's path: "owner/repo".
  *  - '''START_YEAR''': Set to the value of the `startYear` setting.
  *  - '''YEAR_RANGE''': Set to the value of the `yearRange` setting
+ *  - '''COPYRIGHT_OWNER''': Set to the value of `ORG_NAME <ORG_URL>` if `ORG_URL` is present or just
+ *   `ORG_NAME` in case `ORG_URL` is empty.
  */
 object SbtGithubMdocPlugin extends AutoPlugin {
 
@@ -89,7 +91,10 @@ object SbtGithubMdocPlugin extends AutoPlugin {
       "YEAR_RANGE"    -> yearRange.value.getOrElse(""),
       "VERSION"       -> versionForMdoc.value,
       "CONTRIBUTORS"  -> contributors.value.markdown,
-      "COLLABORATORS" -> collaborators.value.markdown
+      "COLLABORATORS" -> collaborators.value.markdown,
+      "COPYRIGHT_OWNER" -> organizationHomepage.value
+        .map(url => s"${organizationName.value} <$url>")
+        .getOrElse(organizationName.value)
     )
   )
 
