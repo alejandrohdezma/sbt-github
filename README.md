@@ -22,7 +22,7 @@ This plugin enables several settings automatically by downloading them from Gith
 Add the following line to your `plugins.sbt` file:
 
 ```sbt
-addSbtPlugin("com.alejandrohdezma" %% "sbt-github" % "0.5.1")
+addSbtPlugin("com.alejandrohdezma" %% "sbt-github" % "0.5.2")
 ```
 
 > If you use [mdoc](https://scalameta.org/mdoc/) there's also available an [mdoc integration module](#mdoc-integration)
@@ -93,33 +93,34 @@ For this plugin to work you'll need to add an environment variable named `GITHUB
 If you use [mdoc](https://scalameta.org/mdoc/) for creating your documentation you can benefit from our mdoc module which provides several bunches of [`mdocVariables`](https://scalameta.org/mdoc/docs/installation.html#sbt) already pre-filled with values extracted from Github to any project that adds the `MdocPlugin` to replace them in the documentation. To use it, just add the following line to your `plugins.sbt` file
 
 ```sbt
-addSbtPlugin("com.alejandrohdezma" %% "sbt-github-mdoc" % "0.5.1")
+addSbtPlugin("com.alejandrohdezma" %% "sbt-github-mdoc" % "0.5.2")
 ```
 
 > Important! So we don't force a version of mdoc, it is requested as a [`Provided`](https://maven.apache.org/guides/introduction/introduction-to-dependency-mechanism.html) dependency so you'll need to provide your own version of mdoc following [its own tutorial](https://scalameta.org/mdoc/docs/installation.html).
 
 The plugin provides the following `mdocVariables`:
 
-| Variable          | Content                                                                                                                                                                     |
-|-------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **VERSION**       | Set to the value of the `version` setting by removing the timestamp part (this behavior can be disabled using the `removeVersionTimestampInMdoc` setting)                   |
-| **CONTRIBUTORS**  | Set to the value of the `contributors` setting, containing the list of repository contributors in markdown format                                                           |
-| **COLLABORATORS** | Set to the value of the `collaborators` setting, containing the list of repository collaborators in markdown format                                                         |
-| **NAME**          | Set to the project's name                                                                                                                                                   |
-| **LICENSE**       | Set to the license's name                                                                                                                                                   |
-| **ORG_NAME**      | Set to the value of `organizationName` setting (Github's organization name or owner's in case organization is empty and `populateOrganizationWithOwner` is `true`)         |
-| **ORG_EMAIL**     | Set to the value of `organizationEmail` setting (Github's organization email, or owner's in case organization is empty and `populateOrganizationWithOwner` is `true`)       |
-| **ORG_URL**       | Set to the value of `organizationHomepage` setting (Github's organization homepage or owner's in case organization is empty and `populateOrganizationWithOwner` is `true`) |
-| **REPO**          | Set to the repository's path: "owner/repo"                                                                                                                                  |
-| **START_YEAR**    | Set to the value of the `startYear` setting                                                                                                                                 |
-| **YEAR_RANGE**    | Set to the value of the `yearRange` setting                                                                                                                                 |
+| Variable            | Content                                                                                                                                                                    |
+|---------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **VERSION**         | Set to the value of the `version` setting by removing the timestamp part (this behavior can be disabled using the `removeVersionTimestampInMdoc` setting)                  |
+| **CONTRIBUTORS**    | Set to the value of the `contributors` setting, containing the list of repository contributors in markdown format                                                          |
+| **COLLABORATORS**   | Set to the value of the `collaborators` setting, containing the list of repository collaborators in markdown format                                                        |
+| **NAME**            | Set to the project's name                                                                                                                                                  |
+| **LICENSE**         | Set to the license's name                                                                                                                                                  |
+| **ORG_NAME**        | Set to the value of `organizationName` setting (Github's organization name or owner's in case organization is empty and `populateOrganizationWithOwner` is `true`)         |
+| **ORG_EMAIL**       | Set to the value of `organizationEmail` setting (Github's organization email, or owner's in case organization is empty and `populateOrganizationWithOwner` is `true`)      |
+| **ORG_URL**         | Set to the value of `organizationHomepage` setting (Github's organization homepage or owner's in case organization is empty and `populateOrganizationWithOwner` is `true`) |
+| **REPO**            | Set to the repository's path: "owner/repo"                                                                                                                                 |
+| **START_YEAR**      | Set to the value of the `startYear` setting                                                                                                                                |
+| **YEAR_RANGE**      | Set to the value of the `yearRange` setting                                                                                                                                |
+| **COPYRIGHT_OWNER** | Set to the value of `ORG_NAME <ORG_URL>` if `ORG_URL` is present or just `ORG_NAME` in case `ORG_URL` is empty                                                             |
 
 ### sbt-header integration
 
 If you use [sbt-header](https://github.com/sbt/sbt-header) for creating/updating your file headers according to your project's license you can benefit from our `sbt-github-header` module which pre-fills header template with downloaded Github values. To use it, just add the following line to your `plugins.sbt` file
 
 ```sbt
-addSbtPlugin("com.alejandrohdezma" %% "sbt-github-header" % "0.5.1")
+addSbtPlugin("com.alejandrohdezma" %% "sbt-github-header" % "0.5.2")
 ```
 
 > Important! So we don't force a version of sbt-header, it is requested as a [`Provided`](https://maven.apache.org/guides/introduction/introduction-to-dependency-mechanism.html) dependency so you'll need to provide your own version of [sbt-header](https://github.com/sbt/sbt-header).
