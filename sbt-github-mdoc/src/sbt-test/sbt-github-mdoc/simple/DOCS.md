@@ -22,3 +22,5 @@ https://github.com/user1
 
 - [![user1](http://example.com/user1.png&s=20) **The First User (user1)**](https://github.com/user1)
 - [![user2](http://example.com/user2.png&s=20) **The Second User (user2)**](https://github.com/user2)
+
+The First User <https://github.com/user1>
