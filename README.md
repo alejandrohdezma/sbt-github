@@ -15,7 +15,20 @@ This plugin enables several settings automatically by downloading them from Gith
 - `organizationName`: The repository organization name or the owner's name if `populateOrganizationWithOwner` is set to `true`.
 - `organizationEmail`: The repository organization email or the owner's email if `populateOrganizationWithOwner` is set to `true`. 
 - `organizationHomepage`: The repository organization homepage or the owner's homepage if `populateOrganizationWithOwner` is set to `true`. 
-  
+
+---
+
+- [Installation](#installation)
+- [Configuration](#configuration)
+  - [Download owner information if it doesn't have an organization](#download-owner-information-if-it-doesnt-have-an-organization)
+  - [Excluding contributors](#excluding-contributors)
+  - [Adding extra collaborators](#adding-extra-collaborators)
+  - [Github API token](#github-api-token)
+- [Integrations](#integrations)
+  - [mdoc integration](#mdoc-integration)
+  - [sbt-header integration](#sbt-header-integration)
+    - [What does this integration do?](#what-does-this-integration-do)
+    - [Example](#example)
 
 ## Installation
 
