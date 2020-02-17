@@ -15,7 +15,9 @@ This plugin enables several settings automatically by downloading them from Gith
 - `organizationName`: The repository organization name or the owner's name if `populateOrganizationWithOwner` is set to `true`.
 - `organizationEmail`: The repository organization email or the owner's email if `populateOrganizationWithOwner` is set to `true`. 
 - `organizationHomepage`: The repository organization homepage or the owner's homepage if `populateOrganizationWithOwner` is set to `true`. 
-  
+
+```scala mdoc:toc
+```
 
 ## Installation
 
