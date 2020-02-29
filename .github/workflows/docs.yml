@@ -34,7 +34,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           commit-message: Update documentation and other files
           title: 'Update documentation and other files'
-          labels: auto-update,documentation
+          labels: auto-documentation
           branch: auto-update-docs
           body: Update documentation and other files with latest changes.
       - name: Merge Documentation Pull Request

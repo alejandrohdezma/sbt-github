@@ -4,6 +4,10 @@
 
 name-template: 'v$NEXT_PATCH_VERSION'
 tag-template: 'v$NEXT_PATCH_VERSION'
+exclude-labels:
+  - 'auto-update'
+  - 'auto-documentation'
+  - 'auto-changelog'
 categories:
   - title: '🚀 Features'
     label: 'enhancement'
