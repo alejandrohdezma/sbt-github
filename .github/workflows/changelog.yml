@@ -23,14 +23,14 @@ jobs:
         uses: charmixer/auto-changelog-action@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          exclude_labels: duplicate,question,invalid,wontfix,auto-update
+          exclude_labels: duplicate,question,invalid,wontfix,auto-update,auto-changelog,auto-documentation
       - name: Create Changelog Pull Request
         uses: peter-evans/create-pull-request@v2
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           commit-message: Update CHANGELOG.md
           title: 'Update CHANGELOG.md'
-          labels: auto-update
+          labels: auto-changelog
           branch: auto-update-changelog
           body: Update CHANGELOG.md with information from latest release
       - name: Merge Changelog Pull Request
