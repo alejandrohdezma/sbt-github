@@ -28,11 +28,11 @@ lazy val `sbt-github-mdoc` = project
   .dependsOn(`sbt-github`)
   .settings(description := "Provides most of the info downloaded by stb-github as mdoc variables")
   .settings(scriptedLaunchOpts += s"-Dplugin.version=${version.value}")
-  .settings(addSbtPlugin("org.scalameta" % "sbt-mdoc" % "[2.0,)" % Provided))
+  .settings(addSbtPlugin("org.scalameta" % "sbt-mdoc" % "[2.0,)" % Provided)) // scala-steward:off
 
 lazy val `sbt-github-header` = project
   .enablePlugins(SbtPlugin)
   .dependsOn(`sbt-github`)
   .settings(description := "Integration between sbt-github and sbt-header")
   .settings(scriptedLaunchOpts += s"-Dplugin.version=${version.value}")
-  .settings(addSbtPlugin("de.heikoseeberger" % "sbt-header" % "[5.0,)" % Provided))
+  .settings(addSbtPlugin("de.heikoseeberger" % "sbt-header" % "[5.0,)" % Provided)) // scala-steward:off
