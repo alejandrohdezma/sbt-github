@@ -1,10 +1,18 @@
 # Changelog
 
+## [v0.6.0](https://github.com/alejandrohdezma/sbt-github/tree/v0.6.0) (2020-03-01)
+
+[Full Changelog](https://github.com/alejandrohdezma/sbt-github/compare/v0.5.2...v0.6.0)
+
+**Implemented enhancements:**
+
+- Automatically merge all scala-steward PRs [\#95](https://github.com/alejandrohdezma/sbt-github/pull/95) ([alejandrohdezma](https://github.com/alejandrohdezma))
+
 ## [v0.5.2](https://github.com/alejandrohdezma/sbt-github/tree/v0.5.2) (2020-02-17)
 
 [Full Changelog](https://github.com/alejandrohdezma/sbt-github/compare/v0.5.1...v0.5.2)
 
-**Merged pull requests:**
+**Implemented enhancements:**
 
 - Add `COPYRIGHT\_OWNER` as mdoc variable in sbt-github-mdoc [\#85](https://github.com/alejandrohdezma/sbt-github/pull/85) ([alejandrohdezma](https://github.com/alejandrohdezma))
 
@@ -12,7 +20,7 @@
 
 [Full Changelog](https://github.com/alejandrohdezma/sbt-github/compare/v0.5.0...v0.5.1)
 
-**Merged pull requests:**
+**Implemented enhancements:**
 
 - Exclude `traviscibot` from contributors by default [\#77](https://github.com/alejandrohdezma/sbt-github/pull/77) ([alejandrohdezma](https://github.com/alejandrohdezma))
 - Make `exludedContributors` a list of patterns [\#76](https://github.com/alejandrohdezma/sbt-github/pull/76) ([alejandrohdezma](https://github.com/alejandrohdezma))
@@ -21,21 +29,28 @@
 
 [Full Changelog](https://github.com/alejandrohdezma/sbt-github/compare/v0.4.0...v0.5.0)
 
-**Merged pull requests:**
+**Implemented enhancements:**
 
-- Improve README with GITHUB\_TOKEN tips [\#73](https://github.com/alejandrohdezma/sbt-github/pull/73) ([alejandrohdezma](https://github.com/alejandrohdezma))
+- Use repository's name as `NAME` mdoc variable [\#99](https://github.com/alejandrohdezma/sbt-github/pull/99) ([alejandrohdezma](https://github.com/alejandrohdezma))
 - Create `sbt-header` integration module [\#49](https://github.com/alejandrohdezma/sbt-github/pull/49) ([alejandrohdezma](https://github.com/alejandrohdezma))
 - Make download condition the presence of `DOWNLOAD\_INFO\_FROM\_GITHUB` [\#48](https://github.com/alejandrohdezma/sbt-github/pull/48) ([alejandrohdezma](https://github.com/alejandrohdezma))
-- Fix broken links, errored versions and descriptions [\#47](https://github.com/alejandrohdezma/sbt-github/pull/47) ([alejandrohdezma](https://github.com/alejandrohdezma))
 - Enable/disable include administrators branch protection before pushing [\#46](https://github.com/alejandrohdezma/sbt-github/pull/46) ([alejandrohdezma](https://github.com/alejandrohdezma))
 - Remove pulls & issues urls since they were pointing to API [\#45](https://github.com/alejandrohdezma/sbt-github/pull/45) ([alejandrohdezma](https://github.com/alejandrohdezma))
 - Create plugin for removing test dependencies from POM [\#44](https://github.com/alejandrohdezma/sbt-github/pull/44) ([alejandrohdezma](https://github.com/alejandrohdezma))
+
+**Fixed bugs:**
+
+- Fix broken links, errored versions and descriptions [\#47](https://github.com/alejandrohdezma/sbt-github/pull/47) ([alejandrohdezma](https://github.com/alejandrohdezma))
+
+**Merged pull requests:**
+
+- Improve README with GITHUB\_TOKEN tips [\#73](https://github.com/alejandrohdezma/sbt-github/pull/73) ([alejandrohdezma](https://github.com/alejandrohdezma))
 
 ## [v0.4.0](https://github.com/alejandrohdezma/sbt-github/tree/v0.4.0) (2020-01-26)
 
 [Full Changelog](https://github.com/alejandrohdezma/sbt-github/compare/v0.3.0...v0.4.0)
 
-**Merged pull requests:**
+**Implemented enhancements:**
 
 - Rename plugin to `sbt-github` [\#42](https://github.com/alejandrohdezma/sbt-github/pull/42) ([alejandrohdezma](https://github.com/alejandrohdezma))
 - Add `sbt-me-mdoc` plugin [\#41](https://github.com/alejandrohdezma/sbt-github/pull/41) ([alejandrohdezma](https://github.com/alejandrohdezma))
@@ -53,8 +68,11 @@
 - Add collaborators information [\#27](https://github.com/alejandrohdezma/sbt-github/pull/27) ([alejandrohdezma](https://github.com/alejandrohdezma))
 - Add contributors information [\#26](https://github.com/alejandrohdezma/sbt-github/pull/26) ([alejandrohdezma](https://github.com/alejandrohdezma))
 - `organization` is mandatory now [\#25](https://github.com/alejandrohdezma/sbt-github/pull/25) ([alejandrohdezma](https://github.com/alejandrohdezma))
-- Fix scaladocs [\#24](https://github.com/alejandrohdezma/sbt-github/pull/24) ([alejandrohdezma](https://github.com/alejandrohdezma))
 - Zero dependencies [\#23](https://github.com/alejandrohdezma/sbt-github/pull/23) ([alejandrohdezma](https://github.com/alejandrohdezma))
+
+**Fixed bugs:**
+
+- Fix scaladocs [\#24](https://github.com/alejandrohdezma/sbt-github/pull/24) ([alejandrohdezma](https://github.com/alejandrohdezma))
 
 ## [v0.3.0](https://github.com/alejandrohdezma/sbt-github/tree/v0.3.0) (2019-11-12)
 
