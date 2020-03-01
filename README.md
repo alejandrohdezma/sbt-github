@@ -118,7 +118,7 @@ The plugin provides the following `mdocVariables`:
 | **VERSION**         | Set to the value of the `version` setting by removing the timestamp part (this behavior can be disabled using the `removeVersionTimestampInMdoc` setting)                  |
 | **CONTRIBUTORS**    | Set to the value of the `contributors` setting, containing the list of repository contributors in markdown format                                                          |
 | **COLLABORATORS**   | Set to the value of the `collaborators` setting, containing the list of repository collaborators in markdown format                                                        |
-| **NAME**            | Set to the project's name                                                                                                                                                  |
+| **NAME**            | Set to the value of `displayName`. Defaults to repository's name.                                                                                                                                                  |
 | **LICENSE**         | Set to the license's name                                                                                                                                                  |
 | **ORG_NAME**        | Set to the value of `organizationName` setting (Github's organization name or owner's in case organization is empty and `populateOrganizationWithOwner` is `true`)         |
 | **ORG_EMAIL**       | Set to the value of `organizationEmail` setting (Github's organization email, or owner's in case organization is empty and `populateOrganizationWithOwner` is `true`)      |
