@@ -34,6 +34,9 @@
 - name: auto-changelog
   color: e01f96
   description: "Automatic update of changelog file"
+- name: breaking-change
+  color: f0ff00
+  description: "A breaking change that needs to be treated with consideration"
 - name: dependency-update
   color: 27d14f
   description: "A dependency version update"

@@ -9,6 +9,8 @@ exclude-labels:
   - 'auto-documentation'
   - 'auto-changelog'
 categories:
+  - title: '⚠️ Breaking changes'
+    label: 'breaking-change'
   - title: '🚀 Features'
     label: 'enhancement'
   - title: '📘 Documentation'
