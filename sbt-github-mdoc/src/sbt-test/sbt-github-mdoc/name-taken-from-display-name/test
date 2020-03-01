@@ -1,0 +1,3 @@
+# this test ensures `sbt-github-mdoc` sets `NAME` from `displayName`
+> mdoc
+$ must-mirror target/mdoc/DOCS.md DOCS.md

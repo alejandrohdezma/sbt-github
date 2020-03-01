@@ -37,7 +37,7 @@ import mdoc.MdocPlugin.autoImport.mdocVariables
  *   of repository contributors in markdown format.
  *  - '''COLLABORATORS''': Set to the value of the `collaborators` setting, containing the list
  *   of repository collaborators in markdown format.
- *  - '''NAME''': Set to the project's name.
+ *  - '''NAME''': Set to the value of `displayName`. Defaults to repository's name.
  *  - '''LICENSE''': Set to the license's name.
  *  - '''ORG_NAME''': Set to the value of `organizationName` setting (Github's organization name,
  *   or owner's in case organization is empty and `populateOrganizationWithOwner` is `true`).
@@ -54,6 +54,10 @@ import mdoc.MdocPlugin.autoImport.mdocVariables
 object SbtGithubMdocPlugin extends AutoPlugin {
 
   object autoImport {
+
+    val displayName = settingKey[String] {
+      "The project name to be used as NAME variable in mdoc, defaults to repository's name"
+    }
 
     val removeVersionTimestampInMdoc = settingKey[Boolean] {
       """Removes the version timestamp set by plugins like 'dwijnand/sbt-dynver':
@@ -79,9 +83,10 @@ object SbtGithubMdocPlugin extends AutoPlugin {
   override def requires: Plugins = SbtGithubPlugin && MdocPlugin
 
   override def projectSettings: Seq[Def.Setting[_]] = Seq(
+    displayName                  := SbtGithubPlugin.info.value._2,
     removeVersionTimestampInMdoc := true,
     mdocVariables ++= Map(
-      "NAME"          -> name.value,
+      "NAME"          -> displayName.value,
       "REPO"          -> repository.value.map(_.name).getOrElse(""),
       "LICENSE"       -> licenses.value.headOption.map(_._1).getOrElse(""),
       "ORG_NAME"      -> organizationName.value,

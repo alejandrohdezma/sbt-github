@@ -1,4 +1,4 @@
-root
+sbt-github
 
 user1/repo
 

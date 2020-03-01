@@ -184,7 +184,7 @@ object SbtGithubPlugin extends AutoPlugin {
   )
 
   /** Gets the Github user and repository from the git remote info */
-  private val info = Def.setting {
+  private[github] val info = Def.setting {
     val identifier = """([^\/]+)"""
 
     val Connection = s"scm:git:https://github.com/$identifier/$identifier.git".r
