@@ -6,6 +6,7 @@
 
 **Implemented enhancements:**
 
+- Use repository's name as `NAME` mdoc variable [\#99](https://github.com/alejandrohdezma/sbt-github/pull/99) ([alejandrohdezma](https://github.com/alejandrohdezma))
 - Automatically merge all scala-steward PRs [\#95](https://github.com/alejandrohdezma/sbt-github/pull/95) ([alejandrohdezma](https://github.com/alejandrohdezma))
 
 ## [v0.5.2](https://github.com/alejandrohdezma/sbt-github/tree/v0.5.2) (2020-02-17)
@@ -31,7 +32,6 @@
 
 **Implemented enhancements:**
 
-- Use repository's name as `NAME` mdoc variable [\#99](https://github.com/alejandrohdezma/sbt-github/pull/99) ([alejandrohdezma](https://github.com/alejandrohdezma))
 - Create `sbt-header` integration module [\#49](https://github.com/alejandrohdezma/sbt-github/pull/49) ([alejandrohdezma](https://github.com/alejandrohdezma))
 - Make download condition the presence of `DOWNLOAD\_INFO\_FROM\_GITHUB` [\#48](https://github.com/alejandrohdezma/sbt-github/pull/48) ([alejandrohdezma](https://github.com/alejandrohdezma))
 - Enable/disable include administrators branch protection before pushing [\#46](https://github.com/alejandrohdezma/sbt-github/pull/46) ([alejandrohdezma](https://github.com/alejandrohdezma))
