@@ -35,4 +35,6 @@ lazy val `sbt-github-header` = project
   .dependsOn(`sbt-github`)
   .settings(description := "Integration between sbt-github and sbt-header")
   .settings(scriptedLaunchOpts += s"-Dplugin.version=${version.value}")
-  .settings(addSbtPlugin("de.heikoseeberger" % "sbt-header" % "[5.0,)" % Provided)) // scala-steward:off
+  .settings(
+    addSbtPlugin("de.heikoseeberger" % "sbt-header" % "[5.0,)" % Provided) // scala-steward:off
+  )

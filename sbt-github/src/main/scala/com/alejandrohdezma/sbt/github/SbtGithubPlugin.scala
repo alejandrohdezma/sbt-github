@@ -123,14 +123,14 @@ object SbtGithubPlugin extends AutoPlugin {
       })
     },
     repository := Def.settingDyn {
-      if (downloadInfoFromGithub.value)
-        Def.setting {
-          implicit val log: Logger                  = sLog.value
-          implicit val entryPoint: GithubEntryPoint = GithubEntryPoint(githubApiEntryPoint.value)
-          implicit val auth: Authentication         = githubToken.value
+      if (downloadInfoFromGithub.value) Def.setting {
+        implicit val log: Logger                  = sLog.value
+        implicit val entryPoint: GithubEntryPoint = GithubEntryPoint(githubApiEntryPoint.value)
+        implicit val auth: Authentication         = githubToken.value
 
-          Some(Repository.get(info.value._1, info.value._2).fold(sys.error, identity))
-        } else Def.setting(None)
+        Some(Repository.get(info.value._1, info.value._2).fold(sys.error, identity))
+      }
+      else Def.setting(None)
     }.value,
     organizationMetadata := {
       implicit val log: Logger          = sLog.value
