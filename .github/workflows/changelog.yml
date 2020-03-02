@@ -6,7 +6,10 @@ name: Update changelog
 
 on:
   push:
-    tags: v**
+    tags:
+      - v**
+    branches:
+      - master
 
 jobs:
   changelog:
@@ -19,11 +22,44 @@ jobs:
           fetch-depth: 0
       - name: Fetch tags
         run: git fetch --tags
-      - name: Generate changelog
-        uses: charmixer/auto-changelog-action@v1
+      - name: Setup ruby
+        uses: actions/setup-ruby@v1
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          exclude_labels: duplicate,question,invalid,wontfix,auto-update,auto-changelog,auto-documentation
+          ruby-version: '2.6'
+      - name: Install github-changelog-generator
+        run: gem install github_changelog_generator
+      - name: Generate changelog
+        env:
+          repo: ${{ github.repository }}
+        run: |
+          github_changelog_generator \
+            --user ${repo%/*} \
+            --project ${repo#*/} \
+            --token $GITHUB_TOKEN \
+            --exclude-labels "duplicate,question,invalid,wontfix,auto-update,auto-changelog,auto-documentation" \
+            --configure-sections \
+          '{
+            "breaking": {
+              "prefix": "⚠️ **Breaking changes**",
+              "labels": ["breaking-change"]
+            },
+            "enhancement": {
+              "prefix": "🚀 **Features**",
+              "labels": ["enhancement"]
+            },
+            "documentation": {
+              "prefix": "📘 **Documentation**",
+              "labels": ["documentation"]
+            },
+            "bug": {
+              "prefix": "🐛 **Bug Fixes**",
+              "labels": ["bug"]
+            },
+            "dependency": {
+              "prefix": "📈 **Dependency updates**",
+              "labels": ["dependency-update"]
+            }
+          }'
       - name: Create Changelog Pull Request
         uses: peter-evans/create-pull-request@v2
         with:
