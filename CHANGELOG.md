@@ -16,10 +16,6 @@
 
 [Full Changelog](https://github.com/alejandrohdezma/sbt-github/compare/v0.5.1...v0.5.2)
 
-🚀 **Features**
-
-- Add `COPYRIGHT\_OWNER` as mdoc variable in sbt-github-mdoc [\#85](https://github.com/alejandrohdezma/sbt-github/pull/85) ([alejandrohdezma](https://github.com/alejandrohdezma))
-
 ## [v0.5.1](https://github.com/alejandrohdezma/sbt-github/tree/v0.5.1) (2020-02-14)
 
 [Full Changelog](https://github.com/alejandrohdezma/sbt-github/compare/v0.5.0...v0.5.1)
@@ -35,6 +31,7 @@
 
 🚀 **Features**
 
+- Add `COPYRIGHT\_OWNER` as mdoc variable in sbt-github-mdoc [\#85](https://github.com/alejandrohdezma/sbt-github/pull/85) ([alejandrohdezma](https://github.com/alejandrohdezma))
 - Create `sbt-header` integration module [\#49](https://github.com/alejandrohdezma/sbt-github/pull/49) ([alejandrohdezma](https://github.com/alejandrohdezma))
 - Make download condition the presence of `DOWNLOAD\_INFO\_FROM\_GITHUB` [\#48](https://github.com/alejandrohdezma/sbt-github/pull/48) ([alejandrohdezma](https://github.com/alejandrohdezma))
 - Enable/disable include administrators branch protection before pushing [\#46](https://github.com/alejandrohdezma/sbt-github/pull/46) ([alejandrohdezma](https://github.com/alejandrohdezma))
