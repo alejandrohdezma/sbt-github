@@ -30,6 +30,7 @@ jobs:
         run: gem install github_changelog_generator
       - name: Generate changelog
         env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           repo: ${{ github.repository }}
         run: |
           github_changelog_generator \
@@ -57,7 +58,7 @@ jobs:
             },
             "dependency": {
               "prefix": "📈 **Dependency updates**",
-              "labels": ["dependency-update"]
+              "labels": ["dependency-update", "scala-steward"]
             }
           }'
       - name: Create Changelog Pull Request
@@ -75,4 +76,4 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           number: ${{ env.PULL_REQUEST_NUMBER }}
-          method: merge
+          method: squash
