@@ -24,10 +24,8 @@ import com.alejandrohdezma.sbt.github.syntax.throwable._
 
 object Json extends JavaTokenParsers {
 
-  type Result[A] = Try[A]
-
   /** Parse the provided string into a [[Json.Value]] */
-  def parse(s: String): Result[Json.Value] =
+  def parse(s: String): Try[Json.Value] =
     parseAll(`json-value`, s).map(Try(_)).getOrElse(Failures.NotAValidJSON(s).raise)
 
   @SuppressWarnings(Array("all"))

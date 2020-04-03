@@ -16,9 +16,10 @@
 
 package com.alejandrohdezma.sbt.github.syntax
 
+import scala.util.Try
+
 import com.alejandrohdezma.sbt.github.failure.NotFound
 import com.alejandrohdezma.sbt.github.json.Json.Failures._
-import com.alejandrohdezma.sbt.github.json.Json._
 import com.alejandrohdezma.sbt.github.json.{Decoder, Json}
 import com.alejandrohdezma.sbt.github.syntax.scalatry._
 import com.alejandrohdezma.sbt.github.syntax.throwable._
@@ -28,7 +29,7 @@ object json {
   implicit class JsonValueOps(private val json: Json.Value) extends AnyVal {
 
     /** Tries to decode this `Json.Value` as the provided type `A` using its implicit `Decoder` */
-    def as[A: Decoder]: Result[A] = Decoder[A].decode(json)
+    def as[A: Decoder]: Try[A] = Decoder[A].decode(json)
 
     /**
      * Tries to decode the `Json.Value` at the provided path as the provided type `A` using
@@ -36,7 +37,7 @@ object json {
      *
      * Returns `Failure` with the error in case this is not a `Json.Object` or the decoding fails.
      */
-    def get[A: Decoder](path: String): Result[A] = json match {
+    def get[A: Decoder](path: String): Try[A] = json match {
       case json: Json.Object => json.get(path).as[A].failMap(InvalidPath(path, _))
       case Json.Null         => NotFound.raise
       case value             => NotAJSONObject(value).raise
@@ -44,13 +45,13 @@ object json {
 
   }
 
-  implicit class ResultJsonValueOps(private val result: Result[Json.Value]) extends AnyVal {
+  implicit class ResultJsonValueOps(private val result: Try[Json.Value]) extends AnyVal {
 
     /**
      * If the result is `Right`, tries to decode its `Json.Value` as the provided
      * type `A` using its implicit `Decoder`; otherwise returns the `Result`.
      */
-    def as[A: Decoder]: Result[A] = result.flatMap(Decoder[A].decode)
+    def as[A: Decoder]: Try[A] = result.flatMap(Decoder[A].decode)
 
   }
 

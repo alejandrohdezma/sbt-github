@@ -26,7 +26,6 @@ import scala.util.control.NoStackTrace
 
 import sbt.util.Logger
 
-import com.alejandrohdezma.sbt.github.json.Json.Result
 import com.alejandrohdezma.sbt.github.json.{Decoder, Json}
 import com.alejandrohdezma.sbt.github.syntax.json._
 import com.alejandrohdezma.sbt.github.syntax.scalatry._
@@ -43,7 +42,7 @@ object client {
    * returns its contents as `String`.
    */
   @SuppressWarnings(Array("all"))
-  def get[A: Decoder](uri: String)(implicit auth: Authentication, logger: Logger): Result[A] =
+  def get[A: Decoder](uri: String)(implicit auth: Authentication, logger: Logger): Try[A] =
     Try {
       logger.verbose(s"Getting content from URL: $uri")
 

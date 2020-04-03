@@ -23,7 +23,6 @@ import scala.util.Try
 import scala.util.control.NoStackTrace
 
 import com.alejandrohdezma.sbt.github.failure._
-import com.alejandrohdezma.sbt.github.json.Json.Result
 import com.alejandrohdezma.sbt.github.syntax.list._
 import com.alejandrohdezma.sbt.github.syntax.throwable._
 
@@ -33,7 +32,7 @@ import com.alejandrohdezma.sbt.github.syntax.throwable._
 trait Decoder[A] {
 
   /** Decode the given [[Json.Value]] */
-  def decode(json: Json.Value): Result[A]
+  def decode(json: Json.Value): Try[A]
 
 }
 
