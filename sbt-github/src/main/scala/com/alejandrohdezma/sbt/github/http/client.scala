@@ -22,7 +22,7 @@ import java.util.concurrent.ConcurrentHashMap
 
 import scala.io.Source
 import scala.util.Try
-import scala.util.control.{NoStackTrace, NonFatal}
+import scala.util.control.NoStackTrace
 
 import sbt.util.Logger
 
@@ -32,10 +32,6 @@ import com.alejandrohdezma.sbt.github.syntax.either._
 import com.alejandrohdezma.sbt.github.syntax.json._
 
 object client {
-
-  final case class Unknown(cause: Throwable)
-      extends Throwable(s"An error occurred", cause)
-      with NoStackTrace
 
   final case class URLNotFound(url: String)
       extends Throwable(s"$url was not found")
@@ -71,13 +67,8 @@ object client {
       )
     }.toEither.leftMap {
       case _: FileNotFoundException => URLNotFound(uri)
-      case NonFatal(t)              => Unknown(t)
-    }.flatMap(Json.parse).as[A].onLeft {
-      case f @ Unknown(cause) =>
-        logger.error(f.getMessage)
-        logger.trace(cause)
-      case fail => logger.error(fail.getMessage)
-    }
+      case throwable                => throwable
+    }.flatMap(Json.parse).as[A].onLeft(fail => logger.error(fail.getMessage))
 
   private val cache: ConcurrentHashMap[String, String] = new ConcurrentHashMap[String, String]()
 
