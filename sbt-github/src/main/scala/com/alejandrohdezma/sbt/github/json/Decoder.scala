@@ -22,7 +22,7 @@ import java.time.ZonedDateTime.parse
 import scala.util.Try
 import scala.util.control.NoStackTrace
 
-import com.alejandrohdezma.sbt.github.failure._
+import com.alejandrohdezma.sbt.github.error._
 import com.alejandrohdezma.sbt.github.syntax.list._
 import com.alejandrohdezma.sbt.github.syntax.throwable._
 

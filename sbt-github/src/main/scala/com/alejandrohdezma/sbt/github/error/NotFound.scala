@@ -1,4 +1,4 @@
-package com.alejandrohdezma.sbt.github.failure
+package com.alejandrohdezma.sbt.github.error
 
 import scala.util.control.NoStackTrace
 

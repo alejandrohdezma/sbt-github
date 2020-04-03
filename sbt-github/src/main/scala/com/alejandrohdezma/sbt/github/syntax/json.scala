@@ -18,7 +18,7 @@ package com.alejandrohdezma.sbt.github.syntax
 
 import scala.util.Try
 
-import com.alejandrohdezma.sbt.github.failure.NotFound
+import com.alejandrohdezma.sbt.github.error.NotFound
 import com.alejandrohdezma.sbt.github.json.Json.Failures._
 import com.alejandrohdezma.sbt.github.json.{Decoder, Json}
 import com.alejandrohdezma.sbt.github.syntax.scalatry._

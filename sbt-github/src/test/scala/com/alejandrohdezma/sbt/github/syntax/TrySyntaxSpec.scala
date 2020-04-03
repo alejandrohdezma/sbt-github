@@ -18,7 +18,7 @@ package com.alejandrohdezma.sbt.github.syntax
 
 import scala.util.{Failure, Try}
 
-import com.alejandrohdezma.sbt.github.failure.NotFound
+import com.alejandrohdezma.sbt.github.error.NotFound
 import com.alejandrohdezma.sbt.github.syntax.scalatry._
 import org.specs2.mutable.Specification
 
