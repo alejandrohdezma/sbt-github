@@ -18,6 +18,8 @@ package com.alejandrohdezma.sbt.github.json
 
 import scala.util.parsing.combinator.JavaTokenParsers
 
+import com.alejandrohdezma.sbt.github.failure.Fail
+
 object Json extends JavaTokenParsers {
 
   type Result[A] = Either[Fail, A]
@@ -40,43 +42,6 @@ object Json extends JavaTokenParsers {
     val `json-false`  = "false" ^^^ Json.False
 
     `json-object` | `json-array` | `json-string` | `json-number` | `json-null` | `json-true` | `json-false`
-  }
-
-  /**
-   * Represents a decoding failure.
-   *
-   * Left open so users can add more types of failures.
-   */
-  abstract class Fail(val msg: String)
-
-  object Fail {
-
-    final case class NotAJSONObject(value: Json.Value) extends Fail(s"is not a valid JSON object: $value")
-
-    final case class NotAList(value: Json.Value) extends Fail(s"is not a valid JSON array: $value")
-
-    final case class NotAString(value: Json.Value)
-        extends Fail(s"is not a valid JSON string: $value")
-
-    final case class NotANumber(value: Json.Value)
-        extends Fail(s"is not a valid JSON number: $value")
-
-    final case class NotABoolean(value: Json.Value)
-        extends Fail(s"is not a valid JSON boolean: $value")
-
-    final case class NotADateTime(value: Json.Value)
-        extends Fail(s"is not a valid date time: $value")
-
-    final case class Path(value: String, fail: Fail) extends Fail(s"$value => ${fail.msg}")
-
-    final case class NotAValidJSON(string: String) extends Fail(s"$string is not a valid JSON")
-
-    final case class Unknown(cause: Throwable) extends Fail(s"An error occurred: ${cause.getMessage}")
-
-    final case class URLNotFound(url: String) extends Fail(s"$url was not found")
-
-    case object NotFound extends Fail("was not found")
-
   }
 
   sealed trait Value

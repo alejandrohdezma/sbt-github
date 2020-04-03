@@ -21,9 +21,9 @@ import java.time.ZonedDateTime
 import sbt.URL
 import sbt.util.Logger
 
+import com.alejandrohdezma.sbt.github.failure.Fail.NotFound
 import com.alejandrohdezma.sbt.github.http.{client, Authentication}
 import com.alejandrohdezma.sbt.github.json.Decoder
-import com.alejandrohdezma.sbt.github.json.Json.Fail.NotFound
 import com.alejandrohdezma.sbt.github.syntax.either._
 import com.alejandrohdezma.sbt.github.syntax.json._
 import com.alejandrohdezma.sbt.github.syntax.list._

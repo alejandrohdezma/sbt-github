@@ -26,8 +26,9 @@ import scala.util.control.NonFatal
 
 import sbt.util.Logger
 
-import com.alejandrohdezma.sbt.github.json.Json.Fail.URLNotFound
-import com.alejandrohdezma.sbt.github.json.Json.{Fail, Result}
+import com.alejandrohdezma.sbt.github.failure.Fail
+import com.alejandrohdezma.sbt.github.failure.Fail.URLNotFound
+import com.alejandrohdezma.sbt.github.json.Json.Result
 import com.alejandrohdezma.sbt.github.json.{Decoder, Json}
 import com.alejandrohdezma.sbt.github.syntax.either._
 import com.alejandrohdezma.sbt.github.syntax.json._

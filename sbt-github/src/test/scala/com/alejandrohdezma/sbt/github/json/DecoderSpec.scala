@@ -19,8 +19,8 @@ package com.alejandrohdezma.sbt.github.json
 import java.time.ZoneOffset.UTC
 import java.time.ZonedDateTime
 
-import com.alejandrohdezma.sbt.github.json.Json.Fail
-import com.alejandrohdezma.sbt.github.json.Json.Fail._
+import com.alejandrohdezma.sbt.github.failure.Fail
+import com.alejandrohdezma.sbt.github.failure.Fail._
 import com.alejandrohdezma.sbt.github.syntax.json._
 import org.specs2.mutable.Specification
 

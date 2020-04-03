@@ -16,7 +16,8 @@
 
 package com.alejandrohdezma.sbt.github.syntax
 
-import com.alejandrohdezma.sbt.github.json.Json.Fail.Path
+import com.alejandrohdezma.sbt.github.failure.Fail
+import com.alejandrohdezma.sbt.github.failure.Fail.Path
 import com.alejandrohdezma.sbt.github.json.Json._
 import com.alejandrohdezma.sbt.github.json.{Decoder, Json}
 import com.alejandrohdezma.sbt.github.syntax.either._
@@ -62,13 +63,13 @@ object json {
   object / {
 
     /**
-     * `Json.Fail` extractor:
+     * `Fail` extractor:
      * {{{
      *   fail match {
      *     case "license" / ("url" / NotFound) => ...
      * }}}
      */
-    def unapply(fail: Json.Fail): Option[(String, Json.Fail)] = fail match {
+    def unapply(fail: Fail): Option[(String, Fail)] = fail match {
       case Path(value, fail) => Some(value -> fail)
       case _                 => None
     }
