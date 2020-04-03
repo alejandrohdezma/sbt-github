@@ -16,16 +16,19 @@
 
 package com.alejandrohdezma.sbt.github.json
 
+import scala.util.Try
 import scala.util.control.NoStackTrace
 import scala.util.parsing.combinator.JavaTokenParsers
 
+import com.alejandrohdezma.sbt.github.syntax.throwable._
+
 object Json extends JavaTokenParsers {
 
-  type Result[A] = Either[Throwable, A]
+  type Result[A] = Try[A]
 
   /** Parse the provided string into a [[Json.Value]] */
   def parse(s: String): Result[Json.Value] =
-    parseAll(`json-value`, s).map(Right(_)).getOrElse(Left(Failures.NotAValidJSON(s)))
+    parseAll(`json-value`, s).map(Try(_)).getOrElse(Failures.NotAValidJSON(s).raise)
 
   @SuppressWarnings(Array("all"))
   private def `json-value`: Parser[Json.Value] = {

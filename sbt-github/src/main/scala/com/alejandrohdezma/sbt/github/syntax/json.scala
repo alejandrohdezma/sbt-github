@@ -20,7 +20,8 @@ import com.alejandrohdezma.sbt.github.failure.NotFound
 import com.alejandrohdezma.sbt.github.json.Json.Failures._
 import com.alejandrohdezma.sbt.github.json.Json._
 import com.alejandrohdezma.sbt.github.json.{Decoder, Json}
-import com.alejandrohdezma.sbt.github.syntax.either._
+import com.alejandrohdezma.sbt.github.syntax.scalatry._
+import com.alejandrohdezma.sbt.github.syntax.throwable._
 
 object json {
 
@@ -33,12 +34,12 @@ object json {
      * Tries to decode the `Json.Value` at the provided path as the provided type `A` using
      * its implicit `Decoder`.
      *
-     * Returns `Left` with the error in case this is not a `Json.Object` or the decoding fails.
+     * Returns `Failure` with the error in case this is not a `Json.Object` or the decoding fails.
      */
     def get[A: Decoder](path: String): Result[A] = json match {
-      case json: Json.Object => json.get(path).as[A].leftMap(InvalidPath(path, _))
-      case Json.Null         => Left(NotFound)
-      case value             => Left(NotAJSONObject(value))
+      case json: Json.Object => json.get(path).as[A].failMap(InvalidPath(path, _))
+      case Json.Null         => NotFound.raise
+      case value             => NotAJSONObject(value).raise
     }
 
   }

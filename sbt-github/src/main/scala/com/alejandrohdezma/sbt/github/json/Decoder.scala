@@ -24,8 +24,8 @@ import scala.util.control.NoStackTrace
 
 import com.alejandrohdezma.sbt.github.failure._
 import com.alejandrohdezma.sbt.github.json.Json.Result
-import com.alejandrohdezma.sbt.github.syntax.either._
 import com.alejandrohdezma.sbt.github.syntax.list._
+import com.alejandrohdezma.sbt.github.syntax.throwable._
 
 /**
  * A type class that provides a way to produce a value of type `A` from a [[Json.Value]].
@@ -42,8 +42,8 @@ object Decoder {
   def apply[A](implicit D: Decoder[A]): Decoder[A] = D
 
   def nonNull[A](error: Json.Value => Throwable)(f: PartialFunction[Json.Value, A]): Decoder[A] = {
-    case Json.Null => Left(NotFound)
-    case json      => f.andThen(Right(_)).applyOrElse(json, error.andThen(Left(_)))
+    case Json.Null => NotFound.raise[A]
+    case json      => f.andThen(Try(_)).applyOrElse(json, error.andThen(_.raise[A]))
   }
 
   implicit val StringDecoder: Decoder[String] = nonNull(Failure.NotAString) {
@@ -68,20 +68,20 @@ object Decoder {
   }
 
   implicit val ZonedDateTimeDecoder: Decoder[ZonedDateTime] = {
-    case Json.Null            => Left(NotFound)
-    case a @ Json.Text(value) => Try(parse(value)).toEither.leftMap(_ => Failure.NotADateTime(a))
-    case value                => Left(Failure.NotADateTime(value))
+    case Json.Null            => NotFound.raise
+    case a @ Json.Text(value) => Try(parse(value)).orElse(Failure.NotADateTime(a).raise)
+    case value                => Failure.NotADateTime(value).raise
   }
 
   implicit def OptionDecoder[A: Decoder]: Decoder[Option[A]] = {
-    case Json.Null => Right(None)
+    case Json.Null => Try(None)
     case value     => Decoder[A].decode(value).map(Some(_))
   }
 
   implicit def ListDecoder[A: Decoder]: Decoder[List[A]] = {
     case Json.Collection(list) => list.traverse(Decoder[A].decode)
-    case Json.Null             => Left(NotFound)
-    case value                 => Left(Failure.NotAList(value))
+    case Json.Null             => NotFound.raise
+    case value                 => Failure.NotAList(value).raise
   }
 
   object Failure {

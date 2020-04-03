@@ -16,39 +16,26 @@
 
 package com.alejandrohdezma.sbt.github.syntax
 
-import com.alejandrohdezma.sbt.github.syntax.either._
+import scala.util.{Failure, Try}
+
+import com.alejandrohdezma.sbt.github.failure.NotFound
+import com.alejandrohdezma.sbt.github.syntax.scalatry._
 import org.specs2.mutable.Specification
 
-class EitherSyntaxSpec extends Specification {
+class TrySyntaxSpec extends Specification {
 
-  "leftMap" should {
+  "failMap" should {
 
-    "change value if Left" >> {
-      val either = Left(40)
+    "change value if Failure" >> {
+      val either = Failure(new IllegalArgumentException())
 
-      either.leftMap(_ + 2) must beLeft(42)
+      either.failMap(_ => NotFound) must beAFailedTry(equalTo(NotFound))
     }
 
-    "do nothing if Right" >> {
-      val either = Right[Int, Int](40)
+    "do nothing if Success" >> {
+      val either = Try(42)
 
-      either.leftMap(_ + 2) must beRight(40)
-    }
-
-  }
-
-  "onLeft" should {
-
-    "execute consumer if Left" >> {
-      val either = Left(40)
-
-      either.onLeft(_ => sys.error("fail")) must throwA[RuntimeException]("fail")
-    }
-
-    "do nothing if Right" >> {
-      val either = Right[Int, Int](40)
-
-      either.onLeft(_ => sys.error("fail")) must beRight(40)
+      either.failMap(_ => NotFound) must beSuccessfulTry(42)
     }
 
   }

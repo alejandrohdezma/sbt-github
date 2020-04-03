@@ -24,7 +24,6 @@ import sbt.util.Logger
 import com.alejandrohdezma.sbt.github.failure.NotFound
 import com.alejandrohdezma.sbt.github.http.{client, Authentication}
 import com.alejandrohdezma.sbt.github.json.Decoder
-import com.alejandrohdezma.sbt.github.syntax.either._
 import com.alejandrohdezma.sbt.github.syntax.json._
 import com.alejandrohdezma.sbt.github.syntax.list._
 
@@ -61,7 +60,7 @@ final case class Repository(
       .map(_.sortBy(-_.contributions))
       .map(_.filterNot(contributor => excluded.exists(contributor.login.matches)))
       .map(Contributors)
-      .leftMap(_ => "Unable to get repository contributors")
+      .fold(_ => Left("Unable to get repository contributors"), Right(_))
   }
 
   /**
@@ -86,7 +85,7 @@ final case class Repository(
       })
       .map(_.sortBy(collaborator => collaborator.name -> collaborator.login))
       .map(Collaborators)
-      .leftMap(_ => "Unable to get repository collaborators")
+      .fold(_ => Left("Unable to get repository collaborators"), Right(_))
   }
 
   /**
@@ -100,7 +99,7 @@ final case class Repository(
 
     organizationUrl
       .map(client.get[Organization])
-      .map(_.leftMap(_ => "Unable to get repository organization"))
+      .map(_.fold(_ => Left("Unable to get repository organization"), Right(_)))
   }
 
   /**
@@ -109,7 +108,7 @@ final case class Repository(
   def owner(implicit auth: Authentication, logger: Logger): Either[String, User] = {
     logger.info(s"Retrieving `$name` owner from Github API")
 
-    client.get[User](ownerUrl).leftMap(_ => "Unable to get repository owner")
+    client.get[User](ownerUrl).fold(_ => Left("Unable to get repository owner"), Right(_))
   }
 
 }
@@ -124,17 +123,30 @@ object Repository {
   ): Either[String, Repository] = {
     logger.info(s"Retrieving `$owner/$name` information from Github API")
 
-    client.get[Repository](url.get(owner, name)).leftMap {
-      case "description" / NotFound =>
-        s"Repository doesn't have a description! Go to https://github.com/$owner/$name and add it"
-      case "license" / NotFound =>
-        s"Repository doesn't have a license! Go to https://github.com/$owner/$name and add it"
-      case "license" / ("spdx_id" / NotFound) =>
-        s"Repository's license id couldn't be inferred! Go to https://github.com/$owner/$name and check it"
-      case "license" / ("url" / NotFound) =>
-        s"Repository's license url couldn't be inferred! Go to https://github.com/$owner/$name and check it"
-      case _ => "Unable to get repository information"
-    }
+    client
+      .get[Repository](url.get(owner, name))
+      .fold(
+        {
+          case "description" / NotFound =>
+            Left(
+              s"Repository doesn't have a description! Go to https://github.com/$owner/$name and add it"
+            )
+          case "license" / NotFound =>
+            Left(
+              s"Repository doesn't have a license! Go to https://github.com/$owner/$name and add it"
+            )
+          case "license" / ("spdx_id" / NotFound) =>
+            Left(
+              s"Repository's license id couldn't be inferred! Go to https://github.com/$owner/$name and check it"
+            )
+          case "license" / ("url" / NotFound) =>
+            Left(
+              s"Repository's license url couldn't be inferred! Go to https://github.com/$owner/$name and check it"
+            )
+          case _ => Left("Unable to get repository information")
+        },
+        Right(_)
+      )
   }
 
   implicit val RepositoryDecoder: Decoder[Repository] = json =>

@@ -44,7 +44,7 @@ object Collaborator {
 
       client.get[User](userUrl).map { user =>
         new Collaborator(user.login, user.url, userUrl, user.name, user.email, user.avatar)
-      } fold (_ => sys.error(s"Unable to get info for user $id"), identity)
+      } getOrElse sys.error(s"Unable to get info for user $id")
   }
 
   /**

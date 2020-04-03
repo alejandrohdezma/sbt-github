@@ -46,27 +46,27 @@ class JsonSyntaxSpec extends Specification {
     "return NotAJsonObject if json is not a JSON object" >> {
       val json: Json.Value = Json.True
 
-      json.get[Boolean]("miau") must beLeft[Throwable](NotAJSONObject(json))
+      json.get[Boolean]("miau") must beAFailedTry(equalTo(NotAJSONObject(json)))
     }
 
     "return NotFound with path if not present" >> {
       val json: Json.Value = Json.Object(Map("miau" -> Json.Number(42d)))
 
-      json.get[Int]("cat") must beLeft[Throwable](InvalidPath("cat", NotFound))
+      json.get[Int]("cat") must beAFailedTry(equalTo(InvalidPath("cat", NotFound)))
     }
 
     "return requested type if present and decoding succeeds" >> {
       val json: Json.Value = Json.Object(Map("miau" -> Json.Number(42d)))
 
-      json.get[Int]("miau") must beRight(42)
+      json.get[Int]("miau") must beSuccessfulTry(42)
     }
 
     "propagate Decoder[A] failure" >> {
       val json: Json.Value = Json.Object(Map("miau" -> Json.Number(42d)))
 
-      json.get[Boolean]("miau") must beLeft[Throwable](
-        InvalidPath("miau", NotABoolean(Json.Number(42d)))
-      )
+      val expected = InvalidPath("miau", NotABoolean(Json.Number(42d)))
+
+      json.get[Boolean]("miau") must beAFailedTry(equalTo(expected))
     }
 
   }

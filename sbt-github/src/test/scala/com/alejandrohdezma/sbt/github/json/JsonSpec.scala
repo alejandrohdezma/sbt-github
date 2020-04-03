@@ -27,7 +27,7 @@ class JsonSpec extends Specification {
 
       val expected: Json.Value = Json.Text("a String")
 
-      Json.parse(json) must beRight(expected)
+      Json.parse(json) must beSuccessfulTry(expected)
     }
 
     "decode Json.Number" >> {
@@ -35,7 +35,7 @@ class JsonSpec extends Specification {
 
       val expected: Json.Value = Json.Number(42)
 
-      Json.parse(json) must beRight(expected)
+      Json.parse(json) must beSuccessfulTry(expected)
     }
 
     "decode Json.True" >> {
@@ -43,7 +43,7 @@ class JsonSpec extends Specification {
 
       val expected: Json.Value = Json.True
 
-      Json.parse(json) must beRight(expected)
+      Json.parse(json) must beSuccessfulTry(expected)
     }
 
     "decode Json.False" >> {
@@ -51,7 +51,7 @@ class JsonSpec extends Specification {
 
       val expected: Json.Value = Json.False
 
-      Json.parse(json) must beRight(expected)
+      Json.parse(json) must beSuccessfulTry(expected)
     }
 
     "decode Json.Null" >> {
@@ -59,7 +59,7 @@ class JsonSpec extends Specification {
 
       val expected: Json.Value = Json.Null
 
-      Json.parse(json) must beRight(expected)
+      Json.parse(json) must beSuccessfulTry(expected)
     }
 
     "decode Json.Collection" >> {
@@ -67,7 +67,7 @@ class JsonSpec extends Specification {
 
       val expected: Json.Value = Json.Collection(List(1d, 2d, 3d, 4d).map(Json.Number))
 
-      Json.parse(json) must beRight(expected)
+      Json.parse(json) must beSuccessfulTry(expected)
     }
 
     "decode Json.Object" >> {
@@ -91,7 +91,7 @@ class JsonSpec extends Specification {
         )
       )
 
-      Json.parse(json) must beRight(expected)
+      Json.parse(json) must beSuccessfulTry(expected)
 
     }
 
