@@ -68,9 +68,9 @@ object client {
       case NonFatal(t)              => Fail.Unknown(t)
     }.flatMap(Json.parse).as[A].onLeft {
       case f @ Fail.Unknown(cause) =>
-        logger.error(f.msg)
+        logger.error(f.getMessage)
         logger.trace(cause)
-      case fail => logger.error(fail.msg)
+      case fail => logger.error(fail.getMessage)
     }
 
   private val cache: ConcurrentHashMap[String, String] = new ConcurrentHashMap[String, String]()
