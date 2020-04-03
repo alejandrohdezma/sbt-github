@@ -17,6 +17,7 @@
 package com.alejandrohdezma.sbt.github.syntax
 
 import com.alejandrohdezma.sbt.github.failure._
+import com.alejandrohdezma.sbt.github.json.Decoder.Failure.NotABoolean
 import com.alejandrohdezma.sbt.github.json.Json
 import com.alejandrohdezma.sbt.github.syntax.json._
 import org.specs2.mutable.Specification
