@@ -98,72 +98,72 @@ class JsonSpec extends Specification {
 
   }
 
-  "Fail#readableMessage" should {
+  "Fail#msg" should {
 
     "return readable message for NotAJSONObject failure" >> {
       val fail = NotAJSONObject(Json.Text("miau"))
 
-      fail.readableMessage must be equalTo "is not a valid JSON object: Text(miau)"
+      fail.msg must be equalTo "is not a valid JSON object: Text(miau)"
     }
 
     "return readable message for NotAList failure" >> {
       val fail = NotAList(Json.Text("miau"))
 
-      fail.readableMessage must be equalTo "is not a valid JSON array: Text(miau)"
+      fail.msg must be equalTo "is not a valid JSON array: Text(miau)"
     }
 
     "return readable message for NotAString failure" >> {
       val fail = NotAString(Json.Number(1d))
 
-      fail.readableMessage must be equalTo "is not a valid JSON string: Number(1.0)"
+      fail.msg must be equalTo "is not a valid JSON string: Number(1.0)"
     }
 
     "return readable message for NotANumber failure" >> {
       val fail = NotANumber(Json.Text("miau"))
 
-      fail.readableMessage must be equalTo "is not a valid JSON number: Text(miau)"
+      fail.msg must be equalTo "is not a valid JSON number: Text(miau)"
     }
 
     "return readable message for NotABoolean failure" >> {
       val fail = NotABoolean(Json.Text("miau"))
 
-      fail.readableMessage must be equalTo "is not a valid JSON boolean: Text(miau)"
+      fail.msg must be equalTo "is not a valid JSON boolean: Text(miau)"
     }
 
     "return readable message for NotADateTime failure" >> {
       val fail = NotADateTime(Json.Text("miau"))
 
-      fail.readableMessage must be equalTo "is not a valid date time: Text(miau)"
+      fail.msg must be equalTo "is not a valid date time: Text(miau)"
     }
 
     "return readable message for Path failure" >> {
       val fail = Path("miau", NotFound)
 
-      fail.readableMessage must be equalTo "miau => was not found"
+      fail.msg must be equalTo "miau => was not found"
     }
 
     "return readable message for NotAValidJSON failure" >> {
       val fail = NotAValidJSON("miau")
 
-      fail.readableMessage must be equalTo "miau is not a valid JSON"
+      fail.msg must be equalTo "miau is not a valid JSON"
     }
 
     "return readable message for Unknown failure" >> {
       val fail = Unknown(new RuntimeException("BOOOM!"))
 
-      fail.readableMessage must be equalTo "An error occurred: BOOOM!"
+      fail.msg must be equalTo "An error occurred: BOOOM!"
     }
 
     "return readable message for URLNotFound failure" >> {
       val fail = URLNotFound("miau")
 
-      fail.readableMessage must be equalTo "miau was not found"
+      fail.msg must be equalTo "miau was not found"
     }
 
     "return readable message for NotFound failure" >> {
       val fail = NotFound
 
-      fail.readableMessage must be equalTo "was not found"
+      fail.msg must be equalTo "was not found"
     }
 
   }
