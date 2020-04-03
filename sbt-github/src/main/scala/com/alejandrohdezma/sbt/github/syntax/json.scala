@@ -16,8 +16,7 @@
 
 package com.alejandrohdezma.sbt.github.syntax
 
-import com.alejandrohdezma.sbt.github.failure.Fail
-import com.alejandrohdezma.sbt.github.failure.Fail.Path
+import com.alejandrohdezma.sbt.github.failure.{NotAJSONObject, NotFound, Path}
 import com.alejandrohdezma.sbt.github.json.Json._
 import com.alejandrohdezma.sbt.github.json.{Decoder, Json}
 import com.alejandrohdezma.sbt.github.syntax.either._
@@ -36,9 +35,9 @@ object json {
      * Returns `Left` with the error in case this is not a `Json.Object` or the decoding fails.
      */
     def get[A: Decoder](path: String): Result[A] = json match {
-      case json: Json.Object => json.get(path).as[A].leftMap(Fail.Path(path, _))
-      case Json.Null         => Left(Fail.NotFound)
-      case value             => Left(Fail.NotAJSONObject(value))
+      case json: Json.Object => json.get(path).as[A].leftMap(Path(path, _))
+      case Json.Null         => Left(NotFound)
+      case value             => Left(NotAJSONObject(value))
     }
 
   }
@@ -63,13 +62,13 @@ object json {
   object / {
 
     /**
-     * `Fail` extractor:
+     * `Throwable` extractor:
      * {{{
-     *   fail match {
+     *   throwable match {
      *     case "license" / ("url" / NotFound) => ...
      * }}}
      */
-    def unapply(fail: Fail): Option[(String, Fail)] = fail match {
+    def unapply(throwable: Throwable): Option[(String, Throwable)] = throwable match {
       case Path(value, fail) => Some(value -> fail)
       case _                 => None
     }

@@ -22,7 +22,7 @@ import cats.implicits._
 
 import sbt.util.Logger
 
-import com.alejandrohdezma.sbt.github.failure.Fail
+import com.alejandrohdezma.sbt.github.failure.{URLNotFound, Unknown}
 import com.alejandrohdezma.sbt.github.json.Decoder
 import com.alejandrohdezma.sbt.github.syntax.json.JsonValueOps
 import com.alejandrohdezma.sbt.github.withServer
@@ -57,7 +57,7 @@ class ClientSpec extends Specification {
 
       val result = client.get[String](s"${uri}hello")
 
-      result must beLeft[Fail](Fail.URLNotFound(s"${uri}hello"))
+      result must beLeft[Throwable](URLNotFound(s"${uri}hello"))
     }
 
     "returns Unknown for every other failure (http-related)" >> {
@@ -66,7 +66,7 @@ class ClientSpec extends Specification {
       val result = client.get[String]("miau")
 
       result must be like {
-        case Left(Fail.Unknown(e: MalformedURLException)) =>
+        case Left(Unknown(e: MalformedURLException)) =>
           e.getMessage must be equalTo "no protocol: miau"
       }
     }

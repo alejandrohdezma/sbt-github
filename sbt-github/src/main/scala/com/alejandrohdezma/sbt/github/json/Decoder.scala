@@ -21,8 +21,7 @@ import java.time.ZonedDateTime.parse
 
 import scala.util.Try
 
-import com.alejandrohdezma.sbt.github.failure.Fail
-import com.alejandrohdezma.sbt.github.failure.Fail._
+import com.alejandrohdezma.sbt.github.failure._
 import com.alejandrohdezma.sbt.github.json.Json.Result
 import com.alejandrohdezma.sbt.github.syntax.either._
 import com.alejandrohdezma.sbt.github.syntax.list._
@@ -41,7 +40,7 @@ object Decoder {
 
   def apply[A](implicit D: Decoder[A]): Decoder[A] = D
 
-  def nonNull[A](error: Json.Value => Fail)(f: PartialFunction[Json.Value, A]): Decoder[A] = {
+  def nonNull[A](error: Json.Value => Throwable)(f: PartialFunction[Json.Value, A]): Decoder[A] = {
     case Json.Null => Left(NotFound)
     case json      => f.andThen(Right(_)).applyOrElse(json, error.andThen(Left(_)))
   }

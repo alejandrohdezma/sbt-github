@@ -18,15 +18,15 @@ package com.alejandrohdezma.sbt.github.json
 
 import scala.util.parsing.combinator.JavaTokenParsers
 
-import com.alejandrohdezma.sbt.github.failure.Fail
+import com.alejandrohdezma.sbt.github.failure.NotAValidJSON
 
 object Json extends JavaTokenParsers {
 
-  type Result[A] = Either[Fail, A]
+  type Result[A] = Either[Throwable, A]
 
   /** Parse the provided string into a [[Json.Value]] */
   def parse(s: String): Result[Json.Value] =
-    parseAll(`json-value`, s).map(Right(_)).getOrElse(Left(Fail.NotAValidJSON(s)))
+    parseAll(`json-value`, s).map(Right(_)).getOrElse(Left(NotAValidJSON(s)))
 
   @SuppressWarnings(Array("all"))
   private def `json-value`: Parser[Json.Value] = {

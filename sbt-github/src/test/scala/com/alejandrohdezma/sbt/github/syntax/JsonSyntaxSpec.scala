@@ -16,8 +16,7 @@
 
 package com.alejandrohdezma.sbt.github.syntax
 
-import com.alejandrohdezma.sbt.github.failure.Fail
-import com.alejandrohdezma.sbt.github.failure.Fail._
+import com.alejandrohdezma.sbt.github.failure._
 import com.alejandrohdezma.sbt.github.json.Json
 import com.alejandrohdezma.sbt.github.syntax.json._
 import org.specs2.mutable.Specification
@@ -45,13 +44,13 @@ class JsonSyntaxSpec extends Specification {
     "return NotAJsonObject if json is not a JSON object" >> {
       val json: Json.Value = Json.True
 
-      json.get[Boolean]("miau") must beLeft[Fail](NotAJSONObject(json))
+      json.get[Boolean]("miau") must beLeft[Throwable](NotAJSONObject(json))
     }
 
     "return NotFound with path if not present" >> {
       val json: Json.Value = Json.Object(Map("miau" -> Json.Number(42d)))
 
-      json.get[Int]("cat") must beLeft[Fail](Path("cat", NotFound))
+      json.get[Int]("cat") must beLeft[Throwable](Path("cat", NotFound))
     }
 
     "return requested type if present and decoding succeeds" >> {
@@ -63,7 +62,7 @@ class JsonSyntaxSpec extends Specification {
     "propagate Decoder[A] failure" >> {
       val json: Json.Value = Json.Object(Map("miau" -> Json.Number(42d)))
 
-      json.get[Boolean]("miau") must beLeft[Fail](Path("miau", NotABoolean(Json.Number(42d))))
+      json.get[Boolean]("miau") must beLeft[Throwable](Path("miau", NotABoolean(Json.Number(42d))))
     }
 
   }
@@ -71,19 +70,19 @@ class JsonSyntaxSpec extends Specification {
   "`/` extractor" should {
 
     "allow matching path failures" >> {
-      val fail: Fail = Path("miau", NotFound)
+      val fail = Path("miau", NotFound)
 
       fail must be like { case "miau" / NotFound => ok }
     }
 
     "allow matching nested Path failures" >> {
-      val fail: Fail = Path("miau", Path("cat", NotFound))
+      val fail = Path("miau", Path("cat", NotFound))
 
       fail must be like { case "miau" / ("cat" / NotFound) => ok }
     }
 
     "not match other failures" >> {
-      val fail: Fail = NotFound
+      val fail = NotFound
 
       /.unapply(fail) must be none
     }

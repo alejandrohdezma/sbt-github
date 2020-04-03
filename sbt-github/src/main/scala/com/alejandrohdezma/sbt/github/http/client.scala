@@ -26,8 +26,7 @@ import scala.util.control.NonFatal
 
 import sbt.util.Logger
 
-import com.alejandrohdezma.sbt.github.failure.Fail
-import com.alejandrohdezma.sbt.github.failure.Fail.URLNotFound
+import com.alejandrohdezma.sbt.github.failure.{URLNotFound, Unknown}
 import com.alejandrohdezma.sbt.github.json.Json.Result
 import com.alejandrohdezma.sbt.github.json.{Decoder, Json}
 import com.alejandrohdezma.sbt.github.syntax.either._
@@ -65,9 +64,9 @@ object client {
       )
     }.toEither.leftMap {
       case _: FileNotFoundException => URLNotFound(uri)
-      case NonFatal(t)              => Fail.Unknown(t)
+      case NonFatal(t)              => Unknown(t)
     }.flatMap(Json.parse).as[A].onLeft {
-      case f @ Fail.Unknown(cause) =>
+      case f @ Unknown(cause) =>
         logger.error(f.getMessage)
         logger.trace(cause)
       case fail => logger.error(fail.getMessage)

@@ -19,8 +19,7 @@ package com.alejandrohdezma.sbt.github.json
 import java.time.ZoneOffset.UTC
 import java.time.ZonedDateTime
 
-import com.alejandrohdezma.sbt.github.failure.Fail
-import com.alejandrohdezma.sbt.github.failure.Fail._
+import com.alejandrohdezma.sbt.github.failure._
 import com.alejandrohdezma.sbt.github.syntax.json._
 import org.specs2.mutable.Specification
 
@@ -39,13 +38,13 @@ class DecoderSpec extends Specification {
     "return NotFound on null" >> {
       val json = Json.Null
 
-      json.as[String] must beLeft[Fail](NotFound)
+      json.as[String] must beLeft[Throwable](NotFound)
     }
 
     "return NotAString for everything else" >> {
       val json = Json.Number(42)
 
-      json.as[String] must beLeft[Fail](NotAString(json))
+      json.as[String] must beLeft[Throwable](NotAString(json))
     }
 
   }
@@ -63,13 +62,13 @@ class DecoderSpec extends Specification {
     "return NotFound on null" >> {
       val json = Json.Null
 
-      json.as[Long] must beLeft[Fail](NotFound)
+      json.as[Long] must beLeft[Throwable](NotFound)
     }
 
     "return NotANumber for everything else" >> {
       val json = Json.Text("miau")
 
-      json.as[Long] must beLeft[Fail](NotANumber(json))
+      json.as[Long] must beLeft[Throwable](NotANumber(json))
     }
 
   }
@@ -87,13 +86,13 @@ class DecoderSpec extends Specification {
     "return NotFound on null" >> {
       val json = Json.Null
 
-      json.as[Int] must beLeft[Fail](NotFound)
+      json.as[Int] must beLeft[Throwable](NotFound)
     }
 
     "return NotANumber for everything else" >> {
       val json = Json.Text("miau")
 
-      json.as[Int] must beLeft[Fail](NotANumber(json))
+      json.as[Int] must beLeft[Throwable](NotANumber(json))
     }
 
   }
@@ -111,13 +110,13 @@ class DecoderSpec extends Specification {
     "return NotFound on null" >> {
       val json = Json.Null
 
-      json.as[Double] must beLeft[Fail](NotFound)
+      json.as[Double] must beLeft[Throwable](NotFound)
     }
 
     "return NotANumber for everything else" >> {
       val json = Json.Text("miau")
 
-      json.as[Double] must beLeft[Fail](NotANumber(json))
+      json.as[Double] must beLeft[Throwable](NotANumber(json))
     }
 
   }
@@ -139,13 +138,13 @@ class DecoderSpec extends Specification {
     "return NotFound on null" >> {
       val json = Json.Null
 
-      json.as[Boolean] must beLeft[Fail](NotFound)
+      json.as[Boolean] must beLeft[Throwable](NotFound)
     }
 
     "return NotABoolean for everything else" >> {
       val json = Json.Text("miau")
 
-      json.as[Boolean] must beLeft[Fail](NotABoolean(json))
+      json.as[Boolean] must beLeft[Throwable](NotABoolean(json))
     }
 
   }
@@ -167,7 +166,7 @@ class DecoderSpec extends Specification {
     "propagate Decoder[A] failure" >> {
       val json = Json.Text("miau")
 
-      json.as[Option[Boolean]] must beLeft[Fail](NotABoolean(json))
+      json.as[Option[Boolean]] must beLeft[Throwable](NotABoolean(json))
     }
 
   }
@@ -183,19 +182,19 @@ class DecoderSpec extends Specification {
     "return NotFound on null" >> {
       val json = Json.Null
 
-      json.as[List[Int]] must beLeft[Fail](NotFound)
+      json.as[List[Int]] must beLeft[Throwable](NotFound)
     }
 
     "return NotAList for everything else" >> {
       val json = Json.Text("miau")
 
-      json.as[List[Int]] must beLeft[Fail](NotAList(json))
+      json.as[List[Int]] must beLeft[Throwable](NotAList(json))
     }
 
     "propagate Decoder[A] failure" >> {
       val json = Json.Collection(List("miau").map(Json.Text))
 
-      json.as[List[Int]] must beLeft[Fail](NotANumber(Json.Text("miau")))
+      json.as[List[Int]] must beLeft[Throwable](NotANumber(Json.Text("miau")))
     }
 
   }
@@ -213,19 +212,19 @@ class DecoderSpec extends Specification {
     "return NotFound on null" >> {
       val json = Json.Null
 
-      json.as[ZonedDateTime] must beLeft[Fail](NotFound)
+      json.as[ZonedDateTime] must beLeft[Throwable](NotFound)
     }
 
     "return NotADateTime for texts not containing date times" >> {
       val json = Json.Text("miau")
 
-      json.as[ZonedDateTime] must beLeft[Fail](NotADateTime(json))
+      json.as[ZonedDateTime] must beLeft[Throwable](NotADateTime(json))
     }
 
     "return NotADateTime for everything else" >> {
       val json = Json.True
 
-      json.as[ZonedDateTime] must beLeft[Fail](NotADateTime(json))
+      json.as[ZonedDateTime] must beLeft[Throwable](NotADateTime(json))
     }
 
   }
