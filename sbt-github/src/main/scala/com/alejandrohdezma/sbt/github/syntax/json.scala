@@ -16,7 +16,8 @@
 
 package com.alejandrohdezma.sbt.github.syntax
 
-import com.alejandrohdezma.sbt.github.failure.{NotAJSONObject, NotFound, Path}
+import com.alejandrohdezma.sbt.github.failure.NotFound
+import com.alejandrohdezma.sbt.github.json.Json.Failures._
 import com.alejandrohdezma.sbt.github.json.Json._
 import com.alejandrohdezma.sbt.github.json.{Decoder, Json}
 import com.alejandrohdezma.sbt.github.syntax.either._
