@@ -22,7 +22,7 @@ import cats.implicits._
 
 import sbt.util.Logger
 
-import com.alejandrohdezma.sbt.github.failure.{URLNotFound, Unknown}
+import com.alejandrohdezma.sbt.github.http.client.{URLNotFound, Unknown}
 import com.alejandrohdezma.sbt.github.json.Decoder
 import com.alejandrohdezma.sbt.github.syntax.json.JsonValueOps
 import com.alejandrohdezma.sbt.github.withServer
