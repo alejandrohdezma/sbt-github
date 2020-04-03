@@ -36,7 +36,7 @@ object json {
      * Returns `Left` with the error in case this is not a `Json.Object` or the decoding fails.
      */
     def get[A: Decoder](path: String): Result[A] = json match {
-      case json: Json.Object => json.get(path).as[A].leftMap(Path(path, _))
+      case json: Json.Object => json.get(path).as[A].leftMap(InvalidPath(path, _))
       case Json.Null         => Left(NotFound)
       case value             => Left(NotAJSONObject(value))
     }
@@ -70,8 +70,8 @@ object json {
      * }}}
      */
     def unapply(throwable: Throwable): Option[(String, Throwable)] = throwable match {
-      case Path(value, fail) => Some(value -> fail)
-      case _                 => None
+      case InvalidPath(value, fail) => Some(value -> fail)
+      case _                        => None
     }
   }
 

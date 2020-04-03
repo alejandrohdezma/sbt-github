@@ -63,7 +63,7 @@ object Json extends JavaTokenParsers {
         extends Throwable(s"$string is not a valid JSON")
         with NoStackTrace
 
-    final case class Path(value: String, fail: Throwable)
+    final case class InvalidPath(value: String, fail: Throwable)
         extends Throwable(s"$value => ${fail.getMessage}")
         with NoStackTrace
 

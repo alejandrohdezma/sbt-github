@@ -19,7 +19,7 @@ package com.alejandrohdezma.sbt.github.syntax
 import com.alejandrohdezma.sbt.github.failure._
 import com.alejandrohdezma.sbt.github.json.Decoder.Failure.NotABoolean
 import com.alejandrohdezma.sbt.github.json.Json
-import com.alejandrohdezma.sbt.github.json.Json.Failures.{NotAJSONObject, Path}
+import com.alejandrohdezma.sbt.github.json.Json.Failures.{InvalidPath, NotAJSONObject}
 import com.alejandrohdezma.sbt.github.syntax.json._
 import org.specs2.mutable.Specification
 
@@ -52,7 +52,7 @@ class JsonSyntaxSpec extends Specification {
     "return NotFound with path if not present" >> {
       val json: Json.Value = Json.Object(Map("miau" -> Json.Number(42d)))
 
-      json.get[Int]("cat") must beLeft[Throwable](Path("cat", NotFound))
+      json.get[Int]("cat") must beLeft[Throwable](InvalidPath("cat", NotFound))
     }
 
     "return requested type if present and decoding succeeds" >> {
@@ -64,7 +64,9 @@ class JsonSyntaxSpec extends Specification {
     "propagate Decoder[A] failure" >> {
       val json: Json.Value = Json.Object(Map("miau" -> Json.Number(42d)))
 
-      json.get[Boolean]("miau") must beLeft[Throwable](Path("miau", NotABoolean(Json.Number(42d))))
+      json.get[Boolean]("miau") must beLeft[Throwable](
+        InvalidPath("miau", NotABoolean(Json.Number(42d)))
+      )
     }
 
   }
@@ -72,13 +74,13 @@ class JsonSyntaxSpec extends Specification {
   "`/` extractor" should {
 
     "allow matching path failures" >> {
-      val fail = Path("miau", NotFound)
+      val fail = InvalidPath("miau", NotFound)
 
       fail must be like { case "miau" / NotFound => ok }
     }
 
     "allow matching nested Path failures" >> {
-      val fail = Path("miau", Path("cat", NotFound))
+      val fail = InvalidPath("miau", InvalidPath("cat", NotFound))
 
       fail must be like { case "miau" / ("cat" / NotFound) => ok }
     }
