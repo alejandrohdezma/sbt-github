@@ -1,5 +1,20 @@
 # Changelog
 
+## [Unreleased](https://github.com/alejandrohdezma/sbt-github/tree/HEAD)
+
+[Full Changelog](https://github.com/alejandrohdezma/sbt-github/compare/v0.6.0...HEAD)
+
+📈 **Dependency updates**
+
+- Update sbt to 1.3.9 [\#115](https://github.com/alejandrohdezma/sbt-github/pull/115) ([scala-steward](https://github.com/scala-steward))
+- Update http4s-blaze-server, http4s-dsl to 0.21.2 [\#113](https://github.com/alejandrohdezma/sbt-github/pull/113) ([scala-steward](https://github.com/scala-steward))
+- Update sbt-mdoc to 2.1.3 [\#111](https://github.com/alejandrohdezma/sbt-github/pull/111) ([scala-steward](https://github.com/scala-steward))
+- Update specs2-core to 4.9.2 [\#108](https://github.com/alejandrohdezma/sbt-github/pull/108) ([scala-steward](https://github.com/scala-steward))
+
+**Merged pull requests:**
+
+- Refactor erroring system [\#117](https://github.com/alejandrohdezma/sbt-github/pull/117) ([alejandrohdezma](https://github.com/alejandrohdezma))
+
 ## [v0.6.0](https://github.com/alejandrohdezma/sbt-github/tree/v0.6.0) (2020-03-01)
 
 [Full Changelog](https://github.com/alejandrohdezma/sbt-github/compare/v0.5.2...v0.6.0)
@@ -12,6 +27,14 @@
 
 - Automatically merge all scala-steward PRs [\#95](https://github.com/alejandrohdezma/sbt-github/pull/95) ([alejandrohdezma](https://github.com/alejandrohdezma))
 
+📈 **Dependency updates**
+
+- Update specs2-core to 4.9.1 [\#98](https://github.com/alejandrohdezma/sbt-github/pull/98) ([scala-steward](https://github.com/scala-steward))
+- Update specs2-core to 4.9.0 [\#97](https://github.com/alejandrohdezma/sbt-github/pull/97) ([scala-steward](https://github.com/scala-steward))
+- Update sbt-fix to 0.4.0 [\#96](https://github.com/alejandrohdezma/sbt-github/pull/96) ([scala-steward](https://github.com/scala-steward))
+- Update sbt-tpolecat to 0.1.11 [\#90](https://github.com/alejandrohdezma/sbt-github/pull/90) ([scala-steward](https://github.com/scala-steward))
+- Update sbt-mdoc-toc to 0.2 [\#89](https://github.com/alejandrohdezma/sbt-github/pull/89) ([scala-steward](https://github.com/scala-steward))
+
 ## [v0.5.2](https://github.com/alejandrohdezma/sbt-github/tree/v0.5.2) (2020-02-17)
 
 [Full Changelog](https://github.com/alejandrohdezma/sbt-github/compare/v0.5.1...v0.5.2)
@@ -19,6 +42,10 @@
 🚀 **Features**
 
 - Add `COPYRIGHT\_OWNER` as mdoc variable in sbt-github-mdoc [\#85](https://github.com/alejandrohdezma/sbt-github/pull/85) ([alejandrohdezma](https://github.com/alejandrohdezma))
+
+📈 **Dependency updates**
+
+- Update sbt-fix to 0.3.0 [\#84](https://github.com/alejandrohdezma/sbt-github/pull/84) ([scala-steward](https://github.com/scala-steward))
 
 ## [v0.5.1](https://github.com/alejandrohdezma/sbt-github/tree/v0.5.1) (2020-02-14)
 
@@ -49,6 +76,13 @@
 
 - Fix broken links, errored versions and descriptions [\#47](https://github.com/alejandrohdezma/sbt-github/pull/47) ([alejandrohdezma](https://github.com/alejandrohdezma))
 
+📈 **Dependency updates**
+
+- Update http4s-blaze-server, http4s-dsl to 0.21.1 [\#72](https://github.com/alejandrohdezma/sbt-github/pull/72) ([scala-steward](https://github.com/scala-steward))
+- Update http4s-blaze-server, http4s-dsl to 0.21.0 [\#69](https://github.com/alejandrohdezma/sbt-github/pull/69) ([scala-steward](https://github.com/scala-steward))
+- Update sbt-ci-release to 1.5.2 [\#68](https://github.com/alejandrohdezma/sbt-github/pull/68) ([scala-steward](https://github.com/scala-steward))
+- Update http4s-blaze-server, http4s-dsl to 0.20.17 [\#43](https://github.com/alejandrohdezma/sbt-github/pull/43) ([scala-steward](https://github.com/scala-steward))
+
 ## [v0.4.0](https://github.com/alejandrohdezma/sbt-github/tree/v0.4.0) (2020-01-26)
 
 [Full Changelog](https://github.com/alejandrohdezma/sbt-github/compare/v0.3.0...v0.4.0)
@@ -77,13 +111,46 @@
 
 - Fix scaladocs [\#24](https://github.com/alejandrohdezma/sbt-github/pull/24) ([alejandrohdezma](https://github.com/alejandrohdezma))
 
+📈 **Dependency updates**
+
+- Update http4s-blaze-server, http4s-dsl to 0.20.16 [\#34](https://github.com/alejandrohdezma/sbt-github/pull/34) ([scala-steward](https://github.com/scala-steward))
+- Update sbt to 1.3.7 [\#30](https://github.com/alejandrohdezma/sbt-github/pull/30) ([scala-steward](https://github.com/scala-steward))
+- Update sbt-fix to 0.2.6 [\#22](https://github.com/alejandrohdezma/sbt-github/pull/22) ([scala-steward](https://github.com/scala-steward))
+- Update sbt-mdoc to 2.1.1 [\#21](https://github.com/alejandrohdezma/sbt-github/pull/21) ([scala-steward](https://github.com/scala-steward))
+- Update sbt-ci-release to 1.5.0 [\#20](https://github.com/alejandrohdezma/sbt-github/pull/20) ([scala-steward](https://github.com/scala-steward))
+- Update sbt-mdoc to 2.1.0 [\#19](https://github.com/alejandrohdezma/sbt-github/pull/19) ([scala-steward](https://github.com/scala-steward))
+- Update sbt to 1.3.6 [\#18](https://github.com/alejandrohdezma/sbt-github/pull/18) ([scala-steward](https://github.com/scala-steward))
+- Update sbt to 1.3.5 [\#17](https://github.com/alejandrohdezma/sbt-github/pull/17) ([scala-steward](https://github.com/scala-steward))
+- Update sbt-fix to 0.2.5 [\#16](https://github.com/alejandrohdezma/sbt-github/pull/16) ([scala-steward](https://github.com/scala-steward))
+- Update sbt-mdoc to 2.0.3 [\#15](https://github.com/alejandrohdezma/sbt-github/pull/15) ([scala-steward](https://github.com/scala-steward))
+- Update sbt-tpolecat to 0.1.10 [\#14](https://github.com/alejandrohdezma/sbt-github/pull/14) ([scala-steward](https://github.com/scala-steward))
+- Update sbt-tpolecat to 0.1.9 [\#13](https://github.com/alejandrohdezma/sbt-github/pull/13) ([scala-steward](https://github.com/scala-steward))
+- Update sbt to 1.3.4 [\#12](https://github.com/alejandrohdezma/sbt-github/pull/12) ([scala-steward](https://github.com/scala-steward))
+- Update sbt-mdoc to 2.0.2 [\#11](https://github.com/alejandrohdezma/sbt-github/pull/11) ([scala-steward](https://github.com/scala-steward))
+
 ## [v0.3.0](https://github.com/alejandrohdezma/sbt-github/tree/v0.3.0) (2019-11-12)
 
 [Full Changelog](https://github.com/alejandrohdezma/sbt-github/compare/v0.2.0...v0.3.0)
 
+📈 **Dependency updates**
+
+- Update sbt-mdoc to 2.0.1 [\#10](https://github.com/alejandrohdezma/sbt-github/pull/10) ([scala-steward](https://github.com/scala-steward))
+- Update sbt-fix to 0.2.4 [\#9](https://github.com/alejandrohdezma/sbt-github/pull/9) ([scala-steward](https://github.com/scala-steward))
+- Update sbt-fix to 0.2.3 [\#8](https://github.com/alejandrohdezma/sbt-github/pull/8) ([scala-steward](https://github.com/scala-steward))
+- Update sbt-fix to 0.2.2 [\#7](https://github.com/alejandrohdezma/sbt-github/pull/7) ([scala-steward](https://github.com/scala-steward))
+- Update sbt-fix to 0.2.1 [\#6](https://github.com/alejandrohdezma/sbt-github/pull/6) ([scala-steward](https://github.com/scala-steward))
+- Update sbt-fix to 0.2.0 [\#5](https://github.com/alejandrohdezma/sbt-github/pull/5) ([scala-steward](https://github.com/scala-steward))
+
 ## [v0.2.0](https://github.com/alejandrohdezma/sbt-github/tree/v0.2.0) (2019-10-25)
 
 [Full Changelog](https://github.com/alejandrohdezma/sbt-github/compare/v0.1.1...v0.2.0)
+
+📈 **Dependency updates**
+
+- Update sbt-scalafmt to 2.2.1 [\#4](https://github.com/alejandrohdezma/sbt-github/pull/4) ([scala-steward](https://github.com/scala-steward))
+- Update sbt-scalafmt to 2.2.0 [\#3](https://github.com/alejandrohdezma/sbt-github/pull/3) ([scala-steward](https://github.com/scala-steward))
+- Update circe-generic, circe-parser to 0.12.3 [\#2](https://github.com/alejandrohdezma/sbt-github/pull/2) ([scala-steward](https://github.com/scala-steward))
+- Update scalafmt-core to 2.2.1 [\#1](https://github.com/alejandrohdezma/sbt-github/pull/1) ([scala-steward](https://github.com/scala-steward))
 
 ## [v0.1.1](https://github.com/alejandrohdezma/sbt-github/tree/v0.1.1) (2019-10-21)
 
