@@ -19,8 +19,8 @@ package com.alejandrohdezma.sbt.github.json
 import java.time.ZoneOffset.UTC
 import java.time.ZonedDateTime
 
-import com.alejandrohdezma.sbt.github.json.Json.Fail
-import com.alejandrohdezma.sbt.github.json.Json.Fail._
+import com.alejandrohdezma.sbt.github.error._
+import com.alejandrohdezma.sbt.github.json.error._
 import com.alejandrohdezma.sbt.github.syntax.json._
 import org.specs2.mutable.Specification
 
@@ -33,19 +33,19 @@ class DecoderSpec extends Specification {
 
       val expected = "miau"
 
-      json.as[String] must beRight(expected)
+      json.as[String] must beSuccessfulTry(expected)
     }
 
     "return NotFound on null" >> {
       val json = Json.Null
 
-      json.as[String] must beLeft[Fail](NotFound)
+      json.as[String] must beAFailedTry(equalTo(NotFound))
     }
 
     "return NotAString for everything else" >> {
       val json = Json.Number(42)
 
-      json.as[String] must beLeft[Fail](NotAString(json))
+      json.as[String] must beAFailedTry(equalTo(NotAString(json)))
     }
 
   }
@@ -57,19 +57,19 @@ class DecoderSpec extends Specification {
 
       val expected = 42L
 
-      json.as[Long] must beRight(expected)
+      json.as[Long] must beSuccessfulTry(expected)
     }
 
     "return NotFound on null" >> {
       val json = Json.Null
 
-      json.as[Long] must beLeft[Fail](NotFound)
+      json.as[Long] must beAFailedTry(equalTo(NotFound))
     }
 
     "return NotANumber for everything else" >> {
       val json = Json.Text("miau")
 
-      json.as[Long] must beLeft[Fail](NotANumber(json))
+      json.as[Long] must beAFailedTry(equalTo(NotANumber(json)))
     }
 
   }
@@ -81,19 +81,19 @@ class DecoderSpec extends Specification {
 
       val expected = 42
 
-      json.as[Int] must beRight(expected)
+      json.as[Int] must beSuccessfulTry(expected)
     }
 
     "return NotFound on null" >> {
       val json = Json.Null
 
-      json.as[Int] must beLeft[Fail](NotFound)
+      json.as[Int] must beAFailedTry(equalTo(NotFound))
     }
 
     "return NotANumber for everything else" >> {
       val json = Json.Text("miau")
 
-      json.as[Int] must beLeft[Fail](NotANumber(json))
+      json.as[Int] must beAFailedTry(equalTo(NotANumber(json)))
     }
 
   }
@@ -105,19 +105,19 @@ class DecoderSpec extends Specification {
 
       val expected = 42d
 
-      json.as[Double] must beRight(expected)
+      json.as[Double] must beSuccessfulTry(expected)
     }
 
     "return NotFound on null" >> {
       val json = Json.Null
 
-      json.as[Double] must beLeft[Fail](NotFound)
+      json.as[Double] must beAFailedTry(equalTo(NotFound))
     }
 
     "return NotANumber for everything else" >> {
       val json = Json.Text("miau")
 
-      json.as[Double] must beLeft[Fail](NotANumber(json))
+      json.as[Double] must beAFailedTry(equalTo(NotANumber(json)))
     }
 
   }
@@ -127,25 +127,25 @@ class DecoderSpec extends Specification {
     "decode Json.True" >> {
       val json = Json.True
 
-      json.as[Boolean] must beRight(true)
+      json.as[Boolean] must beSuccessfulTry(true)
     }
 
     "decode Json.False" >> {
       val json = Json.False
 
-      json.as[Boolean] must beRight(false)
+      json.as[Boolean] must beSuccessfulTry(false)
     }
 
     "return NotFound on null" >> {
       val json = Json.Null
 
-      json.as[Boolean] must beLeft[Fail](NotFound)
+      json.as[Boolean] must beAFailedTry(equalTo(NotFound))
     }
 
     "return NotABoolean for everything else" >> {
       val json = Json.Text("miau")
 
-      json.as[Boolean] must beLeft[Fail](NotABoolean(json))
+      json.as[Boolean] must beAFailedTry(equalTo(NotABoolean(json)))
     }
 
   }
@@ -155,19 +155,19 @@ class DecoderSpec extends Specification {
     "not fail on Json.Null" >> {
       val json = Json.Null
 
-      json.as[Option[Boolean]] must beRight(Option.empty[Boolean])
+      json.as[Option[Boolean]] must beSuccessfulTry(Option.empty[Boolean])
     }
 
     "use A's Decoder in case of non-null" >> {
       val json = Json.True
 
-      json.as[Option[Boolean]] must beRight(some(true))
+      json.as[Option[Boolean]] must beSuccessfulTry(some(true))
     }
 
     "propagate Decoder[A] failure" >> {
       val json = Json.Text("miau")
 
-      json.as[Option[Boolean]] must beLeft[Fail](NotABoolean(json))
+      json.as[Option[Boolean]] must beAFailedTry(equalTo(NotABoolean(json)))
     }
 
   }
@@ -177,25 +177,25 @@ class DecoderSpec extends Specification {
     "decode Json.Collection" >> {
       val json = Json.Collection(List(1d, 2d, 3d).map(Json.Number))
 
-      json.as[List[Int]] must beRight(List(1, 2, 3))
+      json.as[List[Int]] must beSuccessfulTry(List(1, 2, 3))
     }
 
     "return NotFound on null" >> {
       val json = Json.Null
 
-      json.as[List[Int]] must beLeft[Fail](NotFound)
+      json.as[List[Int]] must beAFailedTry(equalTo(NotFound))
     }
 
     "return NotAList for everything else" >> {
       val json = Json.Text("miau")
 
-      json.as[List[Int]] must beLeft[Fail](NotAList(json))
+      json.as[List[Int]] must beAFailedTry(equalTo(NotAList(json)))
     }
 
     "propagate Decoder[A] failure" >> {
       val json = Json.Collection(List("miau").map(Json.Text))
 
-      json.as[List[Int]] must beLeft[Fail](NotANumber(Json.Text("miau")))
+      json.as[List[Int]] must beAFailedTry(equalTo(NotANumber(Json.Text("miau"))))
     }
 
   }
@@ -207,25 +207,25 @@ class DecoderSpec extends Specification {
 
       val expected = ZonedDateTime.of(2011, 1, 26, 19, 1, 12, 0, UTC)
 
-      json.as[ZonedDateTime] must beRight(expected)
+      json.as[ZonedDateTime] must beSuccessfulTry(expected)
     }
 
     "return NotFound on null" >> {
       val json = Json.Null
 
-      json.as[ZonedDateTime] must beLeft[Fail](NotFound)
+      json.as[ZonedDateTime] must beAFailedTry(equalTo(NotFound))
     }
 
     "return NotADateTime for texts not containing date times" >> {
       val json = Json.Text("miau")
 
-      json.as[ZonedDateTime] must beLeft[Fail](NotADateTime(json))
+      json.as[ZonedDateTime] must beAFailedTry(equalTo(NotADateTime(json)))
     }
 
     "return NotADateTime for everything else" >> {
       val json = Json.True
 
-      json.as[ZonedDateTime] must beLeft[Fail](NotADateTime(json))
+      json.as[ZonedDateTime] must beAFailedTry(equalTo(NotADateTime(json)))
     }
 
   }

@@ -16,9 +16,9 @@
 
 package com.alejandrohdezma.sbt.github.syntax
 
+import com.alejandrohdezma.sbt.github.error._
 import com.alejandrohdezma.sbt.github.json.Json
-import com.alejandrohdezma.sbt.github.json.Json.Fail
-import com.alejandrohdezma.sbt.github.json.Json.Fail._
+import com.alejandrohdezma.sbt.github.json.error._
 import com.alejandrohdezma.sbt.github.syntax.json._
 import org.specs2.mutable.Specification
 
@@ -45,25 +45,27 @@ class JsonSyntaxSpec extends Specification {
     "return NotAJsonObject if json is not a JSON object" >> {
       val json: Json.Value = Json.True
 
-      json.get[Boolean]("miau") must beLeft[Fail](NotAJSONObject(json))
+      json.get[Boolean]("miau") must beAFailedTry(equalTo(NotAJSONObject(json)))
     }
 
     "return NotFound with path if not present" >> {
       val json: Json.Value = Json.Object(Map("miau" -> Json.Number(42d)))
 
-      json.get[Int]("cat") must beLeft[Fail](Path("cat", NotFound))
+      json.get[Int]("cat") must beAFailedTry(equalTo(InvalidPath("cat", NotFound)))
     }
 
     "return requested type if present and decoding succeeds" >> {
       val json: Json.Value = Json.Object(Map("miau" -> Json.Number(42d)))
 
-      json.get[Int]("miau") must beRight(42)
+      json.get[Int]("miau") must beSuccessfulTry(42)
     }
 
     "propagate Decoder[A] failure" >> {
       val json: Json.Value = Json.Object(Map("miau" -> Json.Number(42d)))
 
-      json.get[Boolean]("miau") must beLeft[Fail](Path("miau", NotABoolean(Json.Number(42d))))
+      val expected = InvalidPath("miau", NotABoolean(Json.Number(42d)))
+
+      json.get[Boolean]("miau") must beAFailedTry(equalTo(expected))
     }
 
   }
@@ -71,19 +73,19 @@ class JsonSyntaxSpec extends Specification {
   "`/` extractor" should {
 
     "allow matching path failures" >> {
-      val fail: Fail = Path("miau", NotFound)
+      val fail = InvalidPath("miau", NotFound)
 
       fail must be like { case "miau" / NotFound => ok }
     }
 
     "allow matching nested Path failures" >> {
-      val fail: Fail = Path("miau", Path("cat", NotFound))
+      val fail = InvalidPath("miau", InvalidPath("cat", NotFound))
 
       fail must be like { case "miau" / ("cat" / NotFound) => ok }
     }
 
     "not match other failures" >> {
-      val fail: Fail = NotFound
+      val fail = NotFound
 
       /.unapply(fail) must be none
     }

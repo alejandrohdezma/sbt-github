@@ -18,6 +18,8 @@ package com.alejandrohdezma.sbt.github.github
 
 import sbt.util.Logger
 
+import com.alejandrohdezma.sbt.github.github.error.GithubError
+import com.alejandrohdezma.sbt.github.github.urls.RepositoryEntryPoint
 import com.alejandrohdezma.sbt.github.http.Authentication
 import com.alejandrohdezma.sbt.github.http.Authentication.Token
 import com.alejandrohdezma.sbt.github.withServer
@@ -50,7 +52,7 @@ class RepositorySpec extends Specification {
             }
           }""")
     } { uri =>
-      implicit val url: urls.Repository = urls.Repository(s"$uri{owner}/{repo}")
+      implicit val url: RepositoryEntryPoint = RepositoryEntryPoint(s"$uri{owner}/{repo}")
 
       val repository = Repository.get("user", "repo")
 
@@ -66,7 +68,7 @@ class RepositorySpec extends Specification {
         "http://api.github.com/users/owner"
       )
 
-      repository must beRight(expected)
+      repository must beSuccessfulTry(expected)
     }
 
     "return None organization if it is not present" >> withServer {
@@ -87,7 +89,7 @@ class RepositorySpec extends Specification {
             }
           }""")
     } { uri =>
-      implicit val url: urls.Repository = urls.Repository(s"$uri{owner}/{repo}")
+      implicit val url: RepositoryEntryPoint = RepositoryEntryPoint(s"$uri{owner}/{repo}")
 
       val repository = Repository.get("user", "repo")
 
@@ -103,7 +105,7 @@ class RepositorySpec extends Specification {
         "http://api.github.com/users/owner"
       )
 
-      repository must beRight(expected)
+      repository must beSuccessfulTry(expected)
     }
 
     "return error if description is not present" >> withServer {
@@ -127,13 +129,15 @@ class RepositorySpec extends Specification {
             }
           }""")
     } { uri =>
-      implicit val url: urls.Repository = urls.Repository(s"$uri{owner}/{repo}")
+      implicit val url: RepositoryEntryPoint = RepositoryEntryPoint(s"$uri{owner}/{repo}")
 
       val repository = Repository.get("user", "repo")
 
-      repository must beLeft {
+      val expected = GithubError(
         "Repository doesn't have a description! Go to https://github.com/user/repo and add it"
-      }
+      )
+
+      repository must beAFailedTry(equalTo(expected))
     }
 
     "return error if license is not present" >> withServer {
@@ -154,16 +158,18 @@ class RepositorySpec extends Specification {
             "license": null
           }""")
     } { uri =>
-      implicit val url: urls.Repository = urls.Repository(s"$uri{owner}/{repo}")
+      implicit val url: RepositoryEntryPoint = RepositoryEntryPoint(s"$uri{owner}/{repo}")
 
       val repository = Repository.get("user", "repo")
 
-      repository must beLeft {
+      val expected = GithubError(
         "Repository doesn't have a license! Go to https://github.com/user/repo and add it"
-      }
+      )
+
+      repository must beAFailedTry(equalTo(expected))
     }
 
-    "return error if license's `ipdx_id` is not present" >> withServer {
+    "return error if license's `spdx_id` is not present" >> withServer {
       case GET -> Root / "user" / "repo" =>
         Ok("""{
             "full_name": "user/repo",
@@ -184,16 +190,18 @@ class RepositorySpec extends Specification {
             }
           }""")
     } { uri =>
-      implicit val url: urls.Repository = urls.Repository(s"$uri{owner}/{repo}")
+      implicit val url: RepositoryEntryPoint = RepositoryEntryPoint(s"$uri{owner}/{repo}")
 
       val repository = Repository.get("user", "repo")
 
-      repository must beLeft {
+      val expected = GithubError(
         "Repository's license id couldn't be inferred! Go to https://github.com/user/repo and check it"
-      }
+      )
+
+      repository must beAFailedTry(equalTo(expected))
     }
 
-    "return error if license's `ipdx_id` is not present" >> withServer {
+    "return error if license's `url` is not present" >> withServer {
       case GET -> Root / "user" / "repo" =>
         Ok("""{
             "full_name": "user/repo",
@@ -214,13 +222,15 @@ class RepositorySpec extends Specification {
             }
           }""")
     } { uri =>
-      implicit val url: urls.Repository = urls.Repository(s"$uri{owner}/{repo}")
+      implicit val url: RepositoryEntryPoint = RepositoryEntryPoint(s"$uri{owner}/{repo}")
 
       val repository = Repository.get("user", "repo")
 
-      repository must beLeft {
+      val expected = GithubError(
         "Repository's license url couldn't be inferred! Go to https://github.com/user/repo and check it"
-      }
+      )
+
+      repository must beAFailedTry(equalTo(expected))
     }
 
     "return generic error in other cases" >> withServer {
@@ -241,11 +251,15 @@ class RepositorySpec extends Specification {
             "license": 42
           }""")
     } { uri =>
-      implicit val url: urls.Repository = urls.Repository(s"$uri{owner}/{repo}")
+      implicit val url: RepositoryEntryPoint = RepositoryEntryPoint(s"$uri{owner}/{repo}")
 
       val repository = Repository.get("user", "repo")
 
-      repository must beLeft("Unable to get repository information")
+      val expected = GithubError(
+        "Unable to get repository information"
+      )
+
+      repository must beAFailedTry(equalTo(expected))
     }
 
   }
@@ -288,7 +302,7 @@ class RepositorySpec extends Specification {
         )
       )
 
-      contributors must beRight(expected)
+      contributors must beSuccessfulTry(expected)
     }
 
     "exclude provided contributors" >> withServer {
@@ -314,7 +328,7 @@ class RepositorySpec extends Specification {
 
       val expected = Contributors(List(Contributor("me", 42, "http://example.com/me", None)))
 
-      contributors must beRight(expected)
+      contributors must beSuccessfulTry(expected)
     }
 
     "exclude provided contributors as regex" >> withServer {
@@ -340,7 +354,7 @@ class RepositorySpec extends Specification {
 
       val expected = Contributors(List(Contributor("me", 42, "http://example.com/me", None)))
 
-      contributors must beRight(expected)
+      contributors must beSuccessfulTry(expected)
     }
 
     "return generic error on any error" >> withServer {
@@ -351,7 +365,11 @@ class RepositorySpec extends Specification {
 
       val contributors = repository.contributors(Nil)
 
-      contributors must beLeft("Unable to get repository contributors")
+      val expected = GithubError(
+        "Unable to get repository contributors"
+      )
+
+      contributors must beAFailedTry(equalTo(expected))
     }
 
   }
@@ -420,7 +438,7 @@ class RepositorySpec extends Specification {
         )
       )
 
-      collaborators must beRight(expected)
+      collaborators must beSuccessfulTry(expected)
     }
 
     "exclude collaborators not in provided list and don't retrieve user info for them" >> withServer {
@@ -463,7 +481,7 @@ class RepositorySpec extends Specification {
         )
       )
 
-      collaborators must beRight(expected)
+      collaborators must beSuccessfulTry(expected)
     }
 
     "return generic error on any error" >> withServer {
@@ -474,7 +492,9 @@ class RepositorySpec extends Specification {
 
       val collaborators = repository.collaborators(Nil)
 
-      collaborators must beLeft("Unable to get repository collaborators")
+      val expected = GithubError("Unable to get repository collaborators")
+
+      collaborators must beAFailedTry(equalTo(expected))
     }
 
   }
@@ -497,7 +517,7 @@ class RepositorySpec extends Specification {
       val expected =
         Organization(Some("My Organization"), Some("http://example.com"), Some("org@example.com"))
 
-      organization must be some right(expected)
+      organization must be some successfulTry(expected)
     }
 
     "not return url if not present" >> withServer {
@@ -511,7 +531,7 @@ class RepositorySpec extends Specification {
 
       val expected = Organization(Some("My Organization"), None, Some("org@example.com"))
 
-      organization must be some right(expected)
+      organization must be some successfulTry(expected)
     }
 
     "not return name if not present" >> withServer {
@@ -525,7 +545,7 @@ class RepositorySpec extends Specification {
 
       val expected = Organization(None, Some("http://example.com"), Some("org@example.com"))
 
-      organization must be some right(expected)
+      organization must be some successfulTry(expected)
     }
 
     "not return email if not present" >> withServer {
@@ -539,7 +559,7 @@ class RepositorySpec extends Specification {
 
       val expected = Organization(Some("My Organization"), Some("http://example.com"), None)
 
-      organization must be some right(expected)
+      organization must be some successfulTry(expected)
     }
 
     "return generic error on any error" >> withServer {
@@ -548,9 +568,11 @@ class RepositorySpec extends Specification {
       val repository =
         Repository("", "", License("", ""), "", 0, "", "", Some(s"${uri}organization"), "")
 
-      val collaborators = repository.organization
+      val organization = repository.organization
 
-      collaborators must be some left("Unable to get repository organization")
+      val expected = GithubError("Unable to get repository organization")
+
+      organization must beSome(failedTry[Organization](equalTo(expected)))
     }
 
   }
@@ -580,7 +602,7 @@ class RepositorySpec extends Specification {
         Some("example.com/owner.png")
       )
 
-      owner must beRight(expected)
+      owner must beSuccessfulTry(expected)
     }
 
     "not return name if not present" >> withServer {
@@ -598,7 +620,7 @@ class RepositorySpec extends Specification {
 
       val expected = User("owner", "example.com/owner", None, Some("owner@example.com"), None)
 
-      owner must beRight(expected)
+      owner must beSuccessfulTry(expected)
     }
 
     "not return email if not present" >> withServer {
@@ -616,7 +638,7 @@ class RepositorySpec extends Specification {
 
       val expected = User("owner", "example.com/owner", Some("Owner"), None, None)
 
-      owner must beRight(expected)
+      owner must beSuccessfulTry(expected)
     }
 
     "not return avatar if not present" >> withServer {
@@ -636,7 +658,7 @@ class RepositorySpec extends Specification {
       val expected =
         User("owner", "example.com/owner", Some("Owner"), Some("owner@example.com"), None)
 
-      owner must beRight(expected)
+      owner must beSuccessfulTry(expected)
     }
 
     "return generic error on any error" >> withServer {
@@ -647,7 +669,9 @@ class RepositorySpec extends Specification {
 
       val owner = repository.owner
 
-      owner must beLeft("Unable to get repository owner")
+      val expected = GithubError("Unable to get repository owner")
+
+      owner must beAFailedTry(equalTo(expected))
     }
 
   }

@@ -22,15 +22,13 @@ import java.util.concurrent.ConcurrentHashMap
 
 import scala.io.Source
 import scala.util.Try
-import scala.util.control.NonFatal
 
 import sbt.util.Logger
 
-import com.alejandrohdezma.sbt.github.json.Json.Fail.URLNotFound
-import com.alejandrohdezma.sbt.github.json.Json.{Fail, Result}
+import com.alejandrohdezma.sbt.github.http.error.URLNotFound
 import com.alejandrohdezma.sbt.github.json.{Decoder, Json}
-import com.alejandrohdezma.sbt.github.syntax.either._
 import com.alejandrohdezma.sbt.github.syntax.json._
+import com.alejandrohdezma.sbt.github.syntax.scalatry._
 
 object client {
 
@@ -39,7 +37,7 @@ object client {
    * returns its contents as `String`.
    */
   @SuppressWarnings(Array("all"))
-  def get[A: Decoder](uri: String)(implicit auth: Authentication, logger: Logger): Result[A] =
+  def get[A: Decoder](uri: String)(implicit auth: Authentication, logger: Logger): Try[A] =
     Try {
       logger.verbose(s"Getting content from URL: $uri")
 
@@ -62,15 +60,9 @@ object client {
           Source.fromInputStream(inputStream, "UTF-8").mkString
         }
       )
-    }.toEither.leftMap {
+    }.failMap {
       case _: FileNotFoundException => URLNotFound(uri)
-      case NonFatal(t)              => Fail.Unknown(t)
-    }.flatMap(Json.parse).as[A].onLeft {
-      case f @ Fail.Unknown(cause) =>
-        logger.error(f.readableMessage)
-        logger.trace(cause)
-      case fail => logger.error(fail.readableMessage)
-    }
+    }.flatMap(Json.parse).as[A]
 
   private val cache: ConcurrentHashMap[String, String] = new ConcurrentHashMap[String, String]()
 

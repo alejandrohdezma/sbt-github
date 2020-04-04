@@ -18,12 +18,14 @@ package com.alejandrohdezma.sbt.github.http
 
 import java.net.MalformedURLException
 
+import scala.util.Failure
+
 import cats.implicits._
 
 import sbt.util.Logger
 
+import com.alejandrohdezma.sbt.github.http.error.URLNotFound
 import com.alejandrohdezma.sbt.github.json.Decoder
-import com.alejandrohdezma.sbt.github.json.Json.Fail
 import com.alejandrohdezma.sbt.github.syntax.json.JsonValueOps
 import com.alejandrohdezma.sbt.github.withServer
 import org.http4s.dsl.io._
@@ -47,7 +49,7 @@ class ClientSpec extends Specification {
 
       val result = client.get[Auth](s"${uri}hello")
 
-      result must beRight(Auth("Authorization: token 1234"))
+      result must beSuccessfulTry(Auth("Authorization: token 1234"))
     }
 
     "returns NotFound for unreachable urls" >> withServer {
@@ -57,16 +59,16 @@ class ClientSpec extends Specification {
 
       val result = client.get[String](s"${uri}hello")
 
-      result must beLeft[Fail](Fail.URLNotFound(s"${uri}hello"))
+      result must beAFailedTry(equalTo(URLNotFound(s"${uri}hello")))
     }
 
-    "returns Unknown for every other failure (http-related)" >> {
+    "propagate for every other failure (http-related)" >> {
       implicit val auth: Authentication = Authentication.Token("1234")
 
       val result = client.get[String]("miau")
 
       result must be like {
-        case Left(Fail.Unknown(e: MalformedURLException)) =>
+        case Failure(e: MalformedURLException) =>
           e.getMessage must be equalTo "no protocol: miau"
       }
     }

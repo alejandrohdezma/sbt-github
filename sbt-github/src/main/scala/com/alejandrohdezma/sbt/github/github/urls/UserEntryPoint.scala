@@ -18,27 +18,32 @@ package com.alejandrohdezma.sbt.github.github.urls
 
 import sbt.util.Logger
 
+import com.alejandrohdezma.sbt.github.github.error.GithubError
 import com.alejandrohdezma.sbt.github.http.{client, Authentication}
 import com.alejandrohdezma.sbt.github.json.Decoder
 import com.alejandrohdezma.sbt.github.syntax.json._
+import com.alejandrohdezma.sbt.github.syntax.scalatry._
 
-final case class User(base: String) {
+final case class UserEntryPoint(base: String) {
 
   def get(login: String): String = base.replace("{user}", login)
 
 }
 
-object User {
+object UserEntryPoint {
 
+  @SuppressWarnings(Array("scalafix:Disable.get"))
   implicit def user(
       implicit auth: Authentication,
       logger: Logger,
       entryPoint: GithubEntryPoint
-  ): User =
+  ): UserEntryPoint =
     client
-      .get[User](entryPoint.value)
-      .getOrElse(sys.error("Unable to connect to Github"))
+      .get[UserEntryPoint](entryPoint.value)
+      .failAs(GithubError("Unable to connect to Github"))
+      .get
 
-  implicit val UserUrlDecoder: Decoder[User] = json => json.get[String]("user_url").map(User(_))
+  implicit val UserUrlDecoder: Decoder[UserEntryPoint] = json =>
+    json.get[String]("user_url").map(UserEntryPoint(_))
 
 }

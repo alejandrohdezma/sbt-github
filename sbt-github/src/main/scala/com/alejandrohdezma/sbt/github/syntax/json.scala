@@ -16,39 +16,42 @@
 
 package com.alejandrohdezma.sbt.github.syntax
 
-import com.alejandrohdezma.sbt.github.json.Json.Fail.Path
-import com.alejandrohdezma.sbt.github.json.Json._
+import scala.util.Try
+
+import com.alejandrohdezma.sbt.github.error.NotFound
+import com.alejandrohdezma.sbt.github.json.error.{InvalidPath, NotAJSONObject}
 import com.alejandrohdezma.sbt.github.json.{Decoder, Json}
-import com.alejandrohdezma.sbt.github.syntax.either._
+import com.alejandrohdezma.sbt.github.syntax.scalatry._
+import com.alejandrohdezma.sbt.github.syntax.throwable._
 
 object json {
 
   implicit class JsonValueOps(private val json: Json.Value) extends AnyVal {
 
     /** Tries to decode this `Json.Value` as the provided type `A` using its implicit `Decoder` */
-    def as[A: Decoder]: Result[A] = Decoder[A].decode(json)
+    def as[A: Decoder]: Try[A] = Decoder[A].decode(json)
 
     /**
      * Tries to decode the `Json.Value` at the provided path as the provided type `A` using
      * its implicit `Decoder`.
      *
-     * Returns `Left` with the error in case this is not a `Json.Object` or the decoding fails.
+     * Returns `Failure` with the error in case this is not a `Json.Object` or the decoding fails.
      */
-    def get[A: Decoder](path: String): Result[A] = json match {
-      case json: Json.Object => json.get(path).as[A].leftMap(Fail.Path(path, _))
-      case Json.Null         => Left(Fail.NotFound)
-      case value             => Left(Fail.NotAJSONObject(value))
+    def get[A: Decoder](path: String): Try[A] = json match {
+      case json: Json.Object => json.get(path).as[A].failMap { case t => InvalidPath(path, t) }
+      case Json.Null         => NotFound.raise
+      case value             => NotAJSONObject(value).raise
     }
 
   }
 
-  implicit class ResultJsonValueOps(private val result: Result[Json.Value]) extends AnyVal {
+  implicit class ResultJsonValueOps(private val result: Try[Json.Value]) extends AnyVal {
 
     /**
      * If the result is `Right`, tries to decode its `Json.Value` as the provided
      * type `A` using its implicit `Decoder`; otherwise returns the `Result`.
      */
-    def as[A: Decoder]: Result[A] = result.flatMap(Decoder[A].decode)
+    def as[A: Decoder]: Try[A] = result.flatMap(Decoder[A].decode)
 
   }
 
@@ -62,15 +65,15 @@ object json {
   object / {
 
     /**
-     * `Json.Fail` extractor:
+     * `Throwable` extractor:
      * {{{
-     *   fail match {
+     *   throwable match {
      *     case "license" / ("url" / NotFound) => ...
      * }}}
      */
-    def unapply(fail: Json.Fail): Option[(String, Json.Fail)] = fail match {
-      case Path(value, fail) => Some(value -> fail)
-      case _                 => None
+    def unapply(throwable: Throwable): Option[(String, Throwable)] = throwable match {
+      case InvalidPath(value, fail) => Some(value -> fail)
+      case _                        => None
     }
   }
 

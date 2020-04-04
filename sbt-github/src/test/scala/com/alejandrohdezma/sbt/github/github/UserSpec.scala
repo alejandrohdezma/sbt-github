@@ -35,7 +35,7 @@ class UserSpec extends Specification {
 
       val expected = User("me", "example.com/me", None, None, None)
 
-      json.as[User] must beRight(expected)
+      json.as[User] must beSuccessfulTry(expected)
     }
 
   }
