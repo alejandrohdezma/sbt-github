@@ -24,7 +24,7 @@ import com.alejandrohdezma.sbt.github.withServer
 import org.http4s.dsl.io._
 import org.specs2.mutable.Specification
 
-class RepositoryUrlSpec extends Specification {
+class RepositoryEntryPointSpec extends Specification {
 
   "Repository" should {
 
@@ -36,9 +36,9 @@ class RepositoryUrlSpec extends Specification {
       implicit val githubEntryPoint: GithubEntryPoint = GithubEntryPoint(uri)
       implicit val auth: Authentication               = Token("1234")
 
-      val repoUrl = implicitly[Repository]
+      val repoUrl = implicitly[RepositoryEntryPoint]
 
-      val expected = Repository("miau")
+      val expected = RepositoryEntryPoint("miau")
 
       repoUrl must be equalTo expected
     }
@@ -51,7 +51,7 @@ class RepositoryUrlSpec extends Specification {
       implicit val githubEntryPoint: GithubEntryPoint = GithubEntryPoint(uri)
       implicit val auth: Authentication               = Token("1234")
 
-      val repoUrl = implicitly[Repository]
+      val repoUrl = implicitly[RepositoryEntryPoint]
 
       repoUrl.get("owner", "repo") must be equalTo "http://example.com/owner/repo"
     }

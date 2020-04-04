@@ -19,6 +19,7 @@ package com.alejandrohdezma.sbt.github.github
 import sbt.util.Logger
 
 import com.alejandrohdezma.sbt.github.github.error.GithubError
+import com.alejandrohdezma.sbt.github.github.urls.RepositoryEntryPoint
 import com.alejandrohdezma.sbt.github.http.Authentication
 import com.alejandrohdezma.sbt.github.http.Authentication.Token
 import com.alejandrohdezma.sbt.github.withServer
@@ -51,7 +52,7 @@ class RepositorySpec extends Specification {
             }
           }""")
     } { uri =>
-      implicit val url: urls.Repository = urls.Repository(s"$uri{owner}/{repo}")
+      implicit val url: RepositoryEntryPoint = RepositoryEntryPoint(s"$uri{owner}/{repo}")
 
       val repository = Repository.get("user", "repo")
 
@@ -88,7 +89,7 @@ class RepositorySpec extends Specification {
             }
           }""")
     } { uri =>
-      implicit val url: urls.Repository = urls.Repository(s"$uri{owner}/{repo}")
+      implicit val url: RepositoryEntryPoint = RepositoryEntryPoint(s"$uri{owner}/{repo}")
 
       val repository = Repository.get("user", "repo")
 
@@ -128,7 +129,7 @@ class RepositorySpec extends Specification {
             }
           }""")
     } { uri =>
-      implicit val url: urls.Repository = urls.Repository(s"$uri{owner}/{repo}")
+      implicit val url: RepositoryEntryPoint = RepositoryEntryPoint(s"$uri{owner}/{repo}")
 
       val repository = Repository.get("user", "repo")
 
@@ -157,7 +158,7 @@ class RepositorySpec extends Specification {
             "license": null
           }""")
     } { uri =>
-      implicit val url: urls.Repository = urls.Repository(s"$uri{owner}/{repo}")
+      implicit val url: RepositoryEntryPoint = RepositoryEntryPoint(s"$uri{owner}/{repo}")
 
       val repository = Repository.get("user", "repo")
 
@@ -189,7 +190,7 @@ class RepositorySpec extends Specification {
             }
           }""")
     } { uri =>
-      implicit val url: urls.Repository = urls.Repository(s"$uri{owner}/{repo}")
+      implicit val url: RepositoryEntryPoint = RepositoryEntryPoint(s"$uri{owner}/{repo}")
 
       val repository = Repository.get("user", "repo")
 
@@ -221,7 +222,7 @@ class RepositorySpec extends Specification {
             }
           }""")
     } { uri =>
-      implicit val url: urls.Repository = urls.Repository(s"$uri{owner}/{repo}")
+      implicit val url: RepositoryEntryPoint = RepositoryEntryPoint(s"$uri{owner}/{repo}")
 
       val repository = Repository.get("user", "repo")
 
@@ -250,7 +251,7 @@ class RepositorySpec extends Specification {
             "license": 42
           }""")
     } { uri =>
-      implicit val url: urls.Repository = urls.Repository(s"$uri{owner}/{repo}")
+      implicit val url: RepositoryEntryPoint = RepositoryEntryPoint(s"$uri{owner}/{repo}")
 
       val repository = Repository.get("user", "repo")
 

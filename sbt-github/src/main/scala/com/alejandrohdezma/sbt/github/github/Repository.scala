@@ -25,6 +25,7 @@ import sbt.util.Logger
 
 import com.alejandrohdezma.sbt.github.error.NotFound
 import com.alejandrohdezma.sbt.github.github.error.GithubError
+import com.alejandrohdezma.sbt.github.github.urls.RepositoryEntryPoint
 import com.alejandrohdezma.sbt.github.http.{client, Authentication}
 import com.alejandrohdezma.sbt.github.json.Decoder
 import com.alejandrohdezma.sbt.github.syntax.json._
@@ -123,7 +124,7 @@ object Repository {
   def get(owner: String, name: String)(
       implicit auth: Authentication,
       logger: Logger,
-      url: urls.Repository
+      url: RepositoryEntryPoint
   ): Try[Repository] = {
     logger.info(s"Retrieving `$owner/$name` information from Github API")
 
