@@ -21,10 +21,22 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import cats.effect.{ContextShift, IO, Timer}
 
 import org.http4s._
+import org.http4s.headers.Host
 import org.http4s.implicits._
 import org.http4s.server.blaze.BlazeServerBuilder
 
 package object github {
+
+  implicit class RequestLinkOps(req: Request[IO]) {
+
+    @SuppressWarnings(Array("scalafix:Disable.get"))
+    def urlTo(path: String): String = {
+      val host = req.headers.get(Host).get
+
+      s"http://${host.host}:${host.port.getOrElse(8080)}/$path"
+    }
+
+  }
 
   def withServer[A](pf: PartialFunction[Request[IO], IO[Response[IO]]])(f: String => A): A = {
     implicit val cs: ContextShift[IO] = IO.contextShift(global)

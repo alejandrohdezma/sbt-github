@@ -18,13 +18,12 @@ package com.alejandrohdezma.sbt.github.github
 
 import sbt.util.Logger
 
+import com.alejandrohdezma.sbt.github._
 import com.alejandrohdezma.sbt.github.github.error.GithubError
 import com.alejandrohdezma.sbt.github.github.urls.RepositoryEntryPoint
 import com.alejandrohdezma.sbt.github.http.Authentication
 import com.alejandrohdezma.sbt.github.http.Authentication.Token
-import com.alejandrohdezma.sbt.github.withServer
 import org.http4s.dsl.io._
-import org.http4s.headers.Host
 import org.specs2.mutable.Specification
 
 class RepositorySpec extends Specification {
@@ -394,27 +393,23 @@ class RepositorySpec extends Specification {
         "html_url": "example.com/him"
       }""")
       case req @ GET -> Root / "collaborators" =>
-        val host = req.headers.get(Host).getOrElse(Host(""))
-
-        val root = s"${host.host}:${host.port.getOrElse(8080)}"
-
         Ok(s"""[
           {
             "login": "me",
             "avatar_url": "example.com/me.png",
             "html_url": "example.com/me",
-            "url": "http://$root/me"
+            "url": "${req.urlTo("me")}"
           },
           {
             "login": "you",
             "html_url": "example.com/you",
-            "url": "http://$root/you"
+            "url": "${req.urlTo("you")}"
           },
           {
             "login": "him",
             "avatar_url": null,
             "html_url": "example.com/him",
-            "url": "http://$root/him"
+            "url": "${req.urlTo("him")}"
           }
         ]""")
     } { uri =>
@@ -445,16 +440,12 @@ class RepositorySpec extends Specification {
       case GET -> Root / "me" =>
         Ok("""{"login": "me", "html_url": "example.com/me", "name": "Me"}""")
       case req @ GET -> Root / "collaborators" =>
-        val host = req.headers.get(Host).getOrElse(Host(""))
-
-        val root = s"${host.host}:${host.port.getOrElse(8080)}"
-
         Ok(s"""[
           {
             "login": "me",
             "avatar_url": "example.com/me.png",
             "html_url": "example.com/me",
-            "url": "http://$root/me"
+            "url": "${req.urlTo("me")}"
           },
           {
             "login": "you",
