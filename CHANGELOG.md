@@ -13,6 +13,7 @@
 
 **Merged pull requests:**
 
+- Improve documentation on Github Token [\#118](https://github.com/alejandrohdezma/sbt-github/pull/118) ([alejandrohdezma](https://github.com/alejandrohdezma))
 - Refactor erroring system [\#117](https://github.com/alejandrohdezma/sbt-github/pull/117) ([alejandrohdezma](https://github.com/alejandrohdezma))
 
 ## [v0.6.0](https://github.com/alejandrohdezma/sbt-github/tree/v0.6.0) (2020-03-01)
