@@ -6,6 +6,7 @@
 
 📈 **Dependency updates**
 
+- Update sbt-mdoc to 2.1.5 [\#124](https://github.com/alejandrohdezma/sbt-github/pull/124) ([scala-steward](https://github.com/scala-steward))
 - Update http4s-blaze-server, http4s-dsl to 0.21.3 [\#123](https://github.com/alejandrohdezma/sbt-github/pull/123) ([scala-steward](https://github.com/scala-steward))
 - Update sbt to 1.3.9 [\#115](https://github.com/alejandrohdezma/sbt-github/pull/115) ([scala-steward](https://github.com/scala-steward))
 - Update http4s-blaze-server, http4s-dsl to 0.21.2 [\#113](https://github.com/alejandrohdezma/sbt-github/pull/113) ([scala-steward](https://github.com/scala-steward))
@@ -14,6 +15,7 @@
 
 **Merged pull requests:**
 
+- Extract mock server url creation to package object [\#127](https://github.com/alejandrohdezma/sbt-github/pull/127) ([alejandrohdezma](https://github.com/alejandrohdezma))
 - Improve documentation on Github Token [\#118](https://github.com/alejandrohdezma/sbt-github/pull/118) ([alejandrohdezma](https://github.com/alejandrohdezma))
 - Refactor erroring system [\#117](https://github.com/alejandrohdezma/sbt-github/pull/117) ([alejandrohdezma](https://github.com/alejandrohdezma))
 
@@ -118,14 +120,13 @@
 - Update http4s-blaze-server, http4s-dsl to 0.20.16 [\#34](https://github.com/alejandrohdezma/sbt-github/pull/34) ([scala-steward](https://github.com/scala-steward))
 - Update sbt to 1.3.7 [\#30](https://github.com/alejandrohdezma/sbt-github/pull/30) ([scala-steward](https://github.com/scala-steward))
 - Update sbt-fix to 0.2.6 [\#22](https://github.com/alejandrohdezma/sbt-github/pull/22) ([scala-steward](https://github.com/scala-steward))
-- Update sbt-mdoc to 2.1.5 [\#21](https://github.com/alejandrohdezma/sbt-github/pull/21) ([scala-steward](https://github.com/scala-steward))
+- Update sbt-mdoc to 2.1.1 [\#21](https://github.com/alejandrohdezma/sbt-github/pull/21) ([scala-steward](https://github.com/scala-steward))
 - Update sbt-ci-release to 1.5.0 [\#20](https://github.com/alejandrohdezma/sbt-github/pull/20) ([scala-steward](https://github.com/scala-steward))
 - Update sbt-mdoc to 2.1.0 [\#19](https://github.com/alejandrohdezma/sbt-github/pull/19) ([scala-steward](https://github.com/scala-steward))
 - Update sbt to 1.3.6 [\#18](https://github.com/alejandrohdezma/sbt-github/pull/18) ([scala-steward](https://github.com/scala-steward))
 - Update sbt to 1.3.5 [\#17](https://github.com/alejandrohdezma/sbt-github/pull/17) ([scala-steward](https://github.com/scala-steward))
 - Update sbt-fix to 0.2.5 [\#16](https://github.com/alejandrohdezma/sbt-github/pull/16) ([scala-steward](https://github.com/scala-steward))
 - Update sbt-mdoc to 2.0.3 [\#15](https://github.com/alejandrohdezma/sbt-github/pull/15) ([scala-steward](https://github.com/scala-steward))
-- Update sbt-tpolecat to 0.1.10 [\#14](https://github.com/alejandrohdezma/sbt-github/pull/14) ([scala-steward](https://github.com/scala-steward))
 - Update sbt-tpolecat to 0.1.9 [\#13](https://github.com/alejandrohdezma/sbt-github/pull/13) ([scala-steward](https://github.com/scala-steward))
 - Update sbt to 1.3.4 [\#12](https://github.com/alejandrohdezma/sbt-github/pull/12) ([scala-steward](https://github.com/scala-steward))
 - Update sbt-mdoc to 2.0.2 [\#11](https://github.com/alejandrohdezma/sbt-github/pull/11) ([scala-steward](https://github.com/scala-steward))
@@ -136,6 +137,7 @@
 
 📈 **Dependency updates**
 
+- Update sbt-tpolecat to 0.1.10 [\#14](https://github.com/alejandrohdezma/sbt-github/pull/14) ([scala-steward](https://github.com/scala-steward))
 - Update sbt-mdoc to 2.0.1 [\#10](https://github.com/alejandrohdezma/sbt-github/pull/10) ([scala-steward](https://github.com/scala-steward))
 - Update sbt-fix to 0.2.4 [\#9](https://github.com/alejandrohdezma/sbt-github/pull/9) ([scala-steward](https://github.com/scala-steward))
 - Update sbt-fix to 0.2.3 [\#8](https://github.com/alejandrohdezma/sbt-github/pull/8) ([scala-steward](https://github.com/scala-steward))
