@@ -18,9 +18,11 @@ package com.alejandrohdezma.sbt.github.github.urls
 
 import sbt.util.Logger
 
+import com.alejandrohdezma.sbt.github.github.error.GithubError
 import com.alejandrohdezma.sbt.github.http._
 import com.alejandrohdezma.sbt.github.json.Decoder
 import com.alejandrohdezma.sbt.github.syntax.json._
+import com.alejandrohdezma.sbt.github.syntax.scalatry._
 
 final case class Repository(base: String) {
 
@@ -31,6 +33,7 @@ final case class Repository(base: String) {
 
 object Repository {
 
+  @SuppressWarnings(Array("scalafix:Disable.get"))
   implicit def repository(
       implicit auth: Authentication,
       logger: Logger,
@@ -38,7 +41,8 @@ object Repository {
   ): Repository =
     client
       .get[Repository](entryPoint.value)
-      .getOrElse(sys.error("Unable to connect to Github"))
+      .failAs(GithubError("Unable to connect to Github"))
+      .get
 
   implicit val RepositoryUrlDecoder: Decoder[Repository] = json =>
     json.get[String]("repository_url").map(Repository(_))

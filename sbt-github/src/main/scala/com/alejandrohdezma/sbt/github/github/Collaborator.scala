@@ -35,16 +35,22 @@ final case class Collaborator private[github] (
 
 object Collaborator {
 
-  /** Obtains a collaborator information from its Github login ID */
+  /**
+   * Obtains a collaborator information from its Github login ID
+   */
+  @SuppressWarnings(Array("scalafix:Disable.get"))
   def github(id: String): Authentication => GithubEntryPoint => Logger => Collaborator = {
     implicit auth => implicit entrypoint => implicit log =>
       val userUrl = implicitly[urls.User].get(id)
 
       log.info(s"Retrieving `$id` information from Github API")
 
-      client.get[User](userUrl).map { user =>
-        new Collaborator(user.login, user.url, userUrl, user.name, user.email, user.avatar)
-      } getOrElse sys.error(s"Unable to get info for user $id")
+      client
+        .get[User](userUrl)
+        .map(user =>
+          new Collaborator(user.login, user.url, userUrl, user.name, user.email, user.avatar)
+        )
+        .get
   }
 
   /**
