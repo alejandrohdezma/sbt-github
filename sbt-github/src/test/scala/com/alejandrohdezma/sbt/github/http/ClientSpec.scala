@@ -36,7 +36,7 @@ class ClientSpec extends Specification {
 
   "client.get" should {
 
-    "make `GET` call using auth and returning content as `String`" >> withServer {
+    "make `GET` call using auth and returning content as `A`" >> withServer {
       case req @ GET -> Root / "hello" =>
         Ok(s"""{
           "auth": "${req.headers.get(Authorization).map(_.renderString).orEmpty}"
