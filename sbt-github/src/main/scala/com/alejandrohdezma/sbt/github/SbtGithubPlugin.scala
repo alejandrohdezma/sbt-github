@@ -37,7 +37,7 @@ import com.alejandrohdezma.sbt.github.http.Authentication
  * This will only happen during the release stage in Travis CI, since its only
  * needed during this phase.
  */
-@SuppressWarnings(Array("scalafix:DisableSyntax.=="))
+@SuppressWarnings(Array("scalafix:DisableSyntax.==", "scalafix:Disable.get"))
 object SbtGithubPlugin extends AutoPlugin {
 
   object autoImport {
@@ -128,7 +128,7 @@ object SbtGithubPlugin extends AutoPlugin {
         implicit val entryPoint: GithubEntryPoint = GithubEntryPoint(githubApiEntryPoint.value)
         implicit val auth: Authentication         = githubToken.value
 
-        Some(Repository.get(info.value._1, info.value._2).fold(sys.error, identity))
+        Some(Repository.get(info.value._1, info.value._2).get)
       }
       else Def.setting(None)
     }.value,
@@ -142,21 +142,20 @@ object SbtGithubPlugin extends AutoPlugin {
             .filter(_ => populateOrganizationWithOwner.value)
             .map(_.owner.map(_.asOrganization))
         }
-        .map(_.fold(sys.error, identity))
+        .map(_.get)
     },
     contributors := {
       implicit val log: Logger          = sLog.value
       implicit val auth: Authentication = githubToken.value
       repository.value.fold(Contributors(Nil)) {
-        _.contributors(excludedContributors.value).fold(sys.error, identity)
+        _.contributors(excludedContributors.value).get
       }
     },
     collaborators := {
       implicit val log: Logger          = sLog.value
       implicit val auth: Authentication = githubToken.value
       repository.value.fold(Collaborators(Nil)) {
-        _.collaborators(contributors.value.list.map(_.login))
-          .fold(sys.error, identity)
+        _.collaborators(contributors.value.list.map(_.login)).get
           .include(
             extraCollaborators.value.map(_(auth)(GithubEntryPoint(githubApiEntryPoint.value))(log))
           )

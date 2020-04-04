@@ -18,14 +18,18 @@ package com.alejandrohdezma.sbt.github.github
 
 import java.time.ZonedDateTime
 
+import scala.util.Try
+
 import sbt.URL
 import sbt.util.Logger
 
 import com.alejandrohdezma.sbt.github.error.NotFound
+import com.alejandrohdezma.sbt.github.github.error.GithubError
 import com.alejandrohdezma.sbt.github.http.{client, Authentication}
 import com.alejandrohdezma.sbt.github.json.Decoder
 import com.alejandrohdezma.sbt.github.syntax.json._
 import com.alejandrohdezma.sbt.github.syntax.list._
+import com.alejandrohdezma.sbt.github.syntax.scalatry._
 
 /** Represents a repository in Github */
 final case class Repository(
@@ -52,7 +56,7 @@ final case class Repository(
    */
   def contributors(
       excluded: List[String]
-  )(implicit auth: Authentication, logger: Logger): Either[String, Contributors] = {
+  )(implicit auth: Authentication, logger: Logger): Try[Contributors] = {
     logger.info(s"Retrieving `$name` contributors from Github API")
 
     client
@@ -60,7 +64,7 @@ final case class Repository(
       .map(_.sortBy(-_.contributions))
       .map(_.filterNot(contributor => excluded.exists(contributor.login.matches)))
       .map(Contributors)
-      .fold(_ => Left("Unable to get repository contributors"), Right(_))
+      .failMap(GithubError("Unable to get repository contributors", _))
   }
 
   /**
@@ -70,7 +74,7 @@ final case class Repository(
   def collaborators(allowed: List[String])(
       implicit auth: Authentication,
       logger: Logger
-  ): Either[String, Collaborators] = {
+  ): Try[Collaborators] = {
     logger.info(s"Retrieving `$name` collaborators from Github API")
 
     client
@@ -85,7 +89,7 @@ final case class Repository(
       })
       .map(_.sortBy(collaborator => collaborator.name -> collaborator.login))
       .map(Collaborators)
-      .fold(_ => Left("Unable to get repository collaborators"), Right(_))
+      .failMap(GithubError("Unable to get repository collaborators", _))
   }
 
   /**
@@ -94,21 +98,21 @@ final case class Repository(
   def organization(
       implicit auth: Authentication,
       logger: Logger
-  ): Option[Either[String, Organization]] = {
+  ): Option[Try[Organization]] = {
     logger.info(s"Retrieving `$name` organization from Github API")
 
     organizationUrl
       .map(client.get[Organization])
-      .map(_.fold(_ => Left("Unable to get repository organization"), Right(_)))
+      .map(_.failMap(GithubError("Unable to get repository organization", _)))
   }
 
   /**
    * Returns the repository's owner information.
    */
-  def owner(implicit auth: Authentication, logger: Logger): Either[String, User] = {
+  def owner(implicit auth: Authentication, logger: Logger): Try[User] = {
     logger.info(s"Retrieving `$name` owner from Github API")
 
-    client.get[User](ownerUrl).fold(_ => Left("Unable to get repository owner"), Right(_))
+    client.get[User](ownerUrl).failMap(GithubError("Unable to get repository owner", _))
   }
 
 }
@@ -120,33 +124,28 @@ object Repository {
       implicit auth: Authentication,
       logger: Logger,
       url: urls.Repository
-  ): Either[String, Repository] = {
+  ): Try[Repository] = {
     logger.info(s"Retrieving `$owner/$name` information from Github API")
+
+    val descriptionNotFound =
+      s"Repository doesn't have a description! Go to https://github.com/$owner/$name and add it"
+    val licenseNotFound =
+      s"Repository doesn't have a license! Go to https://github.com/$owner/$name and add it"
+    val licenseNotInferred =
+      s"Repository's license id couldn't be inferred! Go to https://github.com/$owner/$name and check it"
+    val urlNotInferred =
+      s"Repository's license url couldn't be inferred! Go to https://github.com/$owner/$name and check it"
 
     client
       .get[Repository](url.get(owner, name))
-      .fold(
-        {
-          case "description" / NotFound =>
-            Left(
-              s"Repository doesn't have a description! Go to https://github.com/$owner/$name and add it"
-            )
-          case "license" / NotFound =>
-            Left(
-              s"Repository doesn't have a license! Go to https://github.com/$owner/$name and add it"
-            )
-          case "license" / ("spdx_id" / NotFound) =>
-            Left(
-              s"Repository's license id couldn't be inferred! Go to https://github.com/$owner/$name and check it"
-            )
-          case "license" / ("url" / NotFound) =>
-            Left(
-              s"Repository's license url couldn't be inferred! Go to https://github.com/$owner/$name and check it"
-            )
-          case _ => Left("Unable to get repository information")
-        },
-        Right(_)
-      )
+      .failMap {
+        case t @ "description" / NotFound           => GithubError(descriptionNotFound, t)
+        case t @ "license" / NotFound               => GithubError(licenseNotFound, t)
+        case t @ "license" / ("spdx_id" / NotFound) => GithubError(licenseNotInferred, t)
+        case t @ "license" / ("url" / NotFound)     => GithubError(urlNotInferred, t)
+        case t                                      => GithubError("Unable to get repository information", t)
+      }
+
   }
 
   implicit val RepositoryDecoder: Decoder[Repository] = json =>
