@@ -18,13 +18,9 @@ package com.alejandrohdezma.sbt.github.github
 
 import sbt.util.Logger
 
-import com.alejandrohdezma.sbt.github.error.{NotFound => Missing}
 import com.alejandrohdezma.sbt.github.github.error.GithubError
 import com.alejandrohdezma.sbt.github.http.Authentication
 import com.alejandrohdezma.sbt.github.http.Authentication.Token
-import com.alejandrohdezma.sbt.github.http.error.URLNotFound
-import com.alejandrohdezma.sbt.github.json.Json
-import com.alejandrohdezma.sbt.github.json.error._
 import com.alejandrohdezma.sbt.github.withServer
 import org.http4s.dsl.io._
 import org.http4s.headers.Host
@@ -137,9 +133,9 @@ class RepositorySpec extends Specification {
       val repository = Repository.get("user", "repo")
 
       val expected = GithubError(
-        "Repository doesn't have a description! Go to https://github.com/user/repo and add it",
-        InvalidPath("description", Missing)
+        "Repository doesn't have a description! Go to https://github.com/user/repo and add it"
       )
+
       repository must beAFailedTry(equalTo(expected))
     }
 
@@ -166,8 +162,7 @@ class RepositorySpec extends Specification {
       val repository = Repository.get("user", "repo")
 
       val expected = GithubError(
-        "Repository doesn't have a license! Go to https://github.com/user/repo and add it",
-        InvalidPath("license", Missing)
+        "Repository doesn't have a license! Go to https://github.com/user/repo and add it"
       )
 
       repository must beAFailedTry(equalTo(expected))
@@ -199,8 +194,7 @@ class RepositorySpec extends Specification {
       val repository = Repository.get("user", "repo")
 
       val expected = GithubError(
-        "Repository's license id couldn't be inferred! Go to https://github.com/user/repo and check it",
-        InvalidPath("license", InvalidPath("spdx_id", Missing))
+        "Repository's license id couldn't be inferred! Go to https://github.com/user/repo and check it"
       )
 
       repository must beAFailedTry(equalTo(expected))
@@ -232,8 +226,7 @@ class RepositorySpec extends Specification {
       val repository = Repository.get("user", "repo")
 
       val expected = GithubError(
-        "Repository's license url couldn't be inferred! Go to https://github.com/user/repo and check it",
-        InvalidPath("license", InvalidPath("url", Missing))
+        "Repository's license url couldn't be inferred! Go to https://github.com/user/repo and check it"
       )
 
       repository must beAFailedTry(equalTo(expected))
@@ -262,8 +255,7 @@ class RepositorySpec extends Specification {
       val repository = Repository.get("user", "repo")
 
       val expected = GithubError(
-        "Unable to get repository information",
-        InvalidPath("license", NotAJSONObject(Json.Number(42)))
+        "Unable to get repository information"
       )
 
       repository must beAFailedTry(equalTo(expected))
@@ -373,8 +365,7 @@ class RepositorySpec extends Specification {
       val contributors = repository.contributors(Nil)
 
       val expected = GithubError(
-        "Unable to get repository contributors",
-        NotAList(Json.Object(Map("hello" -> Json.Text("hi"))))
+        "Unable to get repository contributors"
       )
 
       contributors must beAFailedTry(equalTo(expected))
@@ -500,10 +491,7 @@ class RepositorySpec extends Specification {
 
       val collaborators = repository.collaborators(Nil)
 
-      val expected = GithubError(
-        "Unable to get repository collaborators",
-        NotAList(Json.Object(Map("hello" -> Json.Text("hi"))))
-      )
+      val expected = GithubError("Unable to get repository collaborators")
 
       collaborators must beAFailedTry(equalTo(expected))
     }
@@ -581,10 +569,7 @@ class RepositorySpec extends Specification {
 
       val organization = repository.organization
 
-      val expected = GithubError(
-        "Unable to get repository organization",
-        URLNotFound(s"${uri}organization")
-      )
+      val expected = GithubError("Unable to get repository organization")
 
       organization must beSome(failedTry[Organization](equalTo(expected)))
     }
@@ -683,10 +668,7 @@ class RepositorySpec extends Specification {
 
       val owner = repository.owner
 
-      val expected = GithubError(
-        "Unable to get repository owner",
-        URLNotFound(s"${uri}owner")
-      )
+      val expected = GithubError("Unable to get repository owner")
 
       owner must beAFailedTry(equalTo(expected))
     }

@@ -64,7 +64,7 @@ final case class Repository(
       .map(_.sortBy(-_.contributions))
       .map(_.filterNot(contributor => excluded.exists(contributor.login.matches)))
       .map(Contributors)
-      .failMap(GithubError("Unable to get repository contributors", _))
+      .failAs(GithubError("Unable to get repository contributors"))
   }
 
   /**
@@ -89,7 +89,7 @@ final case class Repository(
       })
       .map(_.sortBy(collaborator => collaborator.name -> collaborator.login))
       .map(Collaborators)
-      .failMap(GithubError("Unable to get repository collaborators", _))
+      .failAs(GithubError("Unable to get repository collaborators"))
   }
 
   /**
@@ -103,7 +103,7 @@ final case class Repository(
 
     organizationUrl
       .map(client.get[Organization])
-      .map(_.failMap(GithubError("Unable to get repository organization", _)))
+      .map(_.failAs(GithubError("Unable to get repository organization")))
   }
 
   /**
@@ -112,7 +112,7 @@ final case class Repository(
   def owner(implicit auth: Authentication, logger: Logger): Try[User] = {
     logger.info(s"Retrieving `$name` owner from Github API")
 
-    client.get[User](ownerUrl).failMap(GithubError("Unable to get repository owner", _))
+    client.get[User](ownerUrl).failAs(GithubError("Unable to get repository owner"))
   }
 
 }
@@ -139,11 +139,11 @@ object Repository {
     client
       .get[Repository](url.get(owner, name))
       .failMap {
-        case t @ "description" / NotFound           => GithubError(descriptionNotFound, t)
-        case t @ "license" / NotFound               => GithubError(licenseNotFound, t)
-        case t @ "license" / ("spdx_id" / NotFound) => GithubError(licenseNotInferred, t)
-        case t @ "license" / ("url" / NotFound)     => GithubError(urlNotInferred, t)
-        case t                                      => GithubError("Unable to get repository information", t)
+        case "description" / NotFound           => GithubError(descriptionNotFound)
+        case "license" / NotFound               => GithubError(licenseNotFound)
+        case "license" / ("spdx_id" / NotFound) => GithubError(licenseNotInferred)
+        case "license" / ("url" / NotFound)     => GithubError(urlNotInferred)
+        case _                                  => GithubError("Unable to get repository information")
       }
 
   }

@@ -29,7 +29,6 @@ import com.alejandrohdezma.sbt.github.http.error.URLNotFound
 import com.alejandrohdezma.sbt.github.json.{Decoder, Json}
 import com.alejandrohdezma.sbt.github.syntax.json._
 import com.alejandrohdezma.sbt.github.syntax.scalatry._
-import com.alejandrohdezma.sbt.github.syntax.throwable._
 
 object client {
 
@@ -63,12 +62,7 @@ object client {
       )
     }.failMap {
       case _: FileNotFoundException => URLNotFound(uri)
-      case throwable                => throwable
-    }.flatMap(Json.parse).as[A].recoverWith {
-      case t =>
-        logger.trace(t)
-        t.raise
-    }
+    }.flatMap(Json.parse).as[A]
 
   private val cache: ConcurrentHashMap[String, String] = new ConcurrentHashMap[String, String]()
 

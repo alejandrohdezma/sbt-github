@@ -19,6 +19,7 @@ package com.alejandrohdezma.sbt.github.syntax
 import scala.util.{Failure, Try}
 
 import com.alejandrohdezma.sbt.github.error.NotFound
+import com.alejandrohdezma.sbt.github.http.error.URLNotFound
 import com.alejandrohdezma.sbt.github.syntax.scalatry._
 import org.specs2.mutable.Specification
 
@@ -27,15 +28,43 @@ class TrySyntaxSpec extends Specification {
   "failMap" should {
 
     "change value if Failure" >> {
-      val either = Failure(new IllegalArgumentException())
+      val failure = Failure(NotFound)
 
-      either.failMap(_ => NotFound) must beAFailedTry(equalTo(NotFound))
+      val result = failure.failMap {
+        case _ => URLNotFound("url")
+      }
+
+      result must beAFailedTry(equalTo(URLNotFound("url")))
     }
 
     "do nothing if Success" >> {
-      val either = Try(42)
+      val success = Try(42)
 
-      either.failMap(_ => NotFound) must beSuccessfulTry(42)
+      val result = success.failMap {
+        case _ => NotFound
+      }
+
+      result must beSuccessfulTry(42)
+    }
+
+  }
+
+  "failAs" should {
+
+    "change value if Failure" >> {
+      val failure = Failure(NotFound)
+
+      val result = failure.failAs(URLNotFound("url"))
+
+      result must beAFailedTry(equalTo(URLNotFound("url")))
+    }
+
+    "do nothing if Success" >> {
+      val success = Try(42)
+
+      val result = success.failAs(NotFound)
+
+      result must beSuccessfulTry(42)
     }
 
   }
