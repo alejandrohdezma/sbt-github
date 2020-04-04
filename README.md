@@ -95,7 +95,20 @@ ThisBuild / extraCollaborators += Collaborator.github("alejandrohdezma")
 
 ### Github API token
 
-For this plugin to work you'll need to add an environment variable named `GITHUB_TOKEN` with a [personal access token](https://github.com/settings/tokens).
+The Github [personal access token](https://github.com/settings/tokens) that the plugin will use can be set using the `githubToken` setting:
+
+```sbt
+//Defaults to the value of environment variable `GITHUB_TOKEN`
+ThisBuild / githubToken := Token("my-github-token")
+```
+
+If you don't want to write your personal token directly in `build.sbt` (which you shouldn't) you can read the value of an environment variable:
+
+```sbt
+Global / githubToken := Token(sys.env.getOrElse("MY_TOKEN", sys.error("Unable to find token")))
+```
+
+By default this plugin will look for an environment variable named `GITHUB_TOKEN`.
 
 > If you are using Github Actions, you can use the [provided `GITHUB_TOKEN`](https://help.github.com/en/actions/configuring-and-managing-workflows/authenticating-with-the-github_token#about-the-github_token-secret).
 
