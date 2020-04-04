@@ -22,10 +22,9 @@ import com.alejandrohdezma.sbt.github.error.{NotFound => Missing}
 import com.alejandrohdezma.sbt.github.github.error.GithubError
 import com.alejandrohdezma.sbt.github.http.Authentication
 import com.alejandrohdezma.sbt.github.http.Authentication.Token
-import com.alejandrohdezma.sbt.github.http.client.URLNotFound
-import com.alejandrohdezma.sbt.github.json.Decoder.Failure.NotAList
+import com.alejandrohdezma.sbt.github.http.error.URLNotFound
 import com.alejandrohdezma.sbt.github.json.Json
-import com.alejandrohdezma.sbt.github.json.Json.Failures.{InvalidPath, NotAJSONObject}
+import com.alejandrohdezma.sbt.github.json.error._
 import com.alejandrohdezma.sbt.github.withServer
 import org.http4s.dsl.io._
 import org.http4s.headers.Host

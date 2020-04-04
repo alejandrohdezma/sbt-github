@@ -17,16 +17,16 @@
 package com.alejandrohdezma.sbt.github.json
 
 import scala.util.Try
-import scala.util.control.NoStackTrace
 import scala.util.parsing.combinator.JavaTokenParsers
 
+import com.alejandrohdezma.sbt.github.json.error.NotAValidJSON
 import com.alejandrohdezma.sbt.github.syntax.throwable._
 
 object Json extends JavaTokenParsers {
 
   /** Parse the provided string into a [[Json.Value]] */
   def parse(s: String): Try[Json.Value] =
-    parseAll(`json-value`, s).map(Try(_)).getOrElse(Failures.NotAValidJSON(s).raise)
+    parseAll(`json-value`, s).map(Try(_)).getOrElse(NotAValidJSON(s).raise)
 
   @SuppressWarnings(Array("all"))
   private def `json-value`: Parser[Json.Value] = {
@@ -53,21 +53,5 @@ object Json extends JavaTokenParsers {
   case object False                                   extends Value
   case object True                                    extends Value
   case object Null                                    extends Value
-
-  object Failures {
-
-    final case class NotAJSONObject(value: Json.Value)
-        extends Throwable(s"is not a valid JSON object: $value")
-        with NoStackTrace
-
-    final case class NotAValidJSON(string: String)
-        extends Throwable(s"$string is not a valid JSON")
-        with NoStackTrace
-
-    final case class InvalidPath(value: String, fail: Throwable)
-        extends Throwable(s"$value => ${fail.getMessage}")
-        with NoStackTrace
-
-  }
 
 }

@@ -19,7 +19,7 @@ package com.alejandrohdezma.sbt.github.syntax
 import scala.util.Try
 
 import com.alejandrohdezma.sbt.github.error.NotFound
-import com.alejandrohdezma.sbt.github.json.Json.Failures._
+import com.alejandrohdezma.sbt.github.json.error.{InvalidPath, NotAJSONObject}
 import com.alejandrohdezma.sbt.github.json.{Decoder, Json}
 import com.alejandrohdezma.sbt.github.syntax.scalatry._
 import com.alejandrohdezma.sbt.github.syntax.throwable._

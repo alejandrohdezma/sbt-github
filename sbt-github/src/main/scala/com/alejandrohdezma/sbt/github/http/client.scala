@@ -22,20 +22,16 @@ import java.util.concurrent.ConcurrentHashMap
 
 import scala.io.Source
 import scala.util.Try
-import scala.util.control.NoStackTrace
 
 import sbt.util.Logger
 
+import com.alejandrohdezma.sbt.github.http.error.URLNotFound
 import com.alejandrohdezma.sbt.github.json.{Decoder, Json}
 import com.alejandrohdezma.sbt.github.syntax.json._
 import com.alejandrohdezma.sbt.github.syntax.scalatry._
 import com.alejandrohdezma.sbt.github.syntax.throwable._
 
 object client {
-
-  final case class URLNotFound(url: String)
-      extends Throwable(s"$url was not found")
-      with NoStackTrace
 
   /**
    * Calls the provided URL with the provided authentication and

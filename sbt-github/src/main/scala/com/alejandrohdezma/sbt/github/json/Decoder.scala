@@ -20,9 +20,9 @@ import java.time.ZonedDateTime
 import java.time.ZonedDateTime.parse
 
 import scala.util.Try
-import scala.util.control.NoStackTrace
 
 import com.alejandrohdezma.sbt.github.error._
+import com.alejandrohdezma.sbt.github.json.error._
 import com.alejandrohdezma.sbt.github.syntax.list._
 import com.alejandrohdezma.sbt.github.syntax.throwable._
 
@@ -45,31 +45,31 @@ object Decoder {
     case json      => f.andThen(Try(_)).applyOrElse(json, error.andThen(_.raise[A]))
   }
 
-  implicit val StringDecoder: Decoder[String] = nonNull(Failure.NotAString) {
+  implicit val StringDecoder: Decoder[String] = nonNull(NotAString) {
     case Json.Text(value) => value
   }
 
-  implicit val LongDecoder: Decoder[Long] = nonNull(Failure.NotANumber) {
+  implicit val LongDecoder: Decoder[Long] = nonNull(NotANumber) {
     case Json.Number(value) => value.toLong
   }
 
-  implicit val IntDecoder: Decoder[Int] = nonNull(Failure.NotANumber) {
+  implicit val IntDecoder: Decoder[Int] = nonNull(NotANumber) {
     case Json.Number(value) => value.toInt
   }
 
-  implicit val DoubleDecoder: Decoder[Double] = nonNull(Failure.NotANumber) {
+  implicit val DoubleDecoder: Decoder[Double] = nonNull(NotANumber) {
     case Json.Number(value) => value
   }
 
-  implicit val BooleanDecoder: Decoder[Boolean] = nonNull(Failure.NotABoolean) {
+  implicit val BooleanDecoder: Decoder[Boolean] = nonNull(NotABoolean) {
     case Json.True  => true
     case Json.False => false
   }
 
   implicit val ZonedDateTimeDecoder: Decoder[ZonedDateTime] = {
     case Json.Null            => NotFound.raise
-    case a @ Json.Text(value) => Try(parse(value)).orElse(Failure.NotADateTime(a).raise)
-    case value                => Failure.NotADateTime(value).raise
+    case a @ Json.Text(value) => Try(parse(value)).orElse(NotADateTime(a).raise)
+    case value                => NotADateTime(value).raise
   }
 
   implicit def OptionDecoder[A: Decoder]: Decoder[Option[A]] = {
@@ -80,31 +80,7 @@ object Decoder {
   implicit def ListDecoder[A: Decoder]: Decoder[List[A]] = {
     case Json.Collection(list) => list.traverse(Decoder[A].decode)
     case Json.Null             => NotFound.raise
-    case value                 => Failure.NotAList(value).raise
-  }
-
-  object Failure {
-
-    final case class NotABoolean(value: Json.Value)
-        extends Throwable(s"is not a valid JSON boolean: $value")
-        with NoStackTrace
-
-    final case class NotADateTime(value: Json.Value)
-        extends Throwable(s"is not a valid date time: $value")
-        with NoStackTrace
-
-    final case class NotAList(value: Json.Value)
-        extends Throwable(s"is not a valid JSON array: $value")
-        with NoStackTrace
-
-    final case class NotANumber(value: Json.Value)
-        extends Throwable(s"is not a valid JSON number: $value")
-        with NoStackTrace
-
-    final case class NotAString(value: Json.Value)
-        extends Throwable(s"is not a valid JSON string: $value")
-        with NoStackTrace
-
+    case value                 => NotAList(value).raise
   }
 
 }

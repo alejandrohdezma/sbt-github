@@ -20,7 +20,7 @@ import java.time.ZoneOffset.UTC
 import java.time.ZonedDateTime
 
 import com.alejandrohdezma.sbt.github.error._
-import com.alejandrohdezma.sbt.github.json.Decoder.Failure._
+import com.alejandrohdezma.sbt.github.json.error._
 import com.alejandrohdezma.sbt.github.syntax.json._
 import org.specs2.mutable.Specification
 
