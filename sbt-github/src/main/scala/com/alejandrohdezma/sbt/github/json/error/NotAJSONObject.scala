@@ -5,5 +5,5 @@ import scala.util.control.NoStackTrace
 import com.alejandrohdezma.sbt.github.json.Json
 
 final case class NotAJSONObject(value: Json.Value)
-    extends Throwable(s"is not a valid JSON object: $value")
+    extends Throwable(s"$value is not a valid JSON object")
     with NoStackTrace
