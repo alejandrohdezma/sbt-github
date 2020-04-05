@@ -3,17 +3,18 @@ ThisBuild / organization := "com.alejandrohdezma"
 
 Global / onChangedBuildSource := ReloadOnSourceChanges
 
-addCommandAlias("ci-test", "fix --check; docs/mdoc; test; publishLocal; scripted")
-addCommandAlias("ci-docs", "docs/mdoc; headerCreateAll")
+addCommandAlias("ci-test", "fix --check; mdoc; test; publishLocal; scripted")
+addCommandAlias("ci-docs", "mdoc; headerCreateAll")
 
 lazy val root = project
   .in(file("."))
-  .aggregate(`sbt-github`, `sbt-github-mdoc`, `sbt-github-header`)
+  .aggregate(`sbt-github`, `sbt-github-mdoc`, `sbt-github-header`, docs)
   .settings(skip in publish := true)
 
 lazy val docs = project
   .in(file("sbt-github-docs"))
   .enablePlugins(MdocPlugin)
+  .settings(skip in publish := true)
   .settings(mdocOut := file("."))
   .settings(mdocVariables += "EXCLUDED" -> excludedContributors.value.mkString("- ", "\n- ", ""))
 
