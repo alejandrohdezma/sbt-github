@@ -19,7 +19,7 @@ package com.alejandrohdezma.sbt.github.syntax
 import scala.util.{Failure, Try}
 
 import com.alejandrohdezma.sbt.github.error.NotFound
-import com.alejandrohdezma.sbt.github.http.error.URLNotFound
+import com.alejandrohdezma.sbt.github.github.error.GithubError
 import com.alejandrohdezma.sbt.github.syntax.scalatry._
 import org.specs2.mutable.Specification
 
@@ -31,10 +31,10 @@ class TrySyntaxSpec extends Specification {
       val failure = Failure(NotFound)
 
       val result = failure.collectFail {
-        case _ => URLNotFound("url")
+        case _ => GithubError("miau")
       }
 
-      result must beAFailedTry(equalTo(URLNotFound("url")))
+      result must beAFailedTry(equalTo(GithubError("miau")))
     }
 
     "do nothing if Success" >> {
@@ -54,9 +54,9 @@ class TrySyntaxSpec extends Specification {
     "change value if Failure" >> {
       val failure = Failure(NotFound)
 
-      val result = failure.mapFail(_ => URLNotFound("url"))
+      val result = failure.mapFail(_ => GithubError("url"))
 
-      result must beAFailedTry(equalTo(URLNotFound("url")))
+      result must beAFailedTry(equalTo(GithubError("url")))
     }
 
     "do nothing if Success" >> {
@@ -74,9 +74,9 @@ class TrySyntaxSpec extends Specification {
     "change value if Failure" >> {
       val failure = Failure(NotFound)
 
-      val result = failure.failAs(URLNotFound("url"))
+      val result = failure.failAs(GithubError("miau"))
 
-      result must beAFailedTry(equalTo(URLNotFound("url")))
+      result must beAFailedTry(equalTo(GithubError("miau")))
     }
 
     "do nothing if Success" >> {
