@@ -44,7 +44,7 @@ object Collaborator {
       log.info(s"Retrieving `$id` information from Github API")
 
       client
-        .get[User](implicitly[UserEntryPoint].get(id))
+        .get[User](UserEntryPoint.get(id))
         .map(user => Collaborator(user.login, user.url, None, user.name, user.email, user.avatar))
         .get
   }
