@@ -37,10 +37,12 @@ final case class Collaborator private[github] (
 
 object Collaborator {
 
+  type Creator = Authentication => GithubEntryPoint => Logger => Try[Collaborator]
+
   /**
    * Obtains a collaborator information from its Github login ID
    */
-  def github(id: String): Authentication => GithubEntryPoint => Logger => Try[Collaborator] = {
+  def github(id: String): Collaborator.Creator = {
     implicit auth => implicit entrypoint => implicit log =>
       for {
         _    <- Try(log.info(s"Retrieving `$id` information from Github API"))
@@ -57,13 +59,8 @@ object Collaborator {
    * @param url the collaborator's URL. It may link to its Github profile or personal webpage.
    * @return a new collaborator
    */
-  def apply(
-      login: String,
-      name: String,
-      url: String
-  ): Authentication => GithubEntryPoint => Logger => Try[Collaborator] = { _ => _ => _ =>
-    Try(new Collaborator(login, url, None, Some(name), None, None))
-  }
+  def apply(login: String, name: String, url: String): Collaborator.Creator =
+    _ => _ => _ => Try(new Collaborator(login, url, None, Some(name), None, None))
 
   /**
    * Creates a new collaborator
@@ -74,14 +71,8 @@ object Collaborator {
    * @param email the collaborator's email
    * @return a new collaborator
    */
-  def apply(
-      login: String,
-      name: String,
-      url: String,
-      email: String
-  ): Authentication => GithubEntryPoint => Logger => Try[Collaborator] = { _ => _ => _ =>
-    Try(new Collaborator(login, url, None, Some(name), Some(email), None))
-  }
+  def apply(login: String, name: String, url: String, email: String): Collaborator.Creator =
+    _ => _ => _ => Try(new Collaborator(login, url, None, Some(name), Some(email), None))
 
   /**
    * Creates a new collaborator
@@ -99,9 +90,8 @@ object Collaborator {
       url: String,
       email: Option[String],
       avatar: Option[String]
-  ): Authentication => GithubEntryPoint => Logger => Try[Collaborator] = { _ => _ => _ =>
-    Try(new Collaborator(login, url, None, Some(name), email, avatar))
-  }
+  ): Collaborator.Creator =
+    _ => _ => _ => Try(new Collaborator(login, url, None, Some(name), email, avatar))
 
   implicit val CollaboratorDecoder: Decoder[Collaborator] = json =>
     for {

@@ -18,8 +18,6 @@ package com.alejandrohdezma.sbt.github
 
 import java.time.Year
 
-import scala.util.Try
-
 import sbt.Def.Setting
 import sbt.Keys._
 import sbt._
@@ -77,10 +75,9 @@ object SbtGithubPlugin extends AutoPlugin {
       "Populate organization info with the owner one in case there is no organization, default to `true`"
     }
 
-    val extraCollaborators =
-      settingKey[List[Authentication => GithubEntryPoint => Logger => Try[Collaborator]]] {
-        "Extra collaborators that should be always included (independent of whether they are contributors or not)"
-      }
+    val extraCollaborators = settingKey[List[Collaborator.Creator]] {
+      "Extra collaborators that should be always included (independent of whether they are contributors or not)"
+    }
 
     val excludedContributors = settingKey[List[String]] {
       "ID (Github login) of the contributors that should be excluded from the list, like bots, it can also be regex patterns"
