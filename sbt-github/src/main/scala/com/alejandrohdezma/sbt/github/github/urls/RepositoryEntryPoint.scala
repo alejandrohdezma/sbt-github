@@ -18,11 +18,11 @@ package com.alejandrohdezma.sbt.github.github.urls
 
 import scala.util.Try
 
+import sbt.URL
 import sbt.util.Logger
 
 import com.alejandrohdezma.sbt.github.github.error.GithubError
 import com.alejandrohdezma.sbt.github.http._
-import com.alejandrohdezma.sbt.github.json.Decoder
 import com.alejandrohdezma.sbt.github.syntax.json._
 import com.alejandrohdezma.sbt.github.syntax.scalatry._
 
@@ -35,15 +35,11 @@ object RepositoryEntryPoint {
       implicit auth: Authentication,
       logger: Logger,
       entryPoint: GithubEntryPoint
-  ): Try[String] =
+  ): Try[URL] =
     client
-      .get[RepositoryEntryPoint](entryPoint.value)
+      .get[String](entryPoint.value)(_.get[String]("repository_url"), auth, logger)
       .failAs(GithubError("Unable to connect to Github"))
-      .map(_.value.replace("{owner}", owner).replace("{repo}", repo))
-
-  final private case class RepositoryEntryPoint(value: String) extends AnyVal
-
-  implicit private val RepositoryUrlDecoder: Decoder[RepositoryEntryPoint] = json =>
-    json.get[String]("repository_url").map(RepositoryEntryPoint)
+      .map(_.replace("{owner}", owner).replace("{repo}", repo))
+      .map(sbt.url)
 
 }
