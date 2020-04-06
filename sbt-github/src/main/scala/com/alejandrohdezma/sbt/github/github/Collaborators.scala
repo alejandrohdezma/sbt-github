@@ -55,3 +55,9 @@ final case class Collaborators(list: List[Collaborator]) {
     }.mkString("\n")
 
 }
+
+object Collaborators {
+
+  def apply(collaborators: Collaborator*): Collaborators = new Collaborators(collaborators.toList)
+
+}

@@ -426,31 +426,29 @@ class RepositorySpec extends Specification {
       val collaborators = repository.collaborators(List("me", "you", "him"))
 
       val expected = Collaborators(
-        List(
-          Collaborator(
-            "you",
-            sbt.url("http://example.com/you"),
-            Some(sbt.url(s"${uri}you")),
-            None,
-            None,
-            None
-          ),
-          Collaborator(
-            "him",
-            sbt.url("http://example.com/him"),
-            Some(sbt.url(s"${uri}him")),
-            Some("Him"),
-            None,
-            None
-          ),
-          Collaborator(
-            "me",
-            sbt.url("http://example.com/me"),
-            Some(sbt.url(s"${uri}me")),
-            Some("Me"),
-            Some("me@example.com"),
-            Some(sbt.url("http://example.com/me.png"))
-          )
+        Collaborator(
+          "you",
+          sbt.url("http://example.com/you"),
+          Some(sbt.url(s"${uri}you")),
+          None,
+          None,
+          None
+        ),
+        Collaborator(
+          "him",
+          sbt.url("http://example.com/him"),
+          Some(sbt.url(s"${uri}him")),
+          Some("Him"),
+          None,
+          None
+        ),
+        Collaborator(
+          "me",
+          sbt.url("http://example.com/me"),
+          Some(sbt.url(s"${uri}me")),
+          Some("Me"),
+          Some("me@example.com"),
+          Some(sbt.url("http://example.com/me.png"))
         )
       )
 
@@ -481,15 +479,13 @@ class RepositorySpec extends Specification {
       val collaborators = repository.collaborators(List("me"))
 
       val expected = Collaborators(
-        List(
-          new Collaborator(
-            "me",
-            sbt.url("http://example.com/me"),
-            Some(sbt.url(s"${uri}me")),
-            Some("Me"),
-            None,
-            Some(sbt.url("http://example.com/me.png"))
-          )
+        Collaborator(
+          "me",
+          sbt.url("http://example.com/me"),
+          Some(sbt.url(s"${uri}me")),
+          Some("Me"),
+          None,
+          Some(sbt.url("http://example.com/me.png"))
         )
       )
 

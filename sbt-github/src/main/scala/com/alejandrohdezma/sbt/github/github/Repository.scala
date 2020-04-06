@@ -91,7 +91,7 @@ final case class Repository(
         }.getOrElse(Try(collaborator))
       })
       .map(_.sortBy(collaborator => collaborator.name -> collaborator.login))
-      .map(Collaborators)
+      .map(Collaborators(_))
       .failAs(GithubError("Unable to get repository collaborators"))
   }
 

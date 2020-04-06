@@ -20,12 +20,21 @@ import scala.concurrent.ExecutionContext.Implicits.global
 
 import cats.effect.{ContextShift, IO, Timer}
 
+import sbt.util.Logger
+
+import com.alejandrohdezma.sbt.github.github.Collaborator
+import com.alejandrohdezma.sbt.github.github.urls.GithubEntryPoint
+import com.alejandrohdezma.sbt.github.http.Authentication.Token
 import org.http4s._
 import org.http4s.headers.Host
 import org.http4s.implicits._
 import org.http4s.server.blaze.BlazeServerBuilder
 
 package object github {
+
+  @SuppressWarnings(Array("scalafix:Disable.get", "scalafix:DisableSyntax.implicitConversion"))
+  implicit def CreatorToCollaborator(creator: Collaborator.Creator): Collaborator =
+    creator(Token("123"))(GithubEntryPoint(sbt.url("http://example.com")))(Logger.Null).get
 
   implicit class RequestLinkOps(req: Request[IO]) {
 
