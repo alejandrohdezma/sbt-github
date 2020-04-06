@@ -19,6 +19,8 @@ package com.alejandrohdezma.sbt.github.json
 import java.time.ZoneOffset.UTC
 import java.time.ZonedDateTime
 
+import sbt.URL
+
 import com.alejandrohdezma.sbt.github.error._
 import com.alejandrohdezma.sbt.github.json.error._
 import com.alejandrohdezma.sbt.github.syntax.json._
@@ -226,6 +228,36 @@ class DecoderSpec extends Specification {
       val json = Json.True
 
       json.as[ZonedDateTime] must beAFailedTry(equalTo(NotADateTime(json)))
+    }
+
+  }
+
+  "Decoder[Uri]" should {
+
+    "decode uris" >> {
+      val json = Json.Text("https://example.com?page=2")
+
+      val expected = new URL("https://example.com?page=2")
+
+      json.as[URL] must beSuccessfulTry(expected)
+    }
+
+    "return NotFound on null" >> {
+      val json = Json.Null
+
+      json.as[URL] must beAFailedTry(equalTo(NotFound))
+    }
+
+    "return NotAUrl for texts not containing uris" >> {
+      val json = Json.Text("miau")
+
+      json.as[URL] must beAFailedTry(equalTo(NotAUrl(json)))
+    }
+
+    "return NotAUrl for everything else" >> {
+      val json = Json.True
+
+      json.as[URL] must beAFailedTry(equalTo(NotAUrl(json)))
     }
 
   }
