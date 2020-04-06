@@ -46,7 +46,7 @@ final case class Repository(
 ) {
 
   /** Returns the license extracted from github in the format that SBT is expecting */
-  def licenses: List[(String, URL)] = List(license.id -> sbt.url(license.url))
+  def licenses: List[(String, URL)] = List(license.id -> license.url)
 
   /**
    * Returns the list of users who have contributed to a repository order by the number

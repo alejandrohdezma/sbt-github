@@ -59,7 +59,7 @@ class RepositorySpec extends Specification {
       val expected = Repository(
         "user/repo",
         "The description",
-        License("id", "http://example.com"),
+        License("id", sbt.url("http://example.com")),
         "http://example.com/repository",
         2011,
         "http://api.github.com/repos/example/example/contributors",
@@ -97,7 +97,7 @@ class RepositorySpec extends Specification {
       val expected = Repository(
         "user/repo",
         "The description",
-        License("id", "http://example.com"),
+        License("id", sbt.url("http://example.com")),
         "http://example.com/repository",
         2011,
         "http://api.github.com/repos/example/example/contributors",
@@ -295,8 +295,17 @@ class RepositorySpec extends Specification {
         ]
         """)
     } { uri =>
-      val repository =
-        Repository("", "", License("", ""), "", 0, s"${uri}contributors", "", None, "")
+      val repository = Repository(
+        "",
+        "",
+        License("", sbt.url("http://example.com")),
+        "",
+        0,
+        s"${uri}contributors",
+        "",
+        None,
+        ""
+      )
 
       val contributors = repository.contributors(Nil)
 
@@ -327,8 +336,17 @@ class RepositorySpec extends Specification {
         ]
         """)
     } { uri =>
-      val repository =
-        Repository("", "", License("", ""), "", 0, s"${uri}contributors", "", None, "")
+      val repository = Repository(
+        "",
+        "",
+        License("", sbt.url("http://example.com")),
+        "",
+        0,
+        s"${uri}contributors",
+        "",
+        None,
+        ""
+      )
 
       val contributors = repository.contributors(List("you"))
 
@@ -353,8 +371,17 @@ class RepositorySpec extends Specification {
         ]
         """)
     } { uri =>
-      val repository =
-        Repository("", "", License("", ""), "", 0, s"${uri}contributors", "", None, "")
+      val repository = Repository(
+        "",
+        "",
+        License("", sbt.url("http://example.com")),
+        "",
+        0,
+        s"${uri}contributors",
+        "",
+        None,
+        ""
+      )
 
       val contributors = repository.contributors(List(""".*\[bot\]"""))
 
@@ -366,8 +393,17 @@ class RepositorySpec extends Specification {
     "return generic error on any error" >> withServer {
       case GET -> Root / "contributors" => Ok("""{"hello": "hi"}""")
     } { uri =>
-      val repository =
-        Repository("", "", License("", ""), "", 0, s"${uri}contributors", "", None, "")
+      val repository = Repository(
+        "",
+        "",
+        License("", sbt.url("http://example.com")),
+        "",
+        0,
+        s"${uri}contributors",
+        "",
+        None,
+        ""
+      )
 
       val contributors = repository.contributors(Nil)
 
@@ -420,8 +456,17 @@ class RepositorySpec extends Specification {
           }
         ]""")
     } { uri =>
-      val repository =
-        Repository("", "", License("", ""), "", 0, "", s"${uri}collaborators", None, "")
+      val repository = Repository(
+        "",
+        "",
+        License("", sbt.url("http://example.com")),
+        "",
+        0,
+        "",
+        s"${uri}collaborators",
+        None,
+        ""
+      )
 
       val collaborators = repository.collaborators(List("me", "you", "him"))
 
@@ -473,8 +518,17 @@ class RepositorySpec extends Specification {
           }
         ]""")
     } { uri =>
-      val repository =
-        Repository("", "", License("", ""), "", 0, "", s"${uri}collaborators", None, "")
+      val repository = Repository(
+        "",
+        "",
+        License("", sbt.url("http://example.com")),
+        "",
+        0,
+        "",
+        s"${uri}collaborators",
+        None,
+        ""
+      )
 
       val collaborators = repository.collaborators(List("me"))
 
@@ -495,8 +549,17 @@ class RepositorySpec extends Specification {
     "return generic error on any error" >> withServer {
       case GET -> Root / "collaborators" => Ok("""{"hello": "hi"}""")
     } { uri =>
-      val repository =
-        Repository("", "", License("", ""), "", 0, "", s"${uri}collaborators", None, "")
+      val repository = Repository(
+        "",
+        "",
+        License("", sbt.url("http://example.com")),
+        "",
+        0,
+        "",
+        s"${uri}collaborators",
+        None,
+        ""
+      )
 
       val collaborators = repository.collaborators(Nil)
 
@@ -517,8 +580,17 @@ class RepositorySpec extends Specification {
           "email": "org@example.com"
         }""")
     } { uri =>
-      val repository =
-        Repository("", "", License("", ""), "", 0, "", "", Some(s"${uri}organization"), "")
+      val repository = Repository(
+        "",
+        "",
+        License("", sbt.url("http://example.com")),
+        "",
+        0,
+        "",
+        "",
+        Some(s"${uri}organization"),
+        ""
+      )
 
       val organization = repository.organization
 
@@ -536,8 +608,17 @@ class RepositorySpec extends Specification {
       case GET -> Root / "organization" =>
         Ok(s"""{ "name": "My Organization", "email": "org@example.com" }""")
     } { uri =>
-      val repository =
-        Repository("", "", License("", ""), "", 0, "", "", Some(s"${uri}organization"), "")
+      val repository = Repository(
+        "",
+        "",
+        License("", sbt.url("http://example.com")),
+        "",
+        0,
+        "",
+        "",
+        Some(s"${uri}organization"),
+        ""
+      )
 
       val organization = repository.organization
 
@@ -550,8 +631,17 @@ class RepositorySpec extends Specification {
       case GET -> Root / "organization" =>
         Ok(s"""{ "blog": "http://example.com", "email": "org@example.com" }""")
     } { uri =>
-      val repository =
-        Repository("", "", License("", ""), "", 0, "", "", Some(s"${uri}organization"), "")
+      val repository = Repository(
+        "",
+        "",
+        License("", sbt.url("http://example.com")),
+        "",
+        0,
+        "",
+        "",
+        Some(s"${uri}organization"),
+        ""
+      )
 
       val organization = repository.organization
 
@@ -565,8 +655,17 @@ class RepositorySpec extends Specification {
       case GET -> Root / "organization" =>
         Ok(s"""{ "blog": "http://example.com", "name": "My Organization" }""")
     } { uri =>
-      val repository =
-        Repository("", "", License("", ""), "", 0, "", "", Some(s"${uri}organization"), "")
+      val repository = Repository(
+        "",
+        "",
+        License("", sbt.url("http://example.com")),
+        "",
+        0,
+        "",
+        "",
+        Some(s"${uri}organization"),
+        ""
+      )
 
       val organization = repository.organization
 
@@ -579,8 +678,17 @@ class RepositorySpec extends Specification {
     "return generic error on any error" >> withServer {
       case GET -> Root / "organization" => NotFound()
     } { uri =>
-      val repository =
-        Repository("", "", License("", ""), "", 0, "", "", Some(s"${uri}organization"), "")
+      val repository = Repository(
+        "",
+        "",
+        License("", sbt.url("http://example.com")),
+        "",
+        0,
+        "",
+        "",
+        Some(s"${uri}organization"),
+        ""
+      )
 
       val organization = repository.organization
 
@@ -603,8 +711,17 @@ class RepositorySpec extends Specification {
           "avatar_url": "http://example.com/owner.png"
         }""")
     } { uri =>
-      val repository =
-        Repository("", "", License("", ""), "", 0, "", "", None, s"${uri}owner")
+      val repository = Repository(
+        "",
+        "",
+        License("", sbt.url("http://example.com")),
+        "",
+        0,
+        "",
+        "",
+        None,
+        s"${uri}owner"
+      )
 
       val owner = repository.owner
 
@@ -627,8 +744,17 @@ class RepositorySpec extends Specification {
           "email": "owner@example.com"
         }""")
     } { uri =>
-      val repository =
-        Repository("", "", License("", ""), "", 0, "", "", None, s"${uri}owner")
+      val repository = Repository(
+        "",
+        "",
+        License("", sbt.url("http://example.com")),
+        "",
+        0,
+        "",
+        "",
+        None,
+        s"${uri}owner"
+      )
 
       val owner = repository.owner
 
@@ -646,8 +772,17 @@ class RepositorySpec extends Specification {
           "name": "Owner"
         }""")
     } { uri =>
-      val repository =
-        Repository("", "", License("", ""), "", 0, "", "", None, s"${uri}owner")
+      val repository = Repository(
+        "",
+        "",
+        License("", sbt.url("http://example.com")),
+        "",
+        0,
+        "",
+        "",
+        None,
+        s"${uri}owner"
+      )
 
       val owner = repository.owner
 
@@ -665,8 +800,17 @@ class RepositorySpec extends Specification {
           "email": "owner@example.com"
         }""")
     } { uri =>
-      val repository =
-        Repository("", "", License("", ""), "", 0, "", "", None, s"${uri}owner")
+      val repository = Repository(
+        "",
+        "",
+        License("", sbt.url("http://example.com")),
+        "",
+        0,
+        "",
+        "",
+        None,
+        s"${uri}owner"
+      )
 
       val owner = repository.owner
 
@@ -684,8 +828,17 @@ class RepositorySpec extends Specification {
     "return generic error on any error" >> withServer {
       case GET -> Root / "owner" => NotFound()
     } { uri =>
-      val repository =
-        Repository("", "", License("", ""), "", 0, "", "", None, s"${uri}owner")
+      val repository = Repository(
+        "",
+        "",
+        License("", sbt.url("http://example.com")),
+        "",
+        0,
+        "",
+        "",
+        None,
+        s"${uri}owner"
+      )
 
       val owner = repository.owner
 
