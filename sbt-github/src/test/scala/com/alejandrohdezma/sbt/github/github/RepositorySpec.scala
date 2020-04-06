@@ -386,36 +386,36 @@ class RepositorySpec extends Specification {
       case GET -> Root / "me"  => Ok("""{
         "name": "Me",
         "login": "me",
-        "html_url": "example.com/me",
+        "html_url": "http://example.com/me",
         "email": "me@example.com"
       }""")
       case GET -> Root / "you" => Ok("""{
         "login": "you",
-        "html_url": "example.com/you",
-        "avatar_url": "example.com/you.png"
+        "html_url": "http://example.com/you",
+        "avatar_url": "http://example.com/you.png"
       }""")
       case GET -> Root / "him" => Ok("""{
         "name": "Him",
         "login": "him",
-        "html_url": "example.com/him"
+        "html_url": "http://example.com/him"
       }""")
       case req @ GET -> Root / "collaborators" =>
         Ok(s"""[
           {
             "login": "me",
-            "avatar_url": "example.com/me.png",
-            "html_url": "example.com/me",
+            "avatar_url": "http://example.com/me.png",
+            "html_url": "http://example.com/me",
             "url": "${req.urlTo("me")}"
           },
           {
             "login": "you",
-            "html_url": "example.com/you",
+            "html_url": "http://example.com/you",
             "url": "${req.urlTo("you")}"
           },
           {
             "login": "him",
             "avatar_url": null,
-            "html_url": "example.com/him",
+            "html_url": "http://example.com/him",
             "url": "${req.urlTo("him")}"
           }
         ]""")
@@ -427,15 +427,29 @@ class RepositorySpec extends Specification {
 
       val expected = Collaborators(
         List(
-          Collaborator("you", "example.com/you", Some(s"${uri}you"), None, None, None),
-          Collaborator("him", "example.com/him", Some(s"${uri}him"), Some("Him"), None, None),
+          Collaborator(
+            "you",
+            sbt.url("http://example.com/you"),
+            Some(sbt.url(s"${uri}you")),
+            None,
+            None,
+            None
+          ),
+          Collaborator(
+            "him",
+            sbt.url("http://example.com/him"),
+            Some(sbt.url(s"${uri}him")),
+            Some("Him"),
+            None,
+            None
+          ),
           Collaborator(
             "me",
-            "example.com/me",
-            Some(s"${uri}me"),
+            sbt.url("http://example.com/me"),
+            Some(sbt.url(s"${uri}me")),
             Some("Me"),
             Some("me@example.com"),
-            Some("example.com/me.png")
+            Some(sbt.url("http://example.com/me.png"))
           )
         )
       )
@@ -445,19 +459,19 @@ class RepositorySpec extends Specification {
 
     "exclude collaborators not in provided list and don't retrieve user info for them" >> withServer {
       case GET -> Root / "me" =>
-        Ok("""{"login": "me", "html_url": "example.com/me", "name": "Me"}""")
+        Ok("""{"login": "me", "html_url": "http://example.com/me", "name": "Me"}""")
       case req @ GET -> Root / "collaborators" =>
         Ok(s"""[
           {
             "login": "me",
-            "avatar_url": "example.com/me.png",
-            "html_url": "example.com/me",
+            "avatar_url": "http://example.com/me.png",
+            "html_url": "http://example.com/me",
             "url": "${req.urlTo("me")}"
           },
           {
             "login": "you",
-            "html_url": "example.com/you",
-            "url": "api.example.com/you"
+            "html_url": "http://example.com/you",
+            "url": "http://api.example.com/you"
           }
         ]""")
     } { uri =>
@@ -470,11 +484,11 @@ class RepositorySpec extends Specification {
         List(
           new Collaborator(
             "me",
-            "example.com/me",
-            Some(s"${uri}me"),
+            sbt.url("http://example.com/me"),
+            Some(sbt.url(s"${uri}me")),
             Some("Me"),
             None,
-            Some("example.com/me.png")
+            Some(sbt.url("http://example.com/me.png"))
           )
         )
       )
@@ -581,10 +595,10 @@ class RepositorySpec extends Specification {
       case GET -> Root / "owner" =>
         Ok(s"""{
           "login": "owner",
-          "html_url": "example.com/owner",
+          "html_url": "http://example.com/owner",
           "name": "Owner",
           "email": "owner@example.com",
-          "avatar_url": "example.com/owner.png"
+          "avatar_url": "http://example.com/owner.png"
         }""")
     } { uri =>
       val repository =
@@ -594,10 +608,10 @@ class RepositorySpec extends Specification {
 
       val expected = User(
         "owner",
-        "example.com/owner",
+        "http://example.com/owner",
         Some("Owner"),
         Some("owner@example.com"),
-        Some("example.com/owner.png")
+        Some("http://example.com/owner.png")
       )
 
       owner must beSuccessfulTry(expected)
@@ -607,7 +621,7 @@ class RepositorySpec extends Specification {
       case GET -> Root / "owner" =>
         Ok(s"""{
           "login": "owner",
-          "html_url": "example.com/owner",
+          "html_url": "http://example.com/owner",
           "email": "owner@example.com"
         }""")
     } { uri =>
@@ -616,7 +630,8 @@ class RepositorySpec extends Specification {
 
       val owner = repository.owner
 
-      val expected = User("owner", "example.com/owner", None, Some("owner@example.com"), None)
+      val expected =
+        User("owner", "http://example.com/owner", None, Some("owner@example.com"), None)
 
       owner must beSuccessfulTry(expected)
     }
@@ -625,7 +640,7 @@ class RepositorySpec extends Specification {
       case GET -> Root / "owner" =>
         Ok(s"""{
           "login": "owner",
-          "html_url": "example.com/owner",
+          "html_url": "http://example.com/owner",
           "name": "Owner"
         }""")
     } { uri =>
@@ -634,7 +649,7 @@ class RepositorySpec extends Specification {
 
       val owner = repository.owner
 
-      val expected = User("owner", "example.com/owner", Some("Owner"), None, None)
+      val expected = User("owner", "http://example.com/owner", Some("Owner"), None, None)
 
       owner must beSuccessfulTry(expected)
     }
@@ -643,7 +658,7 @@ class RepositorySpec extends Specification {
       case GET -> Root / "owner" =>
         Ok(s"""{
           "login": "owner",
-          "html_url": "example.com/owner",
+          "html_url": "http://example.com/owner",
           "name": "Owner",
           "email": "owner@example.com"
         }""")
@@ -654,7 +669,7 @@ class RepositorySpec extends Specification {
       val owner = repository.owner
 
       val expected =
-        User("owner", "example.com/owner", Some("Owner"), Some("owner@example.com"), None)
+        User("owner", "http://example.com/owner", Some("Owner"), Some("owner@example.com"), None)
 
       owner must beSuccessfulTry(expected)
     }

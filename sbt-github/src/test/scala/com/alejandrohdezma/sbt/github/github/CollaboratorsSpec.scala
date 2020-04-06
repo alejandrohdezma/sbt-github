@@ -24,21 +24,22 @@ class CollaboratorsSpec extends Specification {
 
   "Collaborators.include" should {
 
-    "return list of collaborators including new ones" >> {
+    "return list of collaborators including ones" >> {
       val collaborators = Collaborators(
         List(
-          new Collaborator("me", "example.com/me", None, Some("Me"), None, None),
-          new Collaborator("you", "example.com/you", None, Some("You"), None, None)
+          Collaborator("me", sbt.url("http://example.com/me"), None, Some("Me"), None, None),
+          Collaborator("you", sbt.url("http://example.com/you"), None, Some("You"), None, None)
         )
       )
 
-      val extra = List(new Collaborator("him", "example.com/him", None, Some("Him"), None, None))
+      val extra =
+        List(Collaborator("him", sbt.url("http://example.com/him"), None, Some("Him"), None, None))
 
       val expected = Collaborators(
         List(
-          new Collaborator("him", "example.com/him", None, Some("Him"), None, None),
-          new Collaborator("me", "example.com/me", None, Some("Me"), None, None),
-          new Collaborator("you", "example.com/you", None, Some("You"), None, None)
+          Collaborator("him", sbt.url("http://example.com/him"), None, Some("Him"), None, None),
+          Collaborator("me", sbt.url("http://example.com/me"), None, Some("Me"), None, None),
+          Collaborator("you", sbt.url("http://example.com/you"), None, Some("You"), None, None)
         )
       )
 
@@ -48,17 +49,18 @@ class CollaboratorsSpec extends Specification {
     "remove duplicates" >> {
       val collaborators = Collaborators(
         List(
-          new Collaborator("me", "example.com/me", None, Some("Me"), None, None),
-          new Collaborator("you", "example.com/you", None, Some("You"), None, None)
+          Collaborator("me", sbt.url("http://example.com/me"), None, Some("Me"), None, None),
+          Collaborator("you", sbt.url("http://example.com/you"), None, Some("You"), None, None)
         )
       )
 
-      val extra = List(new Collaborator("me", "example.com/meme", None, Some("MeMe"), None, None))
+      val extra =
+        List(Collaborator("me", sbt.url("http://example.com/meme"), None, Some("MeMe"), None, None))
 
       val expected = Collaborators(
         List(
-          new Collaborator("me", "example.com/me", None, Some("Me"), None, None),
-          new Collaborator("you", "example.com/you", None, Some("You"), None, None)
+          Collaborator("me", sbt.url("http://example.com/me"), None, Some("Me"), None, None),
+          Collaborator("you", sbt.url("http://example.com/you"), None, Some("You"), None, None)
         )
       )
 
@@ -72,36 +74,43 @@ class CollaboratorsSpec extends Specification {
     "return collaborator list as markdown" >> {
       val collaborators = Collaborators(
         List(
-          new Collaborator(
+          Collaborator(
             "her",
-            "example.com/her",
+            sbt.url("http://example.com/her"),
             None,
             Some("Her"),
             None,
-            Some("example.com/her.png")
+            Some(sbt.url("http://example.com/her.png"))
           ),
-          new Collaborator("him", "example.com/him", None, Some("Him"), None, None),
-          new Collaborator(
+          Collaborator("him", sbt.url("http://example.com/him"), None, Some("Him"), None, None),
+          Collaborator(
             "it",
-            "example.com/it",
+            sbt.url("http://example.com/it"),
             None,
             Some("It"),
             Some("it@example.com"),
-            Some("example.com/it.png")
+            Some(sbt.url("http://example.com/it.png"))
           ),
-          new Collaborator("me", "example.com/me", None, Some("Me"), Some("me@example.com"), None),
-          new Collaborator("you", "example.com/you", None, Some(""), None, None)
+          Collaborator(
+            "me",
+            sbt.url("http://example.com/me"),
+            None,
+            Some("Me"),
+            Some("me@example.com"),
+            None
+          ),
+          Collaborator("you", sbt.url("http://example.com/you"), None, Some(""), None, None)
         )
       )
 
       val markdown = collaborators.markdown
 
       val expected =
-        """- [![her](example.com/her.png&s=20) **Her (her)**](example.com/her)
-          |- [**Him (him)**](example.com/him)
-          |- [![it](example.com/it.png&s=20) **It (it)**](example.com/it)
-          |- [**Me (me)**](example.com/me)
-          |- [**you**](example.com/you)""".stripMargin
+        """- [![her](http://example.com/her.png&s=20) **Her (her)**](http://example.com/her)
+          |- [**Him (him)**](http://example.com/him)
+          |- [![it](http://example.com/it.png&s=20) **It (it)**](http://example.com/it)
+          |- [**Me (me)**](http://example.com/me)
+          |- [**you**](http://example.com/you)""".stripMargin
 
       markdown must be equalTo expected
     }
@@ -113,11 +122,18 @@ class CollaboratorsSpec extends Specification {
     "return collaborators as list of developers" >> {
       val collaborators = Collaborators(
         List(
-          new Collaborator("her", "http://example.com/her", None, Some("Her"), None, None),
-          new Collaborator("him", "http://example.com/him", None, Some("Him"), None, None),
-          new Collaborator("it", "http://example.com/it", None, None, Some("it@example.com"), None),
-          new Collaborator("me", "http://example.com/me", None, Some("Me"), None, None),
-          new Collaborator("you", "http://example.com/you", None, Some(""), None, None)
+          Collaborator("her", sbt.url("http://example.com/her"), None, Some("Her"), None, None),
+          Collaborator("him", sbt.url("http://example.com/him"), None, Some("Him"), None, None),
+          Collaborator(
+            "it",
+            sbt.url("http://example.com/it"),
+            None,
+            None,
+            Some("it@example.com"),
+            None
+          ),
+          Collaborator("me", sbt.url("http://example.com/me"), None, Some("Me"), None, None),
+          Collaborator("you", sbt.url("http://example.com/you"), None, Some(""), None, None)
         )
       )
 

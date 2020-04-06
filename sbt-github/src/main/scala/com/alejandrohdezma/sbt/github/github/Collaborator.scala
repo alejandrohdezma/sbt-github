@@ -18,6 +18,7 @@ package com.alejandrohdezma.sbt.github.github
 
 import scala.util.Try
 
+import sbt.URL
 import sbt.util.Logger
 
 import com.alejandrohdezma.sbt.github.github.urls.{GithubEntryPoint, UserEntryPoint}
@@ -28,11 +29,11 @@ import com.alejandrohdezma.sbt.github.syntax.json._
 /** Represents a repository collaborator */
 final case class Collaborator private[github] (
     login: String,
-    url: String,
-    userUrl: Option[String],
+    url: URL,
+    userUrl: Option[URL],
     name: Option[String],
     email: Option[String],
-    avatar: Option[String]
+    avatar: Option[URL]
 )
 
 object Collaborator {
@@ -48,7 +49,14 @@ object Collaborator {
         _    <- Try(log.info(s"Retrieving `$id` information from Github API"))
         url  <- UserEntryPoint.get(id)
         user <- client.get[User](url)
-      } yield Collaborator(user.login, user.url, None, user.name, user.email, user.avatar)
+      } yield Collaborator(
+        user.login,
+        sbt.url(user.url),
+        None,
+        user.name,
+        user.email,
+        user.avatar.map(sbt.url)
+      )
   }
 
   /**
@@ -59,7 +67,7 @@ object Collaborator {
    * @param url the collaborator's URL. It may link to its Github profile or personal webpage.
    * @return a new collaborator
    */
-  def apply(login: String, name: String, url: String): Collaborator.Creator =
+  def apply(login: String, name: String, url: URL): Collaborator.Creator =
     _ => _ => _ => Try(new Collaborator(login, url, None, Some(name), None, None))
 
   /**
@@ -71,7 +79,7 @@ object Collaborator {
    * @param email the collaborator's email
    * @return a new collaborator
    */
-  def apply(login: String, name: String, url: String, email: String): Collaborator.Creator =
+  def apply(login: String, name: String, url: URL, email: String): Collaborator.Creator =
     _ => _ => _ => Try(new Collaborator(login, url, None, Some(name), Some(email), None))
 
   /**
@@ -87,18 +95,18 @@ object Collaborator {
   def apply(
       login: String,
       name: String,
-      url: String,
+      url: URL,
       email: Option[String],
-      avatar: Option[String]
+      avatar: Option[URL]
   ): Collaborator.Creator =
     _ => _ => _ => Try(new Collaborator(login, url, None, Some(name), email, avatar))
 
   implicit val CollaboratorDecoder: Decoder[Collaborator] = json =>
     for {
       login   <- json.get[String]("login")
-      url     <- json.get[String]("html_url")
-      userUrl <- json.get[String]("url")
-      avatar  <- json.get[Option[String]]("avatar_url")
-    } yield Collaborator(login, url, Some(userUrl), None, None, avatar.filter(_.nonEmpty))
+      url     <- json.get[URL]("html_url")
+      userUrl <- json.get[URL]("url")
+      avatar  <- json.get[Option[URL]]("avatar_url")
+    } yield Collaborator(login, url, Some(userUrl), None, None, avatar)
 
 }

@@ -35,7 +35,7 @@ final case class Collaborators(list: List[Collaborator]) {
   lazy val developers: List[Developer] = list.map { collaborator =>
     import collaborator._
 
-    Developer(login, name.getOrElse(login), email.getOrElse(""), sbt.url(url))
+    Developer(login, name.getOrElse(login), email.getOrElse(""), url)
   }
 
   /** Returns this list of collaborators in markdown format */
@@ -45,14 +45,13 @@ final case class Collaborators(list: List[Collaborator]) {
 
       val image = avatar.map(avatarUrl => s"![$login]($avatarUrl&s=20) ").getOrElse("")
 
-      val definitiveName = name.filter(_.nonEmpty).getOrElse(login)
-
-      val prettyName =
-        if (definitiveName.contentEquals(login)) login else s"$definitiveName ($login)"
-
-      Option(url)
+      val definitiveName = name
         .filter(_.nonEmpty)
-        .fold(s"""- $image**$prettyName**""")(u => s"""- [$image**$prettyName**]($u)""")
+        .filter(!_.contentEquals(login))
+        .map(_ + s" ($login)")
+        .getOrElse(login)
+
+      s"""- [$image**$definitiveName**]($url)"""
     }.mkString("\n")
 
 }
