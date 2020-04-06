@@ -41,15 +41,11 @@ object Collaborator {
   @SuppressWarnings(Array("scalafix:Disable.get"))
   def github(id: String): Authentication => GithubEntryPoint => Logger => Collaborator = {
     implicit auth => implicit entrypoint => implicit log =>
-      val userUrl = implicitly[UserEntryPoint].get(id)
-
       log.info(s"Retrieving `$id` information from Github API")
 
       client
-        .get[User](userUrl)
-        .map(user =>
-          new Collaborator(user.login, user.url, Some(userUrl), user.name, user.email, user.avatar)
-        )
+        .get[User](implicitly[UserEntryPoint].get(id))
+        .map(user => Collaborator(user.login, user.url, None, user.name, user.email, user.avatar))
         .get
   }
 
