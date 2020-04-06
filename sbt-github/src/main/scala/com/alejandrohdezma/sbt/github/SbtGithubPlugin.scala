@@ -18,6 +18,8 @@ package com.alejandrohdezma.sbt.github
 
 import java.time.Year
 
+import scala.util.Try
+
 import sbt.Def.Setting
 import sbt.Keys._
 import sbt._
@@ -26,6 +28,7 @@ import sbt.plugins.JvmPlugin
 import com.alejandrohdezma.sbt.github.github.urls.GithubEntryPoint
 import com.alejandrohdezma.sbt.github.github.{Organization, Repository}
 import com.alejandrohdezma.sbt.github.http.Authentication
+import com.alejandrohdezma.sbt.github.syntax.list._
 
 /**
  * This plugin automatically enables reloading on sbt source changes and
@@ -75,7 +78,7 @@ object SbtGithubPlugin extends AutoPlugin {
     }
 
     val extraCollaborators =
-      settingKey[List[Authentication => GithubEntryPoint => Logger => Collaborator]] {
+      settingKey[List[Authentication => GithubEntryPoint => Logger => Try[Collaborator]]] {
         "Extra collaborators that should be always included (independent of whether they are contributors or not)"
       }
 
@@ -157,7 +160,10 @@ object SbtGithubPlugin extends AutoPlugin {
       repository.value.fold(Collaborators(Nil)) {
         _.collaborators(contributors.value.list.map(_.login)).get
           .include(
-            extraCollaborators.value.map(_(auth)(GithubEntryPoint(githubApiEntryPoint.value))(log))
+            extraCollaborators.value
+              .map(_(auth)(GithubEntryPoint(githubApiEntryPoint.value))(log))
+              .traverse(identity)
+              .get
           )
       }
     },

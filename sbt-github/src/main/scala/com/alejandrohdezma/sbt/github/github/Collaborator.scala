@@ -40,16 +40,13 @@ object Collaborator {
   /**
    * Obtains a collaborator information from its Github login ID
    */
-  @SuppressWarnings(Array("scalafix:Disable.get"))
-  def github(id: String): Authentication => GithubEntryPoint => Logger => Collaborator = {
+  def github(id: String): Authentication => GithubEntryPoint => Logger => Try[Collaborator] = {
     implicit auth => implicit entrypoint => implicit log =>
-      {
-        for {
-          _    <- Try(log.info(s"Retrieving `$id` information from Github API"))
-          url  <- UserEntryPoint.get(id)
-          user <- client.get[User](url)
-        } yield Collaborator(user.login, user.url, None, user.name, user.email, user.avatar)
-      }.get
+      for {
+        _    <- Try(log.info(s"Retrieving `$id` information from Github API"))
+        url  <- UserEntryPoint.get(id)
+        user <- client.get[User](url)
+      } yield Collaborator(user.login, user.url, None, user.name, user.email, user.avatar)
   }
 
   /**
@@ -64,8 +61,8 @@ object Collaborator {
       login: String,
       name: String,
       url: String
-  ): Authentication => GithubEntryPoint => Logger => Collaborator = { _ => _ => _ =>
-    new Collaborator(login, url, None, Some(name), None, None)
+  ): Authentication => GithubEntryPoint => Logger => Try[Collaborator] = { _ => _ => _ =>
+    Try(new Collaborator(login, url, None, Some(name), None, None))
   }
 
   /**
@@ -82,8 +79,8 @@ object Collaborator {
       name: String,
       url: String,
       email: String
-  ): Authentication => GithubEntryPoint => Logger => Collaborator = { _ => _ => _ =>
-    new Collaborator(login, url, None, Some(name), Some(email), None)
+  ): Authentication => GithubEntryPoint => Logger => Try[Collaborator] = { _ => _ => _ =>
+    Try(new Collaborator(login, url, None, Some(name), Some(email), None))
   }
 
   /**
@@ -102,8 +99,8 @@ object Collaborator {
       url: String,
       email: Option[String],
       avatar: Option[String]
-  ): Authentication => GithubEntryPoint => Logger => Collaborator = { _ => _ => _ =>
-    new Collaborator(login, url, None, Some(name), email, avatar)
+  ): Authentication => GithubEntryPoint => Logger => Try[Collaborator] = { _ => _ => _ =>
+    Try(new Collaborator(login, url, None, Some(name), email, avatar))
   }
 
   implicit val CollaboratorDecoder: Decoder[Collaborator] = json =>
