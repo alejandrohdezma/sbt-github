@@ -49,14 +49,7 @@ object Collaborator {
         _    <- Try(log.info(s"Retrieving `$id` information from Github API"))
         url  <- UserEntryPoint.get(id)
         user <- client.get[User](url)
-      } yield Collaborator(
-        user.login,
-        sbt.url(user.url),
-        None,
-        user.name,
-        user.email,
-        user.avatar.map(sbt.url)
-      )
+      } yield Collaborator(user.login, user.url, None, user.name, user.email, user.avatar)
   }
 
   /**

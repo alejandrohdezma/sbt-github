@@ -610,10 +610,10 @@ class RepositorySpec extends Specification {
 
       val expected = User(
         "owner",
-        "http://example.com/owner",
+        sbt.url("http://example.com/owner"),
         Some("Owner"),
         Some("owner@example.com"),
-        Some("http://example.com/owner.png")
+        Some(sbt.url("http://example.com/owner.png"))
       )
 
       owner must beSuccessfulTry(expected)
@@ -633,7 +633,7 @@ class RepositorySpec extends Specification {
       val owner = repository.owner
 
       val expected =
-        User("owner", "http://example.com/owner", None, Some("owner@example.com"), None)
+        User("owner", sbt.url("http://example.com/owner"), None, Some("owner@example.com"), None)
 
       owner must beSuccessfulTry(expected)
     }
@@ -651,7 +651,7 @@ class RepositorySpec extends Specification {
 
       val owner = repository.owner
 
-      val expected = User("owner", "http://example.com/owner", Some("Owner"), None, None)
+      val expected = User("owner", sbt.url("http://example.com/owner"), Some("Owner"), None, None)
 
       owner must beSuccessfulTry(expected)
     }
@@ -670,8 +670,13 @@ class RepositorySpec extends Specification {
 
       val owner = repository.owner
 
-      val expected =
-        User("owner", "http://example.com/owner", Some("Owner"), Some("owner@example.com"), None)
+      val expected = User(
+        "owner",
+        sbt.url("http://example.com/owner"),
+        Some("Owner"),
+        Some("owner@example.com"),
+        None
+      )
 
       owner must beSuccessfulTry(expected)
     }
