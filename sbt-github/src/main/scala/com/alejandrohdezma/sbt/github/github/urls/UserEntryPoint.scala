@@ -16,6 +16,8 @@
 
 package com.alejandrohdezma.sbt.github.github.urls
 
+import scala.util.Try
+
 import sbt.util.Logger
 
 import com.alejandrohdezma.sbt.github.github.error.GithubError
@@ -26,18 +28,18 @@ import com.alejandrohdezma.sbt.github.syntax.scalatry._
 
 object UserEntryPoint {
 
-  @SuppressWarnings(Array("scalafix:Disable.get"))
+  /**
+   * Returns the entry point URL for a given user.
+   */
   def get(login: String)(
       implicit auth: Authentication,
       logger: Logger,
       entryPoint: GithubEntryPoint
-  ): String =
+  ): Try[String] =
     client
       .get[UserEntryPoint](entryPoint.value)
       .failAs(GithubError("Unable to connect to Github"))
-      .get
-      .value
-      .replace("{user}", login)
+      .map(_.value.replace("{user}", login))
 
   final private case class UserEntryPoint(value: String) extends AnyVal
 

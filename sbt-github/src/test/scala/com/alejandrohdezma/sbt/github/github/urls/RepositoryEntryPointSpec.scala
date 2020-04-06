@@ -38,7 +38,7 @@ class RepositoryEntryPointSpec extends Specification {
 
       val repoUrl = RepositoryEntryPoint.get("owner", "repo")
 
-      repoUrl must be equalTo "http://example.com/owner/repo"
+      repoUrl must beASuccessfulTry("http://example.com/owner/repo")
     }
 
   }

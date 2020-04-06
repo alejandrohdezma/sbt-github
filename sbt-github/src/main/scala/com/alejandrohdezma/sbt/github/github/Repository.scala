@@ -127,7 +127,7 @@ object Repository {
       implicit auth: Authentication,
       logger: Logger,
       url: GithubEntryPoint
-  ): Try[Repository] = {
+  ): Try[Repository] = RepositoryEntryPoint.get(owner, name).flatMap { uri =>
     logger.info(s"Retrieving `$owner/$name` information from Github API")
 
     val descriptionNotFound =
@@ -140,7 +140,7 @@ object Repository {
       s"Repository's license url couldn't be inferred! Go to https://github.com/$owner/$name and check it"
 
     client
-      .get[Repository](RepositoryEntryPoint.get(owner, name))
+      .get[Repository](uri)
       .failMap {
         case "description" / NotFound           => GithubError(descriptionNotFound)
         case "license" / NotFound               => GithubError(licenseNotFound)

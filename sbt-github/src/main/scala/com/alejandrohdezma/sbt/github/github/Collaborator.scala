@@ -16,6 +16,8 @@
 
 package com.alejandrohdezma.sbt.github.github
 
+import scala.util.Try
+
 import sbt.util.Logger
 
 import com.alejandrohdezma.sbt.github.github.urls.{GithubEntryPoint, UserEntryPoint}
@@ -41,12 +43,13 @@ object Collaborator {
   @SuppressWarnings(Array("scalafix:Disable.get"))
   def github(id: String): Authentication => GithubEntryPoint => Logger => Collaborator = {
     implicit auth => implicit entrypoint => implicit log =>
-      log.info(s"Retrieving `$id` information from Github API")
-
-      client
-        .get[User](UserEntryPoint.get(id))
-        .map(user => Collaborator(user.login, user.url, None, user.name, user.email, user.avatar))
-        .get
+      {
+        for {
+          _    <- Try(log.info(s"Retrieving `$id` information from Github API"))
+          url  <- UserEntryPoint.get(id)
+          user <- client.get[User](url)
+        } yield Collaborator(user.login, user.url, None, user.name, user.email, user.avatar)
+      }.get
   }
 
   /**

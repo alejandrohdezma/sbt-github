@@ -16,6 +16,8 @@
 
 package com.alejandrohdezma.sbt.github.github.urls
 
+import scala.util.Try
+
 import sbt.util.Logger
 
 import com.alejandrohdezma.sbt.github.github.error.GithubError
@@ -26,19 +28,18 @@ import com.alejandrohdezma.sbt.github.syntax.scalatry._
 
 object RepositoryEntryPoint {
 
-  @SuppressWarnings(Array("scalafix:Disable.get"))
+  /**
+   * Returns the entry point URL for a given owner/repository.
+   */
   def get(owner: String, repo: String)(
       implicit auth: Authentication,
       logger: Logger,
       entryPoint: GithubEntryPoint
-  ): String =
+  ): Try[String] =
     client
       .get[RepositoryEntryPoint](entryPoint.value)
       .failAs(GithubError("Unable to connect to Github"))
-      .get
-      .value
-      .replace("{owner}", owner)
-      .replace("{repo}", repo)
+      .map(_.value.replace("{owner}", owner).replace("{repo}", repo))
 
   final private case class RepositoryEntryPoint(value: String) extends AnyVal
 
