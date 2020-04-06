@@ -28,7 +28,7 @@ final case class User(
 ) {
 
   /** Returns this user as a Github organization */
-  def asOrganization: Organization = Organization(name, Some(url), email)
+  def asOrganization: Organization = Organization(name, Some(sbt.url(url)), email)
 
 }
 

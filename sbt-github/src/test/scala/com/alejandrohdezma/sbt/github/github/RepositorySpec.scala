@@ -523,7 +523,11 @@ class RepositorySpec extends Specification {
       val organization = repository.organization
 
       val expected =
-        Organization(Some("My Organization"), Some("http://example.com"), Some("org@example.com"))
+        Organization(
+          Some("My Organization"),
+          Some(sbt.url("http://example.com")),
+          Some("org@example.com")
+        )
 
       organization must be some successfulTry(expected)
     }
@@ -551,7 +555,8 @@ class RepositorySpec extends Specification {
 
       val organization = repository.organization
 
-      val expected = Organization(None, Some("http://example.com"), Some("org@example.com"))
+      val expected =
+        Organization(None, Some(sbt.url("http://example.com")), Some("org@example.com"))
 
       organization must be some successfulTry(expected)
     }
@@ -565,7 +570,8 @@ class RepositorySpec extends Specification {
 
       val organization = repository.organization
 
-      val expected = Organization(Some("My Organization"), Some("http://example.com"), None)
+      val expected =
+        Organization(Some("My Organization"), Some(sbt.url("http://example.com")), None)
 
       organization must be some successfulTry(expected)
     }

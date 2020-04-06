@@ -179,10 +179,8 @@ object SbtGithubPlugin extends AutoPlugin {
     organizationName := organizationMetadata.value
       .flatMap(_.name)
       .getOrElse(organizationName.value),
-    organizationHomepage := organizationMetadata.value
-      .flatMap(_.url.map(sbt.url))
-      .orElse(organizationHomepage.value),
-    organizationEmail := organizationMetadata.value.flatMap(_.email)
+    organizationHomepage := organizationMetadata.value.fold(organizationHomepage.value)(_.url),
+    organizationEmail    := organizationMetadata.value.flatMap(_.email)
   )
 
   /** Gets the Github user and repository from the git remote info */
