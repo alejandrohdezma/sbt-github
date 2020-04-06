@@ -84,9 +84,11 @@ final case class Repository(
       .flatMap(_.traverse { collaborator =>
         logger.info(s"Retrieving `${collaborator.login}` information from Github API")
 
-        client.get[User](collaborator.userUrl).map { user =>
-          collaborator.copy(name = user.name, email = user.email)
-        }
+        collaborator.userUrl.map {
+          client.get[User](_).map { user =>
+            collaborator.copy(name = user.name, email = user.email)
+          }
+        }.getOrElse(Try(collaborator))
       })
       .map(_.sortBy(collaborator => collaborator.name -> collaborator.login))
       .map(Collaborators)

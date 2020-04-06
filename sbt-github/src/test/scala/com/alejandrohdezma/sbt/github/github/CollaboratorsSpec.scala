@@ -27,18 +27,18 @@ class CollaboratorsSpec extends Specification {
     "return list of collaborators including new ones" >> {
       val collaborators = Collaborators(
         List(
-          new Collaborator("me", "example.com/me", "", Some("Me"), None, None),
-          new Collaborator("you", "example.com/you", "", Some("You"), None, None)
+          new Collaborator("me", "example.com/me", None, Some("Me"), None, None),
+          new Collaborator("you", "example.com/you", None, Some("You"), None, None)
         )
       )
 
-      val extra = List(new Collaborator("him", "example.com/him", "", Some("Him"), None, None))
+      val extra = List(new Collaborator("him", "example.com/him", None, Some("Him"), None, None))
 
       val expected = Collaborators(
         List(
-          new Collaborator("him", "example.com/him", "", Some("Him"), None, None),
-          new Collaborator("me", "example.com/me", "", Some("Me"), None, None),
-          new Collaborator("you", "example.com/you", "", Some("You"), None, None)
+          new Collaborator("him", "example.com/him", None, Some("Him"), None, None),
+          new Collaborator("me", "example.com/me", None, Some("Me"), None, None),
+          new Collaborator("you", "example.com/you", None, Some("You"), None, None)
         )
       )
 
@@ -48,17 +48,17 @@ class CollaboratorsSpec extends Specification {
     "remove duplicates" >> {
       val collaborators = Collaborators(
         List(
-          new Collaborator("me", "example.com/me", "", Some("Me"), None, None),
-          new Collaborator("you", "example.com/you", "", Some("You"), None, None)
+          new Collaborator("me", "example.com/me", None, Some("Me"), None, None),
+          new Collaborator("you", "example.com/you", None, Some("You"), None, None)
         )
       )
 
-      val extra = List(new Collaborator("me", "example.com/meme", "", Some("MeMe"), None, None))
+      val extra = List(new Collaborator("me", "example.com/meme", None, Some("MeMe"), None, None))
 
       val expected = Collaborators(
         List(
-          new Collaborator("me", "example.com/me", "", Some("Me"), None, None),
-          new Collaborator("you", "example.com/you", "", Some("You"), None, None)
+          new Collaborator("me", "example.com/me", None, Some("Me"), None, None),
+          new Collaborator("you", "example.com/you", None, Some("You"), None, None)
         )
       )
 
@@ -75,22 +75,22 @@ class CollaboratorsSpec extends Specification {
           new Collaborator(
             "her",
             "example.com/her",
-            "",
+            None,
             Some("Her"),
             None,
             Some("example.com/her.png")
           ),
-          new Collaborator("him", "example.com/him", "", Some("Him"), None, None),
+          new Collaborator("him", "example.com/him", None, Some("Him"), None, None),
           new Collaborator(
             "it",
             "example.com/it",
-            "",
+            None,
             Some("It"),
             Some("it@example.com"),
             Some("example.com/it.png")
           ),
-          new Collaborator("me", "example.com/me", "", Some("Me"), Some("me@example.com"), None),
-          new Collaborator("you", "example.com/you", "", Some(""), None, None)
+          new Collaborator("me", "example.com/me", None, Some("Me"), Some("me@example.com"), None),
+          new Collaborator("you", "example.com/you", None, Some(""), None, None)
         )
       )
 
@@ -113,11 +113,11 @@ class CollaboratorsSpec extends Specification {
     "return collaborators as list of developers" >> {
       val collaborators = Collaborators(
         List(
-          new Collaborator("her", "http://example.com/her", "", Some("Her"), None, None),
-          new Collaborator("him", "http://example.com/him", "", Some("Him"), None, None),
-          new Collaborator("it", "http://example.com/it", "", None, Some("it@example.com"), None),
-          new Collaborator("me", "http://example.com/me", "", Some("Me"), None, None),
-          new Collaborator("you", "http://example.com/you", "", Some(""), None, None)
+          new Collaborator("her", "http://example.com/her", None, Some("Her"), None, None),
+          new Collaborator("him", "http://example.com/him", None, Some("Him"), None, None),
+          new Collaborator("it", "http://example.com/it", None, None, Some("it@example.com"), None),
+          new Collaborator("me", "http://example.com/me", None, Some("Me"), None, None),
+          new Collaborator("you", "http://example.com/you", None, Some(""), None, None)
         )
       )
 

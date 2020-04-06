@@ -27,7 +27,7 @@ import com.alejandrohdezma.sbt.github.syntax.json._
 final case class Collaborator private[github] (
     login: String,
     url: String,
-    userUrl: String,
+    userUrl: Option[String],
     name: Option[String],
     email: Option[String],
     avatar: Option[String]
@@ -48,7 +48,7 @@ object Collaborator {
       client
         .get[User](userUrl)
         .map(user =>
-          new Collaborator(user.login, user.url, userUrl, user.name, user.email, user.avatar)
+          new Collaborator(user.login, user.url, Some(userUrl), user.name, user.email, user.avatar)
         )
         .get
   }
@@ -66,7 +66,7 @@ object Collaborator {
       name: String,
       url: String
   ): Authentication => GithubEntryPoint => Logger => Collaborator = { _ => _ => _ =>
-    new Collaborator(login, url, "", Some(name), None, None)
+    new Collaborator(login, url, None, Some(name), None, None)
   }
 
   /**
@@ -84,7 +84,7 @@ object Collaborator {
       url: String,
       email: String
   ): Authentication => GithubEntryPoint => Logger => Collaborator = { _ => _ => _ =>
-    new Collaborator(login, url, "", Some(name), Some(email), None)
+    new Collaborator(login, url, None, Some(name), Some(email), None)
   }
 
   /**
@@ -104,7 +104,7 @@ object Collaborator {
       email: Option[String],
       avatar: Option[String]
   ): Authentication => GithubEntryPoint => Logger => Collaborator = { _ => _ => _ =>
-    new Collaborator(login, url, "", Some(name), email, avatar)
+    new Collaborator(login, url, None, Some(name), email, avatar)
   }
 
   implicit val CollaboratorDecoder: Decoder[Collaborator] = json =>
@@ -113,6 +113,6 @@ object Collaborator {
       url     <- json.get[String]("html_url")
       userUrl <- json.get[String]("url")
       avatar  <- json.get[Option[String]]("avatar_url")
-    } yield Collaborator(login, url, userUrl, None, None, avatar.filter(_.nonEmpty))
+    } yield Collaborator(login, url, Some(userUrl), None, None, avatar.filter(_.nonEmpty))
 
 }

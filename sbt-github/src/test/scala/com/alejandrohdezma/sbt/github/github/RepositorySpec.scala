@@ -420,12 +420,12 @@ class RepositorySpec extends Specification {
 
       val expected = Collaborators(
         List(
-          Collaborator("you", "example.com/you", s"${uri}you", None, None, None),
-          Collaborator("him", "example.com/him", s"${uri}him", Some("Him"), None, None),
+          Collaborator("you", "example.com/you", Some(s"${uri}you"), None, None, None),
+          Collaborator("him", "example.com/him", Some(s"${uri}him"), Some("Him"), None, None),
           Collaborator(
             "me",
             "example.com/me",
-            s"${uri}me",
+            Some(s"${uri}me"),
             Some("Me"),
             Some("me@example.com"),
             Some("example.com/me.png")
@@ -464,7 +464,7 @@ class RepositorySpec extends Specification {
           new Collaborator(
             "me",
             "example.com/me",
-            s"${uri}me",
+            Some(s"${uri}me"),
             Some("Me"),
             None,
             Some("example.com/me.png")
