@@ -25,7 +25,7 @@ import sbt.util.Logger
 
 import com.alejandrohdezma.sbt.github.error.NotFound
 import com.alejandrohdezma.sbt.github.github.error.GithubError
-import com.alejandrohdezma.sbt.github.github.urls.RepositoryEntryPoint
+import com.alejandrohdezma.sbt.github.github.urls.{GithubEntryPoint, RepositoryEntryPoint}
 import com.alejandrohdezma.sbt.github.http.{client, Authentication}
 import com.alejandrohdezma.sbt.github.json.Decoder
 import com.alejandrohdezma.sbt.github.syntax.json._
@@ -126,7 +126,7 @@ object Repository {
   def get(owner: String, name: String)(
       implicit auth: Authentication,
       logger: Logger,
-      url: RepositoryEntryPoint
+      url: GithubEntryPoint
   ): Try[Repository] = {
     logger.info(s"Retrieving `$owner/$name` information from Github API")
 
@@ -140,7 +140,7 @@ object Repository {
       s"Repository's license url couldn't be inferred! Go to https://github.com/$owner/$name and check it"
 
     client
-      .get[Repository](url.get(owner, name))
+      .get[Repository](RepositoryEntryPoint.get(owner, name))
       .failMap {
         case "description" / NotFound           => GithubError(descriptionNotFound)
         case "license" / NotFound               => GithubError(licenseNotFound)

@@ -20,7 +20,7 @@ import sbt.util.Logger
 
 import com.alejandrohdezma.sbt.github._
 import com.alejandrohdezma.sbt.github.github.error.GithubError
-import com.alejandrohdezma.sbt.github.github.urls.RepositoryEntryPoint
+import com.alejandrohdezma.sbt.github.github.urls.GithubEntryPoint
 import com.alejandrohdezma.sbt.github.http.Authentication
 import com.alejandrohdezma.sbt.github.http.Authentication.Token
 import org.http4s.dsl.io._
@@ -31,6 +31,7 @@ class RepositorySpec extends Specification {
   "Repository.get" should {
 
     "return Repository if everything is present" >> withServer {
+      case r @ GET -> Root => Ok(s"""{ "repository_url": "${r.urlTo("{owner}/{repo}")}" } """)
       case GET -> Root / "user" / "repo" =>
         Ok("""{
             "full_name": "user/repo",
@@ -51,7 +52,7 @@ class RepositorySpec extends Specification {
             }
           }""")
     } { uri =>
-      implicit val url: RepositoryEntryPoint = RepositoryEntryPoint(s"$uri{owner}/{repo}")
+      implicit val entryPoint: GithubEntryPoint = GithubEntryPoint(uri)
 
       val repository = Repository.get("user", "repo")
 
@@ -71,6 +72,7 @@ class RepositorySpec extends Specification {
     }
 
     "return None organization if it is not present" >> withServer {
+      case r @ GET -> Root => Ok(s"""{ "repository_url": "${r.urlTo("{owner}/{repo}")}" } """)
       case GET -> Root / "user" / "repo" =>
         Ok("""{
             "full_name": "user/repo",
@@ -88,7 +90,7 @@ class RepositorySpec extends Specification {
             }
           }""")
     } { uri =>
-      implicit val url: RepositoryEntryPoint = RepositoryEntryPoint(s"$uri{owner}/{repo}")
+      implicit val entryPoint: GithubEntryPoint = GithubEntryPoint(uri)
 
       val repository = Repository.get("user", "repo")
 
@@ -108,6 +110,7 @@ class RepositorySpec extends Specification {
     }
 
     "return error if description is not present" >> withServer {
+      case r @ GET -> Root => Ok(s"""{ "repository_url": "${r.urlTo("{owner}/{repo}")}" } """)
       case GET -> Root / "user" / "repo" =>
         Ok("""{
             "full_name": "user/repo",
@@ -128,7 +131,7 @@ class RepositorySpec extends Specification {
             }
           }""")
     } { uri =>
-      implicit val url: RepositoryEntryPoint = RepositoryEntryPoint(s"$uri{owner}/{repo}")
+      implicit val entryPoint: GithubEntryPoint = GithubEntryPoint(uri)
 
       val repository = Repository.get("user", "repo")
 
@@ -140,6 +143,7 @@ class RepositorySpec extends Specification {
     }
 
     "return error if license is not present" >> withServer {
+      case r @ GET -> Root => Ok(s"""{ "repository_url": "${r.urlTo("{owner}/{repo}")}" } """)
       case GET -> Root / "user" / "repo" =>
         Ok("""{
             "full_name": "user/repo",
@@ -157,7 +161,7 @@ class RepositorySpec extends Specification {
             "license": null
           }""")
     } { uri =>
-      implicit val url: RepositoryEntryPoint = RepositoryEntryPoint(s"$uri{owner}/{repo}")
+      implicit val entryPoint: GithubEntryPoint = GithubEntryPoint(uri)
 
       val repository = Repository.get("user", "repo")
 
@@ -169,6 +173,7 @@ class RepositorySpec extends Specification {
     }
 
     "return error if license's `spdx_id` is not present" >> withServer {
+      case r @ GET -> Root => Ok(s"""{ "repository_url": "${r.urlTo("{owner}/{repo}")}" } """)
       case GET -> Root / "user" / "repo" =>
         Ok("""{
             "full_name": "user/repo",
@@ -189,7 +194,7 @@ class RepositorySpec extends Specification {
             }
           }""")
     } { uri =>
-      implicit val url: RepositoryEntryPoint = RepositoryEntryPoint(s"$uri{owner}/{repo}")
+      implicit val entryPoint: GithubEntryPoint = GithubEntryPoint(uri)
 
       val repository = Repository.get("user", "repo")
 
@@ -201,6 +206,7 @@ class RepositorySpec extends Specification {
     }
 
     "return error if license's `url` is not present" >> withServer {
+      case r @ GET -> Root => Ok(s"""{ "repository_url": "${r.urlTo("{owner}/{repo}")}" } """)
       case GET -> Root / "user" / "repo" =>
         Ok("""{
             "full_name": "user/repo",
@@ -221,7 +227,7 @@ class RepositorySpec extends Specification {
             }
           }""")
     } { uri =>
-      implicit val url: RepositoryEntryPoint = RepositoryEntryPoint(s"$uri{owner}/{repo}")
+      implicit val entryPoint: GithubEntryPoint = GithubEntryPoint(uri)
 
       val repository = Repository.get("user", "repo")
 
@@ -233,6 +239,7 @@ class RepositorySpec extends Specification {
     }
 
     "return generic error in other cases" >> withServer {
+      case r @ GET -> Root => Ok(s"""{ "repository_url": "${r.urlTo("{owner}/{repo}")}" } """)
       case GET -> Root / "user" / "repo" =>
         Ok("""{
             "full_name": "user/repo",
@@ -250,7 +257,7 @@ class RepositorySpec extends Specification {
             "license": 42
           }""")
     } { uri =>
-      implicit val url: RepositoryEntryPoint = RepositoryEntryPoint(s"$uri{owner}/{repo}")
+      implicit val entryPoint: GithubEntryPoint = GithubEntryPoint(uri)
 
       val repository = Repository.get("user", "repo")
 
