@@ -26,6 +26,7 @@ import sbt.plugins.JvmPlugin
 import com.alejandrohdezma.sbt.github.github.urls.GithubEntryPoint
 import com.alejandrohdezma.sbt.github.github.{Organization, Repository}
 import com.alejandrohdezma.sbt.github.http.Authentication
+import com.alejandrohdezma.sbt.github.syntax.list._
 
 /**
  * This plugin automatically enables reloading on sbt source changes and
@@ -74,10 +75,9 @@ object SbtGithubPlugin extends AutoPlugin {
       "Populate organization info with the owner one in case there is no organization, default to `true`"
     }
 
-    val extraCollaborators =
-      settingKey[List[Authentication => GithubEntryPoint => Logger => Collaborator]] {
-        "Extra collaborators that should be always included (independent of whether they are contributors or not)"
-      }
+    val extraCollaborators = settingKey[List[Collaborator.Creator]] {
+      "Extra collaborators that should be always included (independent of whether they are contributors or not)"
+    }
 
     val excludedContributors = settingKey[List[String]] {
       "ID (Github login) of the contributors that should be excluded from the list, like bots, it can also be regex patterns"
@@ -157,7 +157,10 @@ object SbtGithubPlugin extends AutoPlugin {
       repository.value.fold(Collaborators(Nil)) {
         _.collaborators(contributors.value.list.map(_.login)).get
           .include(
-            extraCollaborators.value.map(_(auth)(GithubEntryPoint(githubApiEntryPoint.value))(log))
+            extraCollaborators.value
+              .map(_(auth)(GithubEntryPoint(githubApiEntryPoint.value))(log))
+              .traverse(identity)
+              .get
           )
       }
     },

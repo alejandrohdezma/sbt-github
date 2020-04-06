@@ -16,6 +16,8 @@
 
 package com.alejandrohdezma.sbt.github.github.urls
 
+import scala.util.Try
+
 import sbt.util.Logger
 
 import com.alejandrohdezma.sbt.github.github.error.GithubError
@@ -24,27 +26,24 @@ import com.alejandrohdezma.sbt.github.json.Decoder
 import com.alejandrohdezma.sbt.github.syntax.json._
 import com.alejandrohdezma.sbt.github.syntax.scalatry._
 
-final case class RepositoryEntryPoint(base: String) {
-
-  def get(owner: String, repo: String): String =
-    base.replace("{owner}", owner).replace("{repo}", repo)
-
-}
-
 object RepositoryEntryPoint {
 
-  @SuppressWarnings(Array("scalafix:Disable.get"))
-  implicit def repository(
+  /**
+   * Returns the entry point URL for a given owner/repository.
+   */
+  def get(owner: String, repo: String)(
       implicit auth: Authentication,
       logger: Logger,
       entryPoint: GithubEntryPoint
-  ): RepositoryEntryPoint =
+  ): Try[String] =
     client
       .get[RepositoryEntryPoint](entryPoint.value)
       .failAs(GithubError("Unable to connect to Github"))
-      .get
+      .map(_.value.replace("{owner}", owner).replace("{repo}", repo))
 
-  implicit val RepositoryUrlDecoder: Decoder[RepositoryEntryPoint] = json =>
-    json.get[String]("repository_url").map(RepositoryEntryPoint(_))
+  final private case class RepositoryEntryPoint(value: String) extends AnyVal
+
+  implicit private val RepositoryUrlDecoder: Decoder[RepositoryEntryPoint] = json =>
+    json.get[String]("repository_url").map(RepositoryEntryPoint)
 
 }

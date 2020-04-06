@@ -26,22 +26,7 @@ import org.specs2.mutable.Specification
 
 class UserEntryPointUrlSpec extends Specification {
 
-  "User" should {
-
-    "provide implicit value based on others" >> withServer {
-      case GET -> Root =>
-        Ok("""{ "user_url": "miau" }""")
-    } { uri =>
-      implicit val noOpLogger: Logger                 = Logger.Null
-      implicit val githubEntryPoint: GithubEntryPoint = GithubEntryPoint(uri)
-      implicit val auth: Authentication               = Token("1234")
-
-      val repoUrl = implicitly[UserEntryPoint]
-
-      val expected = UserEntryPoint("miau")
-
-      repoUrl must be equalTo expected
-    }
+  "UserEntryPoint.get" should {
 
     "provide url for specific user" >> withServer {
       case GET -> Root =>
@@ -51,9 +36,9 @@ class UserEntryPointUrlSpec extends Specification {
       implicit val githubEntryPoint: GithubEntryPoint = GithubEntryPoint(uri)
       implicit val auth: Authentication               = Token("1234")
 
-      val repoUrl = implicitly[UserEntryPoint]
+      val userUrl = UserEntryPoint.get("user")
 
-      repoUrl.get("user") must be equalTo "http://example.com/user"
+      userUrl must beSuccessfulTry("http://example.com/user")
     }
 
   }
