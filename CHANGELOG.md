@@ -4,6 +4,18 @@
 
 [Full Changelog](https://github.com/alejandrohdezma/sbt-github/compare/v0.6.0...HEAD)
 
+🚀 **Features**
+
+- Enable code-coverage retrieval and uploading to Codecov [\#134](https://github.com/alejandrohdezma/sbt-github/pull/134) ([alejandrohdezma](https://github.com/alejandrohdezma))
+- Simplify SBT build [\#133](https://github.com/alejandrohdezma/sbt-github/pull/133) ([alejandrohdezma](https://github.com/alejandrohdezma))
+- Extract mock server url creation to package object [\#127](https://github.com/alejandrohdezma/sbt-github/pull/127) ([alejandrohdezma](https://github.com/alejandrohdezma))
+- Improve documentation on Github Token [\#118](https://github.com/alejandrohdezma/sbt-github/pull/118) ([alejandrohdezma](https://github.com/alejandrohdezma))
+- Refactor erroring system [\#117](https://github.com/alejandrohdezma/sbt-github/pull/117) ([alejandrohdezma](https://github.com/alejandrohdezma))
+
+📘 **Documentation**
+
+- Add Codecov badge to README [\#135](https://github.com/alejandrohdezma/sbt-github/pull/135) ([alejandrohdezma](https://github.com/alejandrohdezma))
+
 📈 **Dependency updates**
 
 - Update http4s to 0.21.3 [\#130](https://github.com/alejandrohdezma/sbt-github/pull/130) ([alejandrohdezma](https://github.com/alejandrohdezma))
@@ -14,12 +26,6 @@
 - Update http4s-blaze-server, http4s-dsl to 0.21.2 [\#113](https://github.com/alejandrohdezma/sbt-github/pull/113) ([scala-steward](https://github.com/scala-steward))
 - Update sbt-mdoc to 2.1.3 [\#111](https://github.com/alejandrohdezma/sbt-github/pull/111) ([scala-steward](https://github.com/scala-steward))
 - Update specs2-core to 4.9.2 [\#108](https://github.com/alejandrohdezma/sbt-github/pull/108) ([scala-steward](https://github.com/scala-steward))
-
-**Merged pull requests:**
-
-- Extract mock server url creation to package object [\#127](https://github.com/alejandrohdezma/sbt-github/pull/127) ([alejandrohdezma](https://github.com/alejandrohdezma))
-- Improve documentation on Github Token [\#118](https://github.com/alejandrohdezma/sbt-github/pull/118) ([alejandrohdezma](https://github.com/alejandrohdezma))
-- Refactor erroring system [\#117](https://github.com/alejandrohdezma/sbt-github/pull/117) ([alejandrohdezma](https://github.com/alejandrohdezma))
 
 ## [v0.6.0](https://github.com/alejandrohdezma/sbt-github/tree/v0.6.0) (2020-03-01)
 
