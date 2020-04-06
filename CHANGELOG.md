@@ -16,6 +16,10 @@
 
 - Add Codecov badge to README [\#135](https://github.com/alejandrohdezma/sbt-github/pull/135) ([alejandrohdezma](https://github.com/alejandrohdezma))
 
+🐛 **Bug Fixes**
+
+- Fix & Refactor `Collaborator` constructors [\#140](https://github.com/alejandrohdezma/sbt-github/pull/140) ([alejandrohdezma](https://github.com/alejandrohdezma))
+
 📈 **Dependency updates**
 
 - Update http4s to 0.21.3 [\#130](https://github.com/alejandrohdezma/sbt-github/pull/130) ([alejandrohdezma](https://github.com/alejandrohdezma))
@@ -55,16 +59,13 @@
 
 - Add `COPYRIGHT\_OWNER` as mdoc variable in sbt-github-mdoc [\#85](https://github.com/alejandrohdezma/sbt-github/pull/85) ([alejandrohdezma](https://github.com/alejandrohdezma))
 
-📈 **Dependency updates**
-
-- Update sbt-fix to 0.3.0 [\#84](https://github.com/alejandrohdezma/sbt-github/pull/84) ([scala-steward](https://github.com/scala-steward))
-
 ## [v0.5.1](https://github.com/alejandrohdezma/sbt-github/tree/v0.5.1) (2020-02-14)
 
 [Full Changelog](https://github.com/alejandrohdezma/sbt-github/compare/v0.5.0...v0.5.1)
 
 🚀 **Features**
 
+- Exclude `traviscibot` from contributors by default [\#77](https://github.com/alejandrohdezma/sbt-github/pull/77) ([alejandrohdezma](https://github.com/alejandrohdezma))
 - Make `exludedContributors` a list of patterns [\#76](https://github.com/alejandrohdezma/sbt-github/pull/76) ([alejandrohdezma](https://github.com/alejandrohdezma))
 
 ## [v0.5.0](https://github.com/alejandrohdezma/sbt-github/tree/v0.5.0) (2020-02-14)
@@ -89,6 +90,7 @@
 
 📈 **Dependency updates**
 
+- Update sbt-fix to 0.3.0 [\#84](https://github.com/alejandrohdezma/sbt-github/pull/84) ([scala-steward](https://github.com/scala-steward))
 - Update http4s-blaze-server, http4s-dsl to 0.21.1 [\#72](https://github.com/alejandrohdezma/sbt-github/pull/72) ([scala-steward](https://github.com/scala-steward))
 - Update http4s-blaze-server, http4s-dsl to 0.21.0 [\#69](https://github.com/alejandrohdezma/sbt-github/pull/69) ([scala-steward](https://github.com/scala-steward))
 - Update sbt-ci-release to 1.5.2 [\#68](https://github.com/alejandrohdezma/sbt-github/pull/68) ([scala-steward](https://github.com/scala-steward))
