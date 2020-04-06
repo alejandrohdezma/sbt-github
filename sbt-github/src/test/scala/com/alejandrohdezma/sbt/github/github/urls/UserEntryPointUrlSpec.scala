@@ -38,7 +38,7 @@ class UserEntryPointUrlSpec extends Specification {
 
       val userUrl = UserEntryPoint.get("user")
 
-      userUrl must beSuccessfulTry("http://example.com/user")
+      userUrl must beSuccessfulTry(sbt.url("http://example.com/user"))
     }
 
   }
