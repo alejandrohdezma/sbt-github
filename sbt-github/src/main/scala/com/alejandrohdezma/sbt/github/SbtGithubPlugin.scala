@@ -55,7 +55,7 @@ object SbtGithubPlugin extends AutoPlugin {
     type Token = http.Authentication.Token
     val Token = http.Authentication.Token
 
-    val githubApiEntryPoint = settingKey[String] {
+    val githubApiEntryPoint = settingKey[URL] {
       "Entry point for the github API, defaults to `https://api.github.com`"
     }
 
@@ -112,7 +112,7 @@ object SbtGithubPlugin extends AutoPlugin {
   override def requires: Plugins = JvmPlugin
 
   override def buildSettings: Seq[Setting[_]] = Seq(
-    githubApiEntryPoint           := "https://api.github.com",
+    githubApiEntryPoint           := url("https://api.github.com"),
     downloadInfoFromGithub        := sys.env.contains("DOWNLOAD_INFO_FROM_GITHUB"),
     populateOrganizationWithOwner := true,
     excludedContributors          := List("scala-steward", """.*\[bot\]""", "traviscibot"),

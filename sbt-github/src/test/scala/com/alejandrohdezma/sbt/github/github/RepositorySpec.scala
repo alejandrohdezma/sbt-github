@@ -52,7 +52,7 @@ class RepositorySpec extends Specification {
             }
           }""")
     } { uri =>
-      implicit val entryPoint: GithubEntryPoint = GithubEntryPoint(uri)
+      implicit val entryPoint: GithubEntryPoint = GithubEntryPoint(sbt.url(uri))
 
       val repository = Repository.get("user", "repo")
 
@@ -90,7 +90,7 @@ class RepositorySpec extends Specification {
             }
           }""")
     } { uri =>
-      implicit val entryPoint: GithubEntryPoint = GithubEntryPoint(uri)
+      implicit val entryPoint: GithubEntryPoint = GithubEntryPoint(sbt.url(uri))
 
       val repository = Repository.get("user", "repo")
 
@@ -131,7 +131,7 @@ class RepositorySpec extends Specification {
             }
           }""")
     } { uri =>
-      implicit val entryPoint: GithubEntryPoint = GithubEntryPoint(uri)
+      implicit val entryPoint: GithubEntryPoint = GithubEntryPoint(sbt.url(uri))
 
       val repository = Repository.get("user", "repo")
 
@@ -161,7 +161,7 @@ class RepositorySpec extends Specification {
             "license": null
           }""")
     } { uri =>
-      implicit val entryPoint: GithubEntryPoint = GithubEntryPoint(uri)
+      implicit val entryPoint: GithubEntryPoint = GithubEntryPoint(sbt.url(uri))
 
       val repository = Repository.get("user", "repo")
 
@@ -194,7 +194,7 @@ class RepositorySpec extends Specification {
             }
           }""")
     } { uri =>
-      implicit val entryPoint: GithubEntryPoint = GithubEntryPoint(uri)
+      implicit val entryPoint: GithubEntryPoint = GithubEntryPoint(sbt.url(uri))
 
       val repository = Repository.get("user", "repo")
 
@@ -227,7 +227,7 @@ class RepositorySpec extends Specification {
             }
           }""")
     } { uri =>
-      implicit val entryPoint: GithubEntryPoint = GithubEntryPoint(uri)
+      implicit val entryPoint: GithubEntryPoint = GithubEntryPoint(sbt.url(uri))
 
       val repository = Repository.get("user", "repo")
 
@@ -257,7 +257,7 @@ class RepositorySpec extends Specification {
             "license": 42
           }""")
     } { uri =>
-      implicit val entryPoint: GithubEntryPoint = GithubEntryPoint(uri)
+      implicit val entryPoint: GithubEntryPoint = GithubEntryPoint(sbt.url(uri))
 
       val repository = Repository.get("user", "repo")
 

@@ -33,7 +33,7 @@ class UserEntryPointUrlSpec extends Specification {
         Ok("""{ "user_url": "http://example.com/{user}" }""")
     } { uri =>
       implicit val noOpLogger: Logger                 = Logger.Null
-      implicit val githubEntryPoint: GithubEntryPoint = GithubEntryPoint(uri)
+      implicit val githubEntryPoint: GithubEntryPoint = GithubEntryPoint(sbt.url(uri))
       implicit val auth: Authentication               = Token("1234")
 
       val userUrl = UserEntryPoint.get("user")

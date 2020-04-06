@@ -33,7 +33,7 @@ class RepositoryEntryPointSpec extends Specification {
         Ok("""{ "repository_url": "http://example.com/{owner}/{repo}" }""")
     } { uri =>
       implicit val noOpLogger: Logger                 = Logger.Null
-      implicit val githubEntryPoint: GithubEntryPoint = GithubEntryPoint(uri)
+      implicit val githubEntryPoint: GithubEntryPoint = GithubEntryPoint(sbt.url(uri))
       implicit val auth: Authentication               = Token("1234")
 
       val repoUrl = RepositoryEntryPoint.get("owner", "repo")
