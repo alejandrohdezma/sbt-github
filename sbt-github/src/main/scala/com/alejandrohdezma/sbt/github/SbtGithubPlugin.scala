@@ -165,7 +165,7 @@ object SbtGithubPlugin extends AutoPlugin {
       }
     },
     developers := collaborators.value.developers,
-    homepage   := repository.value.map(r => url(r.url)).orElse(homepage.value),
+    homepage   := repository.value.map(_.url).orElse(homepage.value),
     licenses   := repository.value.map(_.licenses).getOrElse(licenses.value),
     startYear  := repository.value.map(_.startYear).orElse(startYear.value),
     yearRange := startYear.value.collect {

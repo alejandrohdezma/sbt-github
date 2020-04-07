@@ -60,12 +60,12 @@ class RepositorySpec extends Specification {
         "user/repo",
         "The description",
         License("id", url"http://example.com"),
-        "http://example.com/repository",
+        url"http://example.com/repository",
         2011,
-        "http://api.github.com/repos/example/example/contributors",
-        "http://api.github.com/repos/example/example/collaborators",
-        Some("http://api.github.com/users/example"),
-        "http://api.github.com/users/owner"
+        url"http://api.github.com/repos/example/example/contributors",
+        url"http://api.github.com/repos/example/example/collaborators",
+        Some(url"http://api.github.com/users/example"),
+        url"http://api.github.com/users/owner"
       )
 
       repository must beSuccessfulTry(expected)
@@ -98,12 +98,12 @@ class RepositorySpec extends Specification {
         "user/repo",
         "The description",
         License("id", url"http://example.com"),
-        "http://example.com/repository",
+        url"http://example.com/repository",
         2011,
-        "http://api.github.com/repos/example/example/contributors",
-        "http://api.github.com/repos/example/example/collaborators",
+        url"http://api.github.com/repos/example/example/contributors",
+        url"http://api.github.com/repos/example/example/collaborators",
         None,
-        "http://api.github.com/users/owner"
+        url"http://api.github.com/users/owner"
       )
 
       repository must beSuccessfulTry(expected)
@@ -295,7 +295,7 @@ class RepositorySpec extends Specification {
         ]
         """)
     } { uri =>
-      val repository = EmptyRepository.copy(contributorsUrl = s"${uri}contributors")
+      val repository = EmptyRepository.copy(contributorsUrl = url"${uri}contributors")
 
       val contributors = repository.contributors(Nil)
 
@@ -326,7 +326,7 @@ class RepositorySpec extends Specification {
         ]
         """)
     } { uri =>
-      val repository = EmptyRepository.copy(contributorsUrl = s"${uri}contributors")
+      val repository = EmptyRepository.copy(contributorsUrl = url"${uri}contributors")
 
       val contributors = repository.contributors(List("you"))
 
@@ -351,7 +351,7 @@ class RepositorySpec extends Specification {
         ]
         """)
     } { uri =>
-      val repository = EmptyRepository.copy(contributorsUrl = s"${uri}contributors")
+      val repository = EmptyRepository.copy(contributorsUrl = url"${uri}contributors")
 
       val contributors = repository.contributors(List(""".*\[bot\]"""))
 
@@ -363,7 +363,7 @@ class RepositorySpec extends Specification {
     "return generic error on any error" >> withServer {
       case GET -> Root / "contributors" => Ok("""{"hello": "hi"}""")
     } { uri =>
-      val repository = EmptyRepository.copy(contributorsUrl = s"${uri}contributors")
+      val repository = EmptyRepository.copy(contributorsUrl = url"${uri}contributors")
 
       val contributors = repository.contributors(Nil)
 
@@ -416,7 +416,7 @@ class RepositorySpec extends Specification {
           }
         ]""")
     } { uri =>
-      val repository = EmptyRepository.copy(collaboratorsUrl = s"${uri}collaborators")
+      val repository = EmptyRepository.copy(collaboratorsUrl = url"${uri}collaborators")
 
       val collaborators = repository.collaborators(List("me", "you", "him"))
 
@@ -468,7 +468,7 @@ class RepositorySpec extends Specification {
           }
         ]""")
     } { uri =>
-      val repository = EmptyRepository.copy(collaboratorsUrl = s"${uri}collaborators")
+      val repository = EmptyRepository.copy(collaboratorsUrl = url"${uri}collaborators")
 
       val collaborators = repository.collaborators(List("me"))
 
@@ -489,7 +489,7 @@ class RepositorySpec extends Specification {
     "return generic error on any error" >> withServer {
       case GET -> Root / "collaborators" => Ok("""{"hello": "hi"}""")
     } { uri =>
-      val repository = EmptyRepository.copy(collaboratorsUrl = s"${uri}collaborators")
+      val repository = EmptyRepository.copy(collaboratorsUrl = url"${uri}collaborators")
 
       val collaborators = repository.collaborators(Nil)
 
@@ -510,7 +510,7 @@ class RepositorySpec extends Specification {
           "email": "org@example.com"
         }""")
     } { uri =>
-      val repository = EmptyRepository.copy(organizationUrl = Some(s"${uri}organization"))
+      val repository = EmptyRepository.copy(organizationUrl = Some(url"${uri}organization"))
 
       val organization = repository.organization
 
@@ -528,7 +528,7 @@ class RepositorySpec extends Specification {
       case GET -> Root / "organization" =>
         Ok(s"""{ "name": "My Organization", "email": "org@example.com" }""")
     } { uri =>
-      val repository = EmptyRepository.copy(organizationUrl = Some(s"${uri}organization"))
+      val repository = EmptyRepository.copy(organizationUrl = Some(url"${uri}organization"))
 
       val organization = repository.organization
 
@@ -541,7 +541,7 @@ class RepositorySpec extends Specification {
       case GET -> Root / "organization" =>
         Ok(s"""{ "blog": "http://example.com", "email": "org@example.com" }""")
     } { uri =>
-      val repository = EmptyRepository.copy(organizationUrl = Some(s"${uri}organization"))
+      val repository = EmptyRepository.copy(organizationUrl = Some(url"${uri}organization"))
 
       val organization = repository.organization
 
@@ -554,7 +554,7 @@ class RepositorySpec extends Specification {
       case GET -> Root / "organization" =>
         Ok(s"""{ "blog": "http://example.com", "name": "My Organization" }""")
     } { uri =>
-      val repository = EmptyRepository.copy(organizationUrl = Some(s"${uri}organization"))
+      val repository = EmptyRepository.copy(organizationUrl = Some(url"${uri}organization"))
 
       val organization = repository.organization
 
@@ -566,7 +566,7 @@ class RepositorySpec extends Specification {
     "return generic error on any error" >> withServer {
       case GET -> Root / "organization" => NotFound()
     } { uri =>
-      val repository = EmptyRepository.copy(organizationUrl = Some(s"${uri}organization"))
+      val repository = EmptyRepository.copy(organizationUrl = Some(url"${uri}organization"))
 
       val organization = repository.organization
 
@@ -589,7 +589,7 @@ class RepositorySpec extends Specification {
           "avatar_url": "http://example.com/owner.png"
         }""")
     } { uri =>
-      val repository = EmptyRepository.copy(ownerUrl = s"${uri}owner")
+      val repository = EmptyRepository.copy(ownerUrl = url"${uri}owner")
 
       val owner = repository.owner
 
@@ -612,7 +612,7 @@ class RepositorySpec extends Specification {
           "email": "owner@example.com"
         }""")
     } { uri =>
-      val repository = EmptyRepository.copy(ownerUrl = s"${uri}owner")
+      val repository = EmptyRepository.copy(ownerUrl = url"${uri}owner")
 
       val owner = repository.owner
 
@@ -630,7 +630,7 @@ class RepositorySpec extends Specification {
           "name": "Owner"
         }""")
     } { uri =>
-      val repository = EmptyRepository.copy(ownerUrl = s"${uri}owner")
+      val repository = EmptyRepository.copy(ownerUrl = url"${uri}owner")
 
       val owner = repository.owner
 
@@ -648,7 +648,7 @@ class RepositorySpec extends Specification {
           "email": "owner@example.com"
         }""")
     } { uri =>
-      val repository = EmptyRepository.copy(ownerUrl = s"${uri}owner")
+      val repository = EmptyRepository.copy(ownerUrl = url"${uri}owner")
 
       val owner = repository.owner
 
@@ -666,7 +666,7 @@ class RepositorySpec extends Specification {
     "return generic error on any error" >> withServer {
       case GET -> Root / "owner" => NotFound()
     } { uri =>
-      val repository = EmptyRepository.copy(ownerUrl = s"${uri}owner")
+      val repository = EmptyRepository.copy(ownerUrl = url"${uri}owner")
 
       val owner = repository.owner
 
@@ -681,6 +681,16 @@ class RepositorySpec extends Specification {
   implicit val noOpLogger: Logger             = Logger.Null
 
   lazy val EmptyRepository: Repository =
-    Repository("", "", License("", url"http://example.com"), "", 0, "", "", None, "")
+    Repository(
+      "",
+      "",
+      License("", url"http://example.com"),
+      url"http://example.com",
+      0,
+      url"http://example.com",
+      url"http://example.com",
+      None,
+      url"http://example.com"
+    )
 
 }
