@@ -6,6 +6,7 @@
 
 🚀 **Features**
 
+- Use `java.net.URL` for "url" fields [\#144](https://github.com/alejandrohdezma/sbt-github/pull/144) ([alejandrohdezma](https://github.com/alejandrohdezma))
 - Enable indicating the whole path when retrieving nested values in JSON [\#142](https://github.com/alejandrohdezma/sbt-github/pull/142) ([alejandrohdezma](https://github.com/alejandrohdezma))
 - Enable code-coverage retrieval and uploading to Codecov [\#134](https://github.com/alejandrohdezma/sbt-github/pull/134) ([alejandrohdezma](https://github.com/alejandrohdezma))
 - Simplify SBT build [\#133](https://github.com/alejandrohdezma/sbt-github/pull/133) ([alejandrohdezma](https://github.com/alejandrohdezma))
