@@ -43,7 +43,7 @@ object scalatry {
      */
     def collectFail(pf: PartialFunction[Throwable, Throwable]): Try[A] = aTry match {
       case Success(a) => Success(a)
-      case Failure(b) => Failure(pf.andThen(_.initCause(b)).lift(b).getOrElse(b))
+      case Failure(b) => Failure(pf.andThen(initCause(b)).lift(b).getOrElse(b))
     }
 
     /**
@@ -57,7 +57,7 @@ object scalatry {
      */
     def mapFail(pf: Throwable => Throwable): Try[A] = aTry match {
       case Success(a) => Success(a)
-      case Failure(b) => Failure(pf.andThen(_.initCause(b))(b))
+      case Failure(b) => Failure(pf.andThen(initCause(b))(b))
     }
 
     /**
@@ -71,9 +71,13 @@ object scalatry {
      */
     def failAs(t: => Throwable): Try[A] = aTry match {
       case Success(a) => Success(a)
-      case Failure(b) => Failure(t.initCause(b))
+      case Failure(b) => Failure(initCause(b)(t))
     }
 
   }
+
+  @SuppressWarnings(Array("all"))
+  private def initCause[A](cause: Throwable)(t: Throwable): Throwable =
+    if (cause != t && t.getCause == null) t.initCause(cause) else t
 
 }
