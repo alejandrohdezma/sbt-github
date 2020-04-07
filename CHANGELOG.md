@@ -6,6 +6,7 @@
 
 🚀 **Features**
 
+- Enable indicating the whole path when retrieving nested values in JSON [\#142](https://github.com/alejandrohdezma/sbt-github/pull/142) ([alejandrohdezma](https://github.com/alejandrohdezma))
 - Enable code-coverage retrieval and uploading to Codecov [\#134](https://github.com/alejandrohdezma/sbt-github/pull/134) ([alejandrohdezma](https://github.com/alejandrohdezma))
 - Simplify SBT build [\#133](https://github.com/alejandrohdezma/sbt-github/pull/133) ([alejandrohdezma](https://github.com/alejandrohdezma))
 - Extract mock server url creation to package object [\#127](https://github.com/alejandrohdezma/sbt-github/pull/127) ([alejandrohdezma](https://github.com/alejandrohdezma))
@@ -59,6 +60,10 @@
 
 - Add `COPYRIGHT\_OWNER` as mdoc variable in sbt-github-mdoc [\#85](https://github.com/alejandrohdezma/sbt-github/pull/85) ([alejandrohdezma](https://github.com/alejandrohdezma))
 
+📈 **Dependency updates**
+
+- Update sbt-fix to 0.3.0 [\#84](https://github.com/alejandrohdezma/sbt-github/pull/84) ([scala-steward](https://github.com/scala-steward))
+
 ## [v0.5.1](https://github.com/alejandrohdezma/sbt-github/tree/v0.5.1) (2020-02-14)
 
 [Full Changelog](https://github.com/alejandrohdezma/sbt-github/compare/v0.5.0...v0.5.1)
@@ -90,7 +95,6 @@
 
 📈 **Dependency updates**
 
-- Update sbt-fix to 0.3.0 [\#84](https://github.com/alejandrohdezma/sbt-github/pull/84) ([scala-steward](https://github.com/scala-steward))
 - Update http4s-blaze-server, http4s-dsl to 0.21.1 [\#72](https://github.com/alejandrohdezma/sbt-github/pull/72) ([scala-steward](https://github.com/scala-steward))
 - Update http4s-blaze-server, http4s-dsl to 0.21.0 [\#69](https://github.com/alejandrohdezma/sbt-github/pull/69) ([scala-steward](https://github.com/scala-steward))
 - Update sbt-ci-release to 1.5.2 [\#68](https://github.com/alejandrohdezma/sbt-github/pull/68) ([scala-steward](https://github.com/scala-steward))
