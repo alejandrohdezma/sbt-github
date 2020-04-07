@@ -49,6 +49,26 @@ class TrySyntaxSpec extends Specification {
 
   }
 
+  "mapFail" should {
+
+    "change value if Failure" >> {
+      val failure = Failure(NotFound)
+
+      val result = failure.mapFail(_ => URLNotFound("url"))
+
+      result must beAFailedTry(equalTo(URLNotFound("url")))
+    }
+
+    "do nothing if Success" >> {
+      val success = Try(42)
+
+      val result = success.mapFail(_ => NotFound)
+
+      result must beSuccessfulTry(42)
+    }
+
+  }
+
   "failAs" should {
 
     "change value if Failure" >> {

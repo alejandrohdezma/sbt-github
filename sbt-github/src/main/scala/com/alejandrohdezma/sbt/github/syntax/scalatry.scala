@@ -47,6 +47,20 @@ object scalatry {
     }
 
     /**
+     * The given function is applied if this is a `Failure`.
+     * The contained throwable is used as cause for the provided one.
+     *
+     *  {{{
+     *  Failure(NotFound).mapFail(_ => UrlNotFound) // Result: Failure(UrlNotFound(cause = NotFound))
+     *  Success(12).mapFail(_ => UrlNotFound)       // Result: Success(12)
+     *  }}}
+     */
+    def mapFail(pf: Throwable => Throwable): Try[A] = aTry match {
+      case Success(a) => Success(a)
+      case Failure(b) => Failure(pf.andThen(_.initCause(b))(b))
+    }
+
+    /**
      * Transforms the inner `Throwable` to the provided one if this is a failure.
      * The contained throwable is used as cause for the provided one.
      *
