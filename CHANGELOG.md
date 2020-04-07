@@ -1,8 +1,8 @@
 # Changelog
 
-## [Unreleased](https://github.com/alejandrohdezma/sbt-github/tree/HEAD)
+## [v0.7.0](https://github.com/alejandrohdezma/sbt-github/tree/v0.7.0) (2020-04-07)
 
-[Full Changelog](https://github.com/alejandrohdezma/sbt-github/compare/v0.6.0...HEAD)
+[Full Changelog](https://github.com/alejandrohdezma/sbt-github/compare/v0.6.0...v0.7.0)
 
 🚀 **Features**
 
@@ -33,6 +33,7 @@
 - Update http4s-blaze-server, http4s-dsl to 0.21.2 [\#113](https://github.com/alejandrohdezma/sbt-github/pull/113) ([scala-steward](https://github.com/scala-steward))
 - Update sbt-mdoc to 2.1.3 [\#111](https://github.com/alejandrohdezma/sbt-github/pull/111) ([scala-steward](https://github.com/scala-steward))
 - Update specs2-core to 4.9.2 [\#108](https://github.com/alejandrohdezma/sbt-github/pull/108) ([scala-steward](https://github.com/scala-steward))
+- Update specs2-core to 4.9.1 [\#98](https://github.com/alejandrohdezma/sbt-github/pull/98) ([scala-steward](https://github.com/scala-steward))
 
 ## [v0.6.0](https://github.com/alejandrohdezma/sbt-github/tree/v0.6.0) (2020-03-01)
 
@@ -48,7 +49,6 @@
 
 📈 **Dependency updates**
 
-- Update specs2-core to 4.9.1 [\#98](https://github.com/alejandrohdezma/sbt-github/pull/98) ([scala-steward](https://github.com/scala-steward))
 - Update specs2-core to 4.9.0 [\#97](https://github.com/alejandrohdezma/sbt-github/pull/97) ([scala-steward](https://github.com/scala-steward))
 - Update sbt-fix to 0.4.0 [\#96](https://github.com/alejandrohdezma/sbt-github/pull/96) ([scala-steward](https://github.com/scala-steward))
 - Update sbt-tpolecat to 0.1.11 [\#90](https://github.com/alejandrohdezma/sbt-github/pull/90) ([scala-steward](https://github.com/scala-steward))
