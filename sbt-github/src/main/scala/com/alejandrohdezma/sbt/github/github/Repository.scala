@@ -31,6 +31,7 @@ import com.alejandrohdezma.sbt.github.json.Decoder
 import com.alejandrohdezma.sbt.github.syntax.json._
 import com.alejandrohdezma.sbt.github.syntax.list._
 import com.alejandrohdezma.sbt.github.syntax.scalatry._
+import com.alejandrohdezma.sbt.github.syntax.url._
 
 /** Represents a repository in Github */
 final case class Repository(
@@ -61,7 +62,7 @@ final case class Repository(
     logger.info(s"Retrieving `$name` contributors from Github API")
 
     client
-      .get[List[Contributor]](contributorsUrl)
+      .get[List[Contributor]](contributorsUrl.withQueryParam("per_page", "100"))
       .map(_.sortBy(-_.contributions))
       .map(_.filterNot(contributor => excluded.exists(contributor.login.matches)))
       .map(Contributors)
@@ -79,7 +80,7 @@ final case class Repository(
     logger.info(s"Retrieving `$name` collaborators from Github API")
 
     client
-      .get[List[Collaborator]](collaboratorsUrl)
+      .get[List[Collaborator]](collaboratorsUrl.withQueryParam("per_page", "100"))
       .map(_.filter(m => allowed.contains(m.login)))
       .flatMap(_.traverse { collaborator =>
         logger.info(s"Retrieving `${collaborator.login}` information from Github API")
