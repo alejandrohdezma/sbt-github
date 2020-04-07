@@ -22,13 +22,12 @@ import scala.util.Failure
 
 import cats.implicits._
 
-import sbt.url
 import sbt.util.Logger
 
+import com.alejandrohdezma.sbt.github._
 import com.alejandrohdezma.sbt.github.http.error.URLNotFound
 import com.alejandrohdezma.sbt.github.json.Decoder
 import com.alejandrohdezma.sbt.github.syntax.json.JsonValueOps
-import com.alejandrohdezma.sbt.github.withServer
 import org.http4s.dsl.io._
 import org.http4s.headers.Authorization
 import org.specs2.mutable.Specification
@@ -60,7 +59,7 @@ class ClientSpec extends Specification {
 
       val result = client.get[String](s"${uri}hello")
 
-      result must beAFailedTry(equalTo(URLNotFound(url(s"${uri}hello"))))
+      result must beAFailedTry(equalTo(URLNotFound(url"${uri}hello")))
     }
 
     "propagate for every other failure (http-related)" >> {

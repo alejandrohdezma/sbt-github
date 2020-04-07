@@ -18,9 +18,9 @@ package com.alejandrohdezma.sbt.github.github.urls
 
 import sbt.util.Logger
 
+import com.alejandrohdezma.sbt.github._
 import com.alejandrohdezma.sbt.github.http.Authentication
 import com.alejandrohdezma.sbt.github.http.Authentication.Token
-import com.alejandrohdezma.sbt.github.withServer
 import org.http4s.dsl.io._
 import org.specs2.mutable.Specification
 
@@ -31,14 +31,14 @@ class UserEntryPointUrlSpec extends Specification {
     "provide url for specific user" >> withServer {
       case GET -> Root =>
         Ok("""{ "user_url": "http://example.com/{user}" }""")
-    } { uri =>
+    } { url =>
       implicit val noOpLogger: Logger                 = Logger.Null
-      implicit val githubEntryPoint: GithubEntryPoint = GithubEntryPoint(sbt.url(uri))
+      implicit val githubEntryPoint: GithubEntryPoint = GithubEntryPoint(url)
       implicit val auth: Authentication               = Token("1234")
 
       val userUrl = UserEntryPoint.get("user")
 
-      userUrl must beSuccessfulTry(sbt.url("http://example.com/user"))
+      userUrl must beSuccessfulTry(url"http://example.com/user")
     }
 
   }

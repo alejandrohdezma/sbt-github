@@ -16,6 +16,7 @@
 
 package com.alejandrohdezma.sbt.github.github
 
+import com.alejandrohdezma.sbt.github._
 import com.alejandrohdezma.sbt.github.json.Json
 import com.alejandrohdezma.sbt.github.syntax.json._
 import org.specs2.mutable.Specification
@@ -32,7 +33,7 @@ class UserSpec extends Specification {
         "email": ""
       }""")
 
-      val expected = User("me", sbt.url("http://example.com/me"), None, None, None)
+      val expected = User("me", url"http://example.com/me", None, None, None)
 
       json.as[User] must beSuccessfulTry(expected)
     }

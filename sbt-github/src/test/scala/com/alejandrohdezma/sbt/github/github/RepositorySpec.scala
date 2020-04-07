@@ -51,15 +51,15 @@ class RepositorySpec extends Specification {
               "url": "http://example.com"
             }
           }""")
-    } { uri =>
-      implicit val entryPoint: GithubEntryPoint = GithubEntryPoint(sbt.url(uri))
+    } { url =>
+      implicit val entryPoint: GithubEntryPoint = GithubEntryPoint(url)
 
       val repository = Repository.get("user", "repo")
 
       val expected = Repository(
         "user/repo",
         "The description",
-        License("id", sbt.url("http://example.com")),
+        License("id", url"http://example.com"),
         "http://example.com/repository",
         2011,
         "http://api.github.com/repos/example/example/contributors",
@@ -89,15 +89,15 @@ class RepositorySpec extends Specification {
               "url": "http://example.com"
             }
           }""")
-    } { uri =>
-      implicit val entryPoint: GithubEntryPoint = GithubEntryPoint(sbt.url(uri))
+    } { url =>
+      implicit val entryPoint: GithubEntryPoint = GithubEntryPoint(url)
 
       val repository = Repository.get("user", "repo")
 
       val expected = Repository(
         "user/repo",
         "The description",
-        License("id", sbt.url("http://example.com")),
+        License("id", url"http://example.com"),
         "http://example.com/repository",
         2011,
         "http://api.github.com/repos/example/example/contributors",
@@ -130,8 +130,8 @@ class RepositorySpec extends Specification {
               "url": "http://example.com"
             }
           }""")
-    } { uri =>
-      implicit val entryPoint: GithubEntryPoint = GithubEntryPoint(sbt.url(uri))
+    } { url =>
+      implicit val entryPoint: GithubEntryPoint = GithubEntryPoint(url)
 
       val repository = Repository.get("user", "repo")
 
@@ -160,8 +160,8 @@ class RepositorySpec extends Specification {
             },
             "license": null
           }""")
-    } { uri =>
-      implicit val entryPoint: GithubEntryPoint = GithubEntryPoint(sbt.url(uri))
+    } { url =>
+      implicit val entryPoint: GithubEntryPoint = GithubEntryPoint(url)
 
       val repository = Repository.get("user", "repo")
 
@@ -193,8 +193,8 @@ class RepositorySpec extends Specification {
               "url": "http://example.com"
             }
           }""")
-    } { uri =>
-      implicit val entryPoint: GithubEntryPoint = GithubEntryPoint(sbt.url(uri))
+    } { url =>
+      implicit val entryPoint: GithubEntryPoint = GithubEntryPoint(url)
 
       val repository = Repository.get("user", "repo")
 
@@ -226,8 +226,8 @@ class RepositorySpec extends Specification {
               "url": null
             }
           }""")
-    } { uri =>
-      implicit val entryPoint: GithubEntryPoint = GithubEntryPoint(sbt.url(uri))
+    } { url =>
+      implicit val entryPoint: GithubEntryPoint = GithubEntryPoint(url)
 
       val repository = Repository.get("user", "repo")
 
@@ -256,8 +256,8 @@ class RepositorySpec extends Specification {
             },
             "license": 42
           }""")
-    } { uri =>
-      implicit val entryPoint: GithubEntryPoint = GithubEntryPoint(sbt.url(uri))
+    } { url =>
+      implicit val entryPoint: GithubEntryPoint = GithubEntryPoint(url)
 
       val repository = Repository.get("user", "repo")
 
@@ -423,27 +423,27 @@ class RepositorySpec extends Specification {
       val expected = Collaborators(
         Collaborator(
           "you",
-          sbt.url("http://example.com/you"),
-          Some(sbt.url(s"${uri}you")),
+          url"http://example.com/you",
+          Some(url"${uri}you"),
           None,
           None,
           None
         ),
         Collaborator(
           "him",
-          sbt.url("http://example.com/him"),
-          Some(sbt.url(s"${uri}him")),
+          url"http://example.com/him",
+          Some(url"${uri}him"),
           Some("Him"),
           None,
           None
         ),
         Collaborator(
           "me",
-          sbt.url("http://example.com/me"),
-          Some(sbt.url(s"${uri}me")),
+          url"http://example.com/me",
+          Some(url"${uri}me"),
           Some("Me"),
           Some("me@example.com"),
-          Some(sbt.url("http://example.com/me.png"))
+          Some(url"http://example.com/me.png")
         )
       )
 
@@ -475,11 +475,11 @@ class RepositorySpec extends Specification {
       val expected = Collaborators(
         Collaborator(
           "me",
-          sbt.url("http://example.com/me"),
-          Some(sbt.url(s"${uri}me")),
+          url"http://example.com/me",
+          Some(url"${uri}me"),
           Some("Me"),
           None,
-          Some(sbt.url("http://example.com/me.png"))
+          Some(url"http://example.com/me.png")
         )
       )
 
@@ -517,7 +517,7 @@ class RepositorySpec extends Specification {
       val expected =
         Organization(
           Some("My Organization"),
-          Some(sbt.url("http://example.com")),
+          Some(url"http://example.com"),
           Some("org@example.com")
         )
 
@@ -545,8 +545,7 @@ class RepositorySpec extends Specification {
 
       val organization = repository.organization
 
-      val expected =
-        Organization(None, Some(sbt.url("http://example.com")), Some("org@example.com"))
+      val expected = Organization(None, Some(url"http://example.com"), Some("org@example.com"))
 
       organization must be some successfulTry(expected)
     }
@@ -559,8 +558,7 @@ class RepositorySpec extends Specification {
 
       val organization = repository.organization
 
-      val expected =
-        Organization(Some("My Organization"), Some(sbt.url("http://example.com")), None)
+      val expected = Organization(Some("My Organization"), Some(url"http://example.com"), None)
 
       organization must be some successfulTry(expected)
     }
@@ -597,10 +595,10 @@ class RepositorySpec extends Specification {
 
       val expected = User(
         "owner",
-        sbt.url("http://example.com/owner"),
+        url"http://example.com/owner",
         Some("Owner"),
         Some("owner@example.com"),
-        Some(sbt.url("http://example.com/owner.png"))
+        Some(url"http://example.com/owner.png")
       )
 
       owner must beSuccessfulTry(expected)
@@ -619,7 +617,7 @@ class RepositorySpec extends Specification {
       val owner = repository.owner
 
       val expected =
-        User("owner", sbt.url("http://example.com/owner"), None, Some("owner@example.com"), None)
+        User("owner", url"http://example.com/owner", None, Some("owner@example.com"), None)
 
       owner must beSuccessfulTry(expected)
     }
@@ -636,7 +634,7 @@ class RepositorySpec extends Specification {
 
       val owner = repository.owner
 
-      val expected = User("owner", sbt.url("http://example.com/owner"), Some("Owner"), None, None)
+      val expected = User("owner", url"http://example.com/owner", Some("Owner"), None, None)
 
       owner must beSuccessfulTry(expected)
     }
@@ -656,7 +654,7 @@ class RepositorySpec extends Specification {
 
       val expected = User(
         "owner",
-        sbt.url("http://example.com/owner"),
+        url"http://example.com/owner",
         Some("Owner"),
         Some("owner@example.com"),
         None
@@ -683,6 +681,6 @@ class RepositorySpec extends Specification {
   implicit val noOpLogger: Logger             = Logger.Null
 
   lazy val EmptyRepository: Repository =
-    Repository("", "", License("", sbt.url("http://example.com")), "", 0, "", "", None, "")
+    Repository("", "", License("", url"http://example.com"), "", 0, "", "", None, "")
 
 }
