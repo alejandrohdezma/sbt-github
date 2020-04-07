@@ -17,7 +17,7 @@ ThisBuild / githubApiEntryPoint := {
     bw.close()
   }
 
-  s"file://${github / "entrypoint.json"}"
+  url(s"file://${github / "entrypoint.json"}")
 }
 
 TaskKey[Unit]("check", "Checks all the elements downloaded from the Github API are correct") := {

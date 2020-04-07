@@ -18,11 +18,11 @@ package com.alejandrohdezma.sbt.github.github.urls
 
 import scala.util.Try
 
+import sbt.URL
 import sbt.util.Logger
 
 import com.alejandrohdezma.sbt.github.github.error.GithubError
 import com.alejandrohdezma.sbt.github.http.{client, Authentication}
-import com.alejandrohdezma.sbt.github.json.Decoder
 import com.alejandrohdezma.sbt.github.syntax.json._
 import com.alejandrohdezma.sbt.github.syntax.scalatry._
 
@@ -35,15 +35,11 @@ object UserEntryPoint {
       implicit auth: Authentication,
       logger: Logger,
       entryPoint: GithubEntryPoint
-  ): Try[String] =
+  ): Try[URL] =
     client
-      .get[UserEntryPoint](entryPoint.value)
+      .get[String](entryPoint.value)(_.get[String]("user_url"), auth, logger)
       .failAs(GithubError("Unable to connect to Github"))
-      .map(_.value.replace("{user}", login))
-
-  final private case class UserEntryPoint(value: String) extends AnyVal
-
-  implicit private val UserEntryPointDecoder: Decoder[UserEntryPoint] = json =>
-    json.get[String]("user_url").map(UserEntryPoint)
+      .map(_.replace("{user}", login))
+      .map(sbt.url)
 
 }

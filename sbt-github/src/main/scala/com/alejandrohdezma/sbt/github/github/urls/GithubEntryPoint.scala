@@ -16,4 +16,6 @@
 
 package com.alejandrohdezma.sbt.github.github.urls
 
-final case class GithubEntryPoint(value: String) extends AnyVal
+import sbt.URL
+
+final case class GithubEntryPoint(value: URL) extends AnyVal

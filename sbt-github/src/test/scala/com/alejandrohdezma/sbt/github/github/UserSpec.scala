@@ -16,6 +16,7 @@
 
 package com.alejandrohdezma.sbt.github.github
 
+import com.alejandrohdezma.sbt.github._
 import com.alejandrohdezma.sbt.github.json.Json
 import com.alejandrohdezma.sbt.github.syntax.json._
 import org.specs2.mutable.Specification
@@ -27,13 +28,12 @@ class UserSpec extends Specification {
     "treat empty email/name/avatar as None" >> {
       val json = Json.parse("""{
         "login": "me",
-        "html_url": "example.com/me",
-        "avatar": "",
+        "html_url": "http://example.com/me",
         "name": "",
         "email": ""
       }""")
 
-      val expected = User("me", "example.com/me", None, None, None)
+      val expected = User("me", url"http://example.com/me", None, None, None)
 
       json.as[User] must beSuccessfulTry(expected)
     }

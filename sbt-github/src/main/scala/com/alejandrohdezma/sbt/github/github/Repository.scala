@@ -37,16 +37,16 @@ final case class Repository(
     name: String,
     description: String,
     license: License,
-    url: String,
+    url: URL,
     startYear: Int,
-    contributorsUrl: String,
-    collaboratorsUrl: String,
-    organizationUrl: Option[String],
-    ownerUrl: String
+    contributorsUrl: URL,
+    collaboratorsUrl: URL,
+    organizationUrl: Option[URL],
+    ownerUrl: URL
 ) {
 
   /** Returns the license extracted from github in the format that SBT is expecting */
-  def licenses: List[(String, URL)] = List(license.id -> sbt.url(license.url))
+  def licenses: List[(String, URL)] = List(license.id -> license.url)
 
   /**
    * Returns the list of users who have contributed to a repository order by the number
@@ -91,7 +91,7 @@ final case class Repository(
         }.getOrElse(Try(collaborator))
       })
       .map(_.sortBy(collaborator => collaborator.name -> collaborator.login))
-      .map(Collaborators)
+      .map(Collaborators(_))
       .failAs(GithubError("Unable to get repository collaborators"))
   }
 
@@ -156,12 +156,12 @@ object Repository {
       name            <- json.get[String]("full_name")
       description     <- json.get[String]("description")
       license         <- json.get[License]("license")
-      url             <- json.get[String]("html_url")
+      url             <- json.get[URL]("html_url")
       startYear       <- json.get[ZonedDateTime]("created_at")
-      contributors    <- json.get[String]("contributors_url")
-      collaborators   <- json.get[String]("collaborators_url")
-      organizationUrl <- json.get[Option[String]]("organization", "url")
-      ownerUrl        <- json.get[String]("owner", "url")
+      contributors    <- json.get[URL]("contributors_url")
+      collaborators   <- json.get[URL]("collaborators_url")
+      organizationUrl <- json.get[Option[URL]]("organization", "url")
+      ownerUrl        <- json.get[URL]("owner", "url")
     } yield Repository(
       name,
       description,
@@ -169,7 +169,7 @@ object Repository {
       url,
       startYear.getYear,
       contributors,
-      collaborators.replace("{/collaborator}", ""),
+      sbt.url(s"$collaborators".replace("{/collaborator}", "")),
       organizationUrl,
       ownerUrl
     )

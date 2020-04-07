@@ -17,7 +17,7 @@ ThisBuild / githubApiEntryPoint := {
     bw.close()
   }
 
-  s"file://${github / "entrypoint.json"}"
+  url(s"file://${github / "entrypoint.json"}")
 }
 
 lazy val root = project.in(file(".")).enablePlugins(MdocPlugin)

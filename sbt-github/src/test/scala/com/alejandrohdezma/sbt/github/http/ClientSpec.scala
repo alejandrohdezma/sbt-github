@@ -16,7 +16,7 @@
 
 package com.alejandrohdezma.sbt.github.http
 
-import java.net.MalformedURLException
+import java.io.IOException
 
 import scala.util.Failure
 
@@ -24,14 +24,15 @@ import cats.implicits._
 
 import sbt.util.Logger
 
+import com.alejandrohdezma.sbt.github._
 import com.alejandrohdezma.sbt.github.http.error.URLNotFound
 import com.alejandrohdezma.sbt.github.json.Decoder
 import com.alejandrohdezma.sbt.github.syntax.json.JsonValueOps
-import com.alejandrohdezma.sbt.github.withServer
 import org.http4s.dsl.io._
 import org.http4s.headers.Authorization
 import org.specs2.mutable.Specification
 
+@SuppressWarnings(Array("scalafix:Disable.IOException"))
 class ClientSpec extends Specification {
 
   "client.get" should {
@@ -47,7 +48,7 @@ class ClientSpec extends Specification {
       implicit val decoder: Decoder[Auth] = _.get[String]("auth").map(Auth)
       implicit val auth: Authentication   = Authentication.Token("1234")
 
-      val result = client.get[Auth](s"${uri}hello")
+      val result = client.get[Auth](url"${uri}hello")
 
       result must beSuccessfulTry(Auth("Authorization: token 1234"))
     }
@@ -57,19 +58,21 @@ class ClientSpec extends Specification {
     } { uri =>
       implicit val auth: Authentication = Authentication.Token("1234")
 
-      val result = client.get[String](s"${uri}hello")
+      val result = client.get[String](url"${uri}hello")
 
-      result must beAFailedTry(equalTo(URLNotFound(s"${uri}hello")))
+      result must beAFailedTry(equalTo(URLNotFound(url"${uri}hello")))
     }
 
-    "propagate for every other failure (http-related)" >> {
+    "propagate for every other failure (http-related)" >> withServer {
+      case GET -> Root => Forbidden()
+    } { url =>
       implicit val auth: Authentication = Authentication.Token("1234")
 
-      val result = client.get[String]("miau")
+      val result = client.get[String](url)
 
       result must be like {
-        case Failure(e: MalformedURLException) =>
-          e.getMessage must be equalTo "no protocol: miau"
+        case Failure(e: IOException) =>
+          e.getMessage must be equalTo s"Server returned HTTP response code: 403 for URL: $url"
       }
     }
 

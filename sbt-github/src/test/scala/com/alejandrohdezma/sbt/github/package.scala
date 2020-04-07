@@ -20,12 +20,29 @@ import scala.concurrent.ExecutionContext.Implicits.global
 
 import cats.effect.{ContextShift, IO, Timer}
 
+import sbt.URL
+import sbt.util.Logger
+
+import com.alejandrohdezma.sbt.github.github.Collaborator
+import com.alejandrohdezma.sbt.github.github.urls.GithubEntryPoint
+import com.alejandrohdezma.sbt.github.http.Authentication.Token
 import org.http4s._
 import org.http4s.headers.Host
 import org.http4s.implicits._
 import org.http4s.server.blaze.BlazeServerBuilder
 
 package object github {
+
+  @SuppressWarnings(Array("scalafix:Disable.get", "scalafix:DisableSyntax.implicitConversion"))
+  implicit def CreatorToCollaborator(creator: Collaborator.Creator): Collaborator =
+    creator(Token("123"))(GithubEntryPoint(url"http://example.com"))(Logger.Null).get
+
+  @SuppressWarnings(Array("all"))
+  implicit class URLInterpolator(private val sc: StringContext) extends AnyVal {
+
+    def url(args: Any*): URL = new URL(sc.raw(args: _*))
+
+  }
 
   implicit class RequestLinkOps(req: Request[IO]) {
 
@@ -38,7 +55,7 @@ package object github {
 
   }
 
-  def withServer[A](pf: PartialFunction[Request[IO], IO[Response[IO]]])(f: String => A): A = {
+  def withServer[A](pf: PartialFunction[Request[IO], IO[Response[IO]]])(f: URL => A): A = {
     implicit val cs: ContextShift[IO] = IO.contextShift(global)
     implicit val timer: Timer[IO]     = IO.timer(global)
 
@@ -48,6 +65,7 @@ package object github {
       .withHttpApp(HttpRoutes.of[IO](pf).orNotFound)
       .resource
       .map(_.baseUri.renderString)
+      .map(new URL(_))
       .map(f)
       .use(IO.pure)
       .unsafeRunSync()

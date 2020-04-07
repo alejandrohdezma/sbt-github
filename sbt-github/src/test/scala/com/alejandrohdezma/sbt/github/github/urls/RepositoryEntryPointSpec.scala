@@ -18,9 +18,9 @@ package com.alejandrohdezma.sbt.github.github.urls
 
 import sbt.util.Logger
 
+import com.alejandrohdezma.sbt.github._
 import com.alejandrohdezma.sbt.github.http.Authentication
 import com.alejandrohdezma.sbt.github.http.Authentication.Token
-import com.alejandrohdezma.sbt.github.withServer
 import org.http4s.dsl.io._
 import org.specs2.mutable.Specification
 
@@ -31,14 +31,14 @@ class RepositoryEntryPointSpec extends Specification {
     "provide url for specific repository" >> withServer {
       case GET -> Root =>
         Ok("""{ "repository_url": "http://example.com/{owner}/{repo}" }""")
-    } { uri =>
+    } { url =>
       implicit val noOpLogger: Logger                 = Logger.Null
-      implicit val githubEntryPoint: GithubEntryPoint = GithubEntryPoint(uri)
+      implicit val githubEntryPoint: GithubEntryPoint = GithubEntryPoint(url)
       implicit val auth: Authentication               = Token("1234")
 
       val repoUrl = RepositoryEntryPoint.get("owner", "repo")
 
-      repoUrl must beASuccessfulTry("http://example.com/owner/repo")
+      repoUrl must beASuccessfulTry(url"http://example.com/owner/repo")
     }
 
   }

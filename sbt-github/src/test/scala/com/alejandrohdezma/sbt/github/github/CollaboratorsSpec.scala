@@ -16,30 +16,28 @@
 
 package com.alejandrohdezma.sbt.github.github
 
-import sbt.librarymanagement.Developer
+import sbt.Developer
 
+import com.alejandrohdezma.sbt.github._
 import org.specs2.mutable.Specification
 
 class CollaboratorsSpec extends Specification {
 
   "Collaborators.include" should {
 
-    "return list of collaborators including new ones" >> {
+    "return list of collaborators including ones" >> {
       val collaborators = Collaborators(
-        List(
-          new Collaborator("me", "example.com/me", None, Some("Me"), None, None),
-          new Collaborator("you", "example.com/you", None, Some("You"), None, None)
-        )
+        Collaborator("me", "Me", url"http://example.com/me"),
+        Collaborator("you", "You", url"http://example.com/you")
       )
 
-      val extra = List(new Collaborator("him", "example.com/him", None, Some("Him"), None, None))
+      val extra: List[Collaborator] =
+        List(Collaborator("him", "Him", url"http://example.com/him"))
 
       val expected = Collaborators(
-        List(
-          new Collaborator("him", "example.com/him", None, Some("Him"), None, None),
-          new Collaborator("me", "example.com/me", None, Some("Me"), None, None),
-          new Collaborator("you", "example.com/you", None, Some("You"), None, None)
-        )
+        Collaborator("him", "Him", url"http://example.com/him"),
+        Collaborator("me", "Me", url"http://example.com/me"),
+        Collaborator("you", "You", url"http://example.com/you")
       )
 
       collaborators.include(extra) must be equalTo expected
@@ -47,19 +45,16 @@ class CollaboratorsSpec extends Specification {
 
     "remove duplicates" >> {
       val collaborators = Collaborators(
-        List(
-          new Collaborator("me", "example.com/me", None, Some("Me"), None, None),
-          new Collaborator("you", "example.com/you", None, Some("You"), None, None)
-        )
+        Collaborator("me", "Me", url"http://example.com/me"),
+        Collaborator("you", "You", url"http://example.com/you")
       )
 
-      val extra = List(new Collaborator("me", "example.com/meme", None, Some("MeMe"), None, None))
+      val extra: List[Collaborator] =
+        List(Collaborator("me", "MeMe", url"http://example.com/meme"))
 
       val expected = Collaborators(
-        List(
-          new Collaborator("me", "example.com/me", None, Some("Me"), None, None),
-          new Collaborator("you", "example.com/you", None, Some("You"), None, None)
-        )
+        Collaborator("me", "Me", url"http://example.com/me"),
+        Collaborator("you", "You", url"http://example.com/you")
       )
 
       collaborators.include(extra) must be equalTo expected
@@ -71,37 +66,32 @@ class CollaboratorsSpec extends Specification {
 
     "return collaborator list as markdown" >> {
       val collaborators = Collaborators(
-        List(
-          new Collaborator(
-            "her",
-            "example.com/her",
-            None,
-            Some("Her"),
-            None,
-            Some("example.com/her.png")
-          ),
-          new Collaborator("him", "example.com/him", None, Some("Him"), None, None),
-          new Collaborator(
-            "it",
-            "example.com/it",
-            None,
-            Some("It"),
-            Some("it@example.com"),
-            Some("example.com/it.png")
-          ),
-          new Collaborator("me", "example.com/me", None, Some("Me"), Some("me@example.com"), None),
-          new Collaborator("you", "example.com/you", None, Some(""), None, None)
-        )
+        Collaborator(
+          "her",
+          "Her",
+          url"http://example.com/her",
+          url"http://example.com/her.png"
+        ),
+        Collaborator("him", "Him", url"http://example.com/him"),
+        Collaborator(
+          "it",
+          "It",
+          url"http://example.com/it",
+          "it@example.com",
+          url"http://example.com/it.png"
+        ),
+        Collaborator("me", "Me", url"http://example.com/me", "me@example.com"),
+        Collaborator("you", "you", url"http://example.com/you")
       )
 
       val markdown = collaborators.markdown
 
       val expected =
-        """- [![her](example.com/her.png&s=20) **Her (her)**](example.com/her)
-          |- [**Him (him)**](example.com/him)
-          |- [![it](example.com/it.png&s=20) **It (it)**](example.com/it)
-          |- [**Me (me)**](example.com/me)
-          |- [**you**](example.com/you)""".stripMargin
+        """- [![her](http://example.com/her.png&s=20) **Her (her)**](http://example.com/her)
+          |- [**Him (him)**](http://example.com/him)
+          |- [![it](http://example.com/it.png&s=20) **It (it)**](http://example.com/it)
+          |- [**Me (me)**](http://example.com/me)
+          |- [**you**](http://example.com/you)""".stripMargin
 
       markdown must be equalTo expected
     }
@@ -112,21 +102,19 @@ class CollaboratorsSpec extends Specification {
 
     "return collaborators as list of developers" >> {
       val collaborators = Collaborators(
-        List(
-          new Collaborator("her", "http://example.com/her", None, Some("Her"), None, None),
-          new Collaborator("him", "http://example.com/him", None, Some("Him"), None, None),
-          new Collaborator("it", "http://example.com/it", None, None, Some("it@example.com"), None),
-          new Collaborator("me", "http://example.com/me", None, Some("Me"), None, None),
-          new Collaborator("you", "http://example.com/you", None, Some(""), None, None)
-        )
+        Collaborator("her", "Her", url"http://example.com/her"),
+        Collaborator("him", "Him", url"http://example.com/him"),
+        Collaborator("it", "it", url"http://example.com/it", "it@example.com"),
+        Collaborator("me", "Me", url"http://example.com/me"),
+        Collaborator("you", "", url"http://example.com/you")
       )
 
       val expected = List(
-        Developer("her", "Her", "", sbt.url("http://example.com/her")),
-        Developer("him", "Him", "", sbt.url("http://example.com/him")),
-        Developer("it", "it", "it@example.com", sbt.url("http://example.com/it")),
-        Developer("me", "Me", "", sbt.url("http://example.com/me")),
-        Developer("you", "", "", sbt.url("http://example.com/you"))
+        Developer("her", "Her", "", url"http://example.com/her"),
+        Developer("him", "Him", "", url"http://example.com/him"),
+        Developer("it", "it", "it@example.com", url"http://example.com/it"),
+        Developer("me", "Me", "", url"http://example.com/me"),
+        Developer("you", "", "", url"http://example.com/you")
       )
 
       collaborators.developers must be equalTo expected

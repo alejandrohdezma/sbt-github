@@ -55,7 +55,7 @@ object SbtGithubPlugin extends AutoPlugin {
     type Token = http.Authentication.Token
     val Token = http.Authentication.Token
 
-    val githubApiEntryPoint = settingKey[String] {
+    val githubApiEntryPoint = settingKey[URL] {
       "Entry point for the github API, defaults to `https://api.github.com`"
     }
 
@@ -112,7 +112,7 @@ object SbtGithubPlugin extends AutoPlugin {
   override def requires: Plugins = JvmPlugin
 
   override def buildSettings: Seq[Setting[_]] = Seq(
-    githubApiEntryPoint           := "https://api.github.com",
+    githubApiEntryPoint           := url("https://api.github.com"),
     downloadInfoFromGithub        := sys.env.contains("DOWNLOAD_INFO_FROM_GITHUB"),
     populateOrganizationWithOwner := true,
     excludedContributors          := List("scala-steward", """.*\[bot\]""", "traviscibot"),
@@ -165,7 +165,7 @@ object SbtGithubPlugin extends AutoPlugin {
       }
     },
     developers := collaborators.value.developers,
-    homepage   := repository.value.map(r => url(r.url)).orElse(homepage.value),
+    homepage   := repository.value.map(_.url).orElse(homepage.value),
     licenses   := repository.value.map(_.licenses).getOrElse(licenses.value),
     startYear  := repository.value.map(_.startYear).orElse(startYear.value),
     yearRange := startYear.value.collect {
@@ -179,10 +179,8 @@ object SbtGithubPlugin extends AutoPlugin {
     organizationName := organizationMetadata.value
       .flatMap(_.name)
       .getOrElse(organizationName.value),
-    organizationHomepage := organizationMetadata.value
-      .flatMap(_.url.map(sbt.url))
-      .orElse(organizationHomepage.value),
-    organizationEmail := organizationMetadata.value.flatMap(_.email)
+    organizationHomepage := organizationMetadata.value.fold(organizationHomepage.value)(_.url),
+    organizationEmail    := organizationMetadata.value.flatMap(_.email)
   )
 
   /** Gets the Github user and repository from the git remote info */

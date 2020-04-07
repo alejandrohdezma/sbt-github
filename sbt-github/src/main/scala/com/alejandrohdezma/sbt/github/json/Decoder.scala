@@ -21,9 +21,12 @@ import java.time.ZonedDateTime.parse
 
 import scala.util.Try
 
+import sbt.URL
+
 import com.alejandrohdezma.sbt.github.error._
 import com.alejandrohdezma.sbt.github.json.error._
 import com.alejandrohdezma.sbt.github.syntax.list._
+import com.alejandrohdezma.sbt.github.syntax.scalatry._
 import com.alejandrohdezma.sbt.github.syntax.throwable._
 
 /**
@@ -77,6 +80,12 @@ object Decoder {
     case Json.Null            => NotFound.raise
     case a @ Json.Text(value) => Try(parse(value)).orElse(NotADateTime(a).raise)
     case value                => NotADateTime(value).raise
+  }
+
+  implicit val URLDecoder: Decoder[URL] = {
+    case Json.Null            => NotFound.raise
+    case v @ Json.Text(value) => Try(new URL(value)).failAs(NotAUrl(v))
+    case value                => NotAUrl(value).raise
   }
 
   implicit def OptionDecoder[A: Decoder]: Decoder[Option[A]] = new Decoder[Option[A]] {

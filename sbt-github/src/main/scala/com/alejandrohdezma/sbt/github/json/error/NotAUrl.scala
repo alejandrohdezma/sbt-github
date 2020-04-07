@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package com.alejandrohdezma.sbt.github.http.error
+package com.alejandrohdezma.sbt.github.json.error
 
 import scala.util.control.NoStackTrace
 
-import sbt.URL
+import com.alejandrohdezma.sbt.github.json.Json
 
-final case class URLNotFound(url: URL)
-    extends Throwable(s"$url was not found (maybe there's no connection to the internet)")
+final case class NotAUrl(value: Json.Value)
+    extends Throwable(s"$value is not a valid URL")
     with NoStackTrace
