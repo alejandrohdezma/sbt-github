@@ -38,7 +38,7 @@ object json {
      * Returns `Failure` with the error in case this is not a `Json.Object` or the decoding fails.
      */
     def get[A: Decoder](path: String): Try[A] = json match {
-      case json: Json.Object => json.get(path).as[A].failMap { case t => InvalidPath(path, t) }
+      case json: Json.Object => json.get(path).as[A].collectFail { case t => InvalidPath(path, t) }
       case Json.Null         => NotFound.raise
       case value             => NotAJSONObject(value).raise
     }

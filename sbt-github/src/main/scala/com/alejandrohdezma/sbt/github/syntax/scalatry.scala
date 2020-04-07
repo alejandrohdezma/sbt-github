@@ -27,21 +27,21 @@ object scalatry {
      * The contained throwable is used as cause for the provided one.
      *
      *  {{{
-     *  Failure(NotFound).failMap {
+     *  Failure(NotFound).collectFail {
      *    case NotFound => UrlNotFound
      *  } // Result: Failure(UrlNotFound(cause = NotFound))
      *
-     *  Failure(NotAString).failMap {
+     *  Failure(NotAString).collectFail {
      *    case NotFound => UrlNotFound
      *  } // Result: Failure(NotAString)
      *
      *
-     *  Success(12).failMap {
+     *  Success(12).collectFail {
      *    case NotFound => UrlNotFound
      *  } // Result: Success(12)
      *  }}}
      */
-    def failMap(pf: PartialFunction[Throwable, Throwable]): Try[A] = aTry match {
+    def collectFail(pf: PartialFunction[Throwable, Throwable]): Try[A] = aTry match {
       case Success(a) => Success(a)
       case Failure(b) => Failure(pf.andThen(_.initCause(b)).lift(b).getOrElse(b))
     }

@@ -141,7 +141,7 @@ object Repository {
 
     client
       .get[Repository](uri)
-      .failMap {
+      .collectFail {
         case "description" / NotFound           => GithubError(descriptionNotFound)
         case "license" / NotFound               => GithubError(licenseNotFound)
         case "license" / ("spdx_id" / NotFound) => GithubError(licenseNotInferred)
