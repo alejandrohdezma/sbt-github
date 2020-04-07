@@ -19,7 +19,6 @@ package com.alejandrohdezma.sbt.github.syntax
 import scala.annotation.tailrec
 import scala.util.Try
 
-import com.alejandrohdezma.sbt.github.error.NotFound
 import com.alejandrohdezma.sbt.github.json.error.{InvalidPath, NotAJSONObject}
 import com.alejandrohdezma.sbt.github.json.{Decoder, Json}
 import com.alejandrohdezma.sbt.github.syntax.scalatry._
@@ -49,7 +48,7 @@ object json {
     ): Try[A] = (value, remain) match {
       case (j: Json.Value, Nil)     => j.as[A].mapFail(done.foldRight(_)(InvalidPath))
       case (j: Json.Object, h :: t) => recursiveGet(j.get(h), t, done :+ h)
-      case (Json.Null, _)           => done.foldRight(NotFound: Throwable)(InvalidPath).raise
+      case (Json.Null, _)           => Decoder[A].onNullPath.mapFail(done.foldRight(_)(InvalidPath))
       case (v, _)                   => done.foldRight(NotAJSONObject(v): Throwable)(InvalidPath).raise
     }
 

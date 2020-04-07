@@ -34,6 +34,13 @@ trait Decoder[A] {
   /** Decode the given [[Json.Value]] */
   def decode(json: Json.Value): Try[A]
 
+  /**
+   * What should this decoder return if a `Null` is found on the path to getting the value.
+   *
+   * This doesn't affect when the value itself is `Null`.
+   */
+  def onNullPath: Try[A] = NotFound.raise
+
 }
 
 object Decoder {
@@ -72,9 +79,15 @@ object Decoder {
     case value                => NotADateTime(value).raise
   }
 
-  implicit def OptionDecoder[A: Decoder]: Decoder[Option[A]] = {
-    case Json.Null => Try(None)
-    case value     => Decoder[A].decode(value).map(Some(_))
+  implicit def OptionDecoder[A: Decoder]: Decoder[Option[A]] = new Decoder[Option[A]] {
+
+    override def decode(json: Json.Value): Try[Option[A]] = json match {
+      case Json.Null => Try(None)
+      case value     => Decoder[A].decode(value).map(Some(_))
+    }
+
+    override def onNullPath: Try[Option[A]] = Try(None)
+
   }
 
   implicit def ListDecoder[A: Decoder]: Decoder[List[A]] = {
