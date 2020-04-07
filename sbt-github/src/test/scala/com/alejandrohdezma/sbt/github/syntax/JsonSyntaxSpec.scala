@@ -60,6 +60,41 @@ class JsonSyntaxSpec extends Specification {
       json.get[Int]("miau") must beSuccessfulTry(42)
     }
 
+    "return requested type on a path chain" >> {
+      val json: Json.Value = Json.Object(
+        Map("m1" -> Json.Object(Map("m2" -> Json.Object(Map("m3" -> Json.Number(42d))))))
+      )
+
+      json.get[Int]("m1", "m2", "m3") must beSuccessfulTry(42)
+    }
+
+    "keep failed path on decoding failure" >> {
+      val json: Json.Value = Json.Object(
+        Map("m1" -> Json.Object(Map("m2" -> Json.Object(Map("m3" -> Json.Text("miau"))))))
+      )
+
+      val expected =
+        InvalidPath("m1", InvalidPath("m2", InvalidPath("m3", NotANumber(Json.Text("miau")))))
+
+      json.get[Int]("m1", "m2", "m3") must beFailedTry(equalTo(expected))
+    }
+
+    "keep failed path on not a json object" >> {
+      val json: Json.Value = Json.Object(Map("m1" -> Json.Object(Map("m2" -> Json.Text("miau")))))
+
+      val expected = InvalidPath("m1", InvalidPath("m2", NotAJSONObject(Json.Text("miau"))))
+
+      json.get[Int]("m1", "m2", "m3") must beFailedTry(equalTo(expected))
+    }
+
+    "keep failed path on not found" >> {
+      val json: Json.Value = Json.Object(Map("m1" -> Json.Object(Map())))
+
+      val expected = InvalidPath("m1", InvalidPath("m2", NotFound))
+
+      json.get[Int]("m1", "m2", "m3") must beFailedTry(equalTo(expected))
+    }
+
     "propagate Decoder[A] failure" >> {
       val json: Json.Value = Json.Object(Map("miau" -> Json.Number(42d)))
 

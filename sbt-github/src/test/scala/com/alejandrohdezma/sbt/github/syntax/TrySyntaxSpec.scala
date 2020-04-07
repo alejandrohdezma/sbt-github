@@ -25,12 +25,12 @@ import org.specs2.mutable.Specification
 
 class TrySyntaxSpec extends Specification {
 
-  "failMap" should {
+  "collectFail" should {
 
     "change value if Failure" >> {
       val failure = Failure(NotFound)
 
-      val result = failure.failMap {
+      val result = failure.collectFail {
         case _ => URLNotFound("url")
       }
 
@@ -40,9 +40,29 @@ class TrySyntaxSpec extends Specification {
     "do nothing if Success" >> {
       val success = Try(42)
 
-      val result = success.failMap {
+      val result = success.collectFail {
         case _ => NotFound
       }
+
+      result must beSuccessfulTry(42)
+    }
+
+  }
+
+  "mapFail" should {
+
+    "change value if Failure" >> {
+      val failure = Failure(NotFound)
+
+      val result = failure.mapFail(_ => URLNotFound("url"))
+
+      result must beAFailedTry(equalTo(URLNotFound("url")))
+    }
+
+    "do nothing if Success" >> {
+      val success = Try(42)
+
+      val result = success.mapFail(_ => NotFound)
 
       result must beSuccessfulTry(42)
     }

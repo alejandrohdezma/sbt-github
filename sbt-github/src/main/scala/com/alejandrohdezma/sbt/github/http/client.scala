@@ -60,7 +60,7 @@ object client {
           Source.fromInputStream(inputStream, "UTF-8").mkString
         }
       )
-    }.failMap {
+    }.collectFail {
       case _: FileNotFoundException => URLNotFound(uri)
     }.flatMap(Json.parse).as[A]
 

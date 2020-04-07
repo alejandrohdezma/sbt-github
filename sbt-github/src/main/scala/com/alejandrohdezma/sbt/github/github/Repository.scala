@@ -141,7 +141,7 @@ object Repository {
 
     client
       .get[Repository](uri)
-      .failMap {
+      .collectFail {
         case "description" / NotFound           => GithubError(descriptionNotFound)
         case "license" / NotFound               => GithubError(licenseNotFound)
         case "license" / ("spdx_id" / NotFound) => GithubError(licenseNotInferred)
@@ -160,8 +160,8 @@ object Repository {
       startYear       <- json.get[ZonedDateTime]("created_at")
       contributors    <- json.get[String]("contributors_url")
       collaborators   <- json.get[String]("collaborators_url")
-      organizationUrl <- json.get[Option[OrganizationUrl]]("organization")
-      ownerUrl        <- json.get[OwnerUrl]("owner")
+      organizationUrl <- json.get[Option[String]]("organization", "url")
+      ownerUrl        <- json.get[String]("owner", "url")
     } yield Repository(
       name,
       description,
@@ -170,18 +170,8 @@ object Repository {
       startYear.getYear,
       contributors,
       collaborators.replace("{/collaborator}", ""),
-      organizationUrl.map(_.value),
-      ownerUrl.value
+      organizationUrl,
+      ownerUrl
     )
-
-  final private case class OrganizationUrl(value: String) extends AnyVal
-
-  implicit private val OrganizationUrlDecoder: Decoder[OrganizationUrl] =
-    _.get[String]("url").map(OrganizationUrl)
-
-  final private case class OwnerUrl(value: String) extends AnyVal
-
-  implicit private val OwnerUrlDecoder: Decoder[OwnerUrl] =
-    _.get[String]("url").map(OwnerUrl)
 
 }

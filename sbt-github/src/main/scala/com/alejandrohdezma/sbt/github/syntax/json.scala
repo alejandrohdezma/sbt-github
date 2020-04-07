@@ -16,9 +16,9 @@
 
 package com.alejandrohdezma.sbt.github.syntax
 
+import scala.annotation.tailrec
 import scala.util.Try
 
-import com.alejandrohdezma.sbt.github.error.NotFound
 import com.alejandrohdezma.sbt.github.json.error.{InvalidPath, NotAJSONObject}
 import com.alejandrohdezma.sbt.github.json.{Decoder, Json}
 import com.alejandrohdezma.sbt.github.syntax.scalatry._
@@ -37,10 +37,19 @@ object json {
      *
      * Returns `Failure` with the error in case this is not a `Json.Object` or the decoding fails.
      */
-    def get[A: Decoder](path: String): Try[A] = json match {
-      case json: Json.Object => json.get(path).as[A].failMap { case t => InvalidPath(path, t) }
-      case Json.Null         => NotFound.raise
-      case value             => NotAJSONObject(value).raise
+    def get[A: Decoder](head: String, tail: String*): Try[A] =
+      recursiveGet(json, List(head +: tail: _*), Nil)
+
+    @tailrec
+    private def recursiveGet[A: Decoder](
+        value: Json.Value,
+        remain: List[String],
+        done: List[String]
+    ): Try[A] = (value, remain) match {
+      case (j: Json.Value, Nil)     => j.as[A].mapFail(done.foldRight(_)(InvalidPath))
+      case (j: Json.Object, h :: t) => recursiveGet(j.get(h), t, done :+ h)
+      case (Json.Null, _)           => Decoder[A].onNullPath.mapFail(done.foldRight(_)(InvalidPath))
+      case (v, _)                   => done.foldRight(NotAJSONObject(v): Throwable)(InvalidPath).raise
     }
 
   }
