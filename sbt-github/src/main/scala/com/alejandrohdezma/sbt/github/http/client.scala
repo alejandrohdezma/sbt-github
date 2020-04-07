@@ -33,16 +33,9 @@ import com.alejandrohdezma.sbt.github.syntax.scalatry._
 object client {
 
   /**
-   * Calls the provided URL with the provided authentication and
-   * returns its contents as `String`.
-   */
-  @SuppressWarnings(Array("all"))
-  def get[A: Decoder](uri: String)(implicit auth: Authentication, logger: Logger): Try[A] =
-    Try(new URL(uri)).flatMap(get[A](_))
-
-  /**
-   * Calls the provided URL with the provided authentication and
-   * returns its contents as `String`.
+   * Calls the provided URL with the provided authentication, downloads
+   * its contents as JSON and transforms and returns it using the provided
+   * `Decoder`.
    */
   @SuppressWarnings(Array("all"))
   def get[A: Decoder](url: URL)(implicit auth: Authentication, logger: Logger): Try[A] =
