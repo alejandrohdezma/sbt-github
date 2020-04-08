@@ -8,6 +8,10 @@
 
 - Add `sbt-remove-test-from-pom` plugin [\#151](https://github.com/alejandrohdezma/sbt-github/pull/151) ([alejandrohdezma](https://github.com/alejandrohdezma))
 
+📈 **Dependency updates**
+
+- Update specs2-core to 4.9.3 [\#153](https://github.com/alejandrohdezma/sbt-github/pull/153) ([scala-steward](https://github.com/scala-steward))
+
 ## [v0.7.0](https://github.com/alejandrohdezma/sbt-github/tree/v0.7.0) (2020-04-07)
 
 [Full Changelog](https://github.com/alejandrohdezma/sbt-github/compare/v0.6.0...v0.7.0)
@@ -56,7 +60,7 @@
 
 📈 **Dependency updates**
 
-- Update specs2-core to 4.9.3 [\#98](https://github.com/alejandrohdezma/sbt-github/pull/98) ([scala-steward](https://github.com/scala-steward))
+- Update specs2-core to 4.9.1 [\#98](https://github.com/alejandrohdezma/sbt-github/pull/98) ([scala-steward](https://github.com/scala-steward))
 - Update specs2-core to 4.9.0 [\#97](https://github.com/alejandrohdezma/sbt-github/pull/97) ([scala-steward](https://github.com/scala-steward))
 - Update sbt-fix to 0.4.0 [\#96](https://github.com/alejandrohdezma/sbt-github/pull/96) ([scala-steward](https://github.com/scala-steward))
 - Update sbt-tpolecat to 0.1.11 [\#90](https://github.com/alejandrohdezma/sbt-github/pull/90) ([scala-steward](https://github.com/scala-steward))
