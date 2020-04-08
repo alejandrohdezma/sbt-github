@@ -56,7 +56,7 @@
 
 📈 **Dependency updates**
 
-- Update specs2-core to 4.9.1 [\#98](https://github.com/alejandrohdezma/sbt-github/pull/98) ([scala-steward](https://github.com/scala-steward))
+- Update specs2-core to 4.9.3 [\#98](https://github.com/alejandrohdezma/sbt-github/pull/98) ([scala-steward](https://github.com/scala-steward))
 - Update specs2-core to 4.9.0 [\#97](https://github.com/alejandrohdezma/sbt-github/pull/97) ([scala-steward](https://github.com/scala-steward))
 - Update sbt-fix to 0.4.0 [\#96](https://github.com/alejandrohdezma/sbt-github/pull/96) ([scala-steward](https://github.com/scala-steward))
 - Update sbt-tpolecat to 0.1.11 [\#90](https://github.com/alejandrohdezma/sbt-github/pull/90) ([scala-steward](https://github.com/scala-steward))
