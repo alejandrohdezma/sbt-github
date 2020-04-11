@@ -6,6 +6,7 @@
 
 🚀 **Features**
 
+- Add `sbt-codecov` plugin [\#157](https://github.com/alejandrohdezma/sbt-github/pull/157) ([alejandrohdezma](https://github.com/alejandrohdezma))
 - Add `sbt-remove-test-from-pom` plugin [\#151](https://github.com/alejandrohdezma/sbt-github/pull/151) ([alejandrohdezma](https://github.com/alejandrohdezma))
 
 📈 **Dependency updates**
@@ -46,7 +47,6 @@
 - Update http4s-blaze-server, http4s-dsl to 0.21.2 [\#113](https://github.com/alejandrohdezma/sbt-github/pull/113) ([scala-steward](https://github.com/scala-steward))
 - Update sbt-mdoc to 2.1.3 [\#111](https://github.com/alejandrohdezma/sbt-github/pull/111) ([scala-steward](https://github.com/scala-steward))
 - Update specs2-core to 4.9.2 [\#108](https://github.com/alejandrohdezma/sbt-github/pull/108) ([scala-steward](https://github.com/scala-steward))
-- Update sbt-fix to 0.3.0 [\#84](https://github.com/alejandrohdezma/sbt-github/pull/84) ([scala-steward](https://github.com/scala-steward))
 
 ## [v0.6.0](https://github.com/alejandrohdezma/sbt-github/tree/v0.6.0) (2020-03-01)
 
@@ -75,6 +75,10 @@
 🚀 **Features**
 
 - Add `COPYRIGHT\_OWNER` as mdoc variable in sbt-github-mdoc [\#85](https://github.com/alejandrohdezma/sbt-github/pull/85) ([alejandrohdezma](https://github.com/alejandrohdezma))
+
+📈 **Dependency updates**
+
+- Update sbt-fix to 0.3.0 [\#84](https://github.com/alejandrohdezma/sbt-github/pull/84) ([scala-steward](https://github.com/scala-steward))
 
 ## [v0.5.1](https://github.com/alejandrohdezma/sbt-github/tree/v0.5.1) (2020-02-14)
 
