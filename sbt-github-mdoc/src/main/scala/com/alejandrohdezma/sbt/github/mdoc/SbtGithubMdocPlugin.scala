@@ -37,6 +37,7 @@ import mdoc.MdocPlugin.autoImport.mdocVariables
  *   of repository contributors in markdown format.
  *  - '''COLLABORATORS''': Set to the value of the `collaborators` setting, containing the list
  *   of repository collaborators in markdown format.
+ *  - '''DESCRIPTION''': Set to the value of the `description` setting.
  *  - '''NAME''': Set to the value of `displayName`. Defaults to repository's name.
  *  - '''LICENSE''': Set to the license's name.
  *  - '''ORG_NAME''': Set to the value of `organizationName` setting (Github's organization name,
@@ -90,6 +91,7 @@ object SbtGithubMdocPlugin extends AutoPlugin {
       "REPO"          -> repository.value.map(_.name).getOrElse(""),
       "LICENSE"       -> licenses.value.headOption.map(_._1).getOrElse(""),
       "ORG_NAME"      -> organizationName.value,
+      "DESCRIPTION"   -> description.value,
       "ORG_EMAIL"     -> organizationEmail.value.getOrElse(""),
       "ORG_URL"       -> organizationHomepage.value.map(url => s"$url").getOrElse(""),
       "START_YEAR"    -> startYear.value.fold("")(year => s"$year"),

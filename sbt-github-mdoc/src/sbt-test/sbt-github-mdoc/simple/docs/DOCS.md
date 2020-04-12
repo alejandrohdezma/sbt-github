@@ -2,6 +2,8 @@
 
 @REPO@
 
+@DESCRIPTION@
+
 @LICENSE@
 
 @ORG_NAME@
