@@ -6,6 +6,7 @@
 
 🚀 **Features**
 
+- Add new `DESCRIPTION` mdoc variable with `description` setting value [\#159](https://github.com/alejandrohdezma/sbt-github/pull/159) ([alejandrohdezma](https://github.com/alejandrohdezma))
 - Add `sbt-codecov` plugin [\#157](https://github.com/alejandrohdezma/sbt-github/pull/157) ([alejandrohdezma](https://github.com/alejandrohdezma))
 - Add `sbt-remove-test-from-pom` plugin [\#151](https://github.com/alejandrohdezma/sbt-github/pull/151) ([alejandrohdezma](https://github.com/alejandrohdezma))
 
