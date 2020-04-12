@@ -5,4 +5,5 @@
 enhancement: ['enhancement/*', 'feature/*']
 documentation: ['docs/*', 'doc/*']
 bug: ['bug/*', 'fix/*']
+tests: ['test/*', 'tests/*']
 dependency-update: ['dep/*', 'dependency/*', 'dependency-update/*']
