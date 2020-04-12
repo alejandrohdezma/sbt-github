@@ -1,4 +1,4 @@
-# SBT plugin to read several settings from Github
+# @DESCRIPTION@
 
 [![][github-action-badge]][github-action] [![][maven-badge]][maven] [![][codecov-badge]][codecov] [![][steward-badge]][steward] 
 
