@@ -2,6 +2,8 @@ sbt-github
 
 user1/repo
 
+An awesome description
+
 MIT
 
 The First User
