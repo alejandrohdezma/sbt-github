@@ -174,6 +174,7 @@
 - Update sbt-fix to 0.2.2 [\#7](https://github.com/alejandrohdezma/sbt-github/pull/7) ([scala-steward](https://github.com/scala-steward))
 - Update sbt-fix to 0.2.1 [\#6](https://github.com/alejandrohdezma/sbt-github/pull/6) ([scala-steward](https://github.com/scala-steward))
 - Update sbt-fix to 0.2.0 [\#5](https://github.com/alejandrohdezma/sbt-github/pull/5) ([scala-steward](https://github.com/scala-steward))
+- Update sbt-scalafmt to 2.2.0 [\#3](https://github.com/alejandrohdezma/sbt-github/pull/3) ([scala-steward](https://github.com/scala-steward))
 
 ## [v0.2.0](https://github.com/alejandrohdezma/sbt-github/tree/v0.2.0) (2019-10-25)
 
@@ -182,7 +183,6 @@
 📈 **Dependency updates**
 
 - Update sbt-scalafmt to 2.2.1 [\#4](https://github.com/alejandrohdezma/sbt-github/pull/4) ([scala-steward](https://github.com/scala-steward))
-- Update sbt-scalafmt to 2.2.0 [\#3](https://github.com/alejandrohdezma/sbt-github/pull/3) ([scala-steward](https://github.com/scala-steward))
 - Update circe-generic, circe-parser to 0.12.3 [\#2](https://github.com/alejandrohdezma/sbt-github/pull/2) ([scala-steward](https://github.com/scala-steward))
 - Update scalafmt-core to 2.2.1 [\#1](https://github.com/alejandrohdezma/sbt-github/pull/1) ([scala-steward](https://github.com/scala-steward))
 
