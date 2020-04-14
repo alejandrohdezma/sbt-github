@@ -35,7 +35,7 @@ This plugin enables several settings automatically by downloading them from Gith
 Add the following line to your `plugins.sbt` file:
 
 ```sbt
-addSbtPlugin("com.alejandrohdezma" %% "sbt-github" % "0.7.0")
+addSbtPlugin("com.alejandrohdezma" %% "sbt-github" % "0.7.1")
 ```
 
 > If you use [mdoc](https://scalameta.org/mdoc/) there's also available an [mdoc integration module](#mdoc-integration)
@@ -119,7 +119,7 @@ By default this plugin will look for an environment variable named `GITHUB_TOKEN
 If you use [mdoc](https://scalameta.org/mdoc/) for creating your documentation you can benefit from our mdoc module which provides several bunches of [`mdocVariables`](https://scalameta.org/mdoc/docs/installation.html#sbt) already pre-filled with values extracted from Github to any project that adds the `MdocPlugin` to replace them in the documentation. To use it, just add the following line to your `plugins.sbt` file
 
 ```sbt
-addSbtPlugin("com.alejandrohdezma" %% "sbt-github-mdoc" % "0.7.0")
+addSbtPlugin("com.alejandrohdezma" %% "sbt-github-mdoc" % "0.7.1")
 ```
 
 > Important! So we don't force a version of mdoc, it is requested as a [`Provided`](https://maven.apache.org/guides/introduction/introduction-to-dependency-mechanism.html) dependency so you'll need to provide your own version of mdoc following [its own tutorial](https://scalameta.org/mdoc/docs/installation.html).
@@ -147,7 +147,7 @@ The plugin provides the following `mdocVariables`:
 If you use [sbt-header](https://github.com/sbt/sbt-header) for creating/updating your file headers according to your project's license you can benefit from our `sbt-github-header` module which pre-fills header template with downloaded Github values. To use it, just add the following line to your `plugins.sbt` file
 
 ```sbt
-addSbtPlugin("com.alejandrohdezma" %% "sbt-github-header" % "0.7.0")
+addSbtPlugin("com.alejandrohdezma" %% "sbt-github-header" % "0.7.1")
 ```
 
 > Important! So we don't force a version of sbt-header, it is requested as a [`Provided`](https://maven.apache.org/guides/introduction/introduction-to-dependency-mechanism.html) dependency so you'll need to provide your own version of [sbt-header](https://github.com/sbt/sbt-header).
