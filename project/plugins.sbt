@@ -1,5 +1,5 @@
 addSbtPlugin("com.alejandrohdezma"       % "sbt-codecov"              % "0.1.0")
-addSbtPlugin("com.alejandrohdezma"       % "sbt-fix"                  % "0.4.0")
+addSbtPlugin("com.alejandrohdezma"       % "sbt-fix"                  % "0.5.0")
 addSbtPlugin("com.alejandrohdezma"       % "sbt-mdoc-toc"             % "0.2")
 addSbtPlugin("com.alejandrohdezma"       % "sbt-remove-test-from-pom" % "0.1.0")
 addSbtPlugin("com.geirsson"              % "sbt-ci-release"           % "1.5.2")
