@@ -1,5 +1,13 @@
 # Changelog
 
+## [Unreleased](https://github.com/alejandrohdezma/sbt-github/tree/HEAD)
+
+[Full Changelog](https://github.com/alejandrohdezma/sbt-github/compare/v0.7.1...HEAD)
+
+📈 **Dependency updates**
+
+- Update sbt-fix to 0.5.0 [\#170](https://github.com/alejandrohdezma/sbt-github/pull/170) ([alejandrohdezma](https://github.com/alejandrohdezma))
+
 ## [v0.7.1](https://github.com/alejandrohdezma/sbt-github/tree/v0.7.1) (2020-04-13)
 
 [Full Changelog](https://github.com/alejandrohdezma/sbt-github/compare/v0.7.0...v0.7.1)
@@ -106,10 +114,6 @@
 
 - Improve README with GITHUB\_TOKEN tips [\#73](https://github.com/alejandrohdezma/sbt-github/pull/73) ([alejandrohdezma](https://github.com/alejandrohdezma))
 
-🐛 **Bug Fixes**
-
-- Fix broken links, errored versions and descriptions [\#47](https://github.com/alejandrohdezma/sbt-github/pull/47) ([alejandrohdezma](https://github.com/alejandrohdezma))
-
 📈 **Dependency updates**
 
 - Update http4s-blaze-server, http4s-dsl to 0.21.1 [\#72](https://github.com/alejandrohdezma/sbt-github/pull/72) ([scala-steward](https://github.com/scala-steward))
@@ -143,6 +147,7 @@
 
 🐛 **Bug Fixes**
 
+- Fix broken links, errored versions and descriptions [\#47](https://github.com/alejandrohdezma/sbt-github/pull/47) ([alejandrohdezma](https://github.com/alejandrohdezma))
 - Fix scaladocs [\#24](https://github.com/alejandrohdezma/sbt-github/pull/24) ([alejandrohdezma](https://github.com/alejandrohdezma))
 
 📈 **Dependency updates**
