@@ -19,8 +19,10 @@ package com.alejandrohdezma.sbt.github.syntax
 import scala.annotation.tailrec
 import scala.util.Try
 
-import com.alejandrohdezma.sbt.github.json.error.{InvalidPath, NotAJSONObject}
-import com.alejandrohdezma.sbt.github.json.{Decoder, Json}
+import com.alejandrohdezma.sbt.github.json.Decoder
+import com.alejandrohdezma.sbt.github.json.Json
+import com.alejandrohdezma.sbt.github.json.error.InvalidPath
+import com.alejandrohdezma.sbt.github.json.error.NotAJSONObject
 import com.alejandrohdezma.sbt.github.syntax.scalatry._
 import com.alejandrohdezma.sbt.github.syntax.throwable._
 

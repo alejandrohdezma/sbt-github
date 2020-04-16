@@ -21,8 +21,10 @@ import scala.util.Try
 import sbt.URL
 import sbt.util.Logger
 
-import com.alejandrohdezma.sbt.github.github.urls.{GithubEntryPoint, UserEntryPoint}
-import com.alejandrohdezma.sbt.github.http.{client, Authentication}
+import com.alejandrohdezma.sbt.github.github.urls.GithubEntryPoint
+import com.alejandrohdezma.sbt.github.github.urls.UserEntryPoint
+import com.alejandrohdezma.sbt.github.http.Authentication
+import com.alejandrohdezma.sbt.github.http.client
 import com.alejandrohdezma.sbt.github.json.Decoder
 import com.alejandrohdezma.sbt.github.syntax.json._
 

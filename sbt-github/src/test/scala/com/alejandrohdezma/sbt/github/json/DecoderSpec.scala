@@ -237,7 +237,7 @@ class DecoderSpec extends Specification {
     "decode uris" >> {
       val json = Json.Text("https://example.com?page=2")
 
-      val expected = new URL("https://example.com?page=2")
+      val expected = sbt.url("https://example.com?page=2")
 
       json.as[URL] must beSuccessfulTry(expected)
     }

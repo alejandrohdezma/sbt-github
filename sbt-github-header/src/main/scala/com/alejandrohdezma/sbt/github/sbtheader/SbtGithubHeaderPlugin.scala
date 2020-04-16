@@ -16,14 +16,17 @@
 
 package com.alejandrohdezma.sbt.github.sbtheader
 
+import sbt.Def
 import sbt.Keys._
-import sbt.{Def, _}
+import sbt._
 
 import com.alejandrohdezma.sbt.github.SbtGithubPlugin
 import com.alejandrohdezma.sbt.github.SbtGithubPlugin.autoImport._
+import de.heikoseeberger.sbtheader.HeaderPlugin
 import de.heikoseeberger.sbtheader.HeaderPlugin.autoImport._
 import de.heikoseeberger.sbtheader.License._
-import de.heikoseeberger.sbtheader.{HeaderPlugin, LicenseStyle, SpdxLicense}
+import de.heikoseeberger.sbtheader.LicenseStyle
+import de.heikoseeberger.sbtheader.SpdxLicense
 
 /**
  * Populates the `headerLicense` setting from [[https://github.com/sbt/sbt-header sbt-header]]

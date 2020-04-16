@@ -23,8 +23,9 @@ import sbt.Keys._
 import sbt._
 import sbt.plugins.JvmPlugin
 
+import com.alejandrohdezma.sbt.github.github.Organization
+import com.alejandrohdezma.sbt.github.github.Repository
 import com.alejandrohdezma.sbt.github.github.urls.GithubEntryPoint
-import com.alejandrohdezma.sbt.github.github.{Organization, Repository}
 import com.alejandrohdezma.sbt.github.http.Authentication
 import com.alejandrohdezma.sbt.github.syntax.list._
 
@@ -38,7 +39,7 @@ import com.alejandrohdezma.sbt.github.syntax.list._
  * This will only happen during the release stage in Travis CI, since its only
  * needed during this phase.
  */
-@SuppressWarnings(Array("scalafix:DisableSyntax.==", "scalafix:Disable.get"))
+@SuppressWarnings(Array("scalafix:DisableSyntax.=="))
 object SbtGithubPlugin extends AutoPlugin {
 
   object autoImport {

@@ -26,7 +26,8 @@ import sbt.URL
 import sbt.util.Logger
 
 import com.alejandrohdezma.sbt.github.http.error.URLNotFound
-import com.alejandrohdezma.sbt.github.json.{Decoder, Json}
+import com.alejandrohdezma.sbt.github.json.Decoder
+import com.alejandrohdezma.sbt.github.json.Json
 import com.alejandrohdezma.sbt.github.syntax.json._
 import com.alejandrohdezma.sbt.github.syntax.scalatry._
 
