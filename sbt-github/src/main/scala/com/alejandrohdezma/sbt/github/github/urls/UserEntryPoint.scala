@@ -22,7 +22,8 @@ import sbt.URL
 import sbt.util.Logger
 
 import com.alejandrohdezma.sbt.github.github.error.GithubError
-import com.alejandrohdezma.sbt.github.http.{client, Authentication}
+import com.alejandrohdezma.sbt.github.http.Authentication
+import com.alejandrohdezma.sbt.github.http.client
 import com.alejandrohdezma.sbt.github.syntax.json._
 import com.alejandrohdezma.sbt.github.syntax.scalatry._
 

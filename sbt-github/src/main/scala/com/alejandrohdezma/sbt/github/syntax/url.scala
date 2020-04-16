@@ -27,7 +27,7 @@ object url {
      * Adds a query param with the given `key`/`value` pair to
      * this `URL` ad returns it.
      */
-    @SuppressWarnings(Array("scalafix:Disable.toURI"))
+    @SuppressWarnings(Array("scalafix:Disable.java.net.URL"))
     def withQueryParam(key: String, value: String): URL = {
       val uri = url.toURI
 

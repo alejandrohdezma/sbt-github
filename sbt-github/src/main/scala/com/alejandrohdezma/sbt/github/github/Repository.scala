@@ -25,8 +25,10 @@ import sbt.util.Logger
 
 import com.alejandrohdezma.sbt.github.error.NotFound
 import com.alejandrohdezma.sbt.github.github.error.GithubError
-import com.alejandrohdezma.sbt.github.github.urls.{GithubEntryPoint, RepositoryEntryPoint}
-import com.alejandrohdezma.sbt.github.http.{client, Authentication}
+import com.alejandrohdezma.sbt.github.github.urls.GithubEntryPoint
+import com.alejandrohdezma.sbt.github.github.urls.RepositoryEntryPoint
+import com.alejandrohdezma.sbt.github.http.Authentication
+import com.alejandrohdezma.sbt.github.http.client
 import com.alejandrohdezma.sbt.github.json.Decoder
 import com.alejandrohdezma.sbt.github.syntax.json._
 import com.alejandrohdezma.sbt.github.syntax.list._

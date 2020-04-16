@@ -16,7 +16,8 @@
 
 package com.alejandrohdezma.sbt.github.syntax
 
-import scala.util.{Failure, Try}
+import scala.util.Failure
+import scala.util.Try
 
 import com.alejandrohdezma.sbt.github.error.NotFound
 import com.alejandrohdezma.sbt.github.github.error.GithubError

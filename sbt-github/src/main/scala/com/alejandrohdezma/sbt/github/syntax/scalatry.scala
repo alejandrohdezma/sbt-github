@@ -16,7 +16,9 @@
 
 package com.alejandrohdezma.sbt.github.syntax
 
-import scala.util.{Failure, Success, Try}
+import scala.util.Failure
+import scala.util.Success
+import scala.util.Try
 
 object scalatry {
 

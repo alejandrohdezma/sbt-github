@@ -16,7 +16,8 @@
 
 package com.alejandrohdezma.sbt.github.syntax
 
-import scala.util.{Success, Try}
+import scala.util.Success
+import scala.util.Try
 
 object list {
 

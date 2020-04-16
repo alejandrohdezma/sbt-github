@@ -22,6 +22,7 @@ import java.time.ZonedDateTime.parse
 import scala.util.Try
 
 import sbt.URL
+import sbt.url
 
 import com.alejandrohdezma.sbt.github.error._
 import com.alejandrohdezma.sbt.github.json.error._
@@ -84,7 +85,7 @@ object Decoder {
 
   implicit val URLDecoder: Decoder[URL] = {
     case Json.Null            => NotFound.raise
-    case v @ Json.Text(value) => Try(new URL(value)).failAs(NotAUrl(v))
+    case v @ Json.Text(value) => Try(url(value)).failAs(NotAUrl(v))
     case value                => NotAUrl(value).raise
   }
 

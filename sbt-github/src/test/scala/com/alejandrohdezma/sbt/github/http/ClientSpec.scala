@@ -32,7 +32,7 @@ import org.http4s.dsl.io._
 import org.http4s.headers.Authorization
 import org.specs2.mutable.Specification
 
-@SuppressWarnings(Array("scalafix:Disable.IOException"))
+@SuppressWarnings(Array("scalafix:Disable.blocking.io"))
 class ClientSpec extends Specification {
 
   "client.get" should {
