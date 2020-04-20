@@ -120,7 +120,7 @@ object SbtGithubPlugin extends AutoPlugin {
   override def requires: Plugins = JvmPlugin
 
   @silent
-  override def buildSettings: Seq[Setting[_]] = Seq(
+  override def buildSettings: Seq[Setting[_]] = aliases ++ Seq(
     githubApiEntryPoint := url("https://api.github.com"),
     githubEnabled       := downloadInfoFromGithub.value,
     downloadInfoFromGithub := {
@@ -212,5 +212,9 @@ object SbtGithubPlugin extends AutoPlugin {
       case Some(s)                       => sys.error(s"Invalid `scmInfo` connection value: $s")
     }
   }
+
+  private lazy val aliases = addCommandAlias("github", ";set githubEnabled in ThisBuild := true") ++
+    addCommandAlias("githubOn", ";set githubEnabled in ThisBuild := true") ++
+    addCommandAlias("githubOff", ";set githubEnabled in ThisBuild := false")
 
 }
