@@ -8,11 +8,3 @@ pull_request_rules:
         method: squash
       label:
         add: [scala-steward]
-  - name: automatically merge automatic PRs from alejandrohdezma/.github
-    conditions:
-      - author=alejandrohdezma
-      - head=auto-update-workflows-docs
-      - status-success=test
-    actions:
-      merge:
-        method: squash

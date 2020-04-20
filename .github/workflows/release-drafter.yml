@@ -11,6 +11,7 @@ on:
 
 jobs:
   update_release_draft:
+    if: "!contains(github.event.head_commit.message, 'skip ci')"
     runs-on: ubuntu-latest
     steps:
       - name: Update release draft
