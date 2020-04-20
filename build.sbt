@@ -4,7 +4,8 @@ ThisBuild / organization := "com.alejandrohdezma"
 Global / onChangedBuildSource := ReloadOnSourceChanges
 
 addCommandAlias("ci-test", "fix --check; mdoc; publishLocal; scripted; testCovered")
-addCommandAlias("ci-docs", "mdoc; headerCreateAll")
+addCommandAlias("ci-docs", "github; mdoc; headerCreateAll")
+addCommandAlias("ci-release", "github; ci-release")
 
 skip in publish := true
 
@@ -25,6 +26,8 @@ lazy val `sbt-github` = project
   .settings(libraryDependencies += "org.http4s" %% "http4s-dsl" % "0.21.3" % Test)
   .settings(libraryDependencies += "org.http4s" %% "http4s-blaze-server" % "0.21.3" % Test)
   .settings(libraryDependencies += "ch.qos.logback" % "logback-classic" % "1.2.3" % Test)
+  .configs(CompileOnly)
+  .settings(silencer)
 
 lazy val `sbt-github-mdoc` = project
   .enablePlugins(SbtPlugin)
@@ -39,3 +42,10 @@ lazy val `sbt-github-header` = project
   .settings(description := "Integration between sbt-github and sbt-header")
   .settings(scriptedLaunchOpts += s"-Dplugin.version=${version.value}")
   .settings(addSbtPlugin(`sbt-header`))
+
+lazy val silencer = libraryDependencies ++= Seq(
+  compilerPlugin("com.github.ghik" % "silencer-plugin" % "1.6.0" cross CrossVersion.full),
+  "com.github.ghik" % "silencer-lib" % "1.6.0" % CompileOnly cross CrossVersion.full
+)
+
+val CompileOnly = config("compileonly").hide

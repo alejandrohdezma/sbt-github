@@ -1,8 +1,8 @@
-ThisBuild / downloadInfoFromGithub := false
-ThisBuild / githubToken            := Token("1234")
+ThisBuild / githubEnabled := false
+ThisBuild / githubToken   := Token("1234")
 
 TaskKey[Unit]("check", "Checks all the elements downloaded from the Github API are correct") := {
-  assert(description.value == "download-info-from-github")
+  assert(description.value == "enable-github")
   assert(organizationName.value == "default")
   assert(startYear.value.isEmpty)
   assert(yearRange.value.isEmpty)
