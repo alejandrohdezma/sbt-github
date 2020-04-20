@@ -1,13 +1,22 @@
 # Changelog
 
-## [Unreleased](https://github.com/alejandrohdezma/sbt-github/tree/HEAD)
+## [v0.8.0](https://github.com/alejandrohdezma/sbt-github/tree/v0.8.0) (2020-04-20)
 
-[Full Changelog](https://github.com/alejandrohdezma/sbt-github/compare/v0.7.1...HEAD)
+[Full Changelog](https://github.com/alejandrohdezma/sbt-github/compare/v0.7.1...v0.8.0)
+
+🚀 **Features**
+
+- Move minimum version of `sbt-header` to `5.6.0`  [\#179](https://github.com/alejandrohdezma/sbt-github/pull/179) ([alejandrohdezma](https://github.com/alejandrohdezma))
+- Add `githubEnabled` setting to be used instead of `downloadInfoFromGithub` [\#178](https://github.com/alejandrohdezma/sbt-github/pull/178) ([alejandrohdezma](https://github.com/alejandrohdezma))
 
 📈 **Dependency updates**
 
 - Update `sbt-codecov` to version `0.1.1` [\#175](https://github.com/alejandrohdezma/sbt-github/pull/175) ([alejandrohdezma](https://github.com/alejandrohdezma))
 - Update sbt-fix to 0.5.0 [\#170](https://github.com/alejandrohdezma/sbt-github/pull/170) ([alejandrohdezma](https://github.com/alejandrohdezma))
+
+**Merged pull requests:**
+
+- Set correct next `since` version in deprecated annotations [\#180](https://github.com/alejandrohdezma/sbt-github/pull/180) ([alejandrohdezma](https://github.com/alejandrohdezma))
 
 ## [v0.7.1](https://github.com/alejandrohdezma/sbt-github/tree/v0.7.1) (2020-04-13)
 
@@ -18,7 +27,6 @@
 - Add new `DESCRIPTION` mdoc variable with `description` setting value [\#159](https://github.com/alejandrohdezma/sbt-github/pull/159) ([alejandrohdezma](https://github.com/alejandrohdezma))
 - Add `sbt-codecov` plugin [\#157](https://github.com/alejandrohdezma/sbt-github/pull/157) ([alejandrohdezma](https://github.com/alejandrohdezma))
 - Add `sbt-remove-test-from-pom` plugin [\#151](https://github.com/alejandrohdezma/sbt-github/pull/151) ([alejandrohdezma](https://github.com/alejandrohdezma))
-- Add `per\_page` query param to contributors and collaborators URLs [\#146](https://github.com/alejandrohdezma/sbt-github/pull/146) ([alejandrohdezma](https://github.com/alejandrohdezma))
 
 📈 **Dependency updates**
 
@@ -31,6 +39,7 @@
 
 🚀 **Features**
 
+- Add `per\_page` query param to contributors and collaborators URLs [\#146](https://github.com/alejandrohdezma/sbt-github/pull/146) ([alejandrohdezma](https://github.com/alejandrohdezma))
 - Use `java.net.URL` for "url" fields [\#144](https://github.com/alejandrohdezma/sbt-github/pull/144) ([alejandrohdezma](https://github.com/alejandrohdezma))
 - Enable indicating the whole path when retrieving nested values in JSON [\#142](https://github.com/alejandrohdezma/sbt-github/pull/142) ([alejandrohdezma](https://github.com/alejandrohdezma))
 - Enable code-coverage retrieval and uploading to Codecov [\#134](https://github.com/alejandrohdezma/sbt-github/pull/134) ([alejandrohdezma](https://github.com/alejandrohdezma))
