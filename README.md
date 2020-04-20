@@ -44,10 +44,10 @@ addSbtPlugin("com.alejandrohdezma" %% "sbt-github" % "0.7.1")
 
 ## Configuration
 
-By default, the plugin only downloads the information if an environment variable named `DOWNLOAD_INFO_FROM_GITHUB` is present in the system SBT is running (the content of the variable is not important). This behavior can be tweaked by using the `downloadInfoFromGithub` setting:
+By default, the plugin only downloads the information if an environment variable named `DOWNLOAD_INFO_FROM_GITHUB` is present in the system SBT is running (the content of the variable is not important). This behavior can be tweaked by using the `githubEnabled` setting:
 
 ```sbt
-ThisBuild / downloadInfoFromGithub := true
+ThisBuild / githubEnabled := true
 ```
 
 ### Download owner information if it doesn't have an organization

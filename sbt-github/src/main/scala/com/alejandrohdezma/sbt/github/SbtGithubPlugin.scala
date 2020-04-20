@@ -88,8 +88,14 @@ object SbtGithubPlugin extends AutoPlugin {
       "Repository information downloaded from Github"
     }
 
+    val githubEnabled = settingKey[Boolean] {
+      "Whether sbt-github should download information from Github or not. Default to `false`"
+    }
+
+    @deprecated("Use githubEnabled instead", since = "0.7.2")
     val downloadInfoFromGithub = settingKey[Boolean] {
-      "Whether sbt-github should download information from Github or not"
+      "Whether sbt-github should download information from Github or not. Defaults to the presence of" +
+        " a `DOWNLOAD_INFO_FROM_GITHUB` environment variable. Deprecated, use `githubEnabled` instead."
     }
 
     val yearRange = settingKey[Option[String]] {
@@ -113,8 +119,16 @@ object SbtGithubPlugin extends AutoPlugin {
   override def requires: Plugins = JvmPlugin
 
   override def buildSettings: Seq[Setting[_]] = Seq(
-    githubApiEntryPoint           := url("https://api.github.com"),
-    downloadInfoFromGithub        := sys.env.contains("DOWNLOAD_INFO_FROM_GITHUB"),
+    githubApiEntryPoint := url("https://api.github.com"),
+    githubEnabled       := downloadInfoFromGithub.value,
+    downloadInfoFromGithub := {
+      if (sys.env.contains("DOWNLOAD_INFO_FROM_GITHUB")) {
+        sLog.value.warn {
+          "Using `DOWNLOAD_INFO_FROM_GITHUB` is deprecated. Please use `githubEnabled` instead."
+        }
+        true
+      } else false
+    },
     populateOrganizationWithOwner := true,
     excludedContributors          := List("scala-steward", """.*\[bot\]""", "traviscibot"),
     extraCollaborators            := List(),
@@ -124,7 +138,7 @@ object SbtGithubPlugin extends AutoPlugin {
       })
     },
     repository := Def.settingDyn {
-      if (downloadInfoFromGithub.value) Def.setting {
+      if (githubEnabled.value) Def.setting {
         implicit val log: Logger                  = sLog.value
         implicit val entryPoint: GithubEntryPoint = GithubEntryPoint(githubApiEntryPoint.value)
         implicit val auth: Authentication         = githubToken.value
