@@ -18,6 +18,7 @@
 - Add new `DESCRIPTION` mdoc variable with `description` setting value [\#159](https://github.com/alejandrohdezma/sbt-github/pull/159) ([alejandrohdezma](https://github.com/alejandrohdezma))
 - Add `sbt-codecov` plugin [\#157](https://github.com/alejandrohdezma/sbt-github/pull/157) ([alejandrohdezma](https://github.com/alejandrohdezma))
 - Add `sbt-remove-test-from-pom` plugin [\#151](https://github.com/alejandrohdezma/sbt-github/pull/151) ([alejandrohdezma](https://github.com/alejandrohdezma))
+- Add `per\_page` query param to contributors and collaborators URLs [\#146](https://github.com/alejandrohdezma/sbt-github/pull/146) ([alejandrohdezma](https://github.com/alejandrohdezma))
 
 📈 **Dependency updates**
 
@@ -30,7 +31,6 @@
 
 🚀 **Features**
 
-- Add `per\_page` query param to contributors and collaborators URLs [\#146](https://github.com/alejandrohdezma/sbt-github/pull/146) ([alejandrohdezma](https://github.com/alejandrohdezma))
 - Use `java.net.URL` for "url" fields [\#144](https://github.com/alejandrohdezma/sbt-github/pull/144) ([alejandrohdezma](https://github.com/alejandrohdezma))
 - Enable indicating the whole path when retrieving nested values in JSON [\#142](https://github.com/alejandrohdezma/sbt-github/pull/142) ([alejandrohdezma](https://github.com/alejandrohdezma))
 - Enable code-coverage retrieval and uploading to Codecov [\#134](https://github.com/alejandrohdezma/sbt-github/pull/134) ([alejandrohdezma](https://github.com/alejandrohdezma))
@@ -38,7 +38,6 @@
 - Extract mock server url creation to package object [\#127](https://github.com/alejandrohdezma/sbt-github/pull/127) ([alejandrohdezma](https://github.com/alejandrohdezma))
 - Improve documentation on Github Token [\#118](https://github.com/alejandrohdezma/sbt-github/pull/118) ([alejandrohdezma](https://github.com/alejandrohdezma))
 - Refactor erroring system [\#117](https://github.com/alejandrohdezma/sbt-github/pull/117) ([alejandrohdezma](https://github.com/alejandrohdezma))
-- Automatically merge all scala-steward PRs [\#95](https://github.com/alejandrohdezma/sbt-github/pull/95) ([alejandrohdezma](https://github.com/alejandrohdezma))
 
 📘 **Documentation**
 
@@ -66,6 +65,10 @@
 ⚠️ **Breaking changes**
 
 - Use repository's name as `NAME` mdoc variable [\#99](https://github.com/alejandrohdezma/sbt-github/pull/99) ([alejandrohdezma](https://github.com/alejandrohdezma))
+
+🚀 **Features**
+
+- Automatically merge all scala-steward PRs [\#95](https://github.com/alejandrohdezma/sbt-github/pull/95) ([alejandrohdezma](https://github.com/alejandrohdezma))
 
 📈 **Dependency updates**
 
