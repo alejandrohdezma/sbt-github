@@ -28,6 +28,7 @@ import com.alejandrohdezma.sbt.github.github.Repository
 import com.alejandrohdezma.sbt.github.github.urls.GithubEntryPoint
 import com.alejandrohdezma.sbt.github.http.Authentication
 import com.alejandrohdezma.sbt.github.syntax.list._
+import com.github.ghik.silencer.silent
 
 /**
  * This plugin automatically enables reloading on sbt source changes and
@@ -118,6 +119,7 @@ object SbtGithubPlugin extends AutoPlugin {
 
   override def requires: Plugins = JvmPlugin
 
+  @silent
   override def buildSettings: Seq[Setting[_]] = Seq(
     githubApiEntryPoint := url("https://api.github.com"),
     githubEnabled       := downloadInfoFromGithub.value,
