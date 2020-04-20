@@ -4,7 +4,7 @@ ThisBuild / organization := "com.alejandrohdezma"
 Global / onChangedBuildSource := ReloadOnSourceChanges
 
 addCommandAlias("ci-test", "fix --check; mdoc; publishLocal; scripted; testCovered")
-addCommandAlias("ci-docs", "mdoc; headerCreateAll")
+addCommandAlias("ci-docs", "github; mdoc; headerCreateAll")
 
 skip in publish := true
 
