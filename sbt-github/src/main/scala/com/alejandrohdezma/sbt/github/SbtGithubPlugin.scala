@@ -93,7 +93,7 @@ object SbtGithubPlugin extends AutoPlugin {
       "Whether sbt-github should download information from Github or not. Default to `false`"
     }
 
-    @deprecated("Use githubEnabled instead", since = "0.7.2")
+    @deprecated("Use githubEnabled instead", since = "0.8.0")
     val downloadInfoFromGithub = settingKey[Boolean] {
       "Whether sbt-github should download information from Github or not. Defaults to the presence of" +
         " a `DOWNLOAD_INFO_FROM_GITHUB` environment variable. Deprecated, use `githubEnabled` instead."

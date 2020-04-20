@@ -50,7 +50,7 @@ object SbtGithubHeaderPlugin extends AutoPlugin {
         "`organizationName <organizationHomepage>` if it is present."
     }
 
-    @deprecated("Use headerLicenseStyle instead", since = "0.7.2")
+    @deprecated("Use headerLicenseStyle instead", since = "0.8.0")
     val licenseStyle = settingKey[LicenseStyle] {
       "The license style to be used. Can be `Detailed` or `SpdxSyntax`. Defaults to Detailed."
     }
