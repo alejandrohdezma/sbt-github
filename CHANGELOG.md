@@ -114,6 +114,10 @@
 
 - Improve README with GITHUB\_TOKEN tips [\#73](https://github.com/alejandrohdezma/sbt-github/pull/73) ([alejandrohdezma](https://github.com/alejandrohdezma))
 
+🐛 **Bug Fixes**
+
+- Fix broken links, errored versions and descriptions [\#47](https://github.com/alejandrohdezma/sbt-github/pull/47) ([alejandrohdezma](https://github.com/alejandrohdezma))
+
 📈 **Dependency updates**
 
 - Update http4s-blaze-server, http4s-dsl to 0.21.1 [\#72](https://github.com/alejandrohdezma/sbt-github/pull/72) ([scala-steward](https://github.com/scala-steward))
@@ -147,7 +151,6 @@
 
 🐛 **Bug Fixes**
 
-- Fix broken links, errored versions and descriptions [\#47](https://github.com/alejandrohdezma/sbt-github/pull/47) ([alejandrohdezma](https://github.com/alejandrohdezma))
 - Fix scaladocs [\#24](https://github.com/alejandrohdezma/sbt-github/pull/24) ([alejandrohdezma](https://github.com/alejandrohdezma))
 
 📈 **Dependency updates**
@@ -162,7 +165,6 @@
 - Update sbt to 1.3.5 [\#17](https://github.com/alejandrohdezma/sbt-github/pull/17) ([scala-steward](https://github.com/scala-steward))
 - Update sbt-fix to 0.2.5 [\#16](https://github.com/alejandrohdezma/sbt-github/pull/16) ([scala-steward](https://github.com/scala-steward))
 - Update sbt-mdoc to 2.0.3 [\#15](https://github.com/alejandrohdezma/sbt-github/pull/15) ([scala-steward](https://github.com/scala-steward))
-- Update sbt-tpolecat to 0.1.10 [\#14](https://github.com/alejandrohdezma/sbt-github/pull/14) ([scala-steward](https://github.com/scala-steward))
 - Update sbt-tpolecat to 0.1.9 [\#13](https://github.com/alejandrohdezma/sbt-github/pull/13) ([scala-steward](https://github.com/scala-steward))
 - Update sbt to 1.3.4 [\#12](https://github.com/alejandrohdezma/sbt-github/pull/12) ([scala-steward](https://github.com/scala-steward))
 - Update sbt-mdoc to 2.0.2 [\#11](https://github.com/alejandrohdezma/sbt-github/pull/11) ([scala-steward](https://github.com/scala-steward))
@@ -173,6 +175,7 @@
 
 📈 **Dependency updates**
 
+- Update sbt-tpolecat to 0.1.10 [\#14](https://github.com/alejandrohdezma/sbt-github/pull/14) ([scala-steward](https://github.com/scala-steward))
 - Update sbt-mdoc to 2.0.1 [\#10](https://github.com/alejandrohdezma/sbt-github/pull/10) ([scala-steward](https://github.com/scala-steward))
 - Update sbt-fix to 0.2.4 [\#9](https://github.com/alejandrohdezma/sbt-github/pull/9) ([scala-steward](https://github.com/scala-steward))
 - Update sbt-fix to 0.2.3 [\#8](https://github.com/alejandrohdezma/sbt-github/pull/8) ([scala-steward](https://github.com/scala-steward))
