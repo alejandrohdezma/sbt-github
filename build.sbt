@@ -1,4 +1,4 @@
-ThisBuild / scalaVersion := "2.12.10"
+ThisBuild / scalaVersion := "2.12.11"
 ThisBuild / organization := "com.alejandrohdezma"
 
 Global / onChangedBuildSource := ReloadOnSourceChanges
@@ -22,7 +22,7 @@ lazy val docs = project
 lazy val `sbt-github` = project
   .enablePlugins(SbtPlugin)
   .settings(scriptedLaunchOpts += s"-Dplugin.version=${version.value}")
-  .settings(libraryDependencies += "org.specs2" %% "specs2-core" % "4.9.2" % Test)
+  .settings(libraryDependencies += "org.specs2" %% "specs2-core" % "4.9.3" % Test)
   .settings(libraryDependencies += "org.http4s" %% "http4s-dsl" % "0.21.3" % Test)
   .settings(libraryDependencies += "org.http4s" %% "http4s-blaze-server" % "0.21.3" % Test)
   .settings(libraryDependencies += "ch.qos.logback" % "logback-classic" % "1.2.3" % Test)
