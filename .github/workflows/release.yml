@@ -26,9 +26,8 @@ jobs:
       - name: Setup GPG
         uses: olafurpg/setup-gpg@v2
       - name: Release new version
-        run: sbt ci-release
+        run: sbt ci-publish
         env:
-          DOWNLOAD_INFO_FROM_GITHUB: true
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PGP_PASSPHRASE: ${{ secrets.PGP_PASSPHRASE }}
           PGP_SECRET: ${{ secrets.PGP_SECRET }}
