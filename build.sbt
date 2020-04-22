@@ -1,8 +1,6 @@
 ThisBuild / scalaVersion := "2.12.11"
 ThisBuild / organization := "com.alejandrohdezma"
 
-Global / onChangedBuildSource := ReloadOnSourceChanges
-
 addCommandAlias("ci-test", "fix --check; mdoc; publishLocal; scripted; testCovered")
 addCommandAlias("ci-docs", "github; mdoc; headerCreateAll")
 addCommandAlias("ci-publish", "github; ci-release")
