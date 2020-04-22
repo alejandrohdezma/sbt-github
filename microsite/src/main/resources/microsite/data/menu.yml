@@ -1,0 +1,17 @@
+options:
+  - title: Getting started
+    url: getting-started
+  - title: Use owner as organization
+    url: owner-as-organization
+  - title: Excluding contributors
+    url: excluding-contributors
+  - title: Adding extra collaborators
+    url: adding-extra-collaborators
+  - title: Github Token
+    url: github-token
+  - title: Integrations
+    nested_options:
+      - title: sbt-mdoc
+        url: sbt-mdoc
+      - title: sbt-header
+        url: sbt-header
