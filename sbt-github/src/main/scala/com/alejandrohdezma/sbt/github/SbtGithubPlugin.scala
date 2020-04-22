@@ -113,7 +113,13 @@ object SbtGithubPlugin extends AutoPlugin {
       "Organization email"
     }
 
+    @deprecated("Use githubAuthToken instead", since = "0.8.1")
     val githubToken = settingKey[Token] {
+      "The Github Token used for authenticating into Github API. Defaults to GITHUB_TOKEN environment variable. " +
+        "Deprecated, use `githubAuthToken` instead."
+    }
+
+    val githubAuthToken = settingKey[Option[AuthToken]] {
       "The Github Token used for authenticating into Github API. Defaults to GITHUB_TOKEN environment variable."
     }
 
@@ -145,6 +151,7 @@ object SbtGithubPlugin extends AutoPlugin {
         "You need to add an environment variable named GITHUB_TOKEN with a Github personal access token."
       })
     },
+    githubAuthToken := sys.env.get("GITHUB_TOKEN").map(AuthToken),
     repository := Def.settingDyn {
       if (githubEnabled.value) Def.setting {
         implicit val log: Logger                  = sLog.value
