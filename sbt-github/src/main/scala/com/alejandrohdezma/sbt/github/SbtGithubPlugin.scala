@@ -156,7 +156,7 @@ object SbtGithubPlugin extends AutoPlugin {
       if (githubEnabled.value) Def.setting {
         implicit val log: Logger                  = sLog.value
         implicit val entryPoint: GithubEntryPoint = GithubEntryPoint(githubApiEntryPoint.value)
-        implicit val auth: Authentication         = githubToken.value
+        implicit val auth: Authentication         = githubAuthToken.value.getOrElse(githubToken.value)
 
         Some(Repository.get(info.value._1, info.value._2).get)
       }
@@ -164,7 +164,7 @@ object SbtGithubPlugin extends AutoPlugin {
     }.value,
     organizationMetadata := {
       implicit val log: Logger          = sLog.value
-      implicit val auth: Authentication = githubToken.value
+      implicit val auth: Authentication = githubAuthToken.value.getOrElse(githubToken.value)
       repository.value
         .flatMap(_.organization)
         .orElse {
@@ -176,14 +176,14 @@ object SbtGithubPlugin extends AutoPlugin {
     },
     contributors := {
       implicit val log: Logger          = sLog.value
-      implicit val auth: Authentication = githubToken.value
+      implicit val auth: Authentication = githubAuthToken.value.getOrElse(githubToken.value)
       repository.value.fold(Contributors(Nil)) {
         _.contributors(excludedContributors.value).get
       }
     },
     collaborators := {
       implicit val log: Logger          = sLog.value
-      implicit val auth: Authentication = githubToken.value
+      implicit val auth: Authentication = githubAuthToken.value.getOrElse(githubToken.value)
       repository.value.fold(Collaborators(Nil)) {
         _.collaborators(contributors.value.list.map(_.login)).get
           .include(
