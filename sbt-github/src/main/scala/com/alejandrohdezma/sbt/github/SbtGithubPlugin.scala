@@ -54,8 +54,14 @@ object SbtGithubPlugin extends AutoPlugin {
     type Collaborator = github.Collaborator
     val Collaborator = github.Collaborator
 
+    @deprecated("Use AuthToken instead", since = "0.8.1")
     type Token = http.Authentication.Token
+
+    @deprecated("Use AuthToken instead", since = "0.8.1")
     val Token = http.Authentication.Token
+
+    type AuthToken = http.Authentication.AuthToken
+    val AuthToken = http.Authentication.AuthToken
 
     val githubApiEntryPoint = settingKey[URL] {
       "Entry point for the github API, defaults to `https://api.github.com`"

@@ -24,6 +24,13 @@ trait Authentication {
 
 object Authentication {
 
+  final case class AuthToken(value: String) extends Authentication {
+
+    override def header: String = s"token $value"
+
+  }
+
+  @deprecated("Use AuthToken instead", since = "0.8.1")
   final class Token(value: => String) extends Authentication {
 
     override def header: String = s"token $value"
