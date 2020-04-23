@@ -14,7 +14,6 @@ lazy val documentation = project
   .enablePlugins(MdocPlugin)
   .settings(skip in publish := true)
   .settings(mdocOut := file("."))
-  .settings(mdocVariables += "EXCLUDED" -> excludedContributors.value.mkString("- ", "\n- ", ""))
 
 lazy val microsite = project
   .enablePlugins(MdocPlugin, MicrositesPlugin)
