@@ -6,17 +6,17 @@ permalink: github-token
 
 # Github API token
 
-The Github [personal access token](https://github.com/settings/tokens) that the plugin will use can be set using the `githubToken` setting:
+The Github [personal access token](https://github.com/settings/tokens) that the plugin will use can be set using the `githubAuthToken` setting:
 
 ```scala
 //Defaults to the value of environment variable `GITHUB_TOKEN`
-ThisBuild / githubToken := Token("my-github-token")
+ThisBuild / githubAuthToken := Some(AuthToken("my-github-token"))
 ```
 
 If you don't want to write your personal token directly in `build.sbt` (which you shouldn't) you can read the value of an environment variable:
 
 ```scala
-Global / githubToken := Token(sys.env.getOrElse("MY_TOKEN", sys.error("Unable to find token")))
+Global / githubAuthToken := sys.env.get("GITHUB_TOKEN").map(AuthToken)
 ```
 
 By default this plugin will look for an environment variable named `GITHUB_TOKEN`.
