@@ -1,8 +1,6 @@
 ThisBuild / scalaVersion := "2.12.11"
 ThisBuild / organization := "com.alejandrohdezma"
 
-Global / onChangedBuildSource := ReloadOnSourceChanges
-
 addCommandAlias("ci-test", "fix --check; mdoc; publishLocal; scripted; testCovered")
 addCommandAlias("ci-docs", "github; mdoc; headerCreateAll")
 addCommandAlias("ci-publish", "github; ci-release")
@@ -12,8 +10,7 @@ skip in publish := true
 val `sbt-mdoc`   = "org.scalameta"     % "sbt-mdoc"   % "[2.0,)"   % Provided // scala-steward:off
 val `sbt-header` = "de.heikoseeberger" % "sbt-header" % "[5.6.0,)" % Provided // scala-steward:off
 
-lazy val docs = project
-  .in(file("sbt-github-docs"))
+lazy val documentation = project
   .enablePlugins(MdocPlugin)
   .settings(skip in publish := true)
   .settings(mdocOut := file("."))

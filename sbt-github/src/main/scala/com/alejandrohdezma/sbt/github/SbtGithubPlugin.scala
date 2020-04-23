@@ -54,8 +54,14 @@ object SbtGithubPlugin extends AutoPlugin {
     type Collaborator = github.Collaborator
     val Collaborator = github.Collaborator
 
+    @deprecated("Use AuthToken instead", since = "0.8.1")
     type Token = http.Authentication.Token
+
+    @deprecated("Use AuthToken instead", since = "0.8.1")
     val Token = http.Authentication.Token
+
+    type AuthToken = http.Authentication.AuthToken
+    val AuthToken = http.Authentication.AuthToken
 
     val githubApiEntryPoint = settingKey[URL] {
       "Entry point for the github API, defaults to `https://api.github.com`"
@@ -107,7 +113,13 @@ object SbtGithubPlugin extends AutoPlugin {
       "Organization email"
     }
 
+    @deprecated("Use githubAuthToken instead", since = "0.8.1")
     val githubToken = settingKey[Token] {
+      "The Github Token used for authenticating into Github API. Defaults to GITHUB_TOKEN environment variable. " +
+        "Deprecated, use `githubAuthToken` instead."
+    }
+
+    val githubAuthToken = settingKey[Option[AuthToken]] {
       "The Github Token used for authenticating into Github API. Defaults to GITHUB_TOKEN environment variable."
     }
 
@@ -139,11 +151,12 @@ object SbtGithubPlugin extends AutoPlugin {
         "You need to add an environment variable named GITHUB_TOKEN with a Github personal access token."
       })
     },
+    githubAuthToken := sys.env.get("GITHUB_TOKEN").map(AuthToken),
     repository := Def.settingDyn {
       if (githubEnabled.value) Def.setting {
         implicit val log: Logger                  = sLog.value
         implicit val entryPoint: GithubEntryPoint = GithubEntryPoint(githubApiEntryPoint.value)
-        implicit val auth: Authentication         = githubToken.value
+        implicit val auth: Authentication         = githubAuthToken.value.getOrElse(githubToken.value)
 
         Some(Repository.get(info.value._1, info.value._2).get)
       }
@@ -151,7 +164,7 @@ object SbtGithubPlugin extends AutoPlugin {
     }.value,
     organizationMetadata := {
       implicit val log: Logger          = sLog.value
-      implicit val auth: Authentication = githubToken.value
+      implicit val auth: Authentication = githubAuthToken.value.getOrElse(githubToken.value)
       repository.value
         .flatMap(_.organization)
         .orElse {
@@ -163,14 +176,14 @@ object SbtGithubPlugin extends AutoPlugin {
     },
     contributors := {
       implicit val log: Logger          = sLog.value
-      implicit val auth: Authentication = githubToken.value
+      implicit val auth: Authentication = githubAuthToken.value.getOrElse(githubToken.value)
       repository.value.fold(Contributors(Nil)) {
         _.contributors(excludedContributors.value).get
       }
     },
     collaborators := {
       implicit val log: Logger          = sLog.value
-      implicit val auth: Authentication = githubToken.value
+      implicit val auth: Authentication = githubAuthToken.value.getOrElse(githubToken.value)
       repository.value.fold(Collaborators(Nil)) {
         _.collaborators(contributors.value.list.map(_.login)).get
           .include(
