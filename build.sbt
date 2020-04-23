@@ -16,6 +16,16 @@ lazy val documentation = project
   .settings(mdocOut := file("."))
   .settings(mdocVariables += "EXCLUDED" -> excludedContributors.value.mkString("- ", "\n- ", ""))
 
+lazy val microsite = project
+  .enablePlugins(MdocPlugin, MicrositesPlugin)
+  .settings(skip in publish := true)
+  .settings(mdocVariables += "EXCLUDED" -> excludedContributors.value.mkString("- ", "\n- ", ""))
+  .settings(micrositeName := name.in(`sbt-github`).value)
+  .settings(micrositeDescription := description.in(`sbt-github`).value)
+  .settings(micrositeGithubToken := githubAuthToken.value.map(_.value))
+  .settings(micrositeBaseUrl := name.in(`sbt-github`).value)
+  .settings(micrositePushSiteWith := GitHub4s)
+
 lazy val `sbt-github` = project
   .enablePlugins(SbtPlugin)
   .settings(scriptedLaunchOpts += s"-Dplugin.version=${version.value}")
