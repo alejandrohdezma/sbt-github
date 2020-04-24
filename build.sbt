@@ -31,7 +31,6 @@ lazy val `sbt-github` = project
   .settings(libraryDependencies += "org.specs2" %% "specs2-core" % "4.9.3" % Test)
   .settings(libraryDependencies += "org.http4s" %% "http4s-dsl" % "0.21.3" % Test)
   .settings(libraryDependencies += "org.http4s" %% "http4s-blaze-server" % "0.21.3" % Test)
-  .settings(libraryDependencies += "ch.qos.logback" % "logback-classic" % "1.2.3" % Test)
   .configs(CompileOnly)
   .settings(silencer)
 
