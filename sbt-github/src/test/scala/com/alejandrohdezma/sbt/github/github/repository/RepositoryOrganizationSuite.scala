@@ -16,21 +16,18 @@
 
 package com.alejandrohdezma.sbt.github.github.repository
 
-import sbt.util.Logger
+import scala.util.Failure
+import scala.util.Success
 
 import com.alejandrohdezma.sbt.github._
 import com.alejandrohdezma.sbt.github.github._
 import com.alejandrohdezma.sbt.github.github.error.GithubError
-import com.alejandrohdezma.sbt.github.http.Authentication
-import com.alejandrohdezma.sbt.github.http.Authentication.Token
 import org.http4s.dsl.io._
-import org.specs2.mutable.Specification
 
-class RepositoryOrganizationSpec extends Specification {
+class RepositoryOrganizationSuite extends munit.FunSuite {
 
-  "repository.organization" should {
-
-    "return repository's organization from Github API" >> withServer {
+  test("repository.organization should return repository's organization from Github API") {
+    withServer {
       case GET -> Root / "organization" =>
         Ok(s"""{
           "name": "My Organization",
@@ -49,10 +46,12 @@ class RepositoryOrganizationSpec extends Specification {
           Some("org@example.com")
         )
 
-      organization must be some successfulTry(expected)
+      assertEquals(organization, Some(Success(expected)))
     }
+  }
 
-    "not return url if not present" >> withServer {
+  test("repository.organization should not return url if not present") {
+    withServer {
       case GET -> Root / "organization" =>
         Ok(s"""{ "name": "My Organization", "email": "org@example.com" }""")
     } { uri =>
@@ -62,10 +61,12 @@ class RepositoryOrganizationSpec extends Specification {
 
       val expected = Organization(Some("My Organization"), None, Some("org@example.com"))
 
-      organization must be some successfulTry(expected)
+      assertEquals(organization, Some(Success(expected)))
     }
+  }
 
-    "not return name if not present" >> withServer {
+  test("repository.organization should not return name if not present") {
+    withServer {
       case GET -> Root / "organization" =>
         Ok(s"""{ "blog": "http://example.com", "email": "org@example.com" }""")
     } { uri =>
@@ -75,10 +76,12 @@ class RepositoryOrganizationSpec extends Specification {
 
       val expected = Organization(None, Some(url"http://example.com"), Some("org@example.com"))
 
-      organization must be some successfulTry(expected)
+      assertEquals(organization, Some(Success(expected)))
     }
+  }
 
-    "not return email if not present" >> withServer {
+  test("repository.organization should not return email if not present") {
+    withServer {
       case GET -> Root / "organization" =>
         Ok(s"""{ "blog": "http://example.com", "name": "My Organization" }""")
     } { uri =>
@@ -88,10 +91,12 @@ class RepositoryOrganizationSpec extends Specification {
 
       val expected = Organization(Some("My Organization"), Some(url"http://example.com"), None)
 
-      organization must be some successfulTry(expected)
+      assertEquals(organization, Some(Success(expected)))
     }
+  }
 
-    "return generic error on any error" >> withServer {
+  test("repository.organization should return generic error on any error") {
+    withServer {
       case GET -> Root / "organization" => NotFound()
     } { uri =>
       val repository = EmptyRepository.copy(organizationUrl = Some(url"${uri}organization"))
@@ -100,25 +105,8 @@ class RepositoryOrganizationSpec extends Specification {
 
       val expected = GithubError("Unable to get repository organization")
 
-      organization must beSome(failedTry[Organization](equalTo(expected)))
+      assertEquals(organization, Some(Failure(expected)))
     }
-
   }
-
-  implicit val authentication: Authentication = Token("1234")
-  implicit val noOpLogger: Logger             = Logger.Null
-
-  lazy val EmptyRepository: Repository =
-    Repository(
-      "",
-      "",
-      License("", url"http://example.com"),
-      url"http://example.com",
-      0,
-      url"http://example.com",
-      url"http://example.com",
-      None,
-      url"http://example.com"
-    )
 
 }

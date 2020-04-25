@@ -16,22 +16,19 @@
 
 package com.alejandrohdezma.sbt.github.github.repository
 
-import sbt.util.Logger
+import scala.util.Failure
+import scala.util.Success
 
 import com.alejandrohdezma.sbt.github._
 import com.alejandrohdezma.sbt.github.github._
 import com.alejandrohdezma.sbt.github.github.error.GithubError
 import com.alejandrohdezma.sbt.github.github.urls.GithubEntryPoint
-import com.alejandrohdezma.sbt.github.http.Authentication
-import com.alejandrohdezma.sbt.github.http.Authentication.Token
 import org.http4s.dsl.io._
-import org.specs2.mutable.Specification
 
-class RepositorySpec extends Specification {
+class RepositorySuite extends munit.FunSuite {
 
-  "Repository.get" should {
-
-    "return Repository if everything is present" >> withServer {
+  test("Repository.get should return Repository if everything is present") {
+    withServer {
       case r @ GET -> Root => Ok(s"""{ "repository_url": "${r.urlTo("{owner}/{repo}")}" } """)
       case GET -> Root / "user" / "repo" =>
         Ok("""{
@@ -69,10 +66,12 @@ class RepositorySpec extends Specification {
         url"http://api.github.com/users/owner"
       )
 
-      repository must beSuccessfulTry(expected)
+      assertEquals(repository, Success(expected))
     }
+  }
 
-    "return None organization if it is not present" >> withServer {
+  test("Repository.get should return None organization if it is not present") {
+    withServer {
       case r @ GET -> Root => Ok(s"""{ "repository_url": "${r.urlTo("{owner}/{repo}")}" } """)
       case GET -> Root / "user" / "repo" =>
         Ok("""{
@@ -107,10 +106,12 @@ class RepositorySpec extends Specification {
         url"http://api.github.com/users/owner"
       )
 
-      repository must beSuccessfulTry(expected)
+      assertEquals(repository, Success(expected))
     }
+  }
 
-    "return error if description is not present" >> withServer {
+  test("Repository.get should return error if description is not present") {
+    withServer {
       case r @ GET -> Root => Ok(s"""{ "repository_url": "${r.urlTo("{owner}/{repo}")}" } """)
       case GET -> Root / "user" / "repo" =>
         Ok("""{
@@ -140,10 +141,12 @@ class RepositorySpec extends Specification {
         "Repository doesn't have a description! Go to https://github.com/user/repo and add it"
       )
 
-      repository must beAFailedTry(equalTo(expected))
+      assertEquals(repository, Failure(expected))
     }
+  }
 
-    "return error if license is not present" >> withServer {
+  test("Repository.get should return error if license is not present") {
+    withServer {
       case r @ GET -> Root => Ok(s"""{ "repository_url": "${r.urlTo("{owner}/{repo}")}" } """)
       case GET -> Root / "user" / "repo" =>
         Ok("""{
@@ -170,10 +173,12 @@ class RepositorySpec extends Specification {
         "Repository doesn't have a license! Go to https://github.com/user/repo and add it"
       )
 
-      repository must beAFailedTry(equalTo(expected))
+      assertEquals(repository, Failure(expected))
     }
+  }
 
-    "return error if license's `spdx_id` is not present" >> withServer {
+  test("Repository.get should return error if license's `spdx_id` is not present") {
+    withServer {
       case r @ GET -> Root => Ok(s"""{ "repository_url": "${r.urlTo("{owner}/{repo}")}" } """)
       case GET -> Root / "user" / "repo" =>
         Ok("""{
@@ -203,10 +208,12 @@ class RepositorySpec extends Specification {
         "Repository's license id couldn't be inferred! Go to https://github.com/user/repo and check it"
       )
 
-      repository must beAFailedTry(equalTo(expected))
+      assertEquals(repository, Failure(expected))
     }
+  }
 
-    "return error if license's `url` is not present" >> withServer {
+  test("Repository.get should return error if license's `url` is not present") {
+    withServer {
       case r @ GET -> Root => Ok(s"""{ "repository_url": "${r.urlTo("{owner}/{repo}")}" } """)
       case GET -> Root / "user" / "repo" =>
         Ok("""{
@@ -236,10 +243,12 @@ class RepositorySpec extends Specification {
         "Repository's license url couldn't be inferred! Go to https://github.com/user/repo and check it"
       )
 
-      repository must beAFailedTry(equalTo(expected))
+      assertEquals(repository, Failure(expected))
     }
+  }
 
-    "return generic error in other cases" >> withServer {
+  test("Repository.get should return generic error in other cases") {
+    withServer {
       case r @ GET -> Root => Ok(s"""{ "repository_url": "${r.urlTo("{owner}/{repo}")}" } """)
       case GET -> Root / "user" / "repo" =>
         Ok("""{
@@ -266,25 +275,8 @@ class RepositorySpec extends Specification {
         "Unable to get repository information"
       )
 
-      repository must beAFailedTry(equalTo(expected))
+      assertEquals(repository, Failure(expected))
     }
-
   }
-
-  implicit val authentication: Authentication = Token("1234")
-  implicit val noOpLogger: Logger             = Logger.Null
-
-  lazy val EmptyRepository: Repository =
-    Repository(
-      "",
-      "",
-      License("", url"http://example.com"),
-      url"http://example.com",
-      0,
-      url"http://example.com",
-      url"http://example.com",
-      None,
-      url"http://example.com"
-    )
 
 }

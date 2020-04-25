@@ -16,21 +16,18 @@
 
 package com.alejandrohdezma.sbt.github.github.repository
 
-import sbt.util.Logger
+import scala.util.Failure
+import scala.util.Success
 
 import com.alejandrohdezma.sbt.github._
 import com.alejandrohdezma.sbt.github.github._
 import com.alejandrohdezma.sbt.github.github.error.GithubError
-import com.alejandrohdezma.sbt.github.http.Authentication
-import com.alejandrohdezma.sbt.github.http.Authentication.Token
 import org.http4s.dsl.io._
-import org.specs2.mutable.Specification
 
-class RepositoryContributorsSpec extends Specification {
+class RepositoryContributorsSuite extends munit.FunSuite {
 
-  "repository.contributors" should {
-
-    "return list of contributors (ordered by contributions) from Github API" >> withServer {
+  test("repository.contributors should return list of contributors (ordered by contributions)") {
+    withServer {
       case GET -> Root / "contributors" =>
         Ok("""[
           {
@@ -65,10 +62,12 @@ class RepositoryContributorsSpec extends Specification {
         )
       )
 
-      contributors must beSuccessfulTry(expected)
+      assertEquals(contributors, Success(expected))
     }
+  }
 
-    "exclude provided contributors" >> withServer {
+  test("repository.contributors should exclude provided contributors") {
+    withServer {
       case GET -> Root / "contributors" =>
         Ok("""[
           {
@@ -90,10 +89,12 @@ class RepositoryContributorsSpec extends Specification {
 
       val expected = Contributors(List(Contributor("me", 42, "http://example.com/me", None)))
 
-      contributors must beSuccessfulTry(expected)
+      assertEquals(contributors, Success(expected))
     }
+  }
 
-    "exclude provided contributors as regex" >> withServer {
+  test("repository.contributors should exclude provided contributors as regex") {
+    withServer {
       case GET -> Root / "contributors" =>
         Ok("""[
           {
@@ -115,10 +116,12 @@ class RepositoryContributorsSpec extends Specification {
 
       val expected = Contributors(List(Contributor("me", 42, "http://example.com/me", None)))
 
-      contributors must beSuccessfulTry(expected)
+      assertEquals(contributors, Success(expected))
     }
+  }
 
-    "return generic error on any error" >> withServer {
+  test("repository.contributors should return generic error on any error") {
+    withServer {
       case GET -> Root / "contributors" => Ok("""{"hello": "hi"}""")
     } { uri =>
       val repository = EmptyRepository.copy(contributorsUrl = url"${uri}contributors")
@@ -129,25 +132,8 @@ class RepositoryContributorsSpec extends Specification {
         "Unable to get repository contributors"
       )
 
-      contributors must beAFailedTry(equalTo(expected))
+      assertEquals(contributors, Failure(expected))
     }
-
   }
-
-  implicit val authentication: Authentication = Token("1234")
-  implicit val noOpLogger: Logger             = Logger.Null
-
-  lazy val EmptyRepository: Repository =
-    Repository(
-      "",
-      "",
-      License("", url"http://example.com"),
-      url"http://example.com",
-      0,
-      url"http://example.com",
-      url"http://example.com",
-      None,
-      url"http://example.com"
-    )
 
 }

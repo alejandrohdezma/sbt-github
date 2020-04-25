@@ -16,21 +16,18 @@
 
 package com.alejandrohdezma.sbt.github.github.repository
 
-import sbt.util.Logger
+import scala.util.Failure
+import scala.util.Success
 
 import com.alejandrohdezma.sbt.github._
 import com.alejandrohdezma.sbt.github.github._
 import com.alejandrohdezma.sbt.github.github.error.GithubError
-import com.alejandrohdezma.sbt.github.http.Authentication
-import com.alejandrohdezma.sbt.github.http.Authentication.Token
 import org.http4s.dsl.io._
-import org.specs2.mutable.Specification
 
-class RepositoryCollaboratorsSpec extends Specification {
+class RepositoryCollaboratorsSuite extends munit.FunSuite {
 
-  "repository.collaborators" should {
-
-    "return list of collaborators (alphabetically ordered) with user info from Github API" >> withServer {
+  test("repository.collaborators should return ordered list with user info from Github API") {
+    withServer {
       case GET -> Root / "me"  => Ok("""{
         "name": "Me",
         "login": "me",
@@ -99,14 +96,15 @@ class RepositoryCollaboratorsSpec extends Specification {
         )
       )
 
-      collaborators must beSuccessfulTry(expected)
+      assertEquals(collaborators, Success(expected))
     }
 
-    "exclude collaborators not in provided list and don't retrieve user info for them" >> withServer {
-      case GET -> Root / "me" =>
-        Ok("""{"login": "me", "html_url": "http://example.com/me", "name": "Me"}""")
-      case req @ GET -> Root / "collaborators" =>
-        Ok(s"""[
+    test("repository.collaborators should exclude collaborators that do not appear in list") {
+      withServer {
+        case GET -> Root / "me" =>
+          Ok("""{"login": "me", "html_url": "http://example.com/me", "name": "Me"}""")
+        case req @ GET -> Root / "collaborators" =>
+          Ok(s"""[
           {
             "login": "me",
             "avatar_url": "http://example.com/me.png",
@@ -119,53 +117,40 @@ class RepositoryCollaboratorsSpec extends Specification {
             "url": "http://api.example.com/you"
           }
         ]""")
-    } { uri =>
-      val repository = EmptyRepository.copy(collaboratorsUrl = url"${uri}collaborators")
+      } { uri =>
+        val repository = EmptyRepository.copy(collaboratorsUrl = url"${uri}collaborators")
 
-      val collaborators = repository.collaborators(List("me"))
+        val collaborators = repository.collaborators(List("me"))
 
-      val expected = Collaborators(
-        Collaborator(
-          "me",
-          url"http://example.com/me",
-          Some(url"${uri}me"),
-          Some("Me"),
-          None,
-          Some(url"http://example.com/me.png")
+        val expected = Collaborators(
+          Collaborator(
+            "me",
+            url"http://example.com/me",
+            Some(url"${uri}me"),
+            Some("Me"),
+            None,
+            Some(url"http://example.com/me.png")
+          )
         )
-      )
 
-      collaborators must beSuccessfulTry(expected)
+        assertEquals(collaborators, Success(expected))
+      }
     }
 
-    "return generic error on any error" >> withServer {
-      case GET -> Root / "collaborators" => Ok("""{"hello": "hi"}""")
-    } { uri =>
-      val repository = EmptyRepository.copy(collaboratorsUrl = url"${uri}collaborators")
+    test("repository.collaborators should return generic error on any error") {
+      withServer {
+        case GET -> Root / "collaborators" => Ok("""{"hello": "hi"}""")
+      } { uri =>
+        val repository = EmptyRepository.copy(collaboratorsUrl = url"${uri}collaborators")
 
-      val collaborators = repository.collaborators(Nil)
+        val collaborators = repository.collaborators(Nil)
 
-      val expected = GithubError("Unable to get repository collaborators")
+        val expected = GithubError("Unable to get repository collaborators")
 
-      collaborators must beAFailedTry(equalTo(expected))
+        assertEquals(collaborators, Failure(expected))
+      }
     }
 
   }
-
-  implicit val authentication: Authentication = Token("1234")
-  implicit val noOpLogger: Logger             = Logger.Null
-
-  lazy val EmptyRepository: Repository =
-    Repository(
-      "",
-      "",
-      License("", url"http://example.com"),
-      url"http://example.com",
-      0,
-      url"http://example.com",
-      url"http://example.com",
-      None,
-      url"http://example.com"
-    )
 
 }

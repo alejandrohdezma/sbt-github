@@ -16,28 +16,25 @@
 
 package com.alejandrohdezma.sbt.github.github
 
+import scala.util.Success
+
 import com.alejandrohdezma.sbt.github._
 import com.alejandrohdezma.sbt.github.json.Json
 import com.alejandrohdezma.sbt.github.syntax.json._
-import org.specs2.mutable.Specification
 
-class UserSpec extends Specification {
+class UserSuite extends munit.FunSuite {
 
-  "Decoder[User]" should {
-
-    "treat empty email/name/avatar as None" >> {
-      val json = Json.parse("""{
+  test("Decoder[User] should treat empty email/name/avatar as None") {
+    val json = Json.parse("""{
         "login": "me",
         "html_url": "http://example.com/me",
         "name": "",
         "email": ""
       }""")
 
-      val expected = User("me", url"http://example.com/me", None, None, None)
+    val expected = User("me", url"http://example.com/me", None, None, None)
 
-      json.as[User] must beSuccessfulTry(expected)
-    }
-
+    assertEquals(json.as[User], Success(expected))
   }
 
 }

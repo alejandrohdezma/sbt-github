@@ -67,7 +67,7 @@ package object github {
       .withHttpApp(HttpRoutes.of[IO](pf).orNotFound)
       .resource
       .map(_.baseUri.renderString)
-      .map(url(_))
+      .map(url)
       .map(f)
       .use(IO.pure)
       .unsafeRunSync()

@@ -16,21 +16,18 @@
 
 package com.alejandrohdezma.sbt.github.github.repository
 
-import sbt.util.Logger
+import scala.util.Failure
+import scala.util.Success
 
 import com.alejandrohdezma.sbt.github._
 import com.alejandrohdezma.sbt.github.github._
 import com.alejandrohdezma.sbt.github.github.error.GithubError
-import com.alejandrohdezma.sbt.github.http.Authentication
-import com.alejandrohdezma.sbt.github.http.Authentication.Token
 import org.http4s.dsl.io._
-import org.specs2.mutable.Specification
 
-class RepositoryOwnerSpec extends Specification {
+class RepositoryOwnerSuite extends munit.FunSuite {
 
-  "repository.owner" should {
-
-    "return repository's owner from Github API" >> withServer {
+  test("repository.owner should return repository's owner from Github API") {
+    withServer {
       case GET -> Root / "owner" =>
         Ok(s"""{
           "login": "owner",
@@ -52,10 +49,12 @@ class RepositoryOwnerSpec extends Specification {
         Some(url"http://example.com/owner.png")
       )
 
-      owner must beSuccessfulTry(expected)
+      assertEquals(owner, Success(expected))
     }
+  }
 
-    "not return name if not present" >> withServer {
+  test("repository.owner should not return name if not present") {
+    withServer {
       case GET -> Root / "owner" =>
         Ok(s"""{
           "login": "owner",
@@ -70,10 +69,12 @@ class RepositoryOwnerSpec extends Specification {
       val expected =
         User("owner", url"http://example.com/owner", None, Some("owner@example.com"), None)
 
-      owner must beSuccessfulTry(expected)
+      assertEquals(owner, Success(expected))
     }
+  }
 
-    "not return email if not present" >> withServer {
+  test("repository.owner should not return email if not present") {
+    withServer {
       case GET -> Root / "owner" =>
         Ok(s"""{
           "login": "owner",
@@ -87,10 +88,12 @@ class RepositoryOwnerSpec extends Specification {
 
       val expected = User("owner", url"http://example.com/owner", Some("Owner"), None, None)
 
-      owner must beSuccessfulTry(expected)
+      assertEquals(owner, Success(expected))
     }
+  }
 
-    "not return avatar if not present" >> withServer {
+  test("repository.owner should not return avatar if not present") {
+    withServer {
       case GET -> Root / "owner" =>
         Ok(s"""{
           "login": "owner",
@@ -111,10 +114,12 @@ class RepositoryOwnerSpec extends Specification {
         None
       )
 
-      owner must beSuccessfulTry(expected)
+      assertEquals(owner, Success(expected))
     }
+  }
 
-    "return generic error on any error" >> withServer {
+  test("repository.owner should return generic error on any error") {
+    withServer {
       case GET -> Root / "owner" => NotFound()
     } { uri =>
       val repository = EmptyRepository.copy(ownerUrl = url"${uri}owner")
@@ -123,25 +128,8 @@ class RepositoryOwnerSpec extends Specification {
 
       val expected = GithubError("Unable to get repository owner")
 
-      owner must beAFailedTry(equalTo(expected))
+      assertEquals(owner, Failure(expected))
     }
-
   }
-
-  implicit val authentication: Authentication = Token("1234")
-  implicit val noOpLogger: Logger             = Logger.Null
-
-  lazy val EmptyRepository: Repository =
-    Repository(
-      "",
-      "",
-      License("", url"http://example.com"),
-      url"http://example.com",
-      0,
-      url"http://example.com",
-      url"http://example.com",
-      None,
-      url"http://example.com"
-    )
 
 }
