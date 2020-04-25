@@ -1,5 +1,2 @@
-addSbtPlugin("de.heikoseeberger" % "sbt-header" % "5.6.0")
-sys.props.get("plugin.version") match {
-  case Some(x) => addSbtPlugin("com.alejandrohdezma" % "sbt-github-header" % x)
-  case _       => sys.error("https://www.scala-sbt.org/1.x/docs/Testing-sbt-plugins.html")
-}
+addSbtPlugin("de.heikoseeberger"   % "sbt-header"        % "5.6.0")
+addSbtPlugin("com.alejandrohdezma" % "sbt-github-header" % sys.props("plugin.version"))
