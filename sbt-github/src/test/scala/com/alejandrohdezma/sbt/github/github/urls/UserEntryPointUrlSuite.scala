@@ -16,31 +16,30 @@
 
 package com.alejandrohdezma.sbt.github.github.urls
 
+import scala.util.Success
+
 import sbt.util.Logger
 
 import com.alejandrohdezma.sbt.github._
 import com.alejandrohdezma.sbt.github.http.Authentication
 import com.alejandrohdezma.sbt.github.http.Authentication.Token
 import org.http4s.dsl.io._
-import org.specs2.mutable.Specification
 
-class RepositoryEntryPointSpec extends Specification {
+class UserEntryPointUrlSuite extends munit.FunSuite {
 
-  "RepositoryEntryPoint.get" should {
-
-    "provide url for specific repository" >> withServer {
+  test("UserEntryPoint.get should provide url for specific user") {
+    withServer {
       case GET -> Root =>
-        Ok("""{ "repository_url": "http://example.com/{owner}/{repo}" }""")
+        Ok("""{ "user_url": "http://example.com/{user}" }""")
     } { url =>
       implicit val noOpLogger: Logger                 = Logger.Null
       implicit val githubEntryPoint: GithubEntryPoint = GithubEntryPoint(url)
       implicit val auth: Authentication               = Token("1234")
 
-      val repoUrl = RepositoryEntryPoint.get("owner", "repo")
+      val userUrl = UserEntryPoint.get("user")
 
-      repoUrl must beASuccessfulTry(url"http://example.com/owner/repo")
+      assertEquals(userUrl, Success(url"http://example.com/user"))
     }
-
   }
 
 }

@@ -17,32 +17,27 @@
 package com.alejandrohdezma.sbt.github.syntax
 
 import com.alejandrohdezma.sbt.github.syntax.url._
-import org.specs2.mutable.Specification
 
-class UrlSyntaxSpec extends Specification {
+class UrlSyntaxSuite extends munit.FunSuite {
 
-  "Uri#withQueryParam" should {
+  test("uri.withQueryParam should add query param to Uri without query") {
+    val uri = sbt.url("https://example.com")
 
-    "add query param to Uri without query" >> {
-      val uri = sbt.url("https://example.com")
+    val result = uri.withQueryParam("miau", "42")
 
-      val result = uri.withQueryParam("miau", "42")
+    val expected = sbt.url("https://example.com?miau=42")
 
-      val expected = sbt.url("https://example.com?miau=42")
+    assertEquals(result, expected)
+  }
 
-      result must be equalTo expected
-    }
+  test("uri.withQueryParam should add query param to URL with query") {
+    val uri = sbt.url("https://example.com?page=2")
 
-    "add query param to URL with query" >> {
-      val uri = sbt.url("https://example.com?page=2")
+    val result = uri.withQueryParam("miau", "42")
 
-      val result = uri.withQueryParam("miau", "42")
+    val expected = sbt.url("https://example.com?page=2&miau=42")
 
-      val expected = sbt.url("https://example.com?page=2&miau=42")
-
-      result must be equalTo expected
-    }
-
+    assertEquals(result, expected)
   }
 
 }
