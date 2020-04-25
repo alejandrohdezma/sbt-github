@@ -109,6 +109,12 @@ object SbtGithubPlugin extends AutoPlugin {
       "Range of years in which the project has been active"
     }
 
+    val githubOrganization = settingKey[String] {
+      "The ID of the Github organization to be used when populating `organizationName`, `organizationEmail` " +
+        "and `organizationHomepage`. If no organization is provided, those settings will be populated with the " +
+        "information of the repository's organization."
+    }
+
     val organizationEmail = settingKey[Option[String]] {
       "Organization email"
     }
@@ -144,6 +150,7 @@ object SbtGithubPlugin extends AutoPlugin {
       } else false
     },
     populateOrganizationWithOwner := true,
+    githubOrganization            := "",
     excludedContributors          := List("scala-steward", """.*\[bot\]""", "traviscibot"),
     extraCollaborators            := List(),
     githubToken := Token {
