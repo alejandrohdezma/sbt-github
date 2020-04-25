@@ -169,38 +169,50 @@ object SbtGithubPlugin extends AutoPlugin {
       }
       else Def.setting(None)
     }.value,
-    organizationMetadata := {
-      implicit val log: Logger          = sLog.value
-      implicit val auth: Authentication = githubAuthToken.value.getOrElse(githubToken.value)
-      repository.value
-        .flatMap(_.organization)
-        .orElse {
-          repository.value
-            .filter(_ => populateOrganizationWithOwner.value)
-            .map(_.owner.map(_.asOrganization))
+    organizationMetadata := Def.settingDyn {
+      if (githubEnabled.value) Def.setting {
+        implicit val log: Logger          = sLog.value
+        implicit val auth: Authentication = githubAuthToken.value.getOrElse(githubToken.value)
+
+        repository.value
+          .flatMap(_.organization)
+          .orElse {
+            repository.value
+              .filter(_ => populateOrganizationWithOwner.value)
+              .map(_.owner.map(_.asOrganization))
+          }
+          .map(_.get)
+      }
+      else Def.setting(None)
+    }.value,
+    contributors := Def.settingDyn {
+      if (githubEnabled.value) Def.setting {
+        implicit val log: Logger          = sLog.value
+        implicit val auth: Authentication = githubAuthToken.value.getOrElse(githubToken.value)
+
+        repository.value.fold(Contributors(Nil)) {
+          _.contributors(excludedContributors.value).get
         }
-        .map(_.get)
-    },
-    contributors := {
-      implicit val log: Logger          = sLog.value
-      implicit val auth: Authentication = githubAuthToken.value.getOrElse(githubToken.value)
-      repository.value.fold(Contributors(Nil)) {
-        _.contributors(excludedContributors.value).get
       }
-    },
-    collaborators := {
-      implicit val log: Logger          = sLog.value
-      implicit val auth: Authentication = githubAuthToken.value.getOrElse(githubToken.value)
-      repository.value.fold(Collaborators(Nil)) {
-        _.collaborators(contributors.value.list.map(_.login)).get
-          .include(
-            extraCollaborators.value
-              .map(_(auth)(GithubEntryPoint(githubApiEntryPoint.value))(log))
-              .traverse(identity)
-              .get
-          )
+      else Def.setting(Contributors(Nil))
+    }.value,
+    collaborators := Def.settingDyn {
+      if (githubEnabled.value) Def.setting {
+        implicit val log: Logger          = sLog.value
+        implicit val auth: Authentication = githubAuthToken.value.getOrElse(githubToken.value)
+
+        repository.value.fold(Collaborators(Nil)) {
+          _.collaborators(contributors.value.list.map(_.login)).get
+            .include(
+              extraCollaborators.value
+                .map(_(auth)(GithubEntryPoint(githubApiEntryPoint.value))(log))
+                .traverse(identity)
+                .get
+            )
+        }
       }
-    },
+      else Def.setting(Collaborators(Nil))
+    }.value,
     developers := collaborators.value.developers,
     homepage   := repository.value.map(_.url).orElse(homepage.value),
     licenses   := repository.value.map(_.licenses).getOrElse(licenses.value),
