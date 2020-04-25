@@ -16,15 +16,38 @@
 
 package com.alejandrohdezma.sbt.github.github
 
-import sbt.URL
+import scala.util.Try
 
+import sbt.URL
+import sbt.util.Logger
+
+import com.alejandrohdezma.sbt.github.github.error.GithubError
+import com.alejandrohdezma.sbt.github.github.urls.GithubEntryPoint
+import com.alejandrohdezma.sbt.github.github.urls.OrganizationEntryPoint
+import com.alejandrohdezma.sbt.github.http.Authentication
+import com.alejandrohdezma.sbt.github.http.client
 import com.alejandrohdezma.sbt.github.json.Decoder
 import com.alejandrohdezma.sbt.github.syntax.json._
+import com.alejandrohdezma.sbt.github.syntax.scalatry._
 
 /** Represents a repository's organization */
 final case class Organization(name: Option[String], url: Option[URL], email: Option[String])
 
 object Organization {
+
+  /** Download organization information from Github */
+  def get(name: String)(
+      implicit auth: Authentication,
+      url: GithubEntryPoint,
+      logger: Logger
+  ): Try[Organization] = {
+    logger.info(s"Retrieving `$name` organization from Github API")
+
+    OrganizationEntryPoint
+      .get(name)
+      .flatMap(client.get[Organization])
+      .failAs(GithubError(s"Unable to get `$name` organization"))
+  }
 
   implicit val OrganizationDecoder: Decoder[Organization] = json =>
     for {
