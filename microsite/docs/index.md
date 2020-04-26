@@ -26,7 +26,7 @@ This plugin enables several settings automatically by downloading them from Gith
 Add the following line to your `plugins.sbt` file:
 
 ```scala
-addSbtPlugin("com.alejandrohdezma" %% "sbt-github" % "@VERSION@")
+addSbtPlugin("com.alejandrohdezma" % "sbt-github" % "@VERSION@")
 ```
 
 There are some integrations available also:
