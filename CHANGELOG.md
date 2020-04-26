@@ -1,5 +1,28 @@
 # Changelog
 
+## [v0.8.1](https://github.com/alejandrohdezma/sbt-github/tree/v0.8.1) (2020-04-26)
+
+[Full Changelog](https://github.com/alejandrohdezma/sbt-github/compare/v0.8.0...v0.8.1)
+
+🚀 **Features**
+
+- Add setting to override organization used [\#187](https://github.com/alejandrohdezma/sbt-github/pull/187) ([alejandrohdezma](https://github.com/alejandrohdezma))
+- Deprecate `githubToken` in favour of `githubAuthToken` [\#184](https://github.com/alejandrohdezma/sbt-github/pull/184) ([alejandrohdezma](https://github.com/alejandrohdezma))
+
+📘 **Documentation**
+
+- Add microsite [\#185](https://github.com/alejandrohdezma/sbt-github/pull/185) ([alejandrohdezma](https://github.com/alejandrohdezma))
+
+📈 **Dependency updates**
+
+- Update sbt-ci-release to 1.5.3 [\#183](https://github.com/alejandrohdezma/sbt-github/pull/183) ([scala-steward](https://github.com/scala-steward))
+- Update Scala, SBT & plugins to latest version [\#181](https://github.com/alejandrohdezma/sbt-github/pull/181) ([alejandrohdezma](https://github.com/alejandrohdezma))
+
+**Merged pull requests:**
+
+- Change `specs2` to `munit` as test framework [\#186](https://github.com/alejandrohdezma/sbt-github/pull/186) ([alejandrohdezma](https://github.com/alejandrohdezma))
+- Add CODEOWNERS [\#182](https://github.com/alejandrohdezma/sbt-github/pull/182) ([alejandrohdezma](https://github.com/alejandrohdezma))
+
 ## [v0.8.0](https://github.com/alejandrohdezma/sbt-github/tree/v0.8.0) (2020-04-20)
 
 [Full Changelog](https://github.com/alejandrohdezma/sbt-github/compare/v0.7.1...v0.8.0)
@@ -133,6 +156,7 @@
 - Update http4s-blaze-server, http4s-dsl to 0.21.1 [\#72](https://github.com/alejandrohdezma/sbt-github/pull/72) ([scala-steward](https://github.com/scala-steward))
 - Update http4s-blaze-server, http4s-dsl to 0.21.0 [\#69](https://github.com/alejandrohdezma/sbt-github/pull/69) ([scala-steward](https://github.com/scala-steward))
 - Update sbt-ci-release to 1.5.2 [\#68](https://github.com/alejandrohdezma/sbt-github/pull/68) ([scala-steward](https://github.com/scala-steward))
+- Update sbt to 1.3.8 [\#55](https://github.com/alejandrohdezma/sbt-github/pull/55) ([scala-steward](https://github.com/scala-steward))
 - Update http4s-blaze-server, http4s-dsl to 0.20.17 [\#43](https://github.com/alejandrohdezma/sbt-github/pull/43) ([scala-steward](https://github.com/scala-steward))
 
 ## [v0.4.0](https://github.com/alejandrohdezma/sbt-github/tree/v0.4.0) (2020-01-26)
