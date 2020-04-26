@@ -9,7 +9,7 @@ permalink: sbt-mdoc
 If you use [mdoc](https://scalameta.org/mdoc/) for creating your documentation you can benefit from our mdoc module which provides several bunches of [`mdocVariables`](https://scalameta.org/mdoc/docs/installation.html#sbt) already pre-filled with values extracted from Github to any project that adds the `MdocPlugin` to replace them in the documentation. To use it, just add the following line to your `plugins.sbt` file
 
 ```scala
-addSbtPlugin("com.alejandrohdezma" %% "sbt-github-mdoc" % "@VERSION@")
+addSbtPlugin("com.alejandrohdezma" % "sbt-github-mdoc" % "@VERSION@")
 ```
 
 ---
