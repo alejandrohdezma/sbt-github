@@ -1,0 +1,4 @@
+{
+  "repository_url": "{{base_directory}}/repository.json",
+  "organization_url": "{{base_directory}}/organization.json"
+}

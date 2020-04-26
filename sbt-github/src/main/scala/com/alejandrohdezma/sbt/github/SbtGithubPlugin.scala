@@ -79,13 +79,16 @@ object SbtGithubPlugin extends AutoPlugin {
       Option(Repository.get(info.value._1, info.value._2).get)
     }).value,
     organizationMetadata := onRepo(default = Option.empty[Organization])(Def.setting { repo =>
-      implicit val (auth, logger, _) = configuration.value
+      implicit val (auth, logger, url) = configuration.value
 
-      repo.organization.orElse {
-        if (populateOrganizationWithOwner.value)
-          Some(repo.owner.map(_.asOrganization))
-        else None
-      }.map(_.get)
+      if (githubOrganization.value.nonEmpty)
+        Some(Organization.get(githubOrganization.value).get)
+      else
+        repo.organization.orElse {
+          if (populateOrganizationWithOwner.value)
+            Some(repo.owner.map(_.asOrganization))
+          else None
+        }.map(_.get)
     }).value,
     contributors := onRepo(default = Contributors(Nil))(Def.setting { repo =>
       implicit val (auth, log, _) = configuration.value
