@@ -11,7 +11,7 @@ permalink: getting-started
 Add the following line to your `plugins.sbt` file:
 
 ```scala
-addSbtPlugin("com.alejandrohdezma" %% "sbt-github" % "@VERSION@")
+addSbtPlugin("com.alejandrohdezma" % "sbt-github" % "@VERSION@")
 ```
 
 ## Using the plugin

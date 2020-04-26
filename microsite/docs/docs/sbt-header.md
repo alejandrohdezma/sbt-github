@@ -9,7 +9,7 @@ permalink: sbt-header
 If you use [sbt-header](https://github.com/sbt/sbt-header) for creating/updating your file headers according to your project's license you can benefit from our `sbt-github-header` module which pre-fills header template with downloaded Github values. To use it, just add the following line to your `plugins.sbt` file
 
 ```scala
-addSbtPlugin("com.alejandrohdezma" %% "sbt-github-header" % "@VERSION@")
+addSbtPlugin("com.alejandrohdezma" % "sbt-github-header" % "@VERSION@")
 ```
 
 ---
