@@ -1,8 +1,8 @@
 options:
   - title: Getting started
     url: getting-started
-  - title: Use owner as organization
-    url: owner-as-organization
+  - title: Organization
+    url: organization
   - title: Excluding contributors
     url: excluding-contributors
   - title: Adding extra collaborators

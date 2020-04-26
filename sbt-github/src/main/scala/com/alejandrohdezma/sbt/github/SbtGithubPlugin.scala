@@ -18,6 +18,9 @@ package com.alejandrohdezma.sbt.github
 
 import java.time.Year
 
+import scala.language.postfixOps
+
+import sbt.Def
 import sbt.Def.Setting
 import sbt.Keys._
 import sbt._
@@ -26,8 +29,6 @@ import sbt.plugins.JvmPlugin
 import com.alejandrohdezma.sbt.github.github.Organization
 import com.alejandrohdezma.sbt.github.github.Repository
 import com.alejandrohdezma.sbt.github.github.urls.GithubEntryPoint
-import com.alejandrohdezma.sbt.github.http.Authentication
-import com.alejandrohdezma.sbt.github.syntax.list._
 import com.github.ghik.silencer.silent
 
 /**
@@ -43,87 +44,7 @@ import com.github.ghik.silencer.silent
 @SuppressWarnings(Array("scalafix:DisableSyntax.=="))
 object SbtGithubPlugin extends AutoPlugin {
 
-  object autoImport {
-
-    type Contributors = github.Contributors
-    val Contributors = github.Contributors
-
-    type Collaborators = github.Collaborators
-    val Collaborators = github.Collaborators
-
-    type Collaborator = github.Collaborator
-    val Collaborator = github.Collaborator
-
-    @deprecated("Use AuthToken instead", since = "0.8.1")
-    type Token = http.Authentication.Token
-
-    @deprecated("Use AuthToken instead", since = "0.8.1")
-    val Token = http.Authentication.Token
-
-    type AuthToken = http.Authentication.AuthToken
-    val AuthToken = http.Authentication.AuthToken
-
-    val githubApiEntryPoint = settingKey[URL] {
-      "Entry point for the github API, defaults to `https://api.github.com`"
-    }
-
-    val contributors = settingKey[Contributors](
-      "List of contributors downloaded from Github"
-    )
-
-    val collaborators = settingKey[Collaborators](
-      "List of collaborators downloaded from Github"
-    )
-
-    val organizationMetadata = settingKey[Option[Organization]] {
-      "Organization information downloaded from Github"
-    }
-
-    val populateOrganizationWithOwner = settingKey[Boolean] {
-      "Populate organization info with the owner one in case there is no organization, default to `true`"
-    }
-
-    val extraCollaborators = settingKey[List[Collaborator.Creator]] {
-      "Extra collaborators that should be always included (independent of whether they are contributors or not)"
-    }
-
-    val excludedContributors = settingKey[List[String]] {
-      "ID (Github login) of the contributors that should be excluded from the list, like bots, it can also be regex patterns"
-    }
-
-    val repository = settingKey[Option[Repository]] {
-      "Repository information downloaded from Github"
-    }
-
-    val githubEnabled = settingKey[Boolean] {
-      "Whether sbt-github should download information from Github or not. Default to `false`"
-    }
-
-    @deprecated("Use githubEnabled instead", since = "0.8.0")
-    val downloadInfoFromGithub = settingKey[Boolean] {
-      "Whether sbt-github should download information from Github or not. Defaults to the presence of" +
-        " a `DOWNLOAD_INFO_FROM_GITHUB` environment variable. Deprecated, use `githubEnabled` instead."
-    }
-
-    val yearRange = settingKey[Option[String]] {
-      "Range of years in which the project has been active"
-    }
-
-    val organizationEmail = settingKey[Option[String]] {
-      "Organization email"
-    }
-
-    @deprecated("Use githubAuthToken instead", since = "0.8.1")
-    val githubToken = settingKey[Token] {
-      "The Github Token used for authenticating into Github API. Defaults to GITHUB_TOKEN environment variable. " +
-        "Deprecated, use `githubAuthToken` instead."
-    }
-
-    val githubAuthToken = settingKey[Option[AuthToken]] {
-      "The Github Token used for authenticating into Github API. Defaults to GITHUB_TOKEN environment variable."
-    }
-
-  }
+  object autoImport extends SbtGithubKeys
 
   import autoImport._
 
@@ -144,6 +65,7 @@ object SbtGithubPlugin extends AutoPlugin {
       } else false
     },
     populateOrganizationWithOwner := true,
+    githubOrganization            := "",
     excludedContributors          := List("scala-steward", """.*\[bot\]""", "traviscibot"),
     extraCollaborators            := List(),
     githubToken := Token {
@@ -152,48 +74,34 @@ object SbtGithubPlugin extends AutoPlugin {
       })
     },
     githubAuthToken := sys.env.get("GITHUB_TOKEN").map(AuthToken),
-    repository := Def.settingDyn {
-      if (githubEnabled.value) Def.setting {
-        implicit val log: Logger                  = sLog.value
-        implicit val entryPoint: GithubEntryPoint = GithubEntryPoint(githubApiEntryPoint.value)
-        implicit val auth: Authentication         = githubAuthToken.value.getOrElse(githubToken.value)
+    repository := onGithub(default = Option.empty[Repository])(Def.setting {
+      implicit val (auth, logger, url) = configuration.value
+      Option(Repository.get(info.value._1, info.value._2).get)
+    }).value,
+    organizationMetadata := onRepo(default = Option.empty[Organization])(Def.setting { repo =>
+      implicit val (auth, logger, url) = configuration.value
 
-        Some(Repository.get(info.value._1, info.value._2).get)
-      }
-      else Def.setting(None)
-    }.value,
-    organizationMetadata := {
-      implicit val log: Logger          = sLog.value
-      implicit val auth: Authentication = githubAuthToken.value.getOrElse(githubToken.value)
-      repository.value
-        .flatMap(_.organization)
-        .orElse {
-          repository.value
-            .filter(_ => populateOrganizationWithOwner.value)
-            .map(_.owner.map(_.asOrganization))
-        }
-        .map(_.get)
-    },
-    contributors := {
-      implicit val log: Logger          = sLog.value
-      implicit val auth: Authentication = githubAuthToken.value.getOrElse(githubToken.value)
-      repository.value.fold(Contributors(Nil)) {
-        _.contributors(excludedContributors.value).get
-      }
-    },
-    collaborators := {
-      implicit val log: Logger          = sLog.value
-      implicit val auth: Authentication = githubAuthToken.value.getOrElse(githubToken.value)
-      repository.value.fold(Collaborators(Nil)) {
-        _.collaborators(contributors.value.list.map(_.login)).get
-          .include(
-            extraCollaborators.value
-              .map(_(auth)(GithubEntryPoint(githubApiEntryPoint.value))(log))
-              .traverse(identity)
-              .get
-          )
-      }
-    },
+      if (githubOrganization.value.nonEmpty)
+        Some(Organization.get(githubOrganization.value).get)
+      else
+        repo.organization.orElse {
+          if (populateOrganizationWithOwner.value)
+            Some(repo.owner.map(_.asOrganization))
+          else None
+        }.map(_.get)
+    }).value,
+    contributors := onRepo(default = Contributors(Nil))(Def.setting { repo =>
+      implicit val (auth, log, _) = configuration.value
+      repo.contributors(excludedContributors.value).get
+    }).value,
+    collaborators := onRepo(default = Collaborators(Nil))(Def.setting { repo =>
+      implicit val (auth, log, entryPoint) = configuration.value
+
+      val contributorIds = contributors.value.list.map(_.login)
+      val extras         = extraCollaborators.value.map(_(auth)(entryPoint)(log).get)
+
+      repo.collaborators(contributorIds).get.include(extras)
+    }).value,
     developers := collaborators.value.developers,
     homepage   := repository.value.map(_.url).orElse(homepage.value),
     licenses   := repository.value.map(_.licenses).getOrElse(licenses.value),
@@ -213,6 +121,15 @@ object SbtGithubPlugin extends AutoPlugin {
     organizationEmail    := organizationMetadata.value.flatMap(_.email)
   )
 
+  @silent
+  private[github] val configuration = Def.setting {
+    (
+      githubAuthToken.value.getOrElse(githubToken.value),
+      sLog.value,
+      GithubEntryPoint(githubApiEntryPoint.value)
+    )
+  }
+
   /** Gets the Github user and repository from the git remote info */
   private[github] val info = Def.setting {
     val identifier = """([^\/]+)"""
@@ -226,8 +143,17 @@ object SbtGithubPlugin extends AutoPlugin {
     }
   }
 
-  private lazy val aliases = addCommandAlias("github", ";set githubEnabled in ThisBuild := true") ++
-    addCommandAlias("githubOn", ";set githubEnabled in ThisBuild := true") ++
-    addCommandAlias("githubOff", ";set githubEnabled in ThisBuild := false")
+  private lazy val aliases: Seq[Setting[State => State]] = Seq(
+    "github"    -> ";set githubEnabled in ThisBuild := true",
+    "githubOn"  -> ";set githubEnabled in ThisBuild := true",
+    "githubOff" -> ";set githubEnabled in ThisBuild := false"
+  ).flatMap(addCommandAlias _ tupled)
+
+  private def onGithub[A](default: A)(f: Def.Initialize[A]) =
+    Def.settingDyn(if (githubEnabled.value) f else Def.setting(default))
+
+  private def onRepo[A](default: A)(f: Def.Initialize[Repository => A]) = Def.settingDyn {
+    if (githubEnabled.value) Def.setting(f.value(repository.value.get)) else Def.setting(default)
+  }
 
 }
