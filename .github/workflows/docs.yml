@@ -26,8 +26,6 @@ jobs:
         uses: actions/setup-ruby@v1
         with:
           ruby-version: '2.6'
-      - name: Setup Jekyll
-        run: gem install jekyll -v 4
       - name: Setup github-changelog-generator
         run: gem install github_changelog_generator -v 1.15.0
       - name: Generate documentation
