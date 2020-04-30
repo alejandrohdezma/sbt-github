@@ -134,12 +134,14 @@ object SbtGithubPlugin extends AutoPlugin {
   private[github] val info = Def.setting {
     val identifier = """([^\/]+)"""
 
-    val Connection = s"scm:git:https://github.com/$identifier/$identifier.git".r
+    val Connection      = s"scm:git:https://github.com/$identifier/$identifier.git".r
+    val ConnectionLogin = s"scm:git:https://$identifier@github.com/$identifier/$identifier.git".r
 
     scmInfo.value.map(_.connection) match {
-      case Some(Connection(owner, repo)) => (owner, repo)
-      case None                          => sys.error("`scmInfo` is mandatory for this plugin to work")
-      case Some(s)                       => sys.error(s"Invalid `scmInfo` connection value: $s")
+      case Some(Connection(owner, repo))         => (owner, repo)
+      case Some(ConnectionLogin(_, owner, repo)) => (owner, repo)
+      case None                                  => sys.error("`scmInfo` is mandatory for this plugin to work")
+      case Some(s)                               => sys.error(s"Invalid `scmInfo` connection value: $s")
     }
   }
 

@@ -1,5 +1,5 @@
 ThisBuild / scmInfo := Some(
-  ScmInfo(url("http://example.com"), "scm:git:https://github.com/alejandrohdezma/sbt-github.git")
+  ScmInfo(url("http://example.com"), "scm:git:https://alejandrohdezma@github.com/alejandrohdezma/sbt-github.git")
 )
 ThisBuild / githubEnabled      := true
 ThisBuild / githubOrganization := "different-org"
