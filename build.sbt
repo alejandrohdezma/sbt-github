@@ -29,9 +29,8 @@ lazy val `sbt-github` = project
   .enablePlugins(SbtPlugin)
   .settings(scriptedLaunchOpts += s"-Dplugin.version=${version.value}")
   .settings(testFrameworks += new TestFramework("munit.Framework"))
-  .settings(libraryDependencies += "org.scalameta" %% "munit" % "0.7.3" % Test)
+  .settings(libraryDependencies += "org.scalameta" %% "munit" % "0.7.4" % Test)
   .settings(libraryDependencies += "org.http4s" %% "http4s-dsl" % "0.21.4" % Test)
-  .settings(libraryDependencies += "org.http4s" %% "http4s-blaze-server" % "0.21.4" % Test)
   .configs(CompileOnly)
   .settings(silencer)
 
@@ -52,8 +51,8 @@ lazy val `sbt-github-header` = project
   .settings(silencer)
 
 lazy val silencer = libraryDependencies ++= Seq(
-  compilerPlugin("com.github.ghik" % "silencer-plugin" % "1.6.0" cross CrossVersion.full),
-  "com.github.ghik" % "silencer-lib" % "1.6.0" % CompileOnly cross CrossVersion.full
+  compilerPlugin("com.github.ghik" % "silencer-plugin" % "1.7.0" cross CrossVersion.full),
+  "com.github.ghik" % "silencer-lib" % "1.7.0" % CompileOnly cross CrossVersion.full
 )
 
 val CompileOnly = config("compileonly").hide
