@@ -31,6 +31,7 @@ lazy val `sbt-github` = project
   .settings(testFrameworks += new TestFramework("munit.Framework"))
   .settings(libraryDependencies += "org.scalameta" %% "munit" % "0.7.4" % Test)
   .settings(libraryDependencies += "org.http4s" %% "http4s-dsl" % "0.21.4" % Test)
+  .settings(libraryDependencies += "org.http4s" %% "http4s-blaze-server" % "0.21.4" % Test)
   .configs(CompileOnly)
   .settings(silencer)
 
