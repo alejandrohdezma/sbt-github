@@ -31,4 +31,3 @@ jobs:
         with:
           GITHUB_LOGIN: alejandrohdezma
           GITHUB_TOKEN: ${{ secrets.ADMIN_GITHUB_TOKEN }}
-          MERGE_METHOD: MERGE
