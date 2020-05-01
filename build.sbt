@@ -52,8 +52,8 @@ lazy val `sbt-github-header` = project
   .settings(silencer)
 
 lazy val silencer = libraryDependencies ++= Seq(
-  compilerPlugin("com.github.ghik" % "silencer-plugin" % "1.6.0" cross CrossVersion.full),
-  "com.github.ghik" % "silencer-lib" % "1.6.0" % CompileOnly cross CrossVersion.full
+  compilerPlugin("com.github.ghik" % "silencer-plugin" % "1.7.0" cross CrossVersion.full),
+  "com.github.ghik" % "silencer-lib" % "1.7.0" % CompileOnly cross CrossVersion.full
 )
 
 val CompileOnly = config("compileonly").hide
