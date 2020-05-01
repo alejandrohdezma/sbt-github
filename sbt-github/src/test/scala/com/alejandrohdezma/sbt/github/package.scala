@@ -61,7 +61,7 @@ package object github {
     implicit val cs: ContextShift[IO] = IO.contextShift(global)
     implicit val timer: Timer[IO]     = IO.timer(global)
 
-    BlazeServerBuilder[IO]
+    BlazeServerBuilder[IO](global)
       .withNio2(true)
       .bindAny()
       .withHttpApp(HttpRoutes.of[IO](pf).orNotFound)
