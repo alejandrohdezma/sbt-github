@@ -16,7 +16,22 @@ jobs:
     steps:
       - name: Checkout project
         uses: actions/checkout@v2
+      - name: Label PR
+        if: github.event_name == 'pull_request'
+        uses: TimonVS/pr-labeler-action@v3
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Setup Scala
         uses: olafurpg/setup-scala@v7
       - name: Run checks
         run: sbt ci-test
+      - name: Automerge Scala Steward PRs
+        if: success() && github.event_name == 'pull_request' && github.event.pull_request.user.login == 'alejandrohdezma'
+        uses: "pascalgn/automerge-action@v0.8.1"
+        env:
+          GITHUB_TOKEN: "${{ secrets.ADMIN_GITHUB_TOKEN }}"
+          MERGE_LABELS: 'scala-steward'
+          MERGE_METHOD: 'squash'
+          MERGE_COMMIT_MESSAGE: 'pull-request-title'
+          MERGE_FILTER_AUTHOR: 'alejandrohdezma'
+          MERGE_DELETE_BRANCH: 'true'
