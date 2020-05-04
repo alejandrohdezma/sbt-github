@@ -74,7 +74,7 @@ class ClientSuite extends munit.FunSuite {
       val result = client.get[String](url)
 
       interceptMessage[IOException](s"Server returned HTTP response code: 403 for URL: $url") {
-        result.get
+        result.get // scalafix:ok Disable.Try.get
       }
     }
   }
