@@ -38,7 +38,7 @@ package object github {
 
   @SuppressWarnings(Array("scalafix:DisableSyntax.implicitConversion"))
   implicit def CreatorToCollaborator(creator: Collaborator.Creator): Collaborator =
-    creator(Token("123"))(GithubEntryPoint(url"http://example.com"))(Logger.Null).get
+    creator(Token("123"))(GithubEntryPoint(url"http://example.com"))(Logger.Null).get // scalafix:ok Disable.Try.get
 
   @SuppressWarnings(Array("scalafix:Disable.Any"))
   implicit class URLInterpolator(private val sc: StringContext) extends AnyVal {
@@ -50,7 +50,7 @@ package object github {
   implicit class RequestLinkOps(req: Request[IO]) {
 
     def urlTo(path: String): String = {
-      val host = req.headers.get(Host).get
+      val host = req.headers.get(Host).get // scalafix:ok Disable.Option.get
 
       s"http://${host.host}:${host.port.getOrElse(8080)}/$path"
     }
