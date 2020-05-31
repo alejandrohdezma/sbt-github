@@ -75,8 +75,8 @@ final case class Repository(
    * Returns the list of repository collaborators, filtered by those who have contributed
    * at least once to the project, alphabetically ordered.
    */
-  def collaborators(allowed: List[String])(
-      implicit auth: Authentication,
+  def collaborators(allowed: List[String])(implicit
+      auth: Authentication,
       logger: Logger
   ): Try[Collaborators] = {
     logger.info(s"Retrieving `$name` collaborators from Github API")
@@ -101,8 +101,8 @@ final case class Repository(
   /**
    * Returns the repository's organization information, if present.
    */
-  def organization(
-      implicit auth: Authentication,
+  def organization(implicit
+      auth: Authentication,
       logger: Logger
   ): Option[Try[Organization]] = {
     logger.info(s"Retrieving `$name` organization from Github API")
@@ -126,33 +126,34 @@ final case class Repository(
 object Repository {
 
   /** Download repository information from Github, or returns a string containing the error */
-  def get(owner: String, name: String)(
-      implicit auth: Authentication,
+  def get(owner: String, name: String)(implicit
+      auth: Authentication,
       logger: Logger,
       url: GithubEntryPoint
-  ): Try[Repository] = RepositoryEntryPoint.get(owner, name).flatMap { uri =>
-    logger.info(s"Retrieving `$owner/$name` information from Github API")
+  ): Try[Repository] =
+    RepositoryEntryPoint.get(owner, name).flatMap { uri =>
+      logger.info(s"Retrieving `$owner/$name` information from Github API")
 
-    val descriptionNotFound =
-      s"Repository doesn't have a description! Go to https://github.com/$owner/$name and add it"
-    val licenseNotFound =
-      s"Repository doesn't have a license! Go to https://github.com/$owner/$name and add it"
-    val licenseNotInferred =
-      s"Repository's license id couldn't be inferred! Go to https://github.com/$owner/$name and check it"
-    val urlNotInferred =
-      s"Repository's license url couldn't be inferred! Go to https://github.com/$owner/$name and check it"
+      val descriptionNotFound =
+        s"Repository doesn't have a description! Go to https://github.com/$owner/$name and add it"
+      val licenseNotFound =
+        s"Repository doesn't have a license! Go to https://github.com/$owner/$name and add it"
+      val licenseNotInferred =
+        s"Repository's license id couldn't be inferred! Go to https://github.com/$owner/$name and check it"
+      val urlNotInferred =
+        s"Repository's license url couldn't be inferred! Go to https://github.com/$owner/$name and check it"
 
-    client
-      .get[Repository](uri)
-      .collectFail {
-        case "description" / NotFound           => GithubError(descriptionNotFound)
-        case "license" / NotFound               => GithubError(licenseNotFound)
-        case "license" / ("spdx_id" / NotFound) => GithubError(licenseNotInferred)
-        case "license" / ("url" / NotFound)     => GithubError(urlNotInferred)
-        case _                                  => GithubError("Unable to get repository information")
-      }
+      client
+        .get[Repository](uri)
+        .collectFail {
+          case "description" / NotFound           => GithubError(descriptionNotFound)
+          case "license" / NotFound               => GithubError(licenseNotFound)
+          case "license" / ("spdx_id" / NotFound) => GithubError(licenseNotInferred)
+          case "license" / ("url" / NotFound)     => GithubError(urlNotInferred)
+          case _                                  => GithubError("Unable to get repository information")
+        }
 
-  }
+    }
 
   implicit val RepositoryDecoder: Decoder[Repository] = json =>
     for {

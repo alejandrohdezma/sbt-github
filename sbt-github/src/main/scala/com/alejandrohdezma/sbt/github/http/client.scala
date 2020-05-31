@@ -43,12 +43,12 @@ object client {
     Try {
       logger.verbose(s"Getting content from URL: $url")
 
-      if (cache.containsKey(url)) {
+      if (cache.containsKey(url))
         logger.verbose(s"$url contents already stored on cache")
-      }
 
       cache.computeIfAbsent(
-        url, { _ =>
+        url,
+        { _ =>
           logger.verbose(s"Content for $url not found on cache, downloading...")
 
           val connection = url.openConnection

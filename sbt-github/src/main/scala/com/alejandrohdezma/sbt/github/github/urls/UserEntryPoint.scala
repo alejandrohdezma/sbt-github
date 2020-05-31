@@ -32,8 +32,8 @@ object UserEntryPoint {
   /**
    * Returns the entry point URL for a given user.
    */
-  def get(login: String)(
-      implicit auth: Authentication,
+  def get(login: String)(implicit
+      auth: Authentication,
       logger: Logger,
       entryPoint: GithubEntryPoint
   ): Try[URL] =

@@ -31,8 +31,8 @@ object OrganizationEntryPoint {
   /**
    * Returns the entry point URL for a given organization.
    */
-  def get(organization: String)(
-      implicit auth: Authentication,
+  def get(organization: String)(implicit
+      auth: Authentication,
       logger: Logger,
       entryPoint: GithubEntryPoint
   ): Try[URL] =

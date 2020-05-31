@@ -47,12 +47,13 @@ object json {
         value: Json.Value,
         remain: List[String],
         done: List[String]
-    ): Try[A] = (value, remain) match {
-      case (j: Json.Value, Nil)     => j.as[A].mapFail(done.foldRight(_)(InvalidPath))
-      case (j: Json.Object, h :: t) => recursiveGet(j.get(h), t, done :+ h)
-      case (Json.Null, _)           => Decoder[A].onNullPath.mapFail(done.foldRight(_)(InvalidPath))
-      case (v, _)                   => done.foldRight(NotAJSONObject(v): Throwable)(InvalidPath).raise
-    }
+    ): Try[A] =
+      (value, remain) match {
+        case (j: Json.Value, Nil)     => j.as[A].mapFail(done.foldRight(_)(InvalidPath))
+        case (j: Json.Object, h :: t) => recursiveGet(j.get(h), t, done :+ h)
+        case (Json.Null, _)           => Decoder[A].onNullPath.mapFail(done.foldRight(_)(InvalidPath))
+        case (v, _)                   => done.foldRight(NotAJSONObject(v): Throwable)(InvalidPath).raise
+      }
 
   }
 
@@ -82,10 +83,11 @@ object json {
      *     case "license" / ("url" / NotFound) => ...
      * }}}
      */
-    def unapply(throwable: Throwable): Option[(String, Throwable)] = throwable match {
-      case InvalidPath(value, fail) => Some(value -> fail)
-      case _                        => None
-    }
+    def unapply(throwable: Throwable): Option[(String, Throwable)] =
+      throwable match {
+        case InvalidPath(value, fail) => Some(value -> fail)
+        case _                        => None
+      }
   }
 
 }

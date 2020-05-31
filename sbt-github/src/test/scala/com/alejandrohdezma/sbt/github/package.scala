@@ -38,7 +38,9 @@ package object github {
 
   @SuppressWarnings(Array("scalafix:DisableSyntax.implicitConversion"))
   implicit def CreatorToCollaborator(creator: Collaborator.Creator): Collaborator =
-    creator(Token("123"))(GithubEntryPoint(url"http://example.com"))(Logger.Null).get // scalafix:ok Disable.Try.get
+    creator(Token("123"))(GithubEntryPoint(url"http://example.com"))(
+      Logger.Null
+    ).get // scalafix:ok Disable.Try.get
 
   @SuppressWarnings(Array("scalafix:Disable.Any"))
   implicit class URLInterpolator(private val sc: StringContext) extends AnyVal {

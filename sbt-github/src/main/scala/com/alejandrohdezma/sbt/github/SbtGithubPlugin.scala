@@ -54,77 +54,82 @@ object SbtGithubPlugin extends AutoPlugin {
   override def requires: Plugins = JvmPlugin
 
   @silent
-  override def buildSettings: Seq[Setting[_]] = aliases ++ Seq(
-    githubApiEntryPoint := url("https://api.github.com"),
-    githubEnabled       := downloadInfoFromGithub.value,
-    downloadInfoFromGithub := {
-      if (sys.env.contains("DOWNLOAD_INFO_FROM_GITHUB")) {
-        sLog.value.warn {
-          "Using `DOWNLOAD_INFO_FROM_GITHUB` is deprecated. Please use `githubEnabled` instead."
-        }
-        true
-      } else false
-    },
-    populateOrganizationWithOwner := true,
-    githubOrganization            := "",
-    excludedContributors          := List("scala-steward", """.*\[bot\]""", "traviscibot"),
-    extraCollaborators            := List(),
-    githubToken := Token {
-      sys.env.getOrElse("GITHUB_TOKEN", sys.error {
-        "You need to add an environment variable named GITHUB_TOKEN with a Github personal access token."
-      })
-    },
-    githubAuthToken := sys.env.get("GITHUB_TOKEN").map(AuthToken),
-    repository := onGithub(default = Option.empty[Repository])(Def.setting {
-      implicit val (auth, logger, url) = configuration.value
-      Option(Repository.get(info.value._1, info.value._2).get) // scalafix:ok Disable.Try.get
-    }).value,
-    organizationMetadata := onRepo(default = Option.empty[Organization])(Def.setting { repo =>
-      implicit val (auth, logger, url) = configuration.value
+  override def buildSettings: Seq[Setting[_]] =
+    aliases ++ Seq(
+      githubApiEntryPoint := url("https://api.github.com"),
+      githubEnabled       := downloadInfoFromGithub.value,
+      downloadInfoFromGithub := {
+        if (sys.env.contains("DOWNLOAD_INFO_FROM_GITHUB")) {
+          sLog.value.warn {
+            "Using `DOWNLOAD_INFO_FROM_GITHUB` is deprecated. Please use `githubEnabled` instead."
+          }
+          true
+        } else false
+      },
+      populateOrganizationWithOwner := true,
+      githubOrganization            := "",
+      excludedContributors          := List("scala-steward", """.*\[bot\]""", "traviscibot"),
+      extraCollaborators            := List(),
+      githubToken := Token {
+        sys.env.getOrElse(
+          "GITHUB_TOKEN",
+          sys.error {
+            "You need to add an environment variable named GITHUB_TOKEN with a Github personal access token."
+          }
+        )
+      },
+      githubAuthToken := sys.env.get("GITHUB_TOKEN").map(AuthToken),
+      repository := onGithub(default = Option.empty[Repository])(Def.setting {
+        implicit val (auth, logger, url) = configuration.value
+        Option(Repository.get(info.value._1, info.value._2).get) // scalafix:ok Disable.Try.get
+      }).value,
+      organizationMetadata := onRepo(default = Option.empty[Organization])(Def.setting { repo =>
+        implicit val (auth, logger, url) = configuration.value
 
-      if (githubOrganization.value.nonEmpty)
-        Some(Organization.get(githubOrganization.value).get)
-      else
-        repo.organization.orElse {
-          if (populateOrganizationWithOwner.value)
-            Some(repo.owner.map(_.asOrganization))
-          else None
-        }.map(_.get) // scalafix:ok Disable.Try.get
-    }).value,
-    contributors := onRepo(default = Contributors(Nil))(Def.setting { repo =>
-      implicit val (auth, log, _) = configuration.value
-      repo.contributors(excludedContributors.value).get // scalafix:ok Disable.Try.get
-    }).value,
-    collaborators := onRepo(default = Collaborators(Nil))(Def.setting { repo =>
-      implicit val (auth, log, entryPoint) = configuration.value
+        if (githubOrganization.value.nonEmpty)
+          Some(Organization.get(githubOrganization.value).get)
+        else
+          repo.organization.orElse {
+            if (populateOrganizationWithOwner.value)
+              Some(repo.owner.map(_.asOrganization))
+            else None
+          }.map(_.get) // scalafix:ok Disable.Try.get
+      }).value,
+      contributors := onRepo(default = Contributors(Nil))(Def.setting { repo =>
+        implicit val (auth, log, _) = configuration.value
+        repo.contributors(excludedContributors.value).get // scalafix:ok Disable.Try.get
+      }).value,
+      collaborators := onRepo(default = Collaborators(Nil))(Def.setting { repo =>
+        implicit val (auth, log, entryPoint) = configuration.value
 
-      val contributorIds = contributors.value.list.map(_.login)
+        val contributorIds = contributors.value.list.map(_.login)
 
-      val collaborators = for {
-        extras        <- extraCollaborators.value.traverse(_(auth)(entryPoint)(log))
-        collaborators <- repo.collaborators(contributorIds)
-      } yield collaborators.include(extras)
+        val collaborators = for {
+          extras        <- extraCollaborators.value.traverse(_(auth)(entryPoint)(log))
+          collaborators <- repo.collaborators(contributorIds)
+        } yield collaborators.include(extras)
 
-      collaborators.get // scalafix:ok Disable.Try.get
-    }).value,
-    developers := collaborators.value.developers,
-    homepage   := repository.value.map(_.url).orElse(homepage.value),
-    licenses   := repository.value.map(_.licenses).getOrElse(licenses.value),
-    startYear  := repository.value.map(_.startYear).orElse(startYear.value),
-    yearRange := startYear.value.collect {
-      case start if start == Year.now.getValue => s"$start"
-      case start                               => s"$start-${Year.now.getValue}"
-    }
-  )
+        collaborators.get // scalafix:ok Disable.Try.get
+      }).value,
+      developers := collaborators.value.developers,
+      homepage   := repository.value.map(_.url).orElse(homepage.value),
+      licenses   := repository.value.map(_.licenses).getOrElse(licenses.value),
+      startYear  := repository.value.map(_.startYear).orElse(startYear.value),
+      yearRange := startYear.value.collect {
+        case start if start == Year.now.getValue => s"$start"
+        case start                               => s"$start-${Year.now.getValue}"
+      }
+    )
 
-  override def projectSettings: Seq[Def.Setting[_]] = Seq(
-    description := repository.value.map(_.description).getOrElse(description.value),
-    organizationName := organizationMetadata.value
-      .flatMap(_.name)
-      .getOrElse(organizationName.value),
-    organizationHomepage := organizationMetadata.value.fold(organizationHomepage.value)(_.url),
-    organizationEmail    := organizationMetadata.value.flatMap(_.email)
-  )
+  override def projectSettings: Seq[Def.Setting[_]] =
+    Seq(
+      description := repository.value.map(_.description).getOrElse(description.value),
+      organizationName := organizationMetadata.value
+        .flatMap(_.name)
+        .getOrElse(organizationName.value),
+      organizationHomepage := organizationMetadata.value.fold(organizationHomepage.value)(_.url),
+      organizationEmail    := organizationMetadata.value.flatMap(_.email)
+    )
 
   @silent
   private[github] val configuration = Def.setting {
@@ -160,8 +165,9 @@ object SbtGithubPlugin extends AutoPlugin {
     Def.settingDyn(if (githubEnabled.value) f else Def.setting(default))
 
   @SuppressWarnings(Array("scalafix:Disable.Option.get"))
-  private def onRepo[A](default: A)(f: Def.Initialize[Repository => A]) = Def.settingDyn {
-    if (githubEnabled.value) Def.setting(f.value(repository.value.get)) else Def.setting(default)
-  }
+  private def onRepo[A](default: A)(f: Def.Initialize[Repository => A]) =
+    Def.settingDyn {
+      if (githubEnabled.value) Def.setting(f.value(repository.value.get)) else Def.setting(default)
+    }
 
 }
