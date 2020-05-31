@@ -23,8 +23,14 @@ jobs:
         run: git fetch --tags
       - name: Setup Scala
         uses: olafurpg/setup-scala@v7
+      - name: Setup Ruby
+        uses: actions/setup-ruby@v1
       - name: Setup GPG
         uses: olafurpg/setup-gpg@v2
+      - name: Setup yq
+        run: sudo snap install yq
+      - name: Run pre-conditions
+        run: test -f .github/actions.yml && eval "$(yq r .github/actions.yml -D "true" pre.release)" || true
       - name: Release new version
         run: sbt ci-publish
         env:
@@ -33,3 +39,5 @@ jobs:
           PGP_SECRET: ${{ secrets.PGP_SECRET }}
           SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
           SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
+      - name: Run post-conditions
+        run: test -f .github/actions.yml && eval "$(yq r .github/actions.yml -D "true" post.release)" || true
