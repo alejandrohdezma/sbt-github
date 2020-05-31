@@ -16,8 +16,6 @@
 
 package com.alejandrohdezma.sbt
 
-import scala.concurrent.ExecutionContext.Implicits.global
-
 import cats.effect.ContextShift
 import cats.effect.IO
 import cats.effect.Timer
@@ -33,6 +31,8 @@ import org.http4s._
 import org.http4s.headers.Host
 import org.http4s.implicits._
 import org.http4s.server.blaze.BlazeServerBuilder
+
+import scala.concurrent.ExecutionContext.Implicits.global
 
 package object github {
 

@@ -18,8 +18,6 @@ package com.alejandrohdezma.sbt.github
 
 import java.time.Year
 
-import scala.language.postfixOps
-
 import sbt.Def
 import sbt.Def.Setting
 import sbt.Keys._
@@ -31,6 +29,8 @@ import com.alejandrohdezma.sbt.github.github.Repository
 import com.alejandrohdezma.sbt.github.github.urls.GithubEntryPoint
 import com.alejandrohdezma.sbt.github.syntax.list._
 import com.github.ghik.silencer.silent
+
+import scala.language.postfixOps
 
 /**
  * This plugin automatically enables reloading on sbt source changes and
