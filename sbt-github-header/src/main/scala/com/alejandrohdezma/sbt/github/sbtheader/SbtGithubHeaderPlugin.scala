@@ -64,19 +64,20 @@ object SbtGithubHeaderPlugin extends AutoPlugin {
   override def requires: Plugins = HeaderPlugin && SbtGithubPlugin
 
   @silent
-  override def projectSettings: Seq[Def.Setting[_]] = Seq(
-    licenseStyle := headerLicenseStyle.value,
-    headerLicense := LicenseDetection(
-      licenses.value.toList,
-      copyrightOwner.value,
-      yearRange.value,
-      licenseStyle.value
-    ),
-    copyrightOwner := {
-      organizationHomepage.value
-        .map(url => s"${organizationName.value} <$url>")
-        .getOrElse(organizationName.value)
-    }
-  )
+  override def projectSettings: Seq[Def.Setting[_]] =
+    Seq(
+      licenseStyle := headerLicenseStyle.value,
+      headerLicense := LicenseDetection(
+        licenses.value.toList,
+        copyrightOwner.value,
+        yearRange.value,
+        licenseStyle.value
+      ),
+      copyrightOwner := {
+        organizationHomepage.value
+          .map(url => s"${organizationName.value} <$url>")
+          .getOrElse(organizationName.value)
+      }
+    )
 
 }

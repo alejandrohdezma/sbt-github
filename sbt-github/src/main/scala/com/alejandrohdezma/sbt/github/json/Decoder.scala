@@ -89,16 +89,18 @@ object Decoder {
     case value                => NotAUrl(value).raise
   }
 
-  implicit def OptionDecoder[A: Decoder]: Decoder[Option[A]] = new Decoder[Option[A]] {
+  implicit def OptionDecoder[A: Decoder]: Decoder[Option[A]] =
+    new Decoder[Option[A]] {
 
-    override def decode(json: Json.Value): Try[Option[A]] = json match {
-      case Json.Null => Try(None)
-      case value     => Decoder[A].decode(value).map(Some(_))
+      override def decode(json: Json.Value): Try[Option[A]] =
+        json match {
+          case Json.Null => Try(None)
+          case value     => Decoder[A].decode(value).map(Some(_))
+        }
+
+      override def onNullPath: Try[Option[A]] = Try(None)
+
     }
-
-    override def onNullPath: Try[Option[A]] = Try(None)
-
-  }
 
   implicit def ListDecoder[A: Decoder]: Decoder[List[A]] = {
     case Json.Collection(list) => list.traverse(Decoder[A].decode)

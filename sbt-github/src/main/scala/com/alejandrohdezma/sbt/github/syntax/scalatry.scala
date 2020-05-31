@@ -43,10 +43,11 @@ object scalatry {
      *  } // Result: Success(12)
      *  }}}
      */
-    def collectFail(pf: PartialFunction[Throwable, Throwable]): Try[A] = aTry match {
-      case Success(a) => Success(a)
-      case Failure(b) => Failure(pf.andThen(initCause(b)).lift(b).getOrElse(b))
-    }
+    def collectFail(pf: PartialFunction[Throwable, Throwable]): Try[A] =
+      aTry match {
+        case Success(a) => Success(a)
+        case Failure(b) => Failure(pf.andThen(initCause(b)).lift(b).getOrElse(b))
+      }
 
     /**
      * The given function is applied if this is a `Failure`.
@@ -57,10 +58,11 @@ object scalatry {
      *  Success(12).mapFail(_ => UrlNotFound)       // Result: Success(12)
      *  }}}
      */
-    def mapFail(pf: Throwable => Throwable): Try[A] = aTry match {
-      case Success(a) => Success(a)
-      case Failure(b) => Failure(pf.andThen(initCause(b))(b))
-    }
+    def mapFail(pf: Throwable => Throwable): Try[A] =
+      aTry match {
+        case Success(a) => Success(a)
+        case Failure(b) => Failure(pf.andThen(initCause(b))(b))
+      }
 
     /**
      * Transforms the inner `Throwable` to the provided one if this is a failure.
@@ -71,10 +73,11 @@ object scalatry {
      *  Try(12).failAs(NotFound)              // Result: Success(12)
      *  }}}
      */
-    def failAs(t: => Throwable): Try[A] = aTry match {
-      case Success(a) => Success(a)
-      case Failure(b) => Failure(initCause(b)(t))
-    }
+    def failAs(t: => Throwable): Try[A] =
+      aTry match {
+        case Success(a) => Success(a)
+        case Failure(b) => Failure(initCause(b)(t))
+      }
 
   }
 

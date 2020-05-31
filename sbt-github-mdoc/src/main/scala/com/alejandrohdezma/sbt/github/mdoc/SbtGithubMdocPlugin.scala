@@ -83,27 +83,28 @@ object SbtGithubMdocPlugin extends AutoPlugin {
 
   override def requires: Plugins = SbtGithubPlugin && MdocPlugin
 
-  override def projectSettings: Seq[Def.Setting[_]] = Seq(
-    displayName                  := SbtGithubPlugin.info.value._2,
-    removeVersionTimestampInMdoc := true,
-    mdocVariables ++= Map(
-      "NAME"          -> displayName.value,
-      "REPO"          -> repository.value.map(_.name).getOrElse(""),
-      "LICENSE"       -> licenses.value.headOption.map(_._1).getOrElse(""),
-      "ORG_NAME"      -> organizationName.value,
-      "DESCRIPTION"   -> description.value,
-      "ORG_EMAIL"     -> organizationEmail.value.getOrElse(""),
-      "ORG_URL"       -> organizationHomepage.value.map(url => s"$url").getOrElse(""),
-      "START_YEAR"    -> startYear.value.fold("")(year => s"$year"),
-      "YEAR_RANGE"    -> yearRange.value.getOrElse(""),
-      "VERSION"       -> versionForMdoc.value,
-      "CONTRIBUTORS"  -> contributors.value.markdown,
-      "COLLABORATORS" -> collaborators.value.markdown,
-      "COPYRIGHT_OWNER" -> organizationHomepage.value
-        .map(url => s"${organizationName.value} <$url>")
-        .getOrElse(organizationName.value)
+  override def projectSettings: Seq[Def.Setting[_]] =
+    Seq(
+      displayName                  := SbtGithubPlugin.info.value._2,
+      removeVersionTimestampInMdoc := true,
+      mdocVariables ++= Map(
+        "NAME"          -> displayName.value,
+        "REPO"          -> repository.value.map(_.name).getOrElse(""),
+        "LICENSE"       -> licenses.value.headOption.map(_._1).getOrElse(""),
+        "ORG_NAME"      -> organizationName.value,
+        "DESCRIPTION"   -> description.value,
+        "ORG_EMAIL"     -> organizationEmail.value.getOrElse(""),
+        "ORG_URL"       -> organizationHomepage.value.map(url => s"$url").getOrElse(""),
+        "START_YEAR"    -> startYear.value.fold("")(year => s"$year"),
+        "YEAR_RANGE"    -> yearRange.value.getOrElse(""),
+        "VERSION"       -> versionForMdoc.value,
+        "CONTRIBUTORS"  -> contributors.value.markdown,
+        "COLLABORATORS" -> collaborators.value.markdown,
+        "COPYRIGHT_OWNER" -> organizationHomepage.value
+          .map(url => s"${organizationName.value} <$url>")
+          .getOrElse(organizationName.value)
+      )
     )
-  )
 
   private val versionForMdoc = Def.setting {
     if (removeVersionTimestampInMdoc.value) version.value.replaceAll("\\+.*", "")

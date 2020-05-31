@@ -36,8 +36,8 @@ final case class Organization(name: Option[String], url: Option[URL], email: Opt
 object Organization {
 
   /** Download organization information from Github */
-  def get(name: String)(
-      implicit auth: Authentication,
+  def get(name: String)(implicit
+      auth: Authentication,
       url: GithubEntryPoint,
       logger: Logger
   ): Try[Organization] = {

@@ -31,8 +31,8 @@ object RepositoryEntryPoint {
   /**
    * Returns the entry point URL for a given owner/repository.
    */
-  def get(owner: String, repo: String)(
-      implicit auth: Authentication,
+  def get(owner: String, repo: String)(implicit
+      auth: Authentication,
       logger: Logger,
       entryPoint: GithubEntryPoint
   ): Try[URL] =

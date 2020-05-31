@@ -22,14 +22,15 @@ import sbt.librarymanagement.Developer
 final case class Collaborators(list: List[Collaborator]) {
 
   /** Includes the provided list of collaborators to the current list, removing duplicates */
-  def include(collaborators: List[Collaborator]): Collaborators = Collaborators {
-    (list ++ collaborators)
-      .groupBy(_.login)
-      .values
-      .toList
-      .map(_.head) /* scalafix:ok */
-      .sortBy(collaborator => collaborator.name -> collaborator.login)
-  }
+  def include(collaborators: List[Collaborator]): Collaborators =
+    Collaborators {
+      (list ++ collaborators)
+        .groupBy(_.login)
+        .values
+        .toList
+        .map(_.head) /* scalafix:ok */
+        .sortBy(collaborator => collaborator.name -> collaborator.login)
+    }
 
   /** Returns this list of collaborators as SBT developers */
   lazy val developers: List[Developer] = list.map { collaborator =>
