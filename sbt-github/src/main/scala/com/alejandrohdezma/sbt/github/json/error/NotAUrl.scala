@@ -20,6 +20,4 @@ import scala.util.control.NoStackTrace
 
 import com.alejandrohdezma.sbt.github.json.Json
 
-final case class NotAUrl(value: Json.Value)
-    extends Throwable(s"$value is not a valid URL")
-    with NoStackTrace
+final case class NotAUrl(value: Json.Value) extends Throwable(s"$value is not a valid URL") with NoStackTrace

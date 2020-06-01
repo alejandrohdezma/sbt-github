@@ -45,13 +45,12 @@ object Collaborator {
   /**
    * Obtains a collaborator information from its Github login ID
    */
-  def github(id: String): Collaborator.Creator = {
-    implicit auth => implicit entrypoint => implicit log =>
-      for {
-        _    <- Try(log.info(s"Retrieving `$id` information from Github API"))
-        url  <- UserEntryPoint.get(id)
-        user <- client.get[User](url)
-      } yield Collaborator(user.login, user.url, None, user.name, user.email, user.avatar)
+  def github(id: String): Collaborator.Creator = { implicit auth => implicit entrypoint => implicit log =>
+    for {
+      _    <- Try(log.info(s"Retrieving `$id` information from Github API"))
+      url  <- UserEntryPoint.get(id)
+      user <- client.get[User](url)
+    } yield Collaborator(user.login, user.url, None, user.name, user.email, user.avatar)
   }
 
   /**
