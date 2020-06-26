@@ -30,8 +30,8 @@ lazy val `sbt-github` = project
   .settings(scriptedLaunchOpts += s"-Dplugin.version=${version.value}")
   .settings(testFrameworks += new TestFramework("munit.Framework"))
   .settings(libraryDependencies += "org.scalameta" %% "munit" % "0.7.9" % Test)
-  .settings(libraryDependencies += "org.http4s" %% "http4s-dsl" % "0.21.4" % Test)
-  .settings(libraryDependencies += "org.http4s" %% "http4s-blaze-server" % "0.21.4" % Test)
+  .settings(libraryDependencies += "org.http4s" %% "http4s-dsl" % "0.21.5" % Test)
+  .settings(libraryDependencies += "org.http4s" %% "http4s-blaze-server" % "0.21.5" % Test)
   .configs(CompileOnly)
   .settings(silencer)
 
