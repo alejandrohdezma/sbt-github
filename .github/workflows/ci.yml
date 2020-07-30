@@ -33,13 +33,15 @@ jobs:
         run: test -f .github/actions.yml && eval "$(yq r .github/actions.yml -D "true" pre.ci)" || true
       - name: Run scalafmt on Scala Steward PRs
         if: github.event.pull_request.user.login == 'alejandrohdezma' && contains(github.event.pull_request.body, 'Scala Steward')
-        run: sbt "scalafixEnable; fix" || sbt scalafmtAll || true
+        run: sbt "scalafixEnable; fix" || sbt "scalafmtAll; scalafmtSbt" || true
       - name: Push changes
         uses: stefanzweifel/git-auto-commit-action@v4.1.3
         with:
           commit_message: Run formatter/linter
       - name: Run checks
         run: sbt ci-test
+        env:
+          GITHUB_TOKEN: ${{ secrets.ADMIN_GITHUB_TOKEN }}
       - name: Run post-conditions
         run: test -f .github/actions.yml && eval "$(yq r .github/actions.yml -D "true" post.ci)" || true
       - name: Automerge Scala Steward PRs

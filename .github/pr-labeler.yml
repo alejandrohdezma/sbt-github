@@ -3,8 +3,8 @@
 # If you want to suggest a change, please open a PR or issue in that repository
 
 enhancement: ['enhancement/*', 'feature/*']
-breaking-change: ['breaking/*', 'break/*']
 documentation: ['docs/*', 'doc/*']
+breaking-change: ['breaking/*', 'break/*']
 bug: ['bug/*', 'fix/*']
 tests: ['test/*', 'tests/*']
 dependency-update: ['dep/*', 'dependency/*', 'dependency-update/*']
