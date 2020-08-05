@@ -37,7 +37,6 @@ object scalatry {
      *    case NotFound => UrlNotFound
      *  } // Result: Failure(NotAString)
      *
-     *
      *  Success(12).collectFail {
      *    case NotFound => UrlNotFound
      *  } // Result: Success(12)
