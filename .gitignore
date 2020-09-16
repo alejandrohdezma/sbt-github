@@ -30,10 +30,12 @@ project/plugins/project/
 
 ### Scala ###
 
-*.metals
 .bloop/
-.metals/
+**/.bloop/
 project/.bloop/
+*.metals
+.metals/
+**/metals.sbt
 project/metals.sbt
 
 ### Vim ###
@@ -63,11 +65,7 @@ tags
 
 ### VisualStudioCode ###
 
-.vscode/*
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
+.vscode
 
 ### sbt-scalafix-defaults ###
 # Scalafix configuration file is automatically downloaded by `sbt-scalafix-defaults`
