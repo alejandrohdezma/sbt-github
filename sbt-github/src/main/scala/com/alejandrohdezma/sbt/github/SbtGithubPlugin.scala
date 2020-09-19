@@ -56,16 +56,8 @@ object SbtGithubPlugin extends AutoPlugin {
   @silent
   override def buildSettings: Seq[Setting[_]] =
     aliases ++ Seq(
-      githubApiEntryPoint := url("https://api.github.com"),
-      githubEnabled       := downloadInfoFromGithub.value,
-      downloadInfoFromGithub := {
-        if (sys.env.contains("DOWNLOAD_INFO_FROM_GITHUB")) {
-          sLog.value.warn {
-            "Using `DOWNLOAD_INFO_FROM_GITHUB` is deprecated. Please use `githubEnabled` instead."
-          }
-          true
-        } else false
-      },
+      githubApiEntryPoint           := url("https://api.github.com"),
+      githubEnabled                 := false,
       populateOrganizationWithOwner := true,
       githubOrganization            := "",
       excludedContributors          := List("scala-steward", """.*\[bot\]""", "traviscibot"),

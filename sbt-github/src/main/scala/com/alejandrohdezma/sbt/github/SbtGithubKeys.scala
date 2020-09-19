@@ -78,12 +78,6 @@ trait SbtGithubKeys {
     "Whether sbt-github should download information from Github or not. Default to `false`"
   }
 
-  @deprecated("Use githubEnabled instead", since = "0.8.0")
-  val downloadInfoFromGithub = settingKey[Boolean] {
-    "Whether sbt-github should download information from Github or not. Defaults to the presence of" +
-      " a `DOWNLOAD_INFO_FROM_GITHUB` environment variable. Deprecated, use `githubEnabled` instead."
-  }
-
   val yearRange = settingKey[Option[String]] {
     "Range of years in which the project has been active"
   }
