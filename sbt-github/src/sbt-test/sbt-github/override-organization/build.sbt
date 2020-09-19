@@ -3,7 +3,7 @@ ThisBuild / scmInfo := Some(
 )
 ThisBuild / githubEnabled      := true
 ThisBuild / githubOrganization := "different-org"
-ThisBuild / githubToken        := Token("1234")
+ThisBuild / githubAuthToken    := Some(AuthToken("1234"))
 ThisBuild / githubApiEntryPoint := {
   val github = baseDirectory.value / "github"
 

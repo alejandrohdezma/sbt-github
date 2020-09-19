@@ -1,8 +1,8 @@
 ThisBuild / scmInfo := Some(
   ScmInfo(url("http://example.com"), "scm:git:https://github.com/alejandrohdezma/sbt-github.git")
 )
-ThisBuild / githubEnabled := true
-ThisBuild / githubToken   := Token("1234")
+ThisBuild / githubEnabled   := true
+ThisBuild / githubAuthToken := Some(AuthToken("1234"))
 ThisBuild / githubApiEntryPoint := {
   val github = baseDirectory.value / "github"
 

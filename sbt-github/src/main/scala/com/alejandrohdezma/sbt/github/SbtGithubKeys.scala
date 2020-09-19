@@ -92,12 +92,6 @@ trait SbtGithubKeys {
     "Organization email"
   }
 
-  @deprecated("Use githubAuthToken instead", since = "0.8.1")
-  val githubToken = settingKey[Token] {
-    "The Github Token used for authenticating into Github API. Defaults to GITHUB_TOKEN environment variable. " +
-      "Deprecated, use `githubAuthToken` instead."
-  }
-
   val githubAuthToken = settingKey[Option[AuthToken]] {
     "The Github Token used for authenticating into Github API. Defaults to GITHUB_TOKEN environment variable."
   }
