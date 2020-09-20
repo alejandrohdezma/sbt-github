@@ -26,7 +26,6 @@ import com.github.ghik.silencer.silent
 import de.heikoseeberger.sbtheader.HeaderPlugin
 import de.heikoseeberger.sbtheader.HeaderPlugin.autoImport._
 import de.heikoseeberger.sbtheader.LicenseDetection
-import de.heikoseeberger.sbtheader.LicenseStyle
 
 /**
  * Populates the `headerLicense` setting from [[https://github.com/sbt/sbt-header sbt-header]]
@@ -50,11 +49,6 @@ object SbtGithubHeaderPlugin extends AutoPlugin {
         "`organizationName <organizationHomepage>` if it is present."
     }
 
-    @deprecated("Use headerLicenseStyle instead", since = "0.8.0")
-    val licenseStyle = settingKey[LicenseStyle] {
-      "The license style to be used. Can be `Detailed` or `SpdxSyntax`. Defaults to Detailed."
-    }
-
   }
 
   import autoImport._
@@ -66,12 +60,11 @@ object SbtGithubHeaderPlugin extends AutoPlugin {
   @silent
   override def projectSettings: Seq[Def.Setting[_]] =
     Seq(
-      licenseStyle := headerLicenseStyle.value,
       headerLicense := LicenseDetection(
         licenses.value.toList,
         copyrightOwner.value,
         yearRange.value,
-        licenseStyle.value
+        headerLicenseStyle.value
       ),
       copyrightOwner := {
         organizationHomepage.value
