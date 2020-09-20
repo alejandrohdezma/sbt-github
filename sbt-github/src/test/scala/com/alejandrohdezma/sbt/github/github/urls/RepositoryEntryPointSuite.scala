@@ -22,7 +22,7 @@ import sbt.util.Logger
 
 import com.alejandrohdezma.sbt.github._
 import com.alejandrohdezma.sbt.github.http.Authentication
-import com.alejandrohdezma.sbt.github.http.Authentication.Token
+import com.alejandrohdezma.sbt.github.http.Authentication.AuthToken
 import org.http4s.dsl.io._
 
 class RepositoryEntryPointSuite extends munit.FunSuite {
@@ -34,7 +34,7 @@ class RepositoryEntryPointSuite extends munit.FunSuite {
     } { url =>
       implicit val noOpLogger: Logger                 = Logger.Null
       implicit val githubEntryPoint: GithubEntryPoint = GithubEntryPoint(url)
-      implicit val auth: Authentication               = Token("1234")
+      implicit val auth: Authentication               = AuthToken("1234")
 
       val repoUrl = RepositoryEntryPoint.get("owner", "repo")
 

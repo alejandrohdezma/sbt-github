@@ -25,7 +25,7 @@ import com.alejandrohdezma.sbt.github._
 import com.alejandrohdezma.sbt.github.github.error.GithubError
 import com.alejandrohdezma.sbt.github.github.urls.GithubEntryPoint
 import com.alejandrohdezma.sbt.github.http.Authentication
-import com.alejandrohdezma.sbt.github.http.Authentication.Token
+import com.alejandrohdezma.sbt.github.http.Authentication.AuthToken
 import org.http4s.dsl.io._
 
 class OrganizationSuite extends munit.FunSuite {
@@ -41,7 +41,7 @@ class OrganizationSuite extends munit.FunSuite {
         }""")
     } { url =>
       implicit val entryPoint: GithubEntryPoint   = GithubEntryPoint(url)
-      implicit val authentication: Authentication = Token("1234")
+      implicit val authentication: Authentication = AuthToken("1234")
       implicit val noOpLogger: Logger             = Logger.Null
 
       val organization = Organization.get("org")
@@ -62,7 +62,7 @@ class OrganizationSuite extends munit.FunSuite {
       case GET -> Root / "user" / "repo" => NotFound()
     } { url =>
       implicit val entryPoint: GithubEntryPoint   = GithubEntryPoint(url)
-      implicit val authentication: Authentication = Token("1234")
+      implicit val authentication: Authentication = AuthToken("1234")
       implicit val noOpLogger: Logger             = Logger.Null
 
       val organization = Organization.get("org")
