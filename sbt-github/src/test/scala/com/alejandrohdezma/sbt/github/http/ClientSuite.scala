@@ -45,7 +45,7 @@ class ClientSuite extends munit.FunSuite {
       final case class Auth(auth: String)
 
       implicit val decoder: Decoder[Auth] = _.get[String]("auth").map(Auth)
-      implicit val auth: Authentication   = Authentication.Token("1234")
+      implicit val auth: Authentication   = Authentication.AuthToken("1234")
 
       val result = client.get[Auth](url"${uri}hello")
 
@@ -57,7 +57,7 @@ class ClientSuite extends munit.FunSuite {
     withServer {
       case GET -> Root / "hello" => NotFound()
     } { uri =>
-      implicit val auth: Authentication = Authentication.Token("1234")
+      implicit val auth: Authentication = Authentication.AuthToken("1234")
 
       val result = client.get[String](url"${uri}hello")
 
@@ -69,7 +69,7 @@ class ClientSuite extends munit.FunSuite {
     withServer {
       case GET -> Root => Forbidden()
     } { url =>
-      implicit val auth: Authentication = Authentication.Token("1234")
+      implicit val auth: Authentication = Authentication.AuthToken("1234")
 
       val result = client.get[String](url)
 

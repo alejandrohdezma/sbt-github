@@ -28,7 +28,7 @@ import sbt.util.Logger
 
 import com.alejandrohdezma.sbt.github.github.Collaborator
 import com.alejandrohdezma.sbt.github.github.urls.GithubEntryPoint
-import com.alejandrohdezma.sbt.github.http.Authentication.Token
+import com.alejandrohdezma.sbt.github.http.Authentication.AuthToken
 import org.http4s._
 import org.http4s.headers.Host
 import org.http4s.implicits._
@@ -38,7 +38,7 @@ package object github {
 
   @SuppressWarnings(Array("scalafix:DisableSyntax.implicitConversion"))
   implicit def CreatorToCollaborator(creator: Collaborator.Creator): Collaborator =
-    creator(Token("123"))(GithubEntryPoint(url"http://example.com"))(
+    creator(AuthToken("123"))(GithubEntryPoint(url"http://example.com"))(
       Logger.Null
     ).get // scalafix:ok Disable.Try.get
 

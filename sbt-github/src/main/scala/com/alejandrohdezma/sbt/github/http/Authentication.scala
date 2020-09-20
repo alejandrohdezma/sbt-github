@@ -30,17 +30,4 @@ object Authentication {
 
   }
 
-  @deprecated("Use AuthToken instead", since = "0.8.1")
-  final class Token(value: => String) extends Authentication {
-
-    override def header: String = s"token $value"
-
-  }
-
-  object Token {
-
-    def apply(value: => String): Token = new Token(value)
-
-  }
-
 }
