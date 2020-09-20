@@ -62,15 +62,7 @@ object SbtGithubPlugin extends AutoPlugin {
       githubOrganization            := "",
       excludedContributors          := List("scala-steward", """.*\[bot\]""", "traviscibot"),
       extraCollaborators            := List(),
-      githubToken := Token {
-        sys.env.getOrElse(
-          "GITHUB_TOKEN",
-          sys.error {
-            "You need to add an environment variable named GITHUB_TOKEN with a Github personal access token."
-          }
-        )
-      },
-      githubAuthToken := sys.env.get("GITHUB_TOKEN").map(AuthToken),
+      githubAuthToken               := sys.env.get("GITHUB_TOKEN").map(AuthToken),
       repository := onGithub(default = Option.empty[Repository])(Def.setting {
         implicit val (auth, logger, url) = configuration.value
         Option(Repository.get(info.value._1, info.value._2).get) // scalafix:ok Disable.Try.get
@@ -126,7 +118,11 @@ object SbtGithubPlugin extends AutoPlugin {
   @silent
   private[github] val configuration = Def.setting {
     (
-      githubAuthToken.value.getOrElse(githubToken.value),
+      githubAuthToken.value.getOrElse(
+        sys.error {
+          "You need to add an environment variable named GITHUB_TOKEN with a Github Personal Access Token"
+        }
+      ),
       sLog.value,
       GithubEntryPoint(githubApiEntryPoint.value)
     )

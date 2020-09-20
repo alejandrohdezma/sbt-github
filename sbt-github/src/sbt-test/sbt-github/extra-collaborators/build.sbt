@@ -3,7 +3,7 @@ ThisBuild / scmInfo := Some(
 )
 ThisBuild / extraCollaborators += Collaborator.github("user3")
 ThisBuild / githubEnabled      := true
-ThisBuild / githubToken        := Token("1234")
+ThisBuild / githubAuthToken    := Some(AuthToken("1234"))
 ThisBuild / githubApiEntryPoint := {
   val github = baseDirectory.value / "github"
 
