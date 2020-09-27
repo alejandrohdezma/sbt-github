@@ -30,7 +30,6 @@ import com.alejandrohdezma.sbt.github.github.Organization
 import com.alejandrohdezma.sbt.github.github.Repository
 import com.alejandrohdezma.sbt.github.github.urls.GithubEntryPoint
 import com.alejandrohdezma.sbt.github.syntax.list._
-import com.github.ghik.silencer.silent
 
 /**
  * This plugin automatically enables reloading on sbt source changes and
@@ -53,7 +52,6 @@ object SbtGithubPlugin extends AutoPlugin {
 
   override def requires: Plugins = JvmPlugin
 
-  @silent
   override def buildSettings: Seq[Setting[_]] =
     aliases ++ Seq(
       githubApiEntryPoint           := url("https://api.github.com"),
@@ -115,7 +113,6 @@ object SbtGithubPlugin extends AutoPlugin {
       organizationEmail    := organizationMetadata.value.flatMap(_.email)
     )
 
-  @silent
   private[github] val configuration = Def.setting {
     (
       githubAuthToken.value.getOrElse(

@@ -32,8 +32,6 @@ lazy val `sbt-github` = project
   .settings(libraryDependencies += "org.scalameta" %% "munit" % "0.7.13" % Test)
   .settings(libraryDependencies += "org.http4s" %% "http4s-dsl" % "0.21.7" % Test)
   .settings(libraryDependencies += "org.http4s" %% "http4s-blaze-server" % "0.21.7" % Test)
-  .configs(CompileOnly)
-  .settings(silencer)
 
 lazy val `sbt-github-mdoc` = project
   .enablePlugins(SbtPlugin)
@@ -48,12 +46,3 @@ lazy val `sbt-github-header` = project
   .settings(description := "Integration between sbt-github and sbt-header")
   .settings(scriptedLaunchOpts += s"-Dplugin.version=${version.value}")
   .settings(addSbtPlugin(`sbt-header`))
-  .configs(CompileOnly)
-  .settings(silencer)
-
-lazy val silencer = libraryDependencies ++= Seq(
-  compilerPlugin("com.github.ghik" % "silencer-plugin" % "1.7.1" cross CrossVersion.full),
-  "com.github.ghik" % "silencer-lib" % "1.7.1" % CompileOnly cross CrossVersion.full
-)
-
-val CompileOnly = config("compileonly").hide

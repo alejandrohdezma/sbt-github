@@ -22,7 +22,6 @@ import sbt._
 
 import com.alejandrohdezma.sbt.github.SbtGithubPlugin
 import com.alejandrohdezma.sbt.github.SbtGithubPlugin.autoImport._
-import com.github.ghik.silencer.silent
 import de.heikoseeberger.sbtheader.HeaderPlugin
 import de.heikoseeberger.sbtheader.HeaderPlugin.autoImport._
 import de.heikoseeberger.sbtheader.LicenseDetection
@@ -57,7 +56,6 @@ object SbtGithubHeaderPlugin extends AutoPlugin {
 
   override def requires: Plugins = HeaderPlugin && SbtGithubPlugin
 
-  @silent
   override def projectSettings: Seq[Def.Setting[_]] =
     Seq(
       headerLicense := LicenseDetection(
