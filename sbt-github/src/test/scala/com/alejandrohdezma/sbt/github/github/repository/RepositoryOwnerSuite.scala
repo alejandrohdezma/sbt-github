@@ -27,9 +27,8 @@ import org.http4s.dsl.io._
 class RepositoryOwnerSuite extends munit.FunSuite {
 
   test("repository.owner should return repository's owner from Github API") {
-    withServer {
-      case GET -> Root / "owner" =>
-        Ok(s"""{
+    withServer { case GET -> Root / "owner" =>
+      Ok(s"""{
           "login": "owner",
           "html_url": "http://example.com/owner",
           "name": "Owner",
@@ -54,9 +53,8 @@ class RepositoryOwnerSuite extends munit.FunSuite {
   }
 
   test("repository.owner should not return name if not present") {
-    withServer {
-      case GET -> Root / "owner" =>
-        Ok(s"""{
+    withServer { case GET -> Root / "owner" =>
+      Ok(s"""{
           "login": "owner",
           "html_url": "http://example.com/owner",
           "email": "owner@example.com"
@@ -74,9 +72,8 @@ class RepositoryOwnerSuite extends munit.FunSuite {
   }
 
   test("repository.owner should not return email if not present") {
-    withServer {
-      case GET -> Root / "owner" =>
-        Ok(s"""{
+    withServer { case GET -> Root / "owner" =>
+      Ok(s"""{
           "login": "owner",
           "html_url": "http://example.com/owner",
           "name": "Owner"
@@ -93,9 +90,8 @@ class RepositoryOwnerSuite extends munit.FunSuite {
   }
 
   test("repository.owner should not return avatar if not present") {
-    withServer {
-      case GET -> Root / "owner" =>
-        Ok(s"""{
+    withServer { case GET -> Root / "owner" =>
+      Ok(s"""{
           "login": "owner",
           "html_url": "http://example.com/owner",
           "name": "Owner",
@@ -119,8 +115,8 @@ class RepositoryOwnerSuite extends munit.FunSuite {
   }
 
   test("repository.owner should return generic error on any error") {
-    withServer {
-      case GET -> Root / "owner" => NotFound()
+    withServer { case GET -> Root / "owner" =>
+      NotFound()
     } { uri =>
       val repository = EmptyRepository.copy(ownerUrl = url"${uri}owner")
 

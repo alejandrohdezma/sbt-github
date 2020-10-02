@@ -29,8 +29,8 @@ class TrySyntaxSuite extends munit.FunSuite {
   test("collectFail should change value if Failure") {
     val failure = Failure(NotFound)
 
-    val result = failure.collectFail {
-      case _ => GithubError("miau")
+    val result = failure.collectFail { case _ =>
+      GithubError("miau")
     }
 
     assertEquals(result, Failure(GithubError("miau")))
@@ -39,8 +39,8 @@ class TrySyntaxSuite extends munit.FunSuite {
   test("collectFail should do nothing if Success") {
     val success = Try(42)
 
-    val result = success.collectFail {
-      case _ => NotFound
+    val result = success.collectFail { case _ =>
+      NotFound
     }
 
     assertEquals(result, Success(42))

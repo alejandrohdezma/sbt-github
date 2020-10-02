@@ -56,20 +56,20 @@ object Decoder {
     case json      => f.andThen(Try(_)).applyOrElse(json, error.andThen(_.raise[A]))
   }
 
-  implicit val StringDecoder: Decoder[String] = nonNull(NotAString) {
-    case Json.Text(value) => value
+  implicit val StringDecoder: Decoder[String] = nonNull(NotAString) { case Json.Text(value) =>
+    value
   }
 
-  implicit val LongDecoder: Decoder[Long] = nonNull(NotANumber) {
-    case Json.Number(value) => value.toLong
+  implicit val LongDecoder: Decoder[Long] = nonNull(NotANumber) { case Json.Number(value) =>
+    value.toLong
   }
 
-  implicit val IntDecoder: Decoder[Int] = nonNull(NotANumber) {
-    case Json.Number(value) => value.toInt
+  implicit val IntDecoder: Decoder[Int] = nonNull(NotANumber) { case Json.Number(value) =>
+    value.toInt
   }
 
-  implicit val DoubleDecoder: Decoder[Double] = nonNull(NotANumber) {
-    case Json.Number(value) => value
+  implicit val DoubleDecoder: Decoder[Double] = nonNull(NotANumber) { case Json.Number(value) =>
+    value
   }
 
   implicit val BooleanDecoder: Decoder[Boolean] = nonNull(NotABoolean) {

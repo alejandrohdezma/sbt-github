@@ -27,9 +27,8 @@ import org.http4s.dsl.io._
 class RepositoryContributorsSuite extends munit.FunSuite {
 
   test("repository.contributors should return list of contributors (ordered by contributions)") {
-    withServer {
-      case GET -> Root / "contributors" =>
-        Ok("""[
+    withServer { case GET -> Root / "contributors" =>
+      Ok("""[
           {
             "login": "me",
             "avatar_url": "http://example.com/me.png",
@@ -67,9 +66,8 @@ class RepositoryContributorsSuite extends munit.FunSuite {
   }
 
   test("repository.contributors should exclude provided contributors") {
-    withServer {
-      case GET -> Root / "contributors" =>
-        Ok("""[
+    withServer { case GET -> Root / "contributors" =>
+      Ok("""[
           {
             "login": "me",
             "html_url": "http://example.com/me",
@@ -94,9 +92,8 @@ class RepositoryContributorsSuite extends munit.FunSuite {
   }
 
   test("repository.contributors should exclude provided contributors as regex") {
-    withServer {
-      case GET -> Root / "contributors" =>
-        Ok("""[
+    withServer { case GET -> Root / "contributors" =>
+      Ok("""[
           {
             "login": "me",
             "html_url": "http://example.com/me",
@@ -121,8 +118,8 @@ class RepositoryContributorsSuite extends munit.FunSuite {
   }
 
   test("repository.contributors should return generic error on any error") {
-    withServer {
-      case GET -> Root / "contributors" => Ok("""{"hello": "hi"}""")
+    withServer { case GET -> Root / "contributors" =>
+      Ok("""{"hello": "hi"}""")
     } { uri =>
       val repository = EmptyRepository.copy(contributorsUrl = url"${uri}contributors")
 
