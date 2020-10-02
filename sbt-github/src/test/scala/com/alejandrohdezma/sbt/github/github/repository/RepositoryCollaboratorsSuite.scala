@@ -138,8 +138,8 @@ class RepositoryCollaboratorsSuite extends munit.FunSuite {
     }
 
     test("repository.collaborators should return generic error on any error") {
-      withServer {
-        case GET -> Root / "collaborators" => Ok("""{"hello": "hi"}""")
+      withServer { case GET -> Root / "collaborators" =>
+        Ok("""{"hello": "hi"}""")
       } { uri =>
         val repository = EmptyRepository.copy(collaboratorsUrl = url"${uri}collaborators")
 

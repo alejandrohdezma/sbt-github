@@ -28,9 +28,8 @@ import org.http4s.dsl.io._
 class OrganizationEntryPointSuite extends munit.FunSuite {
 
   test("OrganizationEntryPoint.get should provide url for specific organization") {
-    withServer {
-      case GET -> Root =>
-        Ok("""{ "organization_url": "http://example.com/{org}" }""")
+    withServer { case GET -> Root =>
+      Ok("""{ "organization_url": "http://example.com/{org}" }""")
     } { url =>
       implicit val noOpLogger: Logger                 = Logger.Null
       implicit val githubEntryPoint: GithubEntryPoint = GithubEntryPoint(url)

@@ -28,9 +28,8 @@ import org.http4s.dsl.io._
 class RepositoryEntryPointSuite extends munit.FunSuite {
 
   test("RepositoryEntryPoint.get should provide url for specific repository") {
-    withServer {
-      case GET -> Root =>
-        Ok("""{ "repository_url": "http://example.com/{owner}/{repo}" }""")
+    withServer { case GET -> Root =>
+      Ok("""{ "repository_url": "http://example.com/{owner}/{repo}" }""")
     } { url =>
       implicit val noOpLogger: Logger                 = Logger.Null
       implicit val githubEntryPoint: GithubEntryPoint = GithubEntryPoint(url)

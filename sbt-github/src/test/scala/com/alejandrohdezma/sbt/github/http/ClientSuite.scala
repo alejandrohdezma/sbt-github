@@ -36,9 +36,8 @@ import org.http4s.headers.Authorization
 class ClientSuite extends munit.FunSuite {
 
   test("client.get should make `GET` call using auth and returning content as `A`") {
-    withServer {
-      case req @ GET -> Root / "hello" =>
-        Ok(s"""{
+    withServer { case req @ GET -> Root / "hello" =>
+      Ok(s"""{
           "auth": "${req.headers.get(Authorization).map(_.renderString).orEmpty}"
         }""")
     } { uri =>
@@ -54,8 +53,8 @@ class ClientSuite extends munit.FunSuite {
   }
 
   test("client.get should return NotFound for unreachable urls") {
-    withServer {
-      case GET -> Root / "hello" => NotFound()
+    withServer { case GET -> Root / "hello" =>
+      NotFound()
     } { uri =>
       implicit val auth: Authentication = Authentication.AuthToken("1234")
 
@@ -66,8 +65,8 @@ class ClientSuite extends munit.FunSuite {
   }
 
   test("client.get should propagate for every other failure (http-related)") {
-    withServer {
-      case GET -> Root => Forbidden()
+    withServer { case GET -> Root =>
+      Forbidden()
     } { url =>
       implicit val auth: Authentication = Authentication.AuthToken("1234")
 

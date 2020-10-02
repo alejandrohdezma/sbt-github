@@ -60,8 +60,8 @@ object client {
           Source.fromInputStream(inputStream, "UTF-8").mkString
         }
       )
-    }.collectFail {
-      case _: FileNotFoundException => URLNotFound(url)
+    }.collectFail { case _: FileNotFoundException =>
+      URLNotFound(url)
     }.flatMap(Json.parse).as[A]
 
   private val cache: ConcurrentHashMap[URL, String] = new ConcurrentHashMap[URL, String]()

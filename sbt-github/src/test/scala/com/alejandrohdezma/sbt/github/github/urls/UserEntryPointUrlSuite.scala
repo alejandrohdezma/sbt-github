@@ -28,9 +28,8 @@ import org.http4s.dsl.io._
 class UserEntryPointUrlSuite extends munit.FunSuite {
 
   test("UserEntryPoint.get should provide url for specific user") {
-    withServer {
-      case GET -> Root =>
-        Ok("""{ "user_url": "http://example.com/{user}" }""")
+    withServer { case GET -> Root =>
+      Ok("""{ "user_url": "http://example.com/{user}" }""")
     } { url =>
       implicit val noOpLogger: Logger                 = Logger.Null
       implicit val githubEntryPoint: GithubEntryPoint = GithubEntryPoint(url)
