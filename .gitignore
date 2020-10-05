@@ -33,6 +33,7 @@ project/plugins/project/
 .bloop/
 **/.bloop/
 project/.bloop/
+.bsp
 *.metals
 .metals/
 **/metals.sbt
