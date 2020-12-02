@@ -58,6 +58,7 @@ jobs:
         if: github.event_name == 'pull_request'
         uses: actions/checkout@v2.3.4
         with:
+          token: ${{ secrets.ADMIN_GITHUB_TOKEN }}
           repository: ${{ github.event.pull_request.head.repo.full_name }}
           ref: ${{ github.event.pull_request.head.ref }}
       - name: Checkout project (master)
@@ -67,6 +68,7 @@ jobs:
         uses: laughedelic/coursier-setup@v1
         with:
           jvm: ${{ matrix.jdk }}
+          apps: sbt
       - name: Enable Coursier cache
         uses: coursier/cache-action@v5
       - name: Setup Ruby
@@ -77,20 +79,20 @@ jobs:
         run: test -f .github/actions.yml && eval "$(yq r .github/actions.yml -D "true" pre.ci)" || true
       - name: Run scalafmt on Scala Steward PRs
         if: github.event.pull_request.user.login == 'alejandrohdezma' && contains(github.event.pull_request.body, 'Scala Steward')
-        run: sbtn fix || sbtn "scalafmtAll; scalafmtSbt" || true
+        run: sbt fix || sbt "scalafmtAll; scalafmtSbt" || true
       - name: Push changes
         uses: stefanzweifel/git-auto-commit-action@v4.7.2
         with:
           commit_message: Run formatter/linter
       - name: Run generateCiFiles on Scala Steward PRs
         if: github.event.pull_request.user.login == 'alejandrohdezma' && contains(github.event.pull_request.body, 'Scala Steward')
-        run: sbtn generateCiFiles
+        run: sbt generateCiFiles
       - name: Push changes
         uses: stefanzweifel/git-auto-commit-action@v4.7.2
         with:
           commit_message: Generate new CI files
       - name: Run checks
-        run: sbtn ci-test
+        run: sbt ci-test
         env:
           GITHUB_TOKEN: ${{ secrets.ADMIN_GITHUB_TOKEN }}
       - name: Run post-conditions
