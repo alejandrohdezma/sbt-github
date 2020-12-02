@@ -38,7 +38,7 @@ jobs:
     steps:
       - name: Automerge Scala Steward PRs
         if: github.event_name == 'pull_request' && contains(github.event.pull_request.body, 'Scala Steward')
-        uses: ridedott/merge-me-action@v1.8.61
+        uses: ridedott/merge-me-action@v1.8.67
         with:
           GITHUB_LOGIN: alejandrohdezma
           GITHUB_TOKEN: ${{ secrets.ADMIN_GITHUB_TOKEN }}
