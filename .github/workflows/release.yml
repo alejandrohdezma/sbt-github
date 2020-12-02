@@ -25,6 +25,7 @@ jobs:
         uses: laughedelic/coursier-setup@v1
         with:
           jvm: adopt:1.8
+          apps: sbt
       - name: Enable Coursier cache
         uses: coursier/cache-action@v5
       - name: Setup Ruby
@@ -38,7 +39,7 @@ jobs:
       - name: Run pre-conditions
         run: test -f .github/actions.yml && eval "$(yq r .github/actions.yml -D "true" pre.release)" || true
       - name: Release new version
-        run: sbtn ci-publish
+        run: sbt ci-publish
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PGP_PASSPHRASE: ${{ secrets.PGP_PASSPHRASE }}

@@ -26,6 +26,7 @@ jobs:
         uses: laughedelic/coursier-setup@v1
         with:
           jvm: adopt:1.8
+          apps: sbt
       - name: Enable Coursier cache
         uses: coursier/cache-action@v5
       - name: Setup Ruby
@@ -37,7 +38,7 @@ jobs:
       - name: Run pre-conditions
         run: test -f .github/actions.yml && eval "$(yq r .github/actions.yml -D "true" pre.docs)" || true
       - name: Generate documentation
-        run: sbtn ci-docs
+        run: sbt ci-docs
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DOWNLOAD_INFO_FROM_GITHUB: true
