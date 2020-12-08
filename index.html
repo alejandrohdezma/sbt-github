@@ -1,88 +1,23 @@
-<!DOCTYPE html><html><head><title>sbt-github: Home</title><meta charset="utf-8" /><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="Alejandro Hernández" /><meta name="description" content="SBT plugin to read several settings from Github" /><meta name="og:image" content="/sbt-github/img/poster.png" /><meta name="image" property="og:image" content="/sbt-github/img/poster.png" /><meta name="og:title" content="sbt-github: Home" /><meta name="title" property="og:title" content="sbt-github: Home" /><meta name="og:site_name" content="sbt-github" /><meta name="og:url" content="https://github.com/alejandrohdezma/sbt-github" /><meta name="og:type" content="website" /><meta name="og:description" content="SBT plugin to read several settings from Github" /><link rel="icon" type="image/png" href="/sbt-github/img/favicon.png" /><meta name="twitter:title" content="sbt-github: Home" /><meta name="twitter:image" content="/sbt-github/img/poster.png" /><meta name="twitter:description" content="SBT plugin to read several settings from Github" /><meta name="twitter:card" content="summary_large_image" /><link rel="icon" type="image/png" sizes="16x16" href="/sbt-github/img/favicon16x16.png" /><link rel="icon" type="image/png" sizes="24x24" href="/sbt-github/img/favicon24x24.png" /><link rel="icon" type="image/png" sizes="32x32" href="/sbt-github/img/favicon32x32.png" /><link rel="icon" type="image/png" sizes="48x48" href="/sbt-github/img/favicon48x48.png" /><link rel="icon" type="image/png" sizes="57x57" href="/sbt-github/img/favicon57x57.png" /><link rel="icon" type="image/png" sizes="60x60" href="/sbt-github/img/favicon60x60.png" /><link rel="icon" type="image/png" sizes="64x64" href="/sbt-github/img/favicon64x64.png" /><link rel="icon" type="image/png" sizes="70x70" href="/sbt-github/img/favicon70x70.png" /><link rel="icon" type="image/png" sizes="72x72" href="/sbt-github/img/favicon72x72.png" /><link rel="icon" type="image/png" sizes="76x76" href="/sbt-github/img/favicon76x76.png" /><link rel="icon" type="image/png" sizes="96x96" href="/sbt-github/img/favicon96x96.png" /><link rel="icon" type="image/png" sizes="114x114" href="/sbt-github/img/favicon114x114.png" /><link rel="icon" type="image/png" sizes="120x120" href="/sbt-github/img/favicon120x120.png" /><link rel="icon" type="image/png" sizes="128x128" href="/sbt-github/img/favicon128x128.png" /><link rel="icon" type="image/png" sizes="144x144" href="/sbt-github/img/favicon144x144.png" /><link rel="icon" type="image/png" sizes="150x150" href="/sbt-github/img/favicon150x150.png" /><link rel="icon" type="image/png" sizes="152x152" href="/sbt-github/img/favicon152x152.png" /><link rel="icon" type="image/png" sizes="196x196" href="/sbt-github/img/favicon196x196.png" /><link rel="icon" type="image/png" sizes="310x310" href="/sbt-github/img/favicon310x310.png" /><link rel="icon" type="image/png" sizes="310x150" href="/sbt-github/img/favicon310x150.png" /><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" /><link rel="stylesheet" href="/sbt-github/highlight/styles/obsidian.css" /><link rel="stylesheet" href="/sbt-github/css/light-style.css" /><link rel="stylesheet" href="/sbt-github/css/style.css" /></head><body class="home"><nav id="navigation" aria-labelledby="main-navigation"><div class="navbar-wrapper container"><div class="navigation-brand"><a href="/sbt-github/" class="brand custom-feature-icon"><div class="icon-wrapper"></div><span class="brand-title">sbt-github</span></a></div><div class="navigation-menu"><ul><li><a href="https://github.com/alejandrohdezma/sbt-github" target="_blank" rel="noopener noreferrer"><i class="nav-item-icon fa fa-lg fa-github" hidden="true"></i><span class="nav-item-text">GitHub</span></a></li><li><a href="getting-started"><i class="nav-item-icon fa fa-lg fa-file-text" hidden="true"></i><span class="nav-item-text">Documentation</span></a></li></ul></div></div></nav><header id="masthead"><div class="container text-center"><h1 class="masthead-description">SBT plugin to read several settings from Github</h1><a href="https://github.com/alejandrohdezma/sbt-github" target="_blank" rel="noopener noreferrer" class="masthead-button">View on GitHub</a></div></header><nav class="menu-container" aria-labelledby="section-navigation"><div id="horizontal-menu"><ul class="horizontal-nav"><li><a class=" active " href="/sbt-github/">Home</a></li></ul></div></nav><main id="site-main"><section class="main-content"><div class="container"><div id="content"><p>This plugin enables several settings automatically by downloading them from Github:</p>
-
-<table>
-  <thead>
-    <tr>
-      <th>Setting</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><code class="highlighter-rouge">homepage</code></td>
-      <td>Retrieved from the Github repository’s information.</td>
-    </tr>
-    <tr>
-      <td><code class="highlighter-rouge">developers</code></td>
-      <td>A list containing the repository collaborators.</td>
-    </tr>
-    <tr>
-      <td><code class="highlighter-rouge">description</code></td>
-      <td>Retrieved from the Github repository.</td>
-    </tr>
-    <tr>
-      <td><code class="highlighter-rouge">licenses</code></td>
-      <td>Retrieved from the Github repository.</td>
-    </tr>
-    <tr>
-      <td><code class="highlighter-rouge">contributors</code></td>
-      <td>The list of repository contributors. This list will not include contributors set in <code class="highlighter-rouge">excludedContributors</code>.</td>
-    </tr>
-    <tr>
-      <td><code class="highlighter-rouge">collaborators</code></td>
-      <td>The list of repository collaborators who are also <code class="highlighter-rouge">contributors</code>. This list will always include collaborators set in <code class="highlighter-rouge">extraCollaborators</code>.</td>
-    </tr>
-    <tr>
-      <td><code class="highlighter-rouge">startYear</code></td>
-      <td>Extracted from the repository creation date.</td>
-    </tr>
-    <tr>
-      <td><code class="highlighter-rouge">yearRange</code></td>
-      <td>A year range that goes from <code class="highlighter-rouge">startYear</code> to the current year.</td>
-    </tr>
-    <tr>
-      <td><code class="highlighter-rouge">organizationName</code></td>
-      <td>The repository organization name or the owner’s name if <code class="highlighter-rouge">populateOrganizationWithOwner</code> is set to <code class="highlighter-rouge">true</code>. This value can be overriden to other organization using <a href="organization"><code class="highlighter-rouge">githubOrganization</code></a>.</td>
-    </tr>
-    <tr>
-      <td><code class="highlighter-rouge">organizationEmail</code></td>
-      <td>The repository organization email or the owner’s email if <code class="highlighter-rouge">populateOrganizationWithOwner</code> is set to <code class="highlighter-rouge">true</code>. This value can be overriden to other organization using <a href="organization"><code class="highlighter-rouge">githubOrganization</code></a>.</td>
-    </tr>
-    <tr>
-      <td><code class="highlighter-rouge">organizationHomepage</code></td>
-      <td>The repository organization homepage or the owner’s homepage if <code class="highlighter-rouge">populateOrganizationWithOwner</code> is set to <code class="highlighter-rouge">true</code>.  This value can be overriden to other organization using <a href="organization"><code class="highlighter-rouge">githubOrganization</code></a>.</td>
-    </tr>
-  </tbody>
-</table>
-
-<h2 id="installation">Installation</h2>
-
-<p>Add the following line to your <code class="highlighter-rouge">plugins.sbt</code> file:</p>
-
-<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">addSbtPlugin</span><span class="o">(</span><span class="s">"com.alejandrohdezma"</span> <span class="o">%</span> <span class="s">"sbt-github"</span> <span class="o">%</span> <span class="s">"0.8.1"</span><span class="o">)</span>
-</code></pre></div></div>
-
-<p>There are some integrations available also:</p>
-
-<ul>
-  <li>If you use <a href="https://scalameta.org/mdoc/">mdoc</a> there’s also available an <a href="sbt-mdoc">mdoc integration module</a></li>
-  <li>If you use <a href="https://github.com/sbt/sbt-header">sbt-header</a> there’s also available an <a href="sbt-header">sbt-header integration module</a></li>
-</ul>
-</div></div></section></main><footer id="site-footer"><div class="container"><div class="row"><p>sbt-github is designed and developed by <a href="https://github.com/alejandrohdezma" target="_blank" rel="noopener noreferrer">Alejandro Hernández</a></p></div><div class="row"><div><p>Website built with <a href="https://47degrees.github.io/sbt-microsites/" target="_blank" rel="noopener noreferrer">sbt-microsites</a> - © 2019 <a href="https://www.47deg.com/" target="_blank" rel="noopener noreferrer">47 Degrees</a></p></div></div></div></footer><script src="/sbt-github/highlight/highlight.pack.js"></script><script>
-// For all code blocks, copy the language from the containing div
-// to the inner code tag (where hljs expects it to be)
-const langPrefix = 'language-';
-document.querySelectorAll(`div[class^='${langPrefix}']`).forEach(function(div) {
-  div.classList.forEach(function(cssClass) {
-    if (cssClass.startsWith(langPrefix)) {
-      const lang = cssClass.substring(langPrefix.length);
-      div.querySelectorAll('pre code').forEach(function(code) {
-        code.classList.add(lang);
-      });
-    }
-  });
-});
-
-hljs.configure({languages:['scala','java','bash']});
-hljs.initHighlightingOnLoad();
-      </script><script>console.info('\x57\x65\x62\x73\x69\x74\x65\x20\x62\x75\x69\x6c\x74\x20\x77\x69\x74\x68\x3a\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x5f\x5f\x20\x20\x20\x20\x5f\x5f\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x5f\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x5f\x20\x5f\x5f\x0a\x20\x20\x20\x5f\x5f\x5f\x5f\x5f\x2f\x20\x2f\x5f\x20\x20\x2f\x20\x2f\x5f\x20\x20\x20\x20\x20\x20\x5f\x5f\x5f\x5f\x20\x5f\x5f\x5f\x20\x20\x28\x5f\x29\x5f\x5f\x5f\x5f\x5f\x5f\x5f\x5f\x5f\x5f\x5f\x5f\x5f\x20\x20\x5f\x5f\x5f\x5f\x5f\x28\x5f\x29\x20\x2f\x5f\x5f\x5f\x5f\x20\x20\x5f\x5f\x5f\x5f\x5f\x0a\x20\x20\x2f\x20\x5f\x5f\x5f\x2f\x20\x5f\x5f\x20\x5c\x2f\x20\x5f\x5f\x2f\x5f\x5f\x5f\x5f\x5f\x2f\x20\x5f\x5f\x20\x60\x5f\x5f\x20\x5c\x2f\x20\x2f\x20\x5f\x5f\x5f\x2f\x20\x5f\x5f\x5f\x2f\x20\x5f\x5f\x20\x5c\x2f\x20\x5f\x5f\x5f\x2f\x20\x2f\x20\x5f\x5f\x2f\x20\x5f\x20\x5c\x2f\x20\x5f\x5f\x5f\x2f\x0a\x20\x28\x5f\x5f\x20\x20\x29\x20\x2f\x5f\x2f\x20\x2f\x20\x2f\x5f\x2f\x5f\x5f\x5f\x5f\x5f\x2f\x20\x2f\x20\x2f\x20\x2f\x20\x2f\x20\x2f\x20\x2f\x20\x2f\x5f\x5f\x2f\x20\x2f\x20\x20\x2f\x20\x2f\x5f\x2f\x20\x28\x5f\x5f\x20\x20\x29\x20\x2f\x20\x2f\x5f\x2f\x20\x20\x5f\x5f\x28\x5f\x5f\x20\x20\x29\x0a\x2f\x5f\x5f\x5f\x5f\x2f\x5f\x2e\x5f\x5f\x5f\x2f\x5c\x5f\x5f\x2f\x20\x20\x20\x20\x20\x2f\x5f\x2f\x20\x2f\x5f\x2f\x20\x2f\x5f\x2f\x5f\x2f\x5c\x5f\x5f\x5f\x2f\x5f\x2f\x20\x20\x20\x5c\x5f\x5f\x5f\x5f\x2f\x5f\x5f\x5f\x5f\x2f\x5f\x2f\x5c\x5f\x5f\x2f\x5c\x5f\x5f\x5f\x2f\x5f\x5f\x5f\x5f\x2f\x0a\x0a\x68\x74\x74\x70\x73\x3a\x2f\x2f\x34\x37\x64\x65\x67\x2e\x67\x69\x74\x68\x75\x62\x2e\x69\x6f\x2f\x73\x62\x74\x2d\x6d\x69\x63\x72\x6f\x73\x69\x74\x65\x73')</script><script src="/sbt-github/js/version-selector.js"></script></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="generator" content="Docusaurus v2.0.0-alpha.69">
+<title data-react-helmet="true">SBT plugin to read several settings from Github | sbt-github</title><meta data-react-helmet="true" property="og:title" content="SBT plugin to read several settings from Github | sbt-github"><meta data-react-helmet="true" name="description" content="SBT plugin to read several settings from Github"><meta data-react-helmet="true" property="og:description" content="SBT plugin to read several settings from Github"><meta data-react-helmet="true" name="twitter:card" content="summary_large_image"><meta data-react-helmet="true" name="docusaurus_language" content="en"><meta data-react-helmet="true" name="docusaurus_tag" content="default"><link data-react-helmet="true" rel="shortcut icon" href="/sbt-github/img/favicon.ico"><script data-react-helmet="true">document.addEventListener("DOMContentLoaded",(function(){var n=document.getElementById("base-url-issue-banner-container");if(n){var e=window.location.pathname,t="/"===e.substr(-1)?e:e+"/";n.innerHTML=t}}))</script><link rel="stylesheet" href="/sbt-github/styles.39727356.css">
+<link rel="preload" href="/sbt-github/styles.bc4de621.js" as="script">
+<link rel="preload" href="/sbt-github/runtime~main.3a857bde.js" as="script">
+<link rel="preload" href="/sbt-github/main.cfcbe1fe.js" as="script">
+<link rel="preload" href="/sbt-github/1.4ebc4d23.js" as="script">
+<link rel="preload" href="/sbt-github/c4f5d8e4.d8313ba9.js" as="script">
+</head>
+<body>
+<script>!function(){function t(t){document.documentElement.setAttribute("data-theme",t)}var e=function(){var t=null;try{t=localStorage.getItem("theme")}catch(t){}return t}();t(null!==e?e:"light")}()</script><div id="__docusaurus">
+<div class="baseUrlIssueBanner_1-cE" style="border:solid red thick;background-color:#ffe6b3;margin:20px;padding:20px;font-size:20px"><p style="font-weight:bold;font-size:30px">Your Docusaurus site did not load properly.</p><p>A very common reason is a wrong site <a href="https://v2.docusaurus.io/docs/docusaurus.config.js/#baseurl" style="font-weight:bold">baseUrl configuration</a>.</p><p>Current configured baseUrl = <span style="font-weight:bold;color:red">/sbt-github/</span> </p><p>We suggest trying baseUrl = <span style="font-weight:bold;color:green" id="base-url-issue-banner-container"></span> </p></div><nav aria-label="Skip navigation links"><button type="button" tabindex="0" class="skipToContent_2AhQ">Skip to main content</button></nav><nav class="navbar navbar--fixed-top"><div class="navbar__inner"><div class="navbar__items"><div aria-label="Navigation bar toggle" class="navbar__toggle" role="button" tabindex="0"><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30" role="img" focusable="false"><title>Menu</title><path stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="M4 7h22M4 15h22M4 23h22"></path></svg></div><a class="navbar__brand" href="/sbt-github/"><img src="/sbt-github/img/logo.svg" alt="sbt-github logo" class="themedImage_2E_h themedImage--light_AouX navbar__logo"><img src="/sbt-github/img/logo.svg" alt="sbt-github logo" class="themedImage_2E_h themedImage--dark_1YPN navbar__logo"><strong class="navbar__title">sbt-github</strong></a></div><div class="navbar__items navbar__items--right"><a class="navbar__item navbar__link" href="/sbt-github/docs/">Documentation</a><a href="https://github.com/alejandrohdezma/sbt-github" target="_blank" rel="noopener noreferrer" class="navbar__item navbar__link">GitHub</a></div></div><div role="presentation" class="navbar-sidebar__backdrop"></div><div class="navbar-sidebar"><div class="navbar-sidebar__brand"><a class="navbar__brand" href="/sbt-github/"><img src="/sbt-github/img/logo.svg" alt="sbt-github logo" class="themedImage_2E_h themedImage--light_AouX navbar__logo"><img src="/sbt-github/img/logo.svg" alt="sbt-github logo" class="themedImage_2E_h themedImage--dark_1YPN navbar__logo"><strong class="navbar__title">sbt-github</strong></a></div><div class="navbar-sidebar__items"><div class="menu"><ul class="menu__list"><li class="menu__list-item"><a class="menu__link" href="/sbt-github/docs/">Documentation</a></li><li class="menu__list-item"><a href="https://github.com/alejandrohdezma/sbt-github" target="_blank" rel="noopener noreferrer" class="menu__link">GitHub</a></li></ul></div></div></div></nav><div class="main-wrapper"><header class="hero hero--primary heroBanner_2Ftp"><div class="container"><h1 class="hero__title">sbt-github</h1><p class="hero__subtitle">SBT plugin to read several settings from Github</p><div class="buttons_1Wc3"><a class="button button--outline button--secondary-light button--lg" href="/sbt-github/docs/">Get Started</a></div></div></header><main><section class="features_P2SU"><div class="container"><div class="row"><div class="col col--6"><div class="text--center featureContainer_2rD0"><img class="featureImage_3Xqx" src="/sbt-github/img/removed_settings.png" alt="Avoid boilerplate in your SBT build"></div><h3>Avoid boilerplate in your SBT build</h3><p>Download the information for the most typical SBT settings and forget about all those nasty boilerplate settings.</p></div><div class="col col--6"><div class="text--center featureContainer_2rD0"><img class="featureImage_3Xqx" src="/sbt-github/img/third_party_integrations.png" alt="Third-party integrations"></div><h3>Third-party integrations</h3><p>Provides integrations with famous third-party plugins, like <a href="https://github.com/sbt/sbt-header" target="blank">sbt-header</a> or <a href="https://scalameta.org/mdoc/" target="blank">mdoc</a>.</p></div></div></div></section></main></div><footer class="footer footer--dark"><div class="container"><div class="row footer__links"><div class="col footer__col"><h4 class="footer__title">Documentation</h4><ul class="footer__items"><li class="footer__item"><a class="footer__link-item" href="/sbt-github/docs/">Getting Started</a></li><li class="footer__item"><a class="footer__link-item" href="/sbt-github/docs/sbt-mdoc">Integrations</a></li></ul></div><div class="col footer__col"><h4 class="footer__title">Community</h4><ul class="footer__items"><li class="footer__item"><a href="https://github.com/alejandrohdezma" target="_blank" rel="noopener noreferrer" class="footer__link-item">Github</a></li><li class="footer__item"><a href="https://twitter.com/alejandrohdezma" target="_blank" rel="noopener noreferrer" class="footer__link-item">Twitter</a></li></ul></div><div class="col footer__col"><h4 class="footer__title">More</h4><ul class="footer__items"><li class="footer__item"><a href="https://github.com/alejandrohdezma/sbt-github" target="_blank" rel="noopener noreferrer" class="footer__link-item">GitHub</a></li></ul></div></div><div class="text--center"><div>Copyright © 2020 Alejandro Hernández</div></div></div></footer></div>
+<script src="/sbt-github/styles.bc4de621.js"></script>
+<script src="/sbt-github/runtime~main.3a857bde.js"></script>
+<script src="/sbt-github/main.cfcbe1fe.js"></script>
+<script src="/sbt-github/1.4ebc4d23.js"></script>
+<script src="/sbt-github/c4f5d8e4.d8313ba9.js"></script>
+</body>
+</html>
