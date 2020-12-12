@@ -32,14 +32,11 @@ import com.alejandrohdezma.sbt.github.github.urls.GithubEntryPoint
 import com.alejandrohdezma.sbt.github.syntax.list._
 
 /**
- * This plugin automatically enables reloading on sbt source changes and
- * adds POM-related settings like description, organization, license, homepage...
+ * This plugin automatically adds POM-related settings like description,
+ * organization, license, homepage...
  *
  * All the settings values are downloaded from the repository and current user
  * information from the Github API.
- *
- * This will only happen during the release stage in Travis CI, since its only
- * needed during this phase.
  */
 @SuppressWarnings(Array("scalafix:DisableSyntax.=="))
 object SbtGithubPlugin extends AutoPlugin {
