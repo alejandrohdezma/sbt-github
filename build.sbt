@@ -20,6 +20,7 @@ lazy val website = project
   .enablePlugins(MdocPlugin, DocusaurusPlugin)
   .settings(skip in publish := true)
   .settings(mdocIn := baseDirectory.value / "docs")
+  .settings(docusaurusProjectName := "sbt-github")
   .settings(watchTriggers += mdocIn.value.toGlob / "*.md")
   .settings(mdocVariables += "EXCLUDED" -> excludedContributors.value.mkString("- ", "\n- ", ""))
 
