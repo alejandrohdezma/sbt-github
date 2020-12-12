@@ -11,13 +11,11 @@ The Github [personal access token](https://github.com/settings/tokens) that the 
 ThisBuild / githubAuthToken := Some(AuthToken("my-github-token"))
 ```
 
-If you don't want to write your personal token directly in `build.sbt` (which you shouldn't) you can read the value of an environment variable:
+By default, the plugin will read the value of an environment variable `GITHUB_TOKEN` read the value of an environment variable:
 
 ```scala title="build.sbt"
 Global / githubAuthToken := sys.env.get("GITHUB_TOKEN").map(AuthToken)
 ```
-
-By default this plugin will look for an environment variable named `GITHUB_TOKEN`.
 
 ## Github Actions
 

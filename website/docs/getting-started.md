@@ -15,10 +15,20 @@ addSbtPlugin("com.alejandrohdezma" % "sbt-github" % "@VERSION@")
 
 ## Using the plugin
 
-By default, the plugin only downloads the information if an environment variable named `DOWNLOAD_INFO_FROM_GITHUB` is present in the system SBT is running (the content of the variable is not important). This behavior can be tweaked by using the `githubEnabled` setting:
+By default, the plugin only downloads the information if the `githubEnabled` setting is set to `true`:
 
 ```scala title="build.sbt"
 ThisBuild / githubEnabled := true
+```
+
+If you want to enable this by default on your CI, you can use the aliases `github` or `githubOn`,
+for setting it to `true` and `githubOff`, for setting it to `false`.
+
+For example, for enabling downloading information before executing
+[`sbt-ci-release`](https://github.com/olafurpg/sbt-ci-release)'s `ci-release` you could do:
+
+```bash
+sbt "github; ci-release"
 ```
 
 ## Enabled settings
