@@ -3,7 +3,7 @@ ThisBuild / organization                  := "com.alejandrohdezma"
 ThisBuild / pluginCrossBuild / sbtVersion := "1.2.8"
 
 addCommandAlias("ci-test", "fix --check; mdoc; publishLocal; scripted; testCovered")
-addCommandAlias("ci-docs", "github; mdoc; headerCreateAll; publishMicrosite")
+addCommandAlias("ci-docs", "github; mdoc; headerCreateAll; website/docusaurusPublishGhpages")
 addCommandAlias("ci-publish", "github; ci-release")
 
 skip in publish := true
@@ -16,15 +16,12 @@ lazy val documentation = project
   .settings(skip in publish := true)
   .settings(mdocOut := file("."))
 
-lazy val microsite = project
-  .enablePlugins(MdocPlugin, MicrositesPlugin)
+lazy val website = project
+  .enablePlugins(MdocPlugin, DocusaurusPlugin)
   .settings(skip in publish := true)
+  .settings(mdocIn := baseDirectory.value / "docs")
+  .settings(watchTriggers += mdocIn.value.toGlob / "*.md")
   .settings(mdocVariables += "EXCLUDED" -> excludedContributors.value.mkString("- ", "\n- ", ""))
-  .settings(micrositeName := name.in(`sbt-github`).value)
-  .settings(micrositeDescription := description.in(`sbt-github`).value)
-  .settings(micrositeGithubToken := githubAuthToken.value.map(_.value))
-  .settings(micrositeBaseUrl := name.in(`sbt-github`).value)
-  .settings(micrositePushSiteWith := GitHub4s)
 
 lazy val `sbt-github` = project
   .enablePlugins(SbtPlugin)

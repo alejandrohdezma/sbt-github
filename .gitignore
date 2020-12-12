@@ -28,6 +28,12 @@ project/plugins/project/
 .cache
 .lib/
 
+### Docusaurus ###
+
+node_modules
+.docusaurus
+website/build
+
 ### Scala ###
 
 .bloop/

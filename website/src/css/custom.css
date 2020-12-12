@@ -1,0 +1,19 @@
+/* stylelint-disable docusaurus/copyright-header */
+
+:root {
+  --ifm-color-primary: #6d6d6d;
+  --ifm-color-primary-dark: #626262;
+  --ifm-color-primary-darker: #5d5d5d;
+  --ifm-color-primary-darkest: #4c4c4c;
+  --ifm-color-primary-light: #787878;
+  --ifm-color-primary-lighter: #7d7d7d;
+  --ifm-color-primary-lightest: #8e8e8e;
+  --ifm-code-font-size: 95%;
+}
+
+.docusaurus-highlight-code-line {
+  background-color: rgb(72, 77, 91);
+  display: block;
+  margin: 0 calc(-1 * var(--ifm-pre-padding));
+  padding: 0 var(--ifm-pre-padding);
+}
