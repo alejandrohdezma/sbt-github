@@ -1,24 +1,18 @@
 ---
-layout: docs
-title: sbt-header
-permalink: sbt-header
+id: sbt-header
+title: Integration with `sbt-header`
+custom_edit_url: https://github.com/alejandrohdezma/sbt-github/edit/master/website/docs/sbt-header.md
 ---
-
-# Integration with `sbt-header`
 
 If you use [sbt-header](https://github.com/sbt/sbt-header) for creating/updating your file headers according to your project's license you can benefit from our `sbt-github-header` module which pre-fills header template with downloaded Github values. To use it, just add the following line to your `plugins.sbt` file
 
-```scala
+```scala title="project/plugins.sbt"
 addSbtPlugin("com.alejandrohdezma" % "sbt-github-header" % "@VERSION@")
 ```
 
----
-
-**NOTE**
-
-Important! So we don't force a version of sbt-header, it is requested as a [`Provided`](https://maven.apache.org/guides/introduction/introduction-to-dependency-mechanism.html) dependency so you'll need to provide your own version of [sbt-header](https://github.com/sbt/sbt-header).
-
----
+:::caution Important!
+So we don't force a version of sbt-header, it is requested as a ["Provided"](https://maven.apache.org/guides/introduction/introduction-to-dependency-mechanism.html) dependency so you'll need to provide your own version of [sbt-header](https://github.com/sbt/sbt-header).
+:::
 
 ## What does this integration do?
 
