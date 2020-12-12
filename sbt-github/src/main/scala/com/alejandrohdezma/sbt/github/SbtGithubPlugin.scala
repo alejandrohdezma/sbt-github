@@ -19,6 +19,7 @@ package com.alejandrohdezma.sbt.github
 import java.time.Year
 
 import scala.language.postfixOps
+import scala.util.control.NonFatal
 
 import sbt.Def
 import sbt.Def.Setting
@@ -97,6 +98,10 @@ object SbtGithubPlugin extends AutoPlugin {
       yearRange := startYear.value.collect {
         case start if start == Year.now.getValue => s"$start"
         case start                               => s"$start-${Year.now.getValue}"
+      },
+      scmInfo ~= {
+        case Some(value) => Some(value)
+        case None        => defaultScmInfo
       }
     )
 
@@ -134,6 +139,38 @@ object SbtGithubPlugin extends AutoPlugin {
       case Some(ConnectionLogin(_, owner, repo)) => (owner, repo)
       case None                                  => sys.error("`scmInfo` is mandatory for this plugin to work")
       case Some(s)                               => sys.error(s"Invalid `scmInfo` connection value: $s")
+    }
+  }
+
+  /**
+   * Default value for `scmInfo`, copied from:
+   * https://github.com/olafurpg/sbt-ci-release/blob/master/plugin/src/main/scala/com/geirsson/CiReleasePlugin.scala
+   */
+  private lazy val defaultScmInfo: Option[ScmInfo] = {
+    import scala.sys.process._
+
+    val identifier  = """([^\/]+?)"""
+    val GitHubHttps = s"https://github.com/$identifier/$identifier(?:\\.git)?".r
+    val GitHubGit   = s"git://github.com:$identifier/$identifier(?:\\.git)?".r
+    val GitHubSsh   = s"git@github.com:$identifier/$identifier(?:\\.git)?".r
+
+    val gitHubScmInfo = (user: String, repo: String) =>
+      ScmInfo(
+        url(s"https://github.com/$user/$repo"),
+        s"scm:git:https://github.com/$user/$repo.git",
+        Some(s"scm:git:git@github.com:$user/$repo.git")
+      )
+
+    try {
+      val remote = List("git", "ls-remote", "--get-url", "origin").!!.trim()
+      remote match {
+        case GitHubHttps(user, repo) => Some(gitHubScmInfo(user, repo))
+        case GitHubGit(user, repo)   => Some(gitHubScmInfo(user, repo))
+        case GitHubSsh(user, repo)   => Some(gitHubScmInfo(user, repo))
+        case _                       => None
+      }
+    } catch {
+      case NonFatal(_) => None
     }
   }
 
