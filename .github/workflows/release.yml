@@ -17,10 +17,8 @@ jobs:
     steps:
       - name: Checkout project
         uses: actions/checkout@v2.3.4
-        with:
-          fetch-depth: 0
       - name: Fetch tags
-        run: git fetch --tags
+        run: git fetch --prune --unshallow --tags
       - name: Setup Coursier
         uses: laughedelic/coursier-setup@v1
         with:
@@ -28,16 +26,10 @@ jobs:
           apps: sbt
       - name: Enable Coursier cache
         uses: coursier/cache-action@v5
-      - name: Setup Ruby
-        uses: actions/setup-ruby@v1
-      - name: Setup yq
-        run: sudo snap install yq
       - name: Setup gpg
         run: .github/scripts/gpg-setup.sh
         env:
           PGP_SECRET: ${{ secrets.PGP_SECRET }}
-      - name: Run pre-conditions
-        run: test -f .github/actions.yml && eval "$(yq r .github/actions.yml -D "true" pre.release)" || true
       - name: Release new version
         run: sbt ci-publish
         env:
@@ -46,5 +38,3 @@ jobs:
           PGP_SECRET: ${{ secrets.PGP_SECRET }}
           SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
           SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
-      - name: Run post-conditions
-        run: test -f .github/actions.yml && eval "$(yq r .github/actions.yml -D "true" post.release)" || true

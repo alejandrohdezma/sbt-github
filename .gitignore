@@ -68,6 +68,12 @@ tags
 
 .vscode
 
+### Docusaurus ###
+
+.docusaurus
+node_modules
+website/build
+
 ### sbt-scalafix-defaults ###
 # Scalafix configuration file is automatically downloaded by `sbt-scalafix-defaults`
 # https://github.com/alejandrohdezma/sbt-scalafix-defaults
