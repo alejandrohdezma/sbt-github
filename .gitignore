@@ -28,12 +28,6 @@ project/plugins/project/
 .cache
 .lib/
 
-### Docusaurus ###
-
-node_modules
-.docusaurus
-website/build
-
 ### Scala ###
 
 .bloop/
@@ -73,6 +67,12 @@ tags
 ### VisualStudioCode ###
 
 .vscode
+
+### Docusaurus ###
+
+.docusaurus
+node_modules
+website/build
 
 ### sbt-scalafix-defaults ###
 # Scalafix configuration file is automatically downloaded by `sbt-scalafix-defaults`

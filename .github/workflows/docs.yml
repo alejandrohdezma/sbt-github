@@ -7,8 +7,7 @@ name: Update documentation
 on:
   release:
     types: [published]
-  repository_dispatch:
-    types: [docs]
+  workflow_dispatch:
 
 jobs:
   documentation:
@@ -21,7 +20,7 @@ jobs:
           token: ${{ secrets.ADMIN_GITHUB_TOKEN }}
           ref: master
       - name: Fetch tags
-        run: git fetch --tags
+        run: git fetch --prune --unshallow --tags
       - name: Setup Coursier
         uses: laughedelic/coursier-setup@v1
         with:
@@ -29,55 +28,12 @@ jobs:
           apps: sbt
       - name: Enable Coursier cache
         uses: coursier/cache-action@v5
-      - name: Setup Ruby
-        uses: actions/setup-ruby@v1
-      - name: Setup github-changelog-generator
-        run: gem install github_changelog_generator -v 1.15.0
-      - name: Setup yq
-        run: sudo snap install yq
-      - name: Run pre-conditions
-        run: test -f .github/actions.yml && eval "$(yq r .github/actions.yml -D "true" pre.docs)" || true
       - name: Generate documentation
         run: sbt ci-docs
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          DOWNLOAD_INFO_FROM_GITHUB: true
-      - name: Run post-conditions
-        run: test -f .github/actions.yml && eval "$(yq r .github/actions.yml -D "true" post.docs)" || true
-      - name: Generate changelog
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          repo: ${{ github.repository }}
-        run: |
-          github_changelog_generator \
-            --user ${repo%/*} \
-            --project ${repo#*/} \
-            --token $GITHUB_TOKEN \
-            --exclude-labels "duplicate,question,invalid,wontfix,auto-update,auto-changelog,auto-documentation" \
-            --configure-sections \
-          '{
-            "breaking": {
-              "prefix": "⚠️ **Breaking changes**",
-              "labels": ["breaking-change"]
-            },
-            "enhancement": {
-              "prefix": "🚀 **Features**",
-              "labels": ["enhancement"]
-            },
-            "documentation": {
-              "prefix": "📘 **Documentation**",
-              "labels": ["documentation"]
-            },
-            "bug": {
-              "prefix": "🐛 **Bug Fixes**",
-              "labels": ["bug"]
-            },
-            "dependency": {
-              "prefix": "📈 **Dependency updates**",
-              "labels": ["dependency-update", "scala-steward"]
-            }
-          }'
+          GIT_DEPLOY_KEY: ${{ secrets.GIT_DEPLOY_KEY }}
       - name: Push changes
         uses: stefanzweifel/git-auto-commit-action@v4.7.2
         with:
-          commit_message: "Update documentation, changelog and other files [skip ci]"
+          commit_message: "Update documentation [skip ci]"
