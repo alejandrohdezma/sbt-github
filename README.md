@@ -21,14 +21,14 @@ This plugin enables several settings automatically by downloading them from Gith
 Add the following line to your `plugins.sbt` file:
 
 ```sbt
-addSbtPlugin("com.alejandrohdezma" % "sbt-github" % "0.8.1")
+addSbtPlugin("com.alejandrohdezma" % "sbt-github" % "0.9.0")
 ```
 
-> If you use [mdoc](https://scalameta.org/mdoc/) there's also available an [mdoc integration module](https://alejandrohdezma.github.io/sbt-github/sbt-mdoc)
+> If you use [mdoc](https://scalameta.org/mdoc/) there's also available an [mdoc integration module](https://alejandrohdezma.github.io/sbt-github/docs/sbt-mdoc)
 
-> If you use [sbt-header](https://github.com/sbt/sbt-header) there's also available an [sbt-header integration module](https://alejandrohdezma.github.io/sbt-github/sbt-header)
+> If you use [sbt-header](https://github.com/sbt/sbt-header) there's also available an [sbt-header integration module](https://alejandrohdezma.github.io/sbt-github/docs/sbt-header)
 
-If you want to know more about all the plugin's features, please head on to [the microsite](https://alejandrohdezma.github.io/sbt-github/getting-started) where you will find much more information.
+If you want to know more about all the plugin's features, please head on to [its website](https://alejandrohdezma.github.io/sbt-github/) where you will find much more information.
 
 [github-action]: https://github.com/alejandrohdezma/sbt-github/actions
 [github-action-badge]: https://img.shields.io/endpoint.svg?url=https%3A%2F%2Factions-badge.atrox.dev%2Falejandrohdezma%2Fsbt-github%2Fbadge%3Fref%3Dmaster&style=flat

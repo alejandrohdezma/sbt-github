@@ -1,11 +1,11 @@
 [comment]: <> (Don't edit this file!)
-[comment]: <> (It is automatically updated after every release of https://github.com/alejandrohdezma/.github)
+[comment]: <> (It is automatically updated after every release of https://github.com/alejandrohdezma/sbt-ci)
 [comment]: <> (If you want to suggest a change, please open a PR or issue in that repository)
 
 # Code of Conduct
 
 We are committed to providing a friendly, safe and welcoming
-environment for all, regardless of level of experience, gender, gender
+environment for all, regardless of the level of experience, gender, gender
 identity and expression, sexual orientation, disability, personal
 appearance, body size, race, ethnicity, age, religion, nationality, or
 other such characteristics.
