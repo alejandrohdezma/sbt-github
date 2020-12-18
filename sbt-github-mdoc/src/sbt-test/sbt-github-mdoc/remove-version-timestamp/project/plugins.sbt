@@ -1,2 +1,2 @@
-addSbtPlugin("org.scalameta"       % "sbt-mdoc"        % "2.2.13")
+addSbtPlugin("org.scalameta"       % "sbt-mdoc"        % "2.2.14")
 addSbtPlugin("com.alejandrohdezma" % "sbt-github-mdoc" % sys.props("plugin.version"))
