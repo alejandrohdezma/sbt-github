@@ -24,7 +24,7 @@ TaskKey[Unit]("check", "Checks all the elements downloaded from the Github API a
   assert(description.value == "An awesome description")
   assert(organizationName.value == "The First User")
   assert(startYear.value.contains(2018))
-  assert(yearRange.value.contains("2018-2020"))
+  assert(yearRange.value.contains(s"2018-${java.time.Year.now.getValue}"))
   assert(homepage.value.contains(url("https://github.com/user1/repo")))
   assert(organizationHomepage.value.contains(url("https://github.com/user1")))
   assert(organizationEmail.value.contains("user1@example.com"))
