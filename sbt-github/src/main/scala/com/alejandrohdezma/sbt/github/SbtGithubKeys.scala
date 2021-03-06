@@ -58,7 +58,7 @@ trait SbtGithubKeys {
 
   val extraCollaborators = settingKey[List[Collaborator.Creator]] {
     "Extra collaborators that should be always included (independent of whether they are contributors or not)"
-  }
+  }.withRank(KeyRanks.Invisible)
 
   val excludedContributors = settingKey[List[String]] {
     "ID (Github login) of the contributors that should be excluded from the list, like bots, it can also be regex patterns"
