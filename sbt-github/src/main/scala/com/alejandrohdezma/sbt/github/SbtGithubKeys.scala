@@ -62,7 +62,7 @@ trait SbtGithubKeys {
 
   val excludedContributors = settingKey[List[String]] {
     "ID (Github login) of the contributors that should be excluded from the list, like bots, it can also be regex patterns"
-  }
+  }.withRank(KeyRanks.Invisible)
 
   val repository = settingKey[Option[Repository]] {
     "Repository information downloaded from Github"
@@ -80,7 +80,7 @@ trait SbtGithubKeys {
     "The ID of the Github organization to be used when populating `organizationName`, `organizationEmail` " +
       "and `organizationHomepage`. If no organization is provided, those settings will be populated with the " +
       "information of the repository's organization."
-  }
+  }.withRank(KeyRanks.Invisible)
 
   val organizationEmail = settingKey[Option[String]] {
     "Organization email"
