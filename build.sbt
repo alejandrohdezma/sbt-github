@@ -28,7 +28,7 @@ lazy val `sbt-github` = project
   .enablePlugins(SbtPlugin)
   .settings(scriptedLaunchOpts += s"-Dplugin.version=${version.value}")
   .settings(testFrameworks += new TestFramework("munit.Framework"))
-  .settings(libraryDependencies += "org.scalameta" %% "munit" % "0.7.22" % Test)
+  .settings(libraryDependencies += "org.scalameta" %% "munit" % "0.7.23" % Test)
   .settings(libraryDependencies += "org.http4s" %% "http4s-dsl" % "0.21.21" % Test)
   .settings(libraryDependencies += "org.http4s" %% "http4s-blaze-server" % "0.21.21" % Test)
 
