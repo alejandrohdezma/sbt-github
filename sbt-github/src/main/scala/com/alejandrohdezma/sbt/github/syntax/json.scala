@@ -33,12 +33,11 @@ object json {
     /** Tries to decode this `Json.Value` as the provided type `A` using its implicit `Decoder` */
     def as[A: Decoder]: Try[A] = Decoder[A].decode(json)
 
-    /**
-     * Tries to decode the `Json.Value` at the provided path as the provided type `A` using
-     * its implicit `Decoder`.
-     *
-     * Returns `Failure` with the error in case this is not a `Json.Object` or the decoding fails.
-     */
+    /** Tries to decode the `Json.Value` at the provided path as the provided type `A` using
+      * its implicit `Decoder`.
+      *
+      * Returns `Failure` with the error in case this is not a `Json.Object` or the decoding fails.
+      */
     def get[A: Decoder](head: String, tail: String*): Try[A] =
       recursiveGet(json, List(head +: tail: _*), Nil)
 
@@ -59,10 +58,9 @@ object json {
 
   implicit class ResultJsonValueOps(private val result: Try[Json.Value]) extends AnyVal {
 
-    /**
-     * If the result is `Right`, tries to decode its `Json.Value` as the provided
-     * type `A` using its implicit `Decoder`; otherwise returns the `Result`.
-     */
+    /** If the result is `Right`, tries to decode its `Json.Value` as the provided
+      * type `A` using its implicit `Decoder`; otherwise returns the `Result`.
+      */
     def as[A: Decoder]: Try[A] = result.flatMap(Decoder[A].decode)
 
   }
@@ -76,13 +74,12 @@ object json {
 
   object / {
 
-    /**
-     * `Throwable` extractor:
-     * {{{
-     *   throwable match {
-     *     case "license" / ("url" / NotFound) => ...
-     * }}}
-     */
+    /** `Throwable` extractor:
+      * {{{
+      *   throwable match {
+      *     case "license" / ("url" / NotFound) => ...
+      * }}}
+      */
     def unapply(throwable: Throwable): Option[(String, Throwable)] =
       throwable match {
         case InvalidPath(value, fail) => Some(value -> fail)

@@ -28,9 +28,7 @@ import com.alejandrohdezma.sbt.github.syntax.scalatry._
 
 object OrganizationEntryPoint {
 
-  /**
-   * Returns the entry point URL for a given organization.
-   */
+  /** Returns the entry point URL for a given organization. */
   def get(organization: String)(implicit
       auth: Authentication,
       logger: Logger,

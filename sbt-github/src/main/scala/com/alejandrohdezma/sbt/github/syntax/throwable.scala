@@ -23,9 +23,7 @@ object throwable {
 
   implicit class ThrowableOps(private val throwable: Throwable) extends AnyVal {
 
-    /**
-     * Wraps this throwable in a `Try` failure
-     */
+    /** Wraps this throwable in a `Try` failure */
     def raise[A]: Try[A] = Failure(throwable)
 
   }

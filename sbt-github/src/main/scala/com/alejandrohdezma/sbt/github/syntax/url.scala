@@ -23,10 +23,9 @@ object url {
 
   implicit class UrlOps(private val url: URL) extends AnyVal {
 
-    /**
-     * Adds a query param with the given `key`/`value` pair to
-     * this `URL` ad returns it.
-     */
+    /** Adds a query param with the given `key`/`value` pair to
+      * this `URL` ad returns it.
+      */
     def withQueryParam(key: String, value: String): URL = {
       val uri = url.toURI // scalafix:ok Disable.URL
 

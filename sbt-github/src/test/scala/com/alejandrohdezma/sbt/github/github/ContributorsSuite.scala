@@ -31,8 +31,8 @@ class ContributorsSuite extends munit.FunSuite {
 
     val expected =
       """- [![me](http://example.com/me.png&s=20) **me**](http://example.com/me)
-          |- [**him**](http://example.com/him)
-          |- [**you**](http://example.com/you)""".stripMargin
+        |- [**him**](http://example.com/him)
+        |- [**you**](http://example.com/you)""".stripMargin
 
     assertNoDiff(markdown, expected)
   }

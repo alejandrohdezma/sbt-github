@@ -28,9 +28,7 @@ import com.alejandrohdezma.sbt.github.syntax.scalatry._
 
 object RepositoryEntryPoint {
 
-  /**
-   * Returns the entry point URL for a given owner/repository.
-   */
+  /** Returns the entry point URL for a given owner/repository. */
   def get(owner: String, repo: String)(implicit
       auth: Authentication,
       logger: Logger,

@@ -29,9 +29,7 @@ import com.alejandrohdezma.sbt.github.syntax.scalatry._
 
 object UserEntryPoint {
 
-  /**
-   * Returns the entry point URL for a given user.
-   */
+  /** Returns the entry point URL for a given user. */
   def get(login: String)(implicit
       auth: Authentication,
       logger: Logger,
