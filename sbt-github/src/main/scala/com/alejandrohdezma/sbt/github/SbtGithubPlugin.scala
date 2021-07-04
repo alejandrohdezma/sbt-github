@@ -32,13 +32,12 @@ import com.alejandrohdezma.sbt.github.github.Repository
 import com.alejandrohdezma.sbt.github.github.urls.GithubEntryPoint
 import com.alejandrohdezma.sbt.github.syntax.list._
 
-/**
- * This plugin automatically adds POM-related settings like description,
- * organization, license, homepage...
- *
- * All the settings values are downloaded from the repository and current user
- * information from the Github API.
- */
+/** This plugin automatically adds POM-related settings like description,
+  * organization, license, homepage...
+  *
+  * All the settings values are downloaded from the repository and current user
+  * information from the Github API.
+  */
 @SuppressWarnings(Array("scalafix:DisableSyntax.=="))
 object SbtGithubPlugin extends AutoPlugin {
 
@@ -142,10 +141,9 @@ object SbtGithubPlugin extends AutoPlugin {
     }
   }
 
-  /**
-   * Default value for `scmInfo`, copied from:
-   * https://github.com/olafurpg/sbt-ci-release/blob/master/plugin/src/main/scala/com/geirsson/CiReleasePlugin.scala
-   */
+  /** Default value for `scmInfo`, copied from:
+    * https://github.com/olafurpg/sbt-ci-release/blob/master/plugin/src/main/scala/com/geirsson/CiReleasePlugin.scala
+    */
   private lazy val defaultScmInfo: Option[ScmInfo] = {
     import scala.sys.process._
 

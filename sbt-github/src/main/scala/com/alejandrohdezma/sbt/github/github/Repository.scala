@@ -51,13 +51,12 @@ final case class Repository(
   /** Returns the license extracted from github in the format that SBT is expecting */
   def licenses: List[(String, URL)] = List(license.id -> license.url)
 
-  /**
-   * Returns the list of users who have contributed to a repository order by the number
-   * of contributions.
-   *
-   * Excludes from the list those whose login ID matches any in the provided list of
-   * excluded contributors patterns.
-   */
+  /** Returns the list of users who have contributed to a repository order by the number
+    * of contributions.
+    *
+    * Excludes from the list those whose login ID matches any in the provided list of
+    * excluded contributors patterns.
+    */
   def contributors(
       excluded: List[String]
   )(implicit auth: Authentication, logger: Logger): Try[Contributors] = {
@@ -71,10 +70,9 @@ final case class Repository(
       .failAs(GithubError("Unable to get repository contributors"))
   }
 
-  /**
-   * Returns the list of repository collaborators, filtered by those who have contributed
-   * at least once to the project, alphabetically ordered.
-   */
+  /** Returns the list of repository collaborators, filtered by those who have contributed
+    * at least once to the project, alphabetically ordered.
+    */
   def collaborators(allowed: List[String])(implicit
       auth: Authentication,
       logger: Logger
@@ -98,9 +96,7 @@ final case class Repository(
       .failAs(GithubError("Unable to get repository collaborators"))
   }
 
-  /**
-   * Returns the repository's organization information, if present.
-   */
+  /** Returns the repository's organization information, if present. */
   def organization(implicit
       auth: Authentication,
       logger: Logger
@@ -112,9 +108,7 @@ final case class Repository(
       .map(_.failAs(GithubError("Unable to get repository organization")))
   }
 
-  /**
-   * Returns the repository's owner information.
-   */
+  /** Returns the repository's owner information. */
   def owner(implicit auth: Authentication, logger: Logger): Try[User] = {
     logger.info(s"Retrieving `$name` owner from Github API")
 

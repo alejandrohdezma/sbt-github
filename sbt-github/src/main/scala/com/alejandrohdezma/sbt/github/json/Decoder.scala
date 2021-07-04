@@ -30,19 +30,16 @@ import com.alejandrohdezma.sbt.github.syntax.list._
 import com.alejandrohdezma.sbt.github.syntax.scalatry._
 import com.alejandrohdezma.sbt.github.syntax.throwable._
 
-/**
- * A type class that provides a way to produce a value of type `A` from a [[Json.Value]].
- */
+/** A type class that provides a way to produce a value of type `A` from a [[Json.Value]]. */
 trait Decoder[A] {
 
   /** Decode the given [[Json.Value]] */
   def decode(json: Json.Value): Try[A]
 
-  /**
-   * What should this decoder return if a `Null` is found on the path to getting the value.
-   *
-   * This doesn't affect when the value itself is `Null`.
-   */
+  /** What should this decoder return if a `Null` is found on the path to getting the value.
+    *
+    * This doesn't affect when the value itself is `Null`.
+    */
   def onNullPath: Try[A] = NotFound.raise
 
 }

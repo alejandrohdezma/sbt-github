@@ -81,10 +81,10 @@ class CollaboratorsSuite extends munit.FunSuite {
 
     val expected =
       """- [![her](http://example.com/her.png&s=20) **Her (her)**](http://example.com/her)
-          |- [**Him (him)**](http://example.com/him)
-          |- [![it](http://example.com/it.png&s=20) **It (it)**](http://example.com/it)
-          |- [**Me (me)**](http://example.com/me)
-          |- [**you**](http://example.com/you)""".stripMargin
+        |- [**Him (him)**](http://example.com/him)
+        |- [![it](http://example.com/it.png&s=20) **It (it)**](http://example.com/it)
+        |- [**Me (me)**](http://example.com/me)
+        |- [**you**](http://example.com/you)""".stripMargin
 
     assertNoDiff(markdown, expected)
   }
