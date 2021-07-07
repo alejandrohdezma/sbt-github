@@ -6,19 +6,15 @@ addCommandAlias("ci-test", "fix --check; mdoc; publishLocal; scripted; test")
 addCommandAlias("ci-docs", "github; mdoc; headerCreateAll; publishToGitHubPages")
 addCommandAlias("ci-publish", "github; ci-release")
 
-skip in publish := true
-
 val `sbt-mdoc`   = "org.scalameta"     % "sbt-mdoc"   % "[2.0,)"   % Provided // scala-steward:off
 val `sbt-header` = "de.heikoseeberger" % "sbt-header" % "[5.6.0,)" % Provided // scala-steward:off
 
 lazy val documentation = project
   .enablePlugins(MdocPlugin)
-  .settings(skip in publish := true)
   .settings(mdocOut := file("."))
 
 lazy val site = project
   .enablePlugins(MdocPlugin)
-  .settings(skip in publish := true)
   .settings(mdocIn := baseDirectory.value / "docs")
   .settings(watchTriggers += mdocIn.value.toGlob / "*.md")
   .settings(mdocVariables += "EXCLUDED" -> excludedContributors.value.mkString("- ", "\n- ", ""))
@@ -27,7 +23,7 @@ lazy val site = project
   .settings(gitHubPagesRepoName := "sbt-github")
   .settings(gitHubPagesSiteDir := mdocOut.value)
 
-lazy val `sbt-github` = project
+lazy val `sbt-github` = module
   .enablePlugins(SbtPlugin)
   .settings(scriptedLaunchOpts += s"-Dplugin.version=${version.value}")
   .settings(testFrameworks += new TestFramework("munit.Framework"))
@@ -35,14 +31,14 @@ lazy val `sbt-github` = project
   .settings(libraryDependencies += "org.http4s" %% "http4s-dsl" % "0.21.24" % Test)
   .settings(libraryDependencies += "org.http4s" %% "http4s-blaze-server" % "0.21.24" % Test)
 
-lazy val `sbt-github-mdoc` = project
+lazy val `sbt-github-mdoc` = module
   .enablePlugins(SbtPlugin)
   .dependsOn(`sbt-github`)
   .settings(description := "Provides most of the info downloaded by sbt-github as mdoc variables")
   .settings(scriptedLaunchOpts += s"-Dplugin.version=${version.value}")
   .settings(addSbtPlugin(`sbt-mdoc`))
 
-lazy val `sbt-github-header` = project
+lazy val `sbt-github-header` = module
   .enablePlugins(SbtPlugin)
   .dependsOn(`sbt-github`)
   .settings(description := "Integration between sbt-github and sbt-header")
