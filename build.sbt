@@ -2,8 +2,8 @@ ThisBuild / scalaVersion                  := "2.12.12"
 ThisBuild / organization                  := "com.alejandrohdezma"
 ThisBuild / pluginCrossBuild / sbtVersion := "1.2.8"
 
-addCommandAlias("ci-test", "fix --check; mdoc; docusaurusCreateSite; publishLocal; scripted; test")
-addCommandAlias("ci-docs", "github; mdoc; headerCreateAll; website/docusaurusPublishGhpages")
+addCommandAlias("ci-test", "fix --check; mdoc; publishLocal; scripted; test")
+addCommandAlias("ci-docs", "github; mdoc; headerCreateAll; publishToGitHubPages")
 addCommandAlias("ci-publish", "github; ci-release")
 
 skip in publish := true
@@ -22,6 +22,10 @@ lazy val site = project
   .settings(mdocIn := baseDirectory.value / "docs")
   .settings(watchTriggers += mdocIn.value.toGlob / "*.md")
   .settings(mdocVariables += "EXCLUDED" -> excludedContributors.value.mkString("- ", "\n- ", ""))
+  .enablePlugins(GitHubPagesPlugin)
+  .settings(gitHubPagesOrgName := "alejandrohdezma")
+  .settings(gitHubPagesRepoName := "sbt-github")
+  .settings(gitHubPagesSiteDir := mdocOut.value)
 
 lazy val `sbt-github` = project
   .enablePlugins(SbtPlugin)
