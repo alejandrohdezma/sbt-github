@@ -1,19 +1,15 @@
----
-id: github-token
-title: Github Token
-custom_edit_url: https://github.com/alejandrohdezma/sbt-github/edit/master/website/docs/github-token.md
----
+# Github Token
 
 The Github [personal access token](https://github.com/settings/tokens) that the plugin will use can be set using the `githubAuthToken` setting:
 
-```scala title="build.sbt"
+```scala
 //Defaults to the value of environment variable `GITHUB_TOKEN`
 ThisBuild / githubAuthToken := Some(AuthToken("my-github-token"))
 ```
 
 By default, the plugin will read the value of an environment variable `GITHUB_TOKEN` read the value of an environment variable:
 
-```scala title="build.sbt"
+```scala
 Global / githubAuthToken := sys.env.get("GITHUB_TOKEN").map(AuthToken)
 ```
 
