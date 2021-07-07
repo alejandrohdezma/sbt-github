@@ -173,9 +173,9 @@ object SbtGithubPlugin extends AutoPlugin {
   }
 
   private lazy val aliases: Seq[Setting[State => State]] = Seq(
-    "github"    -> ";set githubEnabled in ThisBuild := true",
-    "githubOn"  -> ";set githubEnabled in ThisBuild := true",
-    "githubOff" -> ";set githubEnabled in ThisBuild := false"
+    "github"    -> ";set ThisBuild / githubEnabled := true",
+    "githubOn"  -> ";set ThisBuild / githubEnabled := true",
+    "githubOff" -> ";set ThisBuild / githubEnabled := false"
   ).flatMap(addCommandAlias _ tupled)
 
   private def onGithub[A](default: A)(f: Def.Initialize[A]) =

@@ -42,7 +42,6 @@ package object github {
       Logger.Null
     ).get // scalafix:ok Disable.Try.get
 
-  @SuppressWarnings(Array("scalafix:Disable.Any"))
   implicit class URLInterpolator(private val sc: StringContext) extends AnyVal {
 
     def url(args: Any*): URL = sbt.url(sc.raw(args: _*))
