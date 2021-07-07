@@ -1,0 +1,8 @@
+- [Getting Started](getting-started.md)
+- [Organization](organization.md)
+- [Excluding contributors](excluding-contributors.md)
+- [Adding extra collaborators](adding-extra-collaborators.md)
+- [Github Token](github-token.md)
+- Integrations
+    - [sbt-mdoc](sbt-mdoc.md)
+    - [sbt-header](sbt-header.md)

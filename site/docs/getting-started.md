@@ -1,15 +1,10 @@
----
-id: getting-started
-title: Getting Started
-slug: /
-custom_edit_url: https://github.com/alejandrohdezma/sbt-github/edit/master/website/docs/getting-started.md
----
+# Getting Started
 
 ## Installation
 
 Add the following line to your `plugins.sbt` file:
 
-```scala title="project/plugins.sbt"
+```scala
 addSbtPlugin("com.alejandrohdezma" % "sbt-github" % "@VERSION@")
 ```
 
@@ -17,7 +12,7 @@ addSbtPlugin("com.alejandrohdezma" % "sbt-github" % "@VERSION@")
 
 By default, the plugin only downloads the information if the `githubEnabled` setting is set to `true`:
 
-```scala title="build.sbt"
+```scala
 ThisBuild / githubEnabled := true
 ```
 
