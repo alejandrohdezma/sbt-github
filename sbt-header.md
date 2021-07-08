@@ -3,7 +3,7 @@
 If you use [sbt-header](https://github.com/sbt/sbt-header) for creating/updating your file headers according to your project's license you can benefit from our `sbt-github-header` module which pre-fills header template with downloaded Github values. To use it, just add the following line to your `plugins.sbt` file
 
 ```scala
-addSbtPlugin("com.alejandrohdezma" % "sbt-github-header" % "0.9.2")
+addSbtPlugin("com.alejandrohdezma" % "sbt-github-header" % "0.9.3")
 ```
 
 !> Important! So we don't force a version of sbt-header, it is requested as a ["Provided"](https://maven.apache.org/guides/introduction/introduction-to-dependency-mechanism.html) dependency so you'll need to provide your own version of [sbt-header](https://github.com/sbt/sbt-header).
