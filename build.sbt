@@ -19,8 +19,6 @@ lazy val site = project
   .settings(watchTriggers += mdocIn.value.toGlob / "*.md")
   .settings(mdocVariables += "EXCLUDED" -> excludedContributors.value.mkString("- ", "\n- ", ""))
   .enablePlugins(GitHubPagesPlugin)
-  .settings(gitHubPagesOrgName := "alejandrohdezma")
-  .settings(gitHubPagesRepoName := "sbt-github")
   .settings(gitHubPagesSiteDir := mdocOut.value)
 
 lazy val `sbt-github` = module
