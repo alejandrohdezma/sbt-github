@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 481 385" clip-rule="evenodd" fill-rule="evenodd" stroke-linejoin="round" stroke-miterlimit="2">
+    <style>
+@keyframes a0_t { 0% { transform: translate(240.5px,192.6px) rotate(0deg) translate(-1648.5px,-1062.6px); } 50% { transform: translate(240.5px,192.6px) rotate(0deg) translate(-1648.5px,-1062.6px); animation-timing-function: cubic-bezier(.4,0,.6,1); } 75% { transform: translate(240.5px,192.6px) rotate(-10deg) translate(-1648.5px,-1062.6px); animation-timing-function: cubic-bezier(.4,0,.6,1); } 100% { transform: translate(240.5px,192.6px) rotate(0deg) translate(-1648.5px,-1062.6px); } }
+@keyframes a1_t { 0% { transform: translate(1982.2px,984.6px) rotate(0deg) translate(-1982.2px,-984.6px); animation-timing-function: cubic-bezier(.4,0,.6,1); } 12.5% { transform: translate(1982.2px,984.6px) rotate(10deg) translate(-1982.2px,-984.6px); animation-timing-function: cubic-bezier(.4,0,.6,1); } 25% { transform: translate(1982.2px,984.6px) rotate(0deg) translate(-1982.2px,-984.6px); animation-timing-function: cubic-bezier(.4,0,.6,1); } 37.5% { transform: translate(1982.2px,984.6px) rotate(-10deg) translate(-1982.2px,-984.6px); animation-timing-function: cubic-bezier(.4,0,.6,1); } 50% { transform: translate(1982.2px,984.6px) rotate(0deg) translate(-1982.2px,-984.6px); } 100% { transform: translate(1982.2px,984.6px) rotate(0deg) translate(-1982.2px,-984.6px); } }
+@keyframes a2_t { 0% { transform: translate(1980.5px,984.6px) rotate(0deg) translate(-1980.5px,-984.6px); animation-timing-function: cubic-bezier(.4,0,.6,1); } 12.5% { transform: translate(1980.5px,984.6px) rotate(10deg) translate(-1980.5px,-984.6px); animation-timing-function: cubic-bezier(.4,0,.6,1); } 25% { transform: translate(1980.5px,984.6px) rotate(0deg) translate(-1980.5px,-984.6px); animation-timing-function: cubic-bezier(.4,0,.6,1); } 37.5% { transform: translate(1980.5px,984.6px) rotate(-10deg) translate(-1980.5px,-984.6px); animation-timing-function: cubic-bezier(.4,0,.6,1); } 50% { transform: translate(1980.5px,984.6px) rotate(0deg) translate(-1980.5px,-984.6px); } 100% { transform: translate(1980.5px,984.6px) rotate(0deg) translate(-1980.5px,-984.6px); } }
+</style>
+    <g transform="translate(240.5,192.6) translate(-1648.5,-1062.6)" style="animation: 1.6s linear infinite both a0_t;">
+        <g>
+            <g transform="translate(1408.5,806.6)">
+                <path style="fill:#42b983;" d="M186.6 329.1c0 20.9-10.9 55.1-36.7 55.1c-25.8 0-36.7-34.2-36.7-55.1c0-20.9 10.9-55.1 36.7-55.1c25.8 0 36.7 34.2 36.7 55.1Zm-144.6-164.1c40.8-41 71.2-51.5 115.7-64.6c28.4-8.4 58.8-10 88.7-10c27 0 54.4 2.2 80.4 9.2c37.8 10.1 78 25.5 114.7 64.8c28.2 30.2 39 72.3 39 114.2c0 31.9-3.2 65.7-17.5 95c-37.9 76.6-142.1 74.8-216.7 74.8c-75.8 0-186.2 2.7-225.6-74.8c-14.6-29-20.2-63.1-20.2-95c0-41.9 13.9-81.5 41.5-113.6m374.2 164.1c0-43.9-26.7-82.6-73.5-82.6c-18.9 0-37 3.4-56 6c-14.9 2.3-29.8 3.2-45.1 3.2c-15.2 0-30.1-0.9-45.1-3.2c-18.7-2.6-37-6-56-6c-46.8 0-73.5 38.7-73.5 82.6c0 87.8 80.4 101.3 150.4 101.3h48.2c70.3 0 150.6-13.4 150.6-101.3Zm-82.6-55.1c-25.8 0-36.7 34.2-36.7 55.1c0 20.9 10.9 55.1 36.7 55.1c25.8 0 36.7-34.2 36.7-55.1c0-20.9-10.9-55.1-36.7-55.1Z" fill-rule="nonzero" />
+            </g>
+            <g transform="translate(-247.7,12.9)">
+                <path d="M2097.5 958.3c-30 104.4-209.6 9-115.7-64.6c34.5-27 63.5-36 108.8-36c9.7 19.5 14.6 30.3 14.6 51.8c0 16.4-3.1 32.8-7.7 48.8Z" fill-rule="nonzero" transform="translate(1982.2,984.6) translate(-1982.2,-984.6)" style="fill:#42b983; animation: 1.6s linear infinite both a1_t;" />
+            </g>
+            <g transform="translate(1519.5,944) scale(-1,1) translate(-2030.1,-931.1)">
+                <path d="M2097.5 958.3c-30 104.4-209.6 9-115.7-64.6c34.5-27 63.5-36 108.8-36c9.7 19.5 14.6 30.3 14.6 51.8c0 16.4-3.1 32.8-7.7 48.8Z" fill-rule="nonzero" transform="translate(1980.5,984.6) translate(-1980.5,-984.6)" style="fill:#42b983; animation: 1.6s linear infinite both a2_t;" />
+            </g>
+        </g>
+    </g>
+</svg>

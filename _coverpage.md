@@ -25,5 +25,5 @@ Provides integrations with famous third-party plugins, like [sbt-header](https:/
 </div>
 </div>
 
-[GitHub](https://github.com/alejandrohdezma/sbt-github/)
+[![](_media/octocat.svg ':size=15px') GitHub](https://github.com/alejandrohdezma/sbt-github/)
 [Get Started](getting-started.md)
