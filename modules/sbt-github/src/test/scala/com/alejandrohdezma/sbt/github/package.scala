@@ -32,7 +32,7 @@ import com.alejandrohdezma.sbt.github.http.Authentication.AuthToken
 import org.http4s._
 import org.http4s.headers.Host
 import org.http4s.implicits._
-import org.http4s.server.blaze.BlazeServerBuilder
+import org.http4s.blaze.server.BlazeServerBuilder
 
 package object github {
 
