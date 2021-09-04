@@ -27,7 +27,7 @@ lazy val `sbt-github` = module
   .settings(testFrameworks += new TestFramework("munit.Framework"))
   .settings(libraryDependencies += "org.scalameta" %% "munit" % "0.7.29" % Test)
   .settings(libraryDependencies += "org.http4s" %% "http4s-dsl" % "0.21.28" % Test)
-  .settings(libraryDependencies += "org.http4s" %% "http4s-blaze-server" % "0.21.27" % Test)
+  .settings(libraryDependencies += "org.http4s" %% "http4s-blaze-server" % "0.21.28" % Test)
 
 lazy val `sbt-github-mdoc` = module
   .enablePlugins(SbtPlugin)
