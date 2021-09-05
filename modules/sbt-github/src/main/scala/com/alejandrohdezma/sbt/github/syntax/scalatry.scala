@@ -24,22 +24,22 @@ object scalatry {
 
   implicit class TryOps[A](private val aTry: Try[A]) extends AnyVal {
 
-    /** The given function is applied if this is a `Failure`.
-      * The contained throwable is used as cause for the provided one.
+    /** The given function is applied if this is a `Failure`. The contained throwable is used as cause for the provided
+      * one.
       *
-      *  {{{
-      *  Failure(NotFound).collectFail {
-      *    case NotFound => UrlNotFound
-      *  } // Result: Failure(UrlNotFound(cause = NotFound))
+      * {{{
+      *   Failure(NotFound).collectFail {
+      *     case NotFound => UrlNotFound
+      *   } // Result: Failure(UrlNotFound(cause = NotFound))
       *
-      *  Failure(NotAString).collectFail {
-      *    case NotFound => UrlNotFound
-      *  } // Result: Failure(NotAString)
+      *   Failure(NotAString).collectFail {
+      *     case NotFound => UrlNotFound
+      *   } // Result: Failure(NotAString)
       *
-      *  Success(12).collectFail {
-      *    case NotFound => UrlNotFound
-      *  } // Result: Success(12)
-      *  }}}
+      *   Success(12).collectFail {
+      *     case NotFound => UrlNotFound
+      *   } // Result: Success(12)
+      * }}}
       */
     def collectFail(pf: PartialFunction[Throwable, Throwable]): Try[A] =
       aTry match {
@@ -47,13 +47,13 @@ object scalatry {
         case Failure(b) => Failure(pf.andThen(initCause(b)).lift(b).getOrElse(b))
       }
 
-    /** The given function is applied if this is a `Failure`.
-      * The contained throwable is used as cause for the provided one.
+    /** The given function is applied if this is a `Failure`. The contained throwable is used as cause for the provided
+      * one.
       *
-      *  {{{
-      *  Failure(NotFound).mapFail(_ => UrlNotFound) // Result: Failure(UrlNotFound(cause = NotFound))
-      *  Success(12).mapFail(_ => UrlNotFound)       // Result: Success(12)
-      *  }}}
+      * {{{
+      *   Failure(NotFound).mapFail(_ => UrlNotFound) // Result: Failure(UrlNotFound(cause = NotFound))
+      *   Success(12).mapFail(_ => UrlNotFound)       // Result: Success(12)
+      * }}}
       */
     def mapFail(pf: Throwable => Throwable): Try[A] =
       aTry match {
@@ -61,13 +61,13 @@ object scalatry {
         case Failure(b) => Failure(pf.andThen(initCause(b))(b))
       }
 
-    /** Transforms the inner `Throwable` to the provided one if this is a failure.
-      * The contained throwable is used as cause for the provided one.
+    /** Transforms the inner `Throwable` to the provided one if this is a failure. The contained throwable is used as
+      * cause for the provided one.
       *
-      *  {{{
-      *  Failure(NotFound).failAs(UrlNotFound) // Result: Failure(UrlNotFound(cause = NotFound))
-      *  Try(12).failAs(NotFound)              // Result: Success(12)
-      *  }}}
+      * {{{
+      *   Failure(NotFound).failAs(UrlNotFound) // Result: Failure(UrlNotFound(cause = NotFound))
+      *   Try(12).failAs(NotFound)              // Result: Success(12)
+      * }}}
       */
     def failAs(t: => Throwable): Try[A] =
       aTry match {
