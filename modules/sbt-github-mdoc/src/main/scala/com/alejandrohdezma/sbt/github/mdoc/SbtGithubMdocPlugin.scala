@@ -24,32 +24,31 @@ import com.alejandrohdezma.sbt.github.SbtGithubPlugin.autoImport._
 import mdoc.MdocPlugin
 import mdoc.MdocPlugin.autoImport.mdocVariables
 
-/** This plugin automatically adds several
-  * [[https://scalameta.org/mdoc/docs/installation.html#sbt mdocVariables]]
-  * to any project that adds the `MdocPlugin` to replace them in documentation.
+/** This plugin automatically adds several [[https://scalameta.org/mdoc/docs/installation.html#sbt mdocVariables]] to
+  * any project that adds the `MdocPlugin` to replace them in documentation.
   *
   * The list of added variables is:
   *
-  *  - '''VERSION''': Set to the value of the `version` setting by removing the timestamp part
-  *   (this behavior can be disabled using the `removeVersionTimestampInMdoc` setting).
-  *  - '''CONTRIBUTORS''': Set to the value of the `contributors` setting, containing the list
-  *   of repository contributors in markdown format.
-  *  - '''COLLABORATORS''': Set to the value of the `collaborators` setting, containing the list
-  *   of repository collaborators in markdown format.
-  *  - '''DESCRIPTION''': Set to the value of the `description` setting.
-  *  - '''NAME''': Set to the value of `displayName`. Defaults to repository's name.
-  *  - '''LICENSE''': Set to the license's name.
-  *  - '''ORG_NAME''': Set to the value of `organizationName` setting (Github's organization name,
-  *   or owner's in case organization is empty and `populateOrganizationWithOwner` is `true`).
-  *  - '''ORG_EMAIL''': Set to the value of `organizationEmail` setting (Github's organization email,
-  *   or owner's in case organization is empty and `populateOrganizationWithOwner` is `true`).
-  *  - '''ORG_URL''': Set to the value of `organizationHomepage` setting (Github's organization homepage,
-  *   or owner's in case organization is empty and `populateOrganizationWithOwner` is `true`).
-  *  - '''REPO''': Set to the repository's path: "owner/repo".
-  *  - '''START_YEAR''': Set to the value of the `startYear` setting.
-  *  - '''YEAR_RANGE''': Set to the value of the `yearRange` setting
-  *  - '''COPYRIGHT_OWNER''': Set to the value of `ORG_NAME <ORG_URL>` if `ORG_URL` is present or just
-  *   `ORG_NAME` in case `ORG_URL` is empty.
+  *   - '''VERSION''': Set to the value of the `version` setting by removing the timestamp part (this behavior can be
+  *     disabled using the `removeVersionTimestampInMdoc` setting).
+  *   - '''CONTRIBUTORS''': Set to the value of the `contributors` setting, containing the list of repository
+  *     contributors in markdown format.
+  *   - '''COLLABORATORS''': Set to the value of the `collaborators` setting, containing the list of repository
+  *     collaborators in markdown format.
+  *   - '''DESCRIPTION''': Set to the value of the `description` setting.
+  *   - '''NAME''': Set to the value of `displayName`. Defaults to repository's name.
+  *   - '''LICENSE''': Set to the license's name.
+  *   - '''ORG_NAME''': Set to the value of `organizationName` setting (Github's organization name, or owner's in case
+  *     organization is empty and `populateOrganizationWithOwner` is `true`).
+  *   - '''ORG_EMAIL''': Set to the value of `organizationEmail` setting (Github's organization email, or owner's in
+  *     case organization is empty and `populateOrganizationWithOwner` is `true`).
+  *   - '''ORG_URL''': Set to the value of `organizationHomepage` setting (Github's organization homepage, or owner's in
+  *     case organization is empty and `populateOrganizationWithOwner` is `true`).
+  *   - '''REPO''': Set to the repository's path: "owner/repo".
+  *   - '''START_YEAR''': Set to the value of the `startYear` setting.
+  *   - '''YEAR_RANGE''': Set to the value of the `yearRange` setting
+  *   - '''COPYRIGHT_OWNER''': Set to the value of `ORG_NAME <ORG_URL>` if `ORG_URL` is present or just `ORG_NAME` in
+  *     case `ORG_URL` is empty.
   */
 object SbtGithubMdocPlugin extends AutoPlugin {
 

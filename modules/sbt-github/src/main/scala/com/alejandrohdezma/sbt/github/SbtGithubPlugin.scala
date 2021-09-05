@@ -32,11 +32,9 @@ import com.alejandrohdezma.sbt.github.github.Repository
 import com.alejandrohdezma.sbt.github.github.urls.GithubEntryPoint
 import com.alejandrohdezma.sbt.github.syntax.list._
 
-/** This plugin automatically adds POM-related settings like description,
-  * organization, license, homepage...
+/** This plugin automatically adds POM-related settings like description, organization, license, homepage...
   *
-  * All the settings values are downloaded from the repository and current user
-  * information from the Github API.
+  * All the settings values are downloaded from the repository and current user information from the Github API.
   */
 @SuppressWarnings(Array("scalafix:DisableSyntax.=="))
 object SbtGithubPlugin extends AutoPlugin {
