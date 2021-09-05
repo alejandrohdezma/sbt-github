@@ -51,11 +51,9 @@ final case class Repository(
   /** Returns the license extracted from github in the format that SBT is expecting */
   def licenses: List[(String, URL)] = List(license.id -> license.url)
 
-  /** Returns the list of users who have contributed to a repository order by the number
-    * of contributions.
+  /** Returns the list of users who have contributed to a repository order by the number of contributions.
     *
-    * Excludes from the list those whose login ID matches any in the provided list of
-    * excluded contributors patterns.
+    * Excludes from the list those whose login ID matches any in the provided list of excluded contributors patterns.
     */
   def contributors(
       excluded: List[String]
@@ -70,8 +68,8 @@ final case class Repository(
       .failAs(GithubError("Unable to get repository contributors"))
   }
 
-  /** Returns the list of repository collaborators, filtered by those who have contributed
-    * at least once to the project, alphabetically ordered.
+  /** Returns the list of repository collaborators, filtered by those who have contributed at least once to the project,
+    * alphabetically ordered.
     */
   def collaborators(allowed: List[String])(implicit
       auth: Authentication,

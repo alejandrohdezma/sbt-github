@@ -33,8 +33,7 @@ object json {
     /** Tries to decode this `Json.Value` as the provided type `A` using its implicit `Decoder` */
     def as[A: Decoder]: Try[A] = Decoder[A].decode(json)
 
-    /** Tries to decode the `Json.Value` at the provided path as the provided type `A` using
-      * its implicit `Decoder`.
+    /** Tries to decode the `Json.Value` at the provided path as the provided type `A` using its implicit `Decoder`.
       *
       * Returns `Failure` with the error in case this is not a `Json.Object` or the decoding fails.
       */
@@ -58,8 +57,8 @@ object json {
 
   implicit class ResultJsonValueOps(private val result: Try[Json.Value]) extends AnyVal {
 
-    /** If the result is `Right`, tries to decode its `Json.Value` as the provided
-      * type `A` using its implicit `Decoder`; otherwise returns the `Result`.
+    /** If the result is `Right`, tries to decode its `Json.Value` as the provided type `A` using its implicit
+      * `Decoder`; otherwise returns the `Result`.
       */
     def as[A: Decoder]: Try[A] = result.flatMap(Decoder[A].decode)
 
@@ -85,6 +84,7 @@ object json {
         case InvalidPath(value, fail) => Some(value -> fail)
         case _                        => None
       }
+
   }
 
 }
