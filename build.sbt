@@ -6,7 +6,7 @@ addCommandAlias("ci-test", "fix --check; mdoc; publishLocal; scripted; test")
 addCommandAlias("ci-docs", "github; mdoc; headerCreateAll; publishToGitHubPages")
 addCommandAlias("ci-publish", "github; ci-release")
 
-val `sbt-mdoc`   = "org.scalameta"     % "sbt-mdoc"   % "[2.0,)"   % Provided // scala-steward:off
+val `sbt-mdoc` = "org.scalameta" % "sbt-mdoc" % "[2.0,)" % Provided // scala-steward:off
 
 val `sbt-header` = "de.heikoseeberger" % "sbt-header" % "[5.6.0,)" % Provided // scala-steward:off
 

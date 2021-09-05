@@ -26,7 +26,7 @@ package object repository {
 
   implicit val authentication: Authentication = AuthToken("1234")
 
-  implicit val noOpLogger: Logger             = Logger.Null
+  implicit val noOpLogger: Logger = Logger.Null
 
   lazy val EmptyRepository: Repository =
     Repository(

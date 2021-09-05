@@ -48,14 +48,14 @@ object Json extends JavaTokenParsers {
 
   final case class Object(fields: Map[String, Value]) extends Value
 
-  final case class Collection(elements: List[Value])  extends Value
+  final case class Collection(elements: List[Value]) extends Value
 
-  final case class Text(value: String)                extends Value
+  final case class Text(value: String) extends Value
 
-  final case class Number(value: Double)              extends Value
+  final case class Number(value: Double) extends Value
 
-  case object False                                   extends Value
-  case object True                                    extends Value
-  case object Null                                    extends Value
+  case object False extends Value
+  case object True  extends Value
+  case object Null  extends Value
 
 }
