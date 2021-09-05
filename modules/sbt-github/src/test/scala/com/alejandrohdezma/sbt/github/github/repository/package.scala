@@ -25,6 +25,7 @@ import com.alejandrohdezma.sbt.github.http.Authentication.AuthToken
 package object repository {
 
   implicit val authentication: Authentication = AuthToken("1234")
+
   implicit val noOpLogger: Logger             = Logger.Null
 
   lazy val EmptyRepository: Repository =

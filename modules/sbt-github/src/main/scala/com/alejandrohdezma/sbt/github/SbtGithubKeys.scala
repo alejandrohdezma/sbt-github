@@ -25,15 +25,19 @@ import com.alejandrohdezma.sbt.github.github.Repository
 trait SbtGithubKeys {
 
   type Contributors = github.Contributors
+
   val Contributors = github.Contributors
 
   type Collaborators = github.Collaborators
+
   val Collaborators = github.Collaborators
 
   type Collaborator = github.Collaborator
+
   val Collaborator = github.Collaborator
 
   type AuthToken = http.Authentication.AuthToken
+
   val AuthToken = http.Authentication.AuthToken
 
   val githubApiEntryPoint = settingKey[URL] {

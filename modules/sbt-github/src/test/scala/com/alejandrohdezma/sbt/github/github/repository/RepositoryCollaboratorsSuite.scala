@@ -28,7 +28,7 @@ class RepositoryCollaboratorsSuite extends munit.FunSuite {
 
   test("repository.collaborators should return ordered list with user info from Github API") {
     withServer {
-      case GET -> Root / "me"  => Ok("""{
+      case GET -> Root / "me" => Ok("""{
         "name": "Me",
         "login": "me",
         "html_url": "http://example.com/me",
