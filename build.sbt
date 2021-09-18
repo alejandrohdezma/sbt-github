@@ -1,8 +1,9 @@
-ThisBuild / scalaVersion                  := "2.12.12"
+ThisBuild / scalaVersion                  := "2.12.14"
 ThisBuild / organization                  := "com.alejandrohdezma"
 ThisBuild / pluginCrossBuild / sbtVersion := "1.2.8"
+ThisBuild / Test / parallelExecution      := false
 
-addCommandAlias("ci-test", "fix --check; mdoc; publishLocal; scripted; test")
+addCommandAlias("ci-test", "fix --check; mdoc; test; publishLocal; scripted")
 addCommandAlias("ci-docs", "github; mdoc; headerCreateAll; publishToGitHubPages")
 addCommandAlias("ci-publish", "github; ci-release")
 
@@ -25,10 +26,9 @@ lazy val site = project
 lazy val `sbt-github` = module
   .enablePlugins(SbtPlugin)
   .settings(scriptedLaunchOpts += s"-Dplugin.version=${version.value}")
-  .settings(testFrameworks += new TestFramework("munit.Framework"))
-  .settings(libraryDependencies += "org.scalameta" %% "munit" % "0.7.29" % Test)
-  .settings(libraryDependencies += "org.http4s" %% "http4s-dsl" % "0.21.28" % Test)
-  .settings(libraryDependencies += "org.http4s" %% "http4s-blaze-server" % "0.21.28" % Test)
+  .settings(libraryDependencies += "org.scalameta" %% "munit" % "0.7.28" % Test)
+  .settings(libraryDependencies += "org.http4s" %% "http4s-dsl" % "0.23.3" % Test)
+  .settings(libraryDependencies += "org.http4s" %% "http4s-blaze-server" % "0.23.3" % Test)
 
 lazy val `sbt-github-mdoc` = module
   .enablePlugins(SbtPlugin)

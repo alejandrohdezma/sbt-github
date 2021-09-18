@@ -38,7 +38,7 @@ class ClientSuite extends munit.FunSuite {
   test("client.get should make `GET` call using auth and returning content as `A`") {
     withServer { case req @ GET -> Root / "hello" =>
       Ok(s"""{
-          "auth": "${req.headers.get(Authorization).map(_.renderString).orEmpty}"
+          "auth": "${req.headers.get[Authorization].map(_.credentials.renderString).orEmpty}"
         }""")
     } { uri =>
       final case class Auth(auth: String)
@@ -48,7 +48,7 @@ class ClientSuite extends munit.FunSuite {
 
       val result = client.get[Auth](url"${uri}hello")
 
-      assertEquals(result, Success(Auth("Authorization: token 1234")))
+      assertEquals(result, Success(Auth("token 1234")))
     }
   }
 

@@ -16,11 +16,10 @@
 
 package com.alejandrohdezma.sbt
 
-import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.ExecutionContext
 
-import cats.effect.ContextShift
 import cats.effect.IO
-import cats.effect.Timer
+import cats.effect.unsafe.implicits.global
 
 import sbt.URL
 import sbt.url
@@ -30,9 +29,9 @@ import com.alejandrohdezma.sbt.github.github.Collaborator
 import com.alejandrohdezma.sbt.github.github.urls.GithubEntryPoint
 import com.alejandrohdezma.sbt.github.http.Authentication.AuthToken
 import org.http4s._
+import org.http4s.blaze.server.BlazeServerBuilder
 import org.http4s.headers.Host
 import org.http4s.implicits._
-import org.http4s.server.blaze.BlazeServerBuilder
 
 package object github {
 
@@ -51,7 +50,7 @@ package object github {
   implicit class RequestLinkOps(req: Request[IO]) {
 
     def urlTo(path: String): String = {
-      val host = req.headers.get(Host).get // scalafix:ok Disable.Option.get
+      val host = req.headers.get[Host].get // scalafix:ok Disable.Option.get
 
       s"http://${host.host}:${host.port.getOrElse(8080)}/$path"
     }
@@ -59,10 +58,7 @@ package object github {
   }
 
   def withServer[A](pf: PartialFunction[Request[IO], IO[Response[IO]]])(f: URL => A): A = {
-    implicit val cs: ContextShift[IO] = IO.contextShift(global)
-    implicit val timer: Timer[IO]     = IO.timer(global)
-
-    BlazeServerBuilder[IO](global)
+    BlazeServerBuilder[IO](ExecutionContext.global)
       .bindAny()
       .withHttpApp(HttpRoutes.of[IO](pf).orNotFound)
       .resource

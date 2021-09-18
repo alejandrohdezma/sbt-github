@@ -16,6 +16,7 @@
 
 package com.alejandrohdezma.sbt.github.json
 
+import scala.annotation.nowarn
 import scala.util.Try
 import scala.util.parsing.combinator.JavaTokenParsers
 
@@ -29,6 +30,7 @@ object Json extends JavaTokenParsers {
     parseAll(`json-value`, s).map(Try(_)).getOrElse(NotAValidJSON(s).raise)
 
   @SuppressWarnings(Array("all"))
+  @nowarn
   private def `json-value`: Parser[Json.Value] = {
     val stripQuotes   = (x: String) => x.substring(1, x.length - 1)
     val `json-line`   = stringLiteral ~ ":" ~ `json-value`
