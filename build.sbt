@@ -2,7 +2,7 @@ ThisBuild / scalaVersion                  := "2.12.14"
 ThisBuild / organization                  := "com.alejandrohdezma"
 ThisBuild / pluginCrossBuild / sbtVersion := "1.2.8"
 
-addCommandAlias("ci-test", "fix --check; mdoc; publishLocal; scripted; test")
+addCommandAlias("ci-test", "fix --check; mdoc; test; publishLocal; scripted")
 addCommandAlias("ci-docs", "github; mdoc; headerCreateAll; publishToGitHubPages")
 addCommandAlias("ci-publish", "github; ci-release")
 
