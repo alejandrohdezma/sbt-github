@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
     <loggers>
-        <logger name="org.http4s.server" level="off"/>
+        <logger name="org.http4s" level="off"/>
     </loggers>
 </configuration>
