@@ -37,6 +37,7 @@ package object repository {
       0,
       url"http://example.com",
       url"http://example.com",
+      url"http://example.com",
       None,
       url"http://example.com"
     )

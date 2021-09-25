@@ -44,6 +44,7 @@ final case class Repository(
     startYear: Int,
     contributorsUrl: URL,
     collaboratorsUrl: URL,
+    releasesUrl: URL,
     organizationUrl: Option[URL],
     ownerUrl: URL
 ) {
@@ -157,6 +158,7 @@ object Repository {
       contributors    <- json.get[URL]("contributors_url")
       collaborators   <- json.get[URL]("collaborators_url")
       organizationUrl <- json.get[Option[URL]]("organization", "url")
+      releases        <- json.get[URL]("releases_url")
       ownerUrl        <- json.get[URL]("owner", "url")
     } yield Repository(
       name,
@@ -166,6 +168,7 @@ object Repository {
       startYear.getYear,
       contributors,
       sbt.url(s"$collaborators".replace("{/collaborator}", "")),
+      sbt.url(s"$releases".replace("{/id}", "")),
       organizationUrl,
       ownerUrl
     )
