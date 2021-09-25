@@ -44,6 +44,7 @@ final case class Repository(
     startYear: Int,
     contributorsUrl: URL,
     collaboratorsUrl: URL,
+    releasesUrl: URL,
     organizationUrl: Option[URL],
     ownerUrl: URL
 ) {
@@ -92,6 +93,16 @@ final case class Repository(
       .map(_.sortBy(collaborator => collaborator.name -> collaborator.login))
       .map(Collaborators(_))
       .failAs(GithubError("Unable to get repository collaborators"))
+  }
+
+  /** Returns the list of repository releases, alphabetically ordered by tag.. */
+  def releases(implicit auth: Authentication, logger: Logger): Try[List[Release]] = {
+    logger.info(s"Retrieving `$name` releases from Github API")
+
+    client
+      .get[List[Release]](releasesUrl.withQueryParam("per_page", "100"))
+      .map(_.sortBy(release => release.tag))
+      .failAs(GithubError("Unable to get repository releases"))
   }
 
   /** Returns the repository's organization information, if present. */
@@ -157,6 +168,7 @@ object Repository {
       contributors    <- json.get[URL]("contributors_url")
       collaborators   <- json.get[URL]("collaborators_url")
       organizationUrl <- json.get[Option[URL]]("organization", "url")
+      releases        <- json.get[URL]("releases_url")
       ownerUrl        <- json.get[URL]("owner", "url")
     } yield Repository(
       name,
@@ -166,6 +178,7 @@ object Repository {
       startYear.getYear,
       contributors,
       sbt.url(s"$collaborators".replace("{/collaborator}", "")),
+      sbt.url(s"$releases".replace("{/id}", "")),
       organizationUrl,
       ownerUrl
     )

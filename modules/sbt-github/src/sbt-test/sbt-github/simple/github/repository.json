@@ -9,6 +9,7 @@
   "description": "An awesome description",
   "collaborators_url": "{{base_directory}}/collaborators.json",
   "contributors_url": "{{base_directory}}/contributors.json",
+  "releases_url": "{{base_directory}}/releases.json",
   "license": {
     "spdx_id": "MIT",
     "url": "https://api.github.com/licenses/mit"

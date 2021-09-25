@@ -38,6 +38,7 @@ class RepositorySuite extends munit.FunSuite {
             "created_at": "2011-01-26T19:01:12Z",
             "contributors_url": "http://api.github.com/repos/example/example/contributors",
             "collaborators_url": "http://api.github.com/repos/example/example/collaborators",
+            "releases_url": "http://api.github.com/repos/example/example/releases",
             "organization": {
               "url": "http://api.github.com/users/example"
             },
@@ -62,6 +63,7 @@ class RepositorySuite extends munit.FunSuite {
         2011,
         url"http://api.github.com/repos/example/example/contributors",
         url"http://api.github.com/repos/example/example/collaborators",
+        url"http://api.github.com/repos/example/example/releases",
         Some(url"http://api.github.com/users/example"),
         url"http://api.github.com/users/owner"
       )
@@ -81,6 +83,7 @@ class RepositorySuite extends munit.FunSuite {
             "created_at": "2011-01-26T19:01:12Z",
             "contributors_url": "http://api.github.com/repos/example/example/contributors",
             "collaborators_url": "http://api.github.com/repos/example/example/collaborators",
+            "releases_url": "http://api.github.com/repos/example/example/releases",
             "owner": {
               "url": "http://api.github.com/users/owner"
             },
@@ -102,6 +105,7 @@ class RepositorySuite extends munit.FunSuite {
         2011,
         url"http://api.github.com/repos/example/example/contributors",
         url"http://api.github.com/repos/example/example/collaborators",
+        url"http://api.github.com/repos/example/example/releases",
         None,
         url"http://api.github.com/users/owner"
       )

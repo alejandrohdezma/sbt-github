@@ -28,6 +28,7 @@ import sbt._
 import sbt.plugins.JvmPlugin
 
 import com.alejandrohdezma.sbt.github.github.Organization
+import com.alejandrohdezma.sbt.github.github.Release
 import com.alejandrohdezma.sbt.github.github.Repository
 import com.alejandrohdezma.sbt.github.github.urls.GithubEntryPoint
 import com.alejandrohdezma.sbt.github.syntax.list._
@@ -87,6 +88,11 @@ object SbtGithubPlugin extends AutoPlugin {
         } yield collaborators.include(extras)
 
         collaborators.get // scalafix:ok Disable.Try.get
+      }).value,
+      releases := onRepo(default = List.empty[Release])(Def.setting { repo =>
+        implicit val (auth, log, _) = configuration.value
+
+        repo.releases.get // scalafix:ok Disable.Try.get
       }).value,
       developers := collaborators.value.developers,
       homepage   := repository.value.map(_.url).orElse(homepage.value),
