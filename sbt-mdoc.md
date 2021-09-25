@@ -3,7 +3,7 @@
 If you use [mdoc](https://scalameta.org/mdoc/) for creating your documentation you can benefit from our mdoc module which provides several bunches of [`mdocVariables`](https://scalameta.org/mdoc/docs/installation.html#sbt) already pre-filled with values extracted from Github to any project that adds the `MdocPlugin` to replace them in the documentation. To use it, just add the following line to your `plugins.sbt` file
 
 ```scala
-addSbtPlugin("com.alejandrohdezma" % "sbt-github-mdoc" % "0.9.3")
+addSbtPlugin("com.alejandrohdezma" % "sbt-github-mdoc" % "0.10.0")
 ```
 
 !> Important! So we don't force a version of mdoc, it is requested as a ["Provided"](https://maven.apache.org/guides/introduction/introduction-to-dependency-mechanism.html) dependency so you'll need to provide your own version of mdoc following [its own tutorial](https://scalameta.org/mdoc/docs/installation.html).
