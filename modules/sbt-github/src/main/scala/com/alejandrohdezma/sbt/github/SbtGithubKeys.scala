@@ -19,6 +19,7 @@ package com.alejandrohdezma.sbt.github
 import sbt._
 
 import com.alejandrohdezma.sbt.github.github.Organization
+import com.alejandrohdezma.sbt.github.github.Release
 import com.alejandrohdezma.sbt.github.github.Repository
 
 @SuppressWarnings(Array("scalafix:DisableSyntax.valInAbstract"))
@@ -50,6 +51,10 @@ trait SbtGithubKeys {
 
   val collaborators = settingKey[Collaborators](
     "List of collaborators downloaded from Github"
+  )
+
+  val releases = settingKey[List[Release]](
+    "List of releases downloaded from Github"
   )
 
   val organizationMetadata = settingKey[Option[Organization]] {
