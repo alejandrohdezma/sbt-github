@@ -80,6 +80,18 @@ class RepositoryReleasesSuite extends munit.FunSuite {
       }
     }
 
+    test("Repository.isPublished should return true if publishDate is present") {
+      val publishedRelease = Release("", "", Some(ZonedDateTime.now()))
+
+      assertEquals(publishedRelease.isPublished, true)
+    }
+
+    test("Repository.isPublished should return false if publishDate is missing") {
+      val publishedRelease = Release("", "", None)
+
+      assertEquals(publishedRelease.isPublished, false)
+    }
+
   }
 
 }

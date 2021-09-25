@@ -6,7 +6,11 @@ import com.alejandrohdezma.sbt.github.json.Decoder
 import com.alejandrohdezma.sbt.github.syntax.json._
 
 /** Represents a repository release */
-final case class Release(name: String, tag: String, publishDate: Option[ZonedDateTime])
+final case class Release(name: String, tag: String, publishDate: Option[ZonedDateTime]) {
+
+  lazy val isPublished: Boolean = publishDate.nonEmpty
+
+}
 
 object Release {
 
