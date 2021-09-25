@@ -95,6 +95,16 @@ final case class Repository(
       .failAs(GithubError("Unable to get repository collaborators"))
   }
 
+  /** Returns the list of repository releases, alphabetically ordered by tag.. */
+  def releases(implicit auth: Authentication, logger: Logger): Try[List[Release]] = {
+    logger.info(s"Retrieving `$name` releases from Github API")
+
+    client
+      .get[List[Release]](releasesUrl.withQueryParam("per_page", "100"))
+      .map(_.sortBy(release => release.tag))
+      .failAs(GithubError("Unable to get repository releases"))
+  }
+
   /** Returns the repository's organization information, if present. */
   def organization(implicit
       auth: Authentication,
