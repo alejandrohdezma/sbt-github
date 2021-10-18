@@ -32,6 +32,7 @@ import com.alejandrohdezma.sbt.github.github.Release
 import com.alejandrohdezma.sbt.github.github.Repository
 import com.alejandrohdezma.sbt.github.github.urls.GithubEntryPoint
 import com.alejandrohdezma.sbt.github.syntax.list._
+import com.alejandrohdezma.sbt.github.syntax.scalatry._
 
 /** This plugin automatically adds POM-related settings like description, organization, license, homepage...
   *
@@ -59,23 +60,23 @@ object SbtGithubPlugin extends AutoPlugin {
       githubAuthToken               := sys.env.get("GITHUB_TOKEN").map(AuthToken),
       repository := onGithub(default = Option.empty[Repository])(Def.setting {
         implicit val (auth, logger, url) = configuration.value
-        Option(Repository.get(info.value._1, info.value._2).get) // scalafix:ok Disable.Try.get
+        Option(Repository.get(info.value._1, info.value._2).getOrThrow)
       }).value,
       organizationMetadata := onRepo(default = Option.empty[Organization])(Def.setting { repo =>
         implicit val (auth, logger, url) = configuration.value
 
         if (githubOrganization.value.nonEmpty)
-          Some(Organization.get(githubOrganization.value).get)
+          Some(Organization.get(githubOrganization.value).getOrThrow)
         else
           repo.organization.orElse {
             if (populateOrganizationWithOwner.value)
               Some(repo.owner.map(_.asOrganization))
             else None
-          }.map(_.get) // scalafix:ok Disable.Try.get
+          }.map(_.getOrThrow)
       }).value,
       contributors := onRepo(default = Contributors(Nil))(Def.setting { repo =>
         implicit val (auth, log, _) = configuration.value
-        repo.contributors(excludedContributors.value).get // scalafix:ok Disable.Try.get
+        repo.contributors(excludedContributors.value).getOrThrow
       }).value,
       collaborators := onRepo(default = Collaborators(Nil))(Def.setting { repo =>
         implicit val (auth, log, entryPoint) = configuration.value
@@ -87,12 +88,12 @@ object SbtGithubPlugin extends AutoPlugin {
           collaborators <- repo.collaborators(contributorIds)
         } yield collaborators.include(extras)
 
-        collaborators.get // scalafix:ok Disable.Try.get
+        collaborators.getOrThrow
       }).value,
       releases := onRepo(default = List.empty[Release])(Def.setting { repo =>
         implicit val (auth, log, _) = configuration.value
 
-        repo.releases.get // scalafix:ok Disable.Try.get
+        repo.releases.getOrThrow
       }).value,
       developers := collaborators.value.developers,
       homepage   := repository.value.map(_.url).orElse(homepage.value),
