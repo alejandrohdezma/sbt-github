@@ -20,9 +20,22 @@ import scala.util.Failure
 import scala.util.Success
 import scala.util.Try
 
+import sbt.util.Logger
+
 object scalatry {
 
   implicit class TryOps[A](private val aTry: Try[A]) extends AnyVal {
+
+    /** Retrieves the value inside this `Try` or logs/throws the error. */
+    def getOrThrow(implicit logger: Logger): A = {
+      aTry.fold(
+        throwable => {
+          logger.err(throwable.getMessage())
+          throw throwable // scalafix:ok
+        },
+        identity
+      )
+    }
 
     /** The given function is applied if this is a `Failure`. The contained throwable is used as cause for the provided
       * one.
