@@ -16,8 +16,6 @@
 
 package com.alejandrohdezma.sbt
 
-import scala.concurrent.ExecutionContext
-
 import cats.effect.IO
 import cats.effect.unsafe.implicits.global
 
@@ -58,7 +56,7 @@ package object github {
   }
 
   def withServer[A](pf: PartialFunction[Request[IO], IO[Response[IO]]])(f: URL => A): A = {
-    BlazeServerBuilder[IO](ExecutionContext.global)
+    BlazeServerBuilder[IO]
       .bindAny()
       .withHttpApp(HttpRoutes.of[IO](pf).orNotFound)
       .resource
