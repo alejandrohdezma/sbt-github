@@ -5,7 +5,7 @@
 Add the following line to your `plugins.sbt` file:
 
 ```scala
-addSbtPlugin("com.alejandrohdezma" % "sbt-github" % "0.10.1")
+addSbtPlugin("com.alejandrohdezma" % "sbt-github" % "0.11.0")
 ```
 
 ## Using the plugin
