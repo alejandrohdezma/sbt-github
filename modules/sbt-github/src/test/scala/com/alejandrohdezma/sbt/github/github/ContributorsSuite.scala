@@ -16,6 +16,8 @@
 
 package com.alejandrohdezma.sbt.github.github
 
+import scala.annotation.nowarn
+
 class ContributorsSuite extends munit.FunSuite {
 
   test("Contributors.markdown should return contributor list as markdown") {
@@ -27,6 +29,7 @@ class ContributorsSuite extends munit.FunSuite {
       )
     )
 
+    @nowarn
     val markdown = contributors.markdown
 
     val expected =

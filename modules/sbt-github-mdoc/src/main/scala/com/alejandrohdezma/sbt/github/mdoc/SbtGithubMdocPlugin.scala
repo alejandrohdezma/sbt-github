@@ -96,9 +96,11 @@ object SbtGithubMdocPlugin extends AutoPlugin {
         "START_YEAR"          -> startYear.value.fold("")(year => s"$year"),
         "YEAR_RANGE"          -> yearRange.value.getOrElse(""),
         "VERSION"             -> versionForMdoc.value,
-        "CONTRIBUTORS"        -> contributors.value.markdown,
+        "CONTRIBUTORS"        -> contributors.value.markdownList,
+        "CONTRIBUTORS_LIST"   -> contributors.value.markdownList,
         "CONTRIBUTORS_TABLE"  -> contributors.value.markdownTable,
-        "COLLABORATORS"       -> collaborators.value.markdown,
+        "COLLABORATORS"       -> collaborators.value.markdownList,
+        "COLLABORATORS_LIST"  -> collaborators.value.markdownList,
         "COLLABORATORS_TABLE" -> collaborators.value.markdownTable,
         "COPYRIGHT_OWNER" -> organizationHomepage.value
           .map(url => s"${organizationName.value} <$url>")

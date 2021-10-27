@@ -20,7 +20,11 @@ package com.alejandrohdezma.sbt.github.github
 final case class Contributors(list: List[Contributor]) {
 
   /** Returns this list of contributors in markdown format */
-  lazy val markdown: String =
+  @deprecated("Use markdownList instead", "0.11.0")
+  lazy val markdown: String = markdownList
+
+  /** Returns this list of contributors in markdown format */
+  lazy val markdownList: String =
     list.map { contributor =>
       val image =
         contributor.avatar.map(url => s"![${contributor.login}]($url&s=20) ").getOrElse("")

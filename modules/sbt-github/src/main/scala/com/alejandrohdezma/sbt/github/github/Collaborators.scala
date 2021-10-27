@@ -40,7 +40,11 @@ final case class Collaborators(list: List[Collaborator]) {
   }
 
   /** Returns this list of collaborators in markdown format */
-  lazy val markdown: String =
+  @deprecated("Use markdownList instead", "0.11.0")
+  lazy val markdown: String = markdownList
+
+  /** Returns this list of collaborators in markdown format */
+  lazy val markdownList: String =
     list.map { collaborator =>
       import collaborator._
 

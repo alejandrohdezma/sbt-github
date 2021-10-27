@@ -16,6 +16,8 @@
 
 package com.alejandrohdezma.sbt.github.github
 
+import scala.annotation.nowarn
+
 import sbt.Developer
 
 import com.alejandrohdezma.sbt.github._
@@ -77,6 +79,7 @@ class CollaboratorsSuite extends munit.FunSuite {
       Collaborator("you", "you", url"http://example.com/you")
     )
 
+    @nowarn
     val markdown = collaborators.markdown
 
     val expected =
