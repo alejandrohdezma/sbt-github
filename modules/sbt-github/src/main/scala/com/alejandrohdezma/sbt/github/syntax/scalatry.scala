@@ -31,6 +31,7 @@ object scalatry {
       aTry.fold(
         throwable => {
           logger.err(throwable.getMessage())
+          Option(throwable.getCause).map(_.getMessage()).foreach(logger.err(_))
           throw throwable // scalafix:ok
         },
         identity

@@ -93,6 +93,7 @@ final case class Repository(
       .map(_.sortBy(collaborator => collaborator.name -> collaborator.login))
       .map(Collaborators(_))
       .failAs(GithubError("Unable to get repository collaborators"))
+      .orElse(Try(Collaborators(Nil)))
   }
 
   /** Returns the list of repository releases, alphabetically ordered by tag.. */
@@ -153,7 +154,7 @@ object Repository {
           case "license" / NotFound               => GithubError(licenseNotFound)
           case "license" / ("spdx_id" / NotFound) => GithubError(licenseNotInferred)
           case "license" / ("url" / NotFound)     => GithubError(urlNotInferred)
-          case _                                  => GithubError("Unable to get repository information")
+          case cause                              => GithubError("Unable to get repository information").initCause(cause)
         }
 
     }

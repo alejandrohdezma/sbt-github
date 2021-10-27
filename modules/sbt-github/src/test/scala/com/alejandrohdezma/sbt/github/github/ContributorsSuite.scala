@@ -16,6 +16,8 @@
 
 package com.alejandrohdezma.sbt.github.github
 
+import scala.annotation.nowarn
+
 class ContributorsSuite extends munit.FunSuite {
 
   test("Contributors.markdown should return contributor list as markdown") {
@@ -27,12 +29,36 @@ class ContributorsSuite extends munit.FunSuite {
       )
     )
 
+    @nowarn
     val markdown = contributors.markdown
 
     val expected =
       """- [![me](http://example.com/me.png&s=20) **me**](http://example.com/me)
         |- [**him**](http://example.com/him)
         |- [**you**](http://example.com/you)""".stripMargin
+
+    assertNoDiff(markdown, expected)
+  }
+
+  test("Contributors.markdownTable should return contributor list as a markdown table") {
+    val contributors = Contributors(
+      List(
+        Contributor("me", 1, "http://example.com/me", Some("http://example.com/me.png")),
+        Contributor("you", 1, "http://example.com/you", None),
+        Contributor("him", 1, "http://example.com/him", None),
+        Contributor("her", 1, "http://example.com/her", Some("http://example.com/me.png")),
+        Contributor("it", 1, "http://example.com/it", Some("http://example.com/it.png")),
+        Contributor("we", 1, "http://example.com/we", None),
+        Contributor("they", 1, "http://example.com/they", None)
+      )
+    )
+
+    val markdown = contributors.markdownTable
+
+    val expected =
+      """|| <a href="http://example.com/me"><img alt="me" src="http://example.com/me.png&s=120" width="120px" /></a> | <a href="http://example.com/you"><img alt="you" src="https://www.gravatar.com/avatar/you?d=identicon&s=120" width="120px" /></a> | <a href="http://example.com/him"><img alt="him" src="https://www.gravatar.com/avatar/him?d=identicon&s=120" width="120px" /></a> | <a href="http://example.com/her"><img alt="her" src="http://example.com/me.png&s=120" width="120px" /></a> | <a href="http://example.com/it"><img alt="it" src="http://example.com/it.png&s=120" width="120px" /></a> | <a href="http://example.com/we"><img alt="we" src="https://www.gravatar.com/avatar/we?d=identicon&s=120" width="120px" /></a> | <a href="http://example.com/they"><img alt="they" src="https://www.gravatar.com/avatar/they?d=identicon&s=120" width="120px" /></a> |
+         || :--: | :--: | :--: | :--: | :--: | :--: | :--: |
+         || <a href="http://example.com/me"><sub><b>me</b></sub></a> | <a href="http://example.com/you"><sub><b>you</b></sub></a> | <a href="http://example.com/him"><sub><b>him</b></sub></a> | <a href="http://example.com/her"><sub><b>her</b></sub></a> | <a href="http://example.com/it"><sub><b>it</b></sub></a> | <a href="http://example.com/we"><sub><b>we</b></sub></a> | <a href="http://example.com/they"><sub><b>they</b></sub></a> |""".stripMargin
 
     assertNoDiff(markdown, expected)
   }
