@@ -28,4 +28,29 @@ final case class Contributors(list: List[Contributor]) {
       s"""- [$image**${contributor.login}**](${contributor.url})"""
     }.mkString("\n")
 
+  /** Returns this list of contributors as a markdown table */
+  lazy val markdownTable: String =
+    if (list.isEmpty) "No contributors found"
+    else
+      list
+        .grouped(7)
+        .toList
+        .map { contributors =>
+          val images = contributors.map { contributor =>
+            val url =
+              contributor.avatar.getOrElse(s"https://www.gravatar.com/avatar/${contributor.login}?d=identicon")
+
+            s"""<a href="${contributor.url}"><img alt="${contributor.login}" src="$url&s=120" width="120px" /></a>"""
+          }.mkString("| ", " | ", " |")
+
+          val separators = List.fill(contributors.size)(":--:").mkString("| ", " | ", " |")
+
+          val logins = contributors.map { contributor =>
+            s"""<a href="${contributor.url}"><sub><b>${contributor.login}</b></sub></a>"""
+          }.mkString("| ", " | ", " |")
+
+          s"$images\n$separators\n$logins"
+        }
+        .mkString("\n\n")
+
 }

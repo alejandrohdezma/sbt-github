@@ -55,6 +55,31 @@ final case class Collaborators(list: List[Collaborator]) {
       s"""- [$image**$definitiveName**]($url)"""
     }.mkString("\n")
 
+  /** Returns this list of collaborators as a markdown table */
+  lazy val markdownTable: String =
+    if (list.isEmpty) "No collaborators found"
+    else
+      list
+        .grouped(7)
+        .toList
+        .map { collaborators =>
+          val images = collaborators.map { collaborator =>
+            val url =
+              collaborator.avatar.getOrElse(s"https://www.gravatar.com/avatar/${collaborator.login}?d=identicon")
+
+            s"""<a href="${collaborator.url}"><img alt="${collaborator.login}" src="$url&s=120" width="120px" /></a>"""
+          }.mkString("| ", " | ", " |")
+
+          val separators = List.fill(collaborators.size)(":--:").mkString("| ", " | ", " |")
+
+          val logins = collaborators.map { collaborator =>
+            s"""<a href="${collaborator.url}"><sub><b>${collaborator.login}</b></sub></a>"""
+          }.mkString("| ", " | ", " |")
+
+          s"$images\n$separators\n$logins"
+        }
+        .mkString("\n\n")
+
 }
 
 object Collaborators {
