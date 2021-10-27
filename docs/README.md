@@ -31,6 +31,10 @@ addSbtPlugin("com.alejandrohdezma" % "sbt-github" % "@VERSION@")
 
 If you want to know more about all the plugin's features, please head on to [its website](https://alejandrohdezma.github.io/sbt-github/) where you will find much more information.
 
+## Contributors for this project
+
+@CONTRIBUTORS_TABLE@
+
 [maven]: https://search.maven.org/search?q=g:%20com.alejandrohdezma%20AND%20a:sbt-github
 [maven-badge]: https://maven-badges.herokuapp.com/maven-central/com.alejandrohdezma/sbt-github/badge.svg?kill_cache=1
 
