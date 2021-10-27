@@ -43,7 +43,7 @@ trait SbtGithubKeys {
 
   val githubApiEntryPoint = settingKey[URL] {
     "Entry point for the github API, defaults to `https://api.github.com`"
-  }
+  }.withRank(KeyRanks.Invisible)
 
   val contributors = settingKey[Contributors](
     "List of contributors downloaded from Github"
@@ -63,7 +63,7 @@ trait SbtGithubKeys {
 
   val populateOrganizationWithOwner = settingKey[Boolean] {
     "Populate organization info with the owner one in case there is no organization, default to `true`"
-  }
+  }.withRank(KeyRanks.Invisible)
 
   val extraCollaborators = settingKey[List[Collaborator.Creator]] {
     "Extra collaborators that should be always included (independent of whether they are contributors or not)"
@@ -97,6 +97,6 @@ trait SbtGithubKeys {
 
   val githubAuthToken = settingKey[Option[AuthToken]] {
     "The Github Token used for authenticating into Github API. Defaults to GITHUB_TOKEN environment variable."
-  }
+  }.withRank(KeyRanks.Invisible)
 
 }
