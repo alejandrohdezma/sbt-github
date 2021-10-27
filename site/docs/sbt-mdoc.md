@@ -26,4 +26,4 @@ The plugin provides the following `mdocVariables`:
 | **REPO**                | Set to the repository's path: "owner/repo"                                                                                                                                 |
 | **START_YEAR**          | Set to the value of the `startYear` setting                                                                                                                                |
 | **YEAR_RANGE**          | Set to the value of the `yearRange` setting                                                                                                                                |
-| **COPYRIGHT_OWNER**     | Set to the value of `ORG_NAME ` if `ORG_URL` is present or just `ORG_NAME` in case `ORG_URL` is empty                                                                      |
+| **COPYRIGHT_OWNER**     | Set to the value of `ORG_NAME <ORG_URL>` if `ORG_URL` is present or just `ORG_NAME` in case `ORG_URL` is empty                                                             |
