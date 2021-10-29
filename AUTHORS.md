@@ -15,3 +15,4 @@ The maintainers of the project are:
 These are the people that have contributed to the _sbt-github_ project:
 
 - [![alejandrohdezma](https://avatars.githubusercontent.com/u/9027541?v=4&s=20) **alejandrohdezma**](https://github.com/alejandrohdezma)
+- [![fedefernandez](https://avatars.githubusercontent.com/u/720923?v=4&s=20) **fedefernandez**](https://github.com/fedefernandez)

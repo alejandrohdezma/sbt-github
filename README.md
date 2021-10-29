@@ -22,7 +22,7 @@ This plugin enables several settings automatically by downloading them from Gith
 Add the following line to your `plugins.sbt` file:
 
 ```sbt
-addSbtPlugin("com.alejandrohdezma" % "sbt-github" % "0.11.0")
+addSbtPlugin("com.alejandrohdezma" % "sbt-github" % "0.11.1")
 ```
 
 > If you use [mdoc](https://scalameta.org/mdoc/) there's also available an [mdoc integration module](https://alejandrohdezma.github.io/sbt-github/docs/sbt-mdoc)
@@ -33,9 +33,9 @@ If you want to know more about all the plugin's features, please head on to [its
 
 ## Contributors for this project
 
-| <a href="https://github.com/alejandrohdezma"><img alt="alejandrohdezma" src="https://avatars.githubusercontent.com/u/9027541?v=4&s=120" width="120px" /></a> |
-| :--: |
-| <a href="https://github.com/alejandrohdezma"><sub><b>alejandrohdezma</b></sub></a> |
+| <a href="https://github.com/alejandrohdezma"><img alt="alejandrohdezma" src="https://avatars.githubusercontent.com/u/9027541?v=4&s=120" width="120px" /></a> | <a href="https://github.com/fedefernandez"><img alt="fedefernandez" src="https://avatars.githubusercontent.com/u/720923?v=4&s=120" width="120px" /></a> |
+| :--: | :--: |
+| <a href="https://github.com/alejandrohdezma"><sub><b>alejandrohdezma</b></sub></a> | <a href="https://github.com/fedefernandez"><sub><b>fedefernandez</b></sub></a> |
 
 [maven]: https://search.maven.org/search?q=g:%20com.alejandrohdezma%20AND%20a:sbt-github
 [maven-badge]: https://maven-badges.herokuapp.com/maven-central/com.alejandrohdezma/sbt-github/badge.svg?kill_cache=1
