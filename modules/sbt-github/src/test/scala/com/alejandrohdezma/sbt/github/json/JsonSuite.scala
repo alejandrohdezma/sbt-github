@@ -93,4 +93,9 @@ class JsonSuite extends munit.FunSuite {
 
   }
 
+  test("Json.parse should decode long strings") {
+    val json = List.fill(3041)("x").mkString("\"", "", "\"")
+    assert(Json.parse(json).isSuccess)
+  }
+
 }
