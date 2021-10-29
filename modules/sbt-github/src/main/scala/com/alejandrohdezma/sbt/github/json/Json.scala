@@ -16,35 +16,35 @@
 
 package com.alejandrohdezma.sbt.github.json
 
-import scala.annotation.nowarn
 import scala.util.Try
 import scala.util.parsing.combinator.JavaTokenParsers
 
-import com.alejandrohdezma.sbt.github.json.error.NotAValidJSON
-import com.alejandrohdezma.sbt.github.syntax.throwable._
+import org.typelevel.jawn.Facade.SimpleFacade
+import org.typelevel.jawn.{Parser => JawnParser}
 
 object Json extends JavaTokenParsers {
 
-  /** Parse the provided string into a [[Json.Value]] */
-  def parse(s: String): Try[Json.Value] =
-    parseAll(`json-value`, s).map(Try(_)).getOrElse(NotAValidJSON(s).raise)
+  @SuppressWarnings(Array("scalafix:Disable.toString"))
+  object JawnFacade extends SimpleFacade[Json.Value] {
 
-  @SuppressWarnings(Array("all"))
-  @nowarn
-  private def `json-value`: Parser[Json.Value] = {
-    val stripQuotes   = (x: String) => x.substring(1, x.length - 1)
-    val `json-line`   = stringLiteral ~ ":" ~ `json-value`
-    val `json-field`  = `json-line` ^^ { case name ~ ":" ~ value => stripQuotes(name) -> value }
-    val `json-object` = "{" ~> repsep(`json-field`, ",") <~ "}" ^^ (Map() ++ _) ^^ Json.Object
-    val `json-array`  = "[" ~> repsep(`json-value`, ",") <~ "]" ^^ Json.Collection
-    val `json-string` = stringLiteral ^^ stripQuotes ^^ Json.Text
-    val `json-number` = floatingPointNumber ^^ (_.toDouble) ^^ Json.Number
-    val `json-null`   = "null" ^^^ Json.Null
-    val `json-true`   = "true" ^^^ Json.True
-    val `json-false`  = "false" ^^^ Json.False
+    override def jarray(vs: List[Json.Value]): Json.Value = Json.Collection(vs)
 
-    `json-object` | `json-array` | `json-string` | `json-number` | `json-null` | `json-true` | `json-false`
+    override def jobject(vs: Map[String, Json.Value]): Json.Value = Json.Object(vs)
+
+    override def jnull: Json.Value = Json.Null
+
+    override def jfalse: Json.Value = Json.False
+
+    override def jtrue: Json.Value = Json.True
+
+    override def jnum(s: CharSequence, decIndex: Int, expIndex: Int): Json.Value = Json.Number(s.toString.toDouble)
+
+    override def jstring(s: CharSequence): Json.Value = Json.Text(s.toString)
+
   }
+
+  def parse(s: String): Try[Json.Value] =
+    JawnParser.parseFromString(s)(JawnFacade)
 
   sealed trait Value
 
