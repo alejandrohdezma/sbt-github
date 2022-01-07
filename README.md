@@ -22,7 +22,7 @@ This plugin enables several settings automatically by downloading them from Gith
 Add the following line to your `plugins.sbt` file:
 
 ```sbt
-addSbtPlugin("com.alejandrohdezma" % "sbt-github" % "0.11.1")
+addSbtPlugin("com.alejandrohdezma" % "sbt-github" % "0.11.2")
 ```
 
 > If you use [mdoc](https://scalameta.org/mdoc/) there's also available an [mdoc integration module](https://alejandrohdezma.github.io/sbt-github/docs/sbt-mdoc)
