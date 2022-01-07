@@ -1,6 +1,6 @@
 ![logo](_media/logo.svg ':size=10%')
 
-# sbt-github <small>0.11.1</small>
+# sbt-github <small>0.11.2</small>
 
 > SBT plugin to read several settings from Github
 
