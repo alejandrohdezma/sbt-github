@@ -2,7 +2,7 @@ addSbtPlugin("ch.epfl.scala"             % "sbt-scalafix"             % "0.9.34"
 addSbtPlugin("com.alejandrohdezma"       % "sbt-fix"                  % "0.7.0")
 addSbtPlugin("com.alejandrohdezma"       % "sbt-ci"                   % "2.4.1")
 addSbtPlugin("com.alejandrohdezma"       % "sbt-remove-test-from-pom" % "0.1.0")
-addSbtPlugin("com.alejandrohdezma"       % "sbt-scalafmt-defaults"    % "0.4.5")
+addSbtPlugin("com.alejandrohdezma"       % "sbt-scalafmt-defaults"    % "0.5.0")
 addSbtPlugin("com.alejandrohdezma"       % "sbt-scalafix-defaults"    % "0.6.0")
 addSbtPlugin("com.github.sbt"            % "sbt-ci-release"           % "1.5.10")
 addSbtPlugin("de.heikoseeberger"         % "sbt-header"               % "5.6.0")
