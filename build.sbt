@@ -1,4 +1,4 @@
-ThisBuild / scalaVersion                  := "2.13.10"
+ThisBuild / scalaVersion                  := _root_.scalafix.sbt.BuildInfo.scala212
 ThisBuild / organization                  := "com.alejandrohdezma"
 ThisBuild / pluginCrossBuild / sbtVersion := "1.2.8"
 ThisBuild / Test / parallelExecution      := false
