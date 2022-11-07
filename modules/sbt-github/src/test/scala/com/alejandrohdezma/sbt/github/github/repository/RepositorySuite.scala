@@ -36,6 +36,7 @@ class RepositorySuite extends munit.FunSuite {
             "description": "The description",
             "html_url": "http://example.com/repository",
             "created_at": "2011-01-26T19:01:12Z",
+            "default_branch": "main",
             "contributors_url": "http://api.github.com/repos/example/example/contributors",
             "collaborators_url": "http://api.github.com/repos/example/example/collaborators",
             "releases_url": "http://api.github.com/repos/example/example/releases",
@@ -56,16 +57,17 @@ class RepositorySuite extends munit.FunSuite {
       val repository = Repository.get("user", "repo")
 
       val expected = Repository(
-        "user/repo",
-        "The description",
-        License("id", url"http://example.com"),
-        url"http://example.com/repository",
-        2011,
-        url"http://api.github.com/repos/example/example/contributors",
-        url"http://api.github.com/repos/example/example/collaborators",
-        url"http://api.github.com/repos/example/example/releases",
-        Some(url"http://api.github.com/users/example"),
-        url"http://api.github.com/users/owner"
+        name = "user/repo",
+        description = "The description",
+        license = License("id", url"http://example.com"),
+        url = url"http://example.com/repository",
+        startYear = 2011,
+        defaultBranch = "main",
+        contributorsUrl = url"http://api.github.com/repos/example/example/contributors",
+        collaboratorsUrl = url"http://api.github.com/repos/example/example/collaborators",
+        releasesUrl = url"http://api.github.com/repos/example/example/releases",
+        organizationUrl = Some(url"http://api.github.com/users/example"),
+        ownerUrl = url"http://api.github.com/users/owner"
       )
 
       assertEquals(repository, Success(expected))
@@ -81,6 +83,7 @@ class RepositorySuite extends munit.FunSuite {
             "description": "The description",
             "html_url": "http://example.com/repository",
             "created_at": "2011-01-26T19:01:12Z",
+            "default_branch": "main",
             "contributors_url": "http://api.github.com/repos/example/example/contributors",
             "collaborators_url": "http://api.github.com/repos/example/example/collaborators",
             "releases_url": "http://api.github.com/repos/example/example/releases",
@@ -98,16 +101,17 @@ class RepositorySuite extends munit.FunSuite {
       val repository = Repository.get("user", "repo")
 
       val expected = Repository(
-        "user/repo",
-        "The description",
-        License("id", url"http://example.com"),
-        url"http://example.com/repository",
-        2011,
-        url"http://api.github.com/repos/example/example/contributors",
-        url"http://api.github.com/repos/example/example/collaborators",
-        url"http://api.github.com/repos/example/example/releases",
-        None,
-        url"http://api.github.com/users/owner"
+        name = "user/repo",
+        description = "The description",
+        license = License("id", url"http://example.com"),
+        url = url"http://example.com/repository",
+        startYear = 2011,
+        defaultBranch = "main",
+        contributorsUrl = url"http://api.github.com/repos/example/example/contributors",
+        collaboratorsUrl = url"http://api.github.com/repos/example/example/collaborators",
+        releasesUrl = url"http://api.github.com/repos/example/example/releases",
+        organizationUrl = None,
+        ownerUrl = url"http://api.github.com/users/owner"
       )
 
       assertEquals(repository, Success(expected))

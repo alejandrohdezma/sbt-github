@@ -25,7 +25,7 @@ object url {
 
     /** Adds a query param with the given `key`/`value` pair to this `URL` ad returns it. */
     def withQueryParam(key: String, value: String): URL = {
-      val uri = url.toURI // scalafix:ok Disable.URL
+      val uri = url.toURI
 
       val query = Option(uri.getQuery)
         .map(_ + s"&$key=$value")

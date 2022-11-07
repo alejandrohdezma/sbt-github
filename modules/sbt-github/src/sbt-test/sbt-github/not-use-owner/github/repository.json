@@ -5,6 +5,7 @@
   "owner": {
     "url": "{{base_directory}}/user1.json"
   },
+  "default_branch": "name",
   "html_url": "https://github.com/user1/repo",
   "description": "An awesome description",
   "collaborators_url": "{{base_directory}}/collaborators.json",

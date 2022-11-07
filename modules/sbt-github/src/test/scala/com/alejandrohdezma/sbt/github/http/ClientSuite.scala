@@ -32,7 +32,6 @@ import com.alejandrohdezma.sbt.github.syntax.json.JsonValueOps
 import org.http4s.dsl.io._
 import org.http4s.headers.Authorization
 
-@SuppressWarnings(Array("scalafix:Disable.blocking.io"))
 class ClientSuite extends munit.FunSuite {
 
   test("client.get should make `GET` call using auth and returning content as `A`") {

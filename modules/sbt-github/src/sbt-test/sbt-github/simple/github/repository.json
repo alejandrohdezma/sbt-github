@@ -6,6 +6,7 @@
     "url": "{{base_directory}}/user1.json"
   },
   "html_url": "https://github.com/user1/repo",
+  "default_branch": "name",
   "description": "An awesome description",
   "collaborators_url": "{{base_directory}}/collaborators.json",
   "contributors_url": "{{base_directory}}/contributors.json",

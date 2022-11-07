@@ -2,6 +2,8 @@ sbt-github
 
 user1/repo
 
+name
+
 An awesome description
 
 MIT
