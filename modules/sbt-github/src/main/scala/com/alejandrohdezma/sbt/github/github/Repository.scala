@@ -42,6 +42,7 @@ final case class Repository(
     license: License,
     url: URL,
     startYear: Int,
+    defaultBranch: String,
     contributorsUrl: URL,
     collaboratorsUrl: URL,
     releasesUrl: URL,
@@ -166,6 +167,7 @@ object Repository {
       license         <- json.get[License]("license")
       url             <- json.get[URL]("html_url")
       startYear       <- json.get[ZonedDateTime]("created_at")
+      defaultBranch   <- json.get[String]("default_branch")
       contributors    <- json.get[URL]("contributors_url")
       collaborators   <- json.get[URL]("collaborators_url")
       organizationUrl <- json.get[Option[URL]]("organization", "url")
@@ -177,6 +179,7 @@ object Repository {
       license,
       url,
       startYear.getYear,
+      defaultBranch,
       contributors,
       sbt.url(s"$collaborators".replace("{/collaborator}", "")),
       sbt.url(s"$releases".replace("{/id}", "")),
