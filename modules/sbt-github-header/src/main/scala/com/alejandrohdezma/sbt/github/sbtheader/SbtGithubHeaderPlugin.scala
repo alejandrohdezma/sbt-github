@@ -59,7 +59,7 @@ object SbtGithubHeaderPlugin extends AutoPlugin {
       headerLicense := LicenseDetection(
         licenses.value.toList,
         copyrightOwner.value,
-        startYear.value,
+        yearRange.value.flatMap(_.split("-").headOption).map(_.toInt),
         yearRange.value.flatMap(_.split("-").lastOption).map(_.toInt),
         headerLicenseStyle.value
       ),
