@@ -1,5 +1,7 @@
 sbt-github
 
+my.org
+
 user1/repo
 
 name
