@@ -16,8 +16,6 @@
 
 package com.alejandrohdezma.sbt.github.sbtheader
 
-import scala.collection.breakOut
-
 import sbt.Def
 import sbt.Keys._
 import sbt._
@@ -26,8 +24,7 @@ import com.alejandrohdezma.sbt.github.SbtGithubPlugin
 import com.alejandrohdezma.sbt.github.SbtGithubPlugin.autoImport._
 import de.heikoseeberger.sbtheader.HeaderPlugin
 import de.heikoseeberger.sbtheader.HeaderPlugin.autoImport._
-import de.heikoseeberger.sbtheader.License._
-import de.heikoseeberger.sbtheader.SpdxLicense
+import de.heikoseeberger.sbtheader.LicenseDetection
 
 /** Populates the `headerLicense` setting from [[https://github.com/sbt/sbt-header sbt-header]] with values extracted
   * from Github by `SbtGithubPlugin`:
@@ -57,26 +54,15 @@ object SbtGithubHeaderPlugin extends AutoPlugin {
 
   override def requires: Plugins = HeaderPlugin && SbtGithubPlugin
 
-  private val spdxMapping =
-    Vector(
-      ALv2, MIT, MPLv2, BSD2Clause, BSD3Clause, GPLv3OrLater, GPLv3Only, GPLv3, LGPLv3OrLater, LGPLv3Only, LGPLv3,
-      AGPLv3OrLater, AGPLv3Only, AGPLv3
-    ).map(l => (l.spdxIdentifier, l))(breakOut): Map[String, SpdxLicense]
-
   override def projectSettings: Seq[Def.Setting[_]] =
     Seq(
-      headerLicense := {
-        val licenseName = licenses.value match {
-          case (name, _) :: Nil => Some(name)
-          case _                => None
-        }
-
-        for {
-          name    <- licenseName
-          license <- spdxMapping.get(name)
-          year    <- yearRange.value
-        } yield license(year, copyrightOwner.value, headerLicenseStyle.value)
-      },
+      headerLicense := LicenseDetection(
+        licenses.value.toList,
+        copyrightOwner.value,
+        yearRange.value.flatMap(_.split("-").headOption).map(_.toInt),
+        yearRange.value.flatMap(_.split("-").lastOption).map(_.toInt),
+        headerLicenseStyle.value
+      ),
       copyrightOwner := {
         organizationHomepage.value
           .map(url => s"${organizationName.value} <$url>")
