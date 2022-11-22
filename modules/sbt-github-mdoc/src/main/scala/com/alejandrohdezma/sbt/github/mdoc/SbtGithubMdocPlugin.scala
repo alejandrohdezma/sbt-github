@@ -87,6 +87,7 @@ object SbtGithubMdocPlugin extends AutoPlugin {
       displayName                  := SbtGithubPlugin.info.value._2,
       removeVersionTimestampInMdoc := true,
       mdocVariables ++= Map(
+        "ORGANIZATION"        -> organization.value,
         "NAME"                -> displayName.value,
         "REPO"                -> repository.value.map(_.name).getOrElse(""),
         "DEFAULT_BRANCH"      -> repository.value.map(_.defaultBranch).getOrElse(""),

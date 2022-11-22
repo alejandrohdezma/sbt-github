@@ -1,6 +1,7 @@
 ThisBuild / scmInfo := Some(
   ScmInfo(url("http://example.com"), "scm:git:https://github.com/alejandrohdezma/sbt-github.git")
 )
+ThisBuild / organization := "my.org"
 ThisBuild / githubEnabled   := true
 ThisBuild / githubAuthToken := Some(AuthToken("1234"))
 ThisBuild / githubApiEntryPoint := {
