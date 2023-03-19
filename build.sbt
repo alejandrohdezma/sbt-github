@@ -11,13 +11,12 @@ val `sbt-mdoc` = "org.scalameta" % "sbt-mdoc" % "[2.0,)" % Provided // scala-ste
 
 val `sbt-header` = "de.heikoseeberger" % "sbt-header" % "[5.6.0,)" % Provided // scala-steward:off
 
-lazy val documentation = project
-  .enablePlugins(MdocPlugin)
-  .settings(mdocOut := file("."))
+lazy val documentation = project.enablePlugins(MdocPlugin)
 
 lazy val site = project
   .enablePlugins(MdocPlugin)
   .settings(mdocIn := baseDirectory.value / "docs")
+  .settings(mdocOut := (Compile / target).value / "mdoc")
   .settings(watchTriggers += mdocIn.value.toGlob / "*.md")
   .settings(mdocVariables += "EXCLUDED" -> excludedContributors.value.mkString("- ", "\n- ", ""))
   .enablePlugins(GitHubPagesPlugin)
