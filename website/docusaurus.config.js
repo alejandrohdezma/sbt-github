@@ -6,6 +6,7 @@ const config = {
 
   url: 'https://alejandrohdezma.github.io',
   baseUrl: '/sbt-github/',
+  trailingSlash: true,
 
   organizationName: 'alejandrohdezma',
   projectName: 'sbt-github',
