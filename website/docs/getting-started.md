@@ -1,3 +1,7 @@
+---
+sidebar_position: 1
+---
+
 # Getting Started
 
 ## Installation
@@ -45,5 +49,5 @@ sbt "github; ci-release"
 
 There are some integrations available also:
 
-- If you use [mdoc](https://scalameta.org/mdoc/) there's also available an [mdoc integration module](sbt-mdoc.md)
-- If you use [sbt-header](https://github.com/sbt/sbt-header) there's also available an [sbt-header integration module](sbt-header.md)
+- If you use [mdoc](https://scalameta.org/mdoc/) there's also available an [mdoc integration module](integrations/sbt-mdoc.md)
+- If you use [sbt-header](https://github.com/sbt/sbt-header) there's also available an [sbt-header integration module](integrations/sbt-header.md)

@@ -4,24 +4,21 @@ ThisBuild / pluginCrossBuild / sbtVersion := "1.2.8"
 ThisBuild / Test / parallelExecution      := false
 
 addCommandAlias("ci-test", "fix --check; mdoc; test; publishLocal; scripted")
-addCommandAlias("ci-docs", "github; mdoc; headerCreateAll; publishToGitHubPages")
+addCommandAlias("ci-docs", "github; mdoc; headerCreateAll; docusaurusPublishGhpages")
 addCommandAlias("ci-publish", "github; ci-release")
 
 val `sbt-mdoc` = "org.scalameta" % "sbt-mdoc" % "[2.0,)" % Provided // scala-steward:off
 
 val `sbt-header` = "de.heikoseeberger" % "sbt-header" % "[5.6.0,)" % Provided // scala-steward:off
 
-lazy val documentation = project
-  .enablePlugins(MdocPlugin)
-  .settings(mdocOut := file("."))
+lazy val documentation = project.enablePlugins(MdocPlugin)
 
-lazy val site = project
-  .enablePlugins(MdocPlugin)
+lazy val website = project
+  .enablePlugins(MdocPlugin, DocusaurusPlugin)
   .settings(mdocIn := baseDirectory.value / "docs")
+  .settings(mdocOut := (Compile / target).value / "mdoc")
   .settings(watchTriggers += mdocIn.value.toGlob / "*.md")
   .settings(mdocVariables += "EXCLUDED" -> excludedContributors.value.mkString("- ", "\n- ", ""))
-  .enablePlugins(GitHubPagesPlugin)
-  .settings(gitHubPagesSiteDir := mdocOut.value)
 
 lazy val `sbt-github` = module
   .enablePlugins(SbtPlugin)
