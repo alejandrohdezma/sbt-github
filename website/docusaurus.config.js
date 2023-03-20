@@ -26,7 +26,7 @@ const config = {
       ({
         docs: {
           path: 'target/mdoc/',
-          editUrl: params => 'https://github.com/alejandrohdezma/sbt-github/edit/main/site/docs/' + params.docPath,
+          editUrl: params => 'https://github.com/alejandrohdezma/sbt-github/edit/main/website/docs/' + params.docPath,
         },
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
