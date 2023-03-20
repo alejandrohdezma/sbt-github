@@ -6,7 +6,10 @@ If you use [sbt-header](https://github.com/sbt/sbt-header) for creating/updating
 addSbtPlugin("com.alejandrohdezma" % "sbt-github-header" % "@VERSION@")
 ```
 
-!> Important! So we don't force a version of sbt-header, it is requested as a ["Provided"](https://maven.apache.org/guides/introduction/introduction-to-dependency-mechanism.html) dependency so you'll need to provide your own version of [sbt-header](https://github.com/sbt/sbt-header).
+:::note
+
+So we don't force a version of sbt-header, it is requested as a ["Provided"](https://maven.apache.org/guides/introduction/introduction-to-dependency-mechanism.html) dependency so you'll need to provide your own version of [sbt-header](https://github.com/sbt/sbt-header).
+
 :::
 
 ## What does this integration do?
