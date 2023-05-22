@@ -43,6 +43,11 @@ const config = {
         disableSwitch: true,
         respectPrefersColorScheme: true,
       },
+      algolia: {
+        appId: 'HI501929UG',
+        apiKey: 'dcf994619a62ba649248078eb56a6ee6',
+        indexName: 'sbt'
+      },
       navbar: {
         title: 'sbt-github',
         logo: {
