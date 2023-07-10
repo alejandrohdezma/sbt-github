@@ -30,6 +30,8 @@ import com.alejandrohdezma.sbt.github.github.urls.RepositoryEntryPoint
 import com.alejandrohdezma.sbt.github.http.Authentication
 import com.alejandrohdezma.sbt.github.http.client
 import com.alejandrohdezma.sbt.github.json.Decoder
+import com.alejandrohdezma.sbt.github.json.Json
+import com.alejandrohdezma.sbt.github.json.error.NotAUrl
 import com.alejandrohdezma.sbt.github.syntax.json._
 import com.alejandrohdezma.sbt.github.syntax.list._
 import com.alejandrohdezma.sbt.github.syntax.scalatry._
@@ -162,17 +164,19 @@ object Repository {
 
   implicit val RepositoryDecoder: Decoder[Repository] = json =>
     for {
-      name            <- json.get[String]("full_name")
-      description     <- json.get[String]("description")
-      license         <- json.get[License]("license")
-      url             <- json.get[URL]("html_url")
-      startYear       <- json.get[ZonedDateTime]("created_at")
-      defaultBranch   <- json.get[String]("default_branch")
-      contributors    <- json.get[URL]("contributors_url")
-      collaborators   <- json.get[URL]("collaborators_url")
-      organizationUrl <- json.get[Option[URL]]("organization", "url")
-      releases        <- json.get[URL]("releases_url")
-      ownerUrl        <- json.get[URL]("owner", "url")
+      name             <- json.get[String]("full_name")
+      description      <- json.get[String]("description")
+      license          <- json.get[License]("license")
+      url              <- json.get[URL]("html_url")
+      startYear        <- json.get[ZonedDateTime]("created_at")
+      defaultBranch    <- json.get[String]("default_branch")
+      contributors     <- json.get[URL]("contributors_url")
+      collaborators    <- json.get[String]("collaborators_url").map(_.replace("{/collaborator}", ""))
+      collaboratorsUrl <- Try(sbt.url(collaborators)).failAs(NotAUrl(Json.Text(collaborators)))
+      organizationUrl  <- json.get[Option[URL]]("organization", "url")
+      releases         <- json.get[String]("releases_url").map(_.replace("{/id}", ""))
+      releasesUrl      <- Try(sbt.url(releases)).failAs(NotAUrl(Json.Text(releases)))
+      ownerUrl         <- json.get[URL]("owner", "url")
     } yield Repository(
       name,
       description,
@@ -181,8 +185,8 @@ object Repository {
       startYear.getYear,
       defaultBranch,
       contributors,
-      sbt.url(s"$collaborators".replace("{/collaborator}", "")),
-      sbt.url(s"$releases".replace("{/id}", "")),
+      collaboratorsUrl,
+      releasesUrl,
       organizationUrl,
       ownerUrl
     )
