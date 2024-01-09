@@ -18,6 +18,7 @@ package com.alejandrohdezma.sbt.github.mdoc
 
 import sbt.Keys._
 import sbt._
+import sbt.librarymanagement.CrossVersion
 
 import com.alejandrohdezma.sbt.github.SbtGithubPlugin
 import com.alejandrohdezma.sbt.github.SbtGithubPlugin.autoImport._
@@ -113,7 +114,11 @@ object SbtGithubMdocPlugin extends AutoPlugin {
     )
 
   private val supportedScalaVersionsForMDoc: Def.Initialize[String] = Def.setting {
-    crossScalaVersions.value.map(version => s"`$version`") match {
+    val versions = crossScalaVersions.value
+      .map(CrossVersion.binaryScalaVersion(_))
+      .map(version => s"`$version`")
+
+    versions match {
       case list :+ last => s"${list.mkString(", ")} and $last"
       case head :: Nil  => head
       case Nil          => ""
