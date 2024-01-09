@@ -39,4 +39,4 @@ https://github.com/user1
 
 The First User <https://github.com/user1>
 
-`2.12.18`, `2.13.12` and `3.3.0`
+`2.12`, `2.13` and `3`
