@@ -87,31 +87,40 @@ object SbtGithubMdocPlugin extends AutoPlugin {
       displayName                  := SbtGithubPlugin.info.value._2,
       removeVersionTimestampInMdoc := true,
       mdocVariables ++= Map(
-        "ORGANIZATION"        -> organization.value,
-        "NAME"                -> displayName.value,
-        "REPO"                -> repository.value.map(_.name).getOrElse(""),
-        "DEFAULT_BRANCH"      -> repository.value.map(_.defaultBranch).getOrElse(""),
-        "LICENSE"             -> licenses.value.headOption.map(_._1).getOrElse(""),
-        "ORG_NAME"            -> organizationName.value,
-        "DESCRIPTION"         -> description.value,
-        "ORG_EMAIL"           -> organizationEmail.value.getOrElse(""),
-        "ORG_URL"             -> organizationHomepage.value.map(url => s"$url").getOrElse(""),
-        "START_YEAR"          -> startYear.value.fold("")(year => s"$year"),
-        "YEAR_RANGE"          -> yearRange.value.getOrElse(""),
-        "VERSION"             -> versionForMdoc.value,
-        "CONTRIBUTORS"        -> contributors.value.markdownList,
-        "CONTRIBUTORS_LIST"   -> contributors.value.markdownList,
-        "CONTRIBUTORS_TABLE"  -> contributors.value.markdownTable,
-        "COLLABORATORS"       -> collaborators.value.markdownList,
-        "COLLABORATORS_LIST"  -> collaborators.value.markdownList,
-        "COLLABORATORS_TABLE" -> collaborators.value.markdownTable,
+        "ORGANIZATION"             -> organization.value,
+        "NAME"                     -> displayName.value,
+        "REPO"                     -> repository.value.map(_.name).getOrElse(""),
+        "DEFAULT_BRANCH"           -> repository.value.map(_.defaultBranch).getOrElse(""),
+        "SUPPORTED_SCALA_VERSIONS" -> supportedScalaVersionsForMDoc.value,
+        "LICENSE"                  -> licenses.value.headOption.map(_._1).getOrElse(""),
+        "ORG_NAME"                 -> organizationName.value,
+        "DESCRIPTION"              -> description.value,
+        "ORG_EMAIL"                -> organizationEmail.value.getOrElse(""),
+        "ORG_URL"                  -> organizationHomepage.value.map(url => s"$url").getOrElse(""),
+        "START_YEAR"               -> startYear.value.fold("")(year => s"$year"),
+        "YEAR_RANGE"               -> yearRange.value.getOrElse(""),
+        "VERSION"                  -> versionForMdoc.value,
+        "CONTRIBUTORS"             -> contributors.value.markdownList,
+        "CONTRIBUTORS_LIST"        -> contributors.value.markdownList,
+        "CONTRIBUTORS_TABLE"       -> contributors.value.markdownTable,
+        "COLLABORATORS"            -> collaborators.value.markdownList,
+        "COLLABORATORS_LIST"       -> collaborators.value.markdownList,
+        "COLLABORATORS_TABLE"      -> collaborators.value.markdownTable,
         "COPYRIGHT_OWNER" -> organizationHomepage.value
           .map(url => s"${organizationName.value} <$url>")
           .getOrElse(organizationName.value)
       )
     )
 
-  private val versionForMdoc = Def.setting {
+  private val supportedScalaVersionsForMDoc: Def.Initialize[String] = Def.setting {
+    crossScalaVersions.value.map(version => s"`$version`") match {
+      case list :+ last => s"${list.mkString(", ")} and $last"
+      case head :: Nil  => head
+      case Nil          => ""
+    }
+  }
+
+  private val versionForMdoc: Def.Initialize[String] = Def.setting {
     if (removeVersionTimestampInMdoc.value) version.value.replaceAll("\\+.*", "")
     else version.value
   }
