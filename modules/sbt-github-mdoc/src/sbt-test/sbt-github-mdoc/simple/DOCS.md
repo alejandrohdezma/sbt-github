@@ -38,3 +38,5 @@ https://github.com/user1
 | <a href="https://github.com/user1"><sub><b>user1</b></sub></a> | <a href="https://github.com/user2"><sub><b>user2</b></sub></a> |
 
 The First User <https://github.com/user1>
+
+`2.12.18`, `2.13.12` and `3.3.0`
