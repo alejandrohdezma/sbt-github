@@ -30,7 +30,7 @@ class RepositoryReleasesSuite extends munit.FunSuite {
 
   test("repository.releases should return ordered list from Github API") {
     withServer { case GET -> Root / "releases" =>
-      Ok(s"""[
+      Ok("""[
           {
             "tag_name": "v3.0.0",
             "name": "v3.0.0"
