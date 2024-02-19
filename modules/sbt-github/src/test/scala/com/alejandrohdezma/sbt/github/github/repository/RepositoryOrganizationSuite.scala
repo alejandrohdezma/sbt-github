@@ -28,7 +28,7 @@ class RepositoryOrganizationSuite extends munit.FunSuite {
 
   test("repository.organization should return repository's organization from Github API") {
     withServer { case GET -> Root / "organization" =>
-      Ok(s"""{
+      Ok("""{
           "name": "My Organization",
           "blog": "http://example.com",
           "email": "org@example.com"
@@ -51,7 +51,7 @@ class RepositoryOrganizationSuite extends munit.FunSuite {
 
   test("repository.organization should not return url if not present") {
     withServer { case GET -> Root / "organization" =>
-      Ok(s"""{ "name": "My Organization", "email": "org@example.com" }""")
+      Ok("""{ "name": "My Organization", "email": "org@example.com" }""")
     } { uri =>
       val repository = EmptyRepository.copy(organizationUrl = Some(url"${uri}organization"))
 
@@ -65,7 +65,7 @@ class RepositoryOrganizationSuite extends munit.FunSuite {
 
   test("repository.organization should not return name if not present") {
     withServer { case GET -> Root / "organization" =>
-      Ok(s"""{ "blog": "http://example.com", "email": "org@example.com" }""")
+      Ok("""{ "blog": "http://example.com", "email": "org@example.com" }""")
     } { uri =>
       val repository = EmptyRepository.copy(organizationUrl = Some(url"${uri}organization"))
 
@@ -79,7 +79,7 @@ class RepositoryOrganizationSuite extends munit.FunSuite {
 
   test("repository.organization should not return email if not present") {
     withServer { case GET -> Root / "organization" =>
-      Ok(s"""{ "blog": "http://example.com", "name": "My Organization" }""")
+      Ok("""{ "blog": "http://example.com", "name": "My Organization" }""")
     } { uri =>
       val repository = EmptyRepository.copy(organizationUrl = Some(url"${uri}organization"))
 
