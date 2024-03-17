@@ -46,7 +46,7 @@ jobs:
       - name: Run `sbt ci-publish`
         run: sbt ci-publish
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.ADMIN_GITHUB_TOKEN }}
           PGP_PASSPHRASE: ${{ secrets.PGP_PASSPHRASE }}
           PGP_SECRET: ${{ secrets.PGP_SECRET }}
           SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
@@ -54,7 +54,7 @@ jobs:
 
   documentation:
     needs: [release]
-    name: Updates documentation after latest release
+    name: Updates documentation and version policy after latest release
     if: github.event_name == 'push'
     runs-on: ubuntu-latest
     steps:
@@ -74,7 +74,7 @@ jobs:
       - name: Run `sbt ci-docs`
         run: sbt ci-docs
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.ADMIN_GITHUB_TOKEN }}
           GIT_DEPLOY_KEY: ${{ secrets.GIT_DEPLOY_KEY }}
 
       - name: Commit changes by `sbt ci-docs`
@@ -82,3 +82,14 @@ jobs:
         with:
           message: Run `sbt ci-docs` [skip ci]
           branch: main
+
+      - name: Reset `versionPolicyIntention`
+        run: sed -i -r 's/Compatibility\.(None|BinaryCompatible)/Compatibility.BinaryAndSourceCompatible/g' build.sbt
+
+      - name: Commit `versionPolicyIntention` reset
+        uses: alejandrohdezma/actions/commit-and-push@v1
+        with:
+          message: Reset `versionPolicyIntention` [skip ci]
+          branch: main
+      
+  
