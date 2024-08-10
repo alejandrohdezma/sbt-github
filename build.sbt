@@ -2,7 +2,7 @@ ThisBuild / scalaVersion                  := _root_.scalafix.sbt.BuildInfo.scala
 ThisBuild / organization                  := "com.alejandrohdezma"
 ThisBuild / pluginCrossBuild / sbtVersion := "1.2.8"
 ThisBuild / Test / parallelExecution      := false
-ThisBuild / versionPolicyIntention        := Compatibility.BinaryCompatible
+ThisBuild / versionPolicyIntention        := Compatibility.BinaryAndSourceCompatible
 
 addCommandAlias("ci-test", "fix --check; versionPolicyCheck; mdoc; test; publishLocal; scripted")
 addCommandAlias("ci-docs", "github; mdoc; headerCreateAll; docusaurusPublishGhpages")
