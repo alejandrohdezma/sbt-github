@@ -186,7 +186,6 @@ object SbtGithubPlugin extends AutoPlugin {
   private def onGithub[A](default: A)(f: Def.Initialize[A]) =
     Def.settingDyn(if (githubEnabled.value) f else Def.setting(default))
 
-  @SuppressWarnings(Array("scalafix:Disable.Option.get"))
   private def onRepo[A](default: A)(f: Def.Initialize[Repository => A]) =
     Def.settingDyn {
       if (githubEnabled.value) Def.setting(f.value(repository.value.get)) else Def.setting(default)

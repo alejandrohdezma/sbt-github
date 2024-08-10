@@ -28,7 +28,7 @@ final case class Collaborators(list: List[Collaborator]) {
         .groupBy(_.login)
         .values
         .toList
-        .map(_.head) /* scalafix:ok */
+        .map(_.head)
         .sortBy(collaborator => collaborator.name -> collaborator.login)
     }
 
