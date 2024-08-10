@@ -1,3 +1,5 @@
+import {themes as prismThemes} from 'prism-react-renderer';
+
 /** @type {import('@docusaurus/types').Config} */
 const config = {
   title: 'sbt-github',
@@ -70,8 +72,8 @@ const config = {
         ],
       },
       prism: {
-        theme: require('prism-react-renderer/themes/github'),
-        darkTheme: require('prism-react-renderer/themes/dracula'),
+        theme: prismThemes.github,
+        darkTheme: prismThemes.dracula,
         additionalLanguages: ['java', 'scala'],
       },
     }),
