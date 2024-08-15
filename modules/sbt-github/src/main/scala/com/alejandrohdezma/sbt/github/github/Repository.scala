@@ -178,17 +178,8 @@ object Repository {
       releasesUrl      <- Try(sbt.url(releases)).failAs(NotAUrl(Json.Text(releases)))
       ownerUrl         <- json.get[URL]("owner", "url")
     } yield Repository(
-      name,
-      description,
-      license,
-      url,
-      startYear.getYear,
-      defaultBranch,
-      contributors,
-      collaboratorsUrl,
-      releasesUrl,
-      organizationUrl,
-      ownerUrl
+      name, description, license, url, startYear.getYear, defaultBranch, contributors, collaboratorsUrl, releasesUrl,
+      organizationUrl, ownerUrl
     )
 
 }

@@ -32,11 +32,7 @@ object url {
         .getOrElse(s"$key=$value")
 
       new URI(
-        uri.getScheme,
-        uri.getAuthority,
-        uri.getPath,
-        query,
-        uri.getFragment
+        uri.getScheme, uri.getAuthority, uri.getPath, query, uri.getFragment
       ).toURL
     }
 
