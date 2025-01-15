@@ -1,6 +1,6 @@
 addSbtPlugin("ch.epfl.scala"       % "sbt-scalafix"          % "0.14.0")
 addSbtPlugin("ch.epfl.scala"       % "sbt-version-policy"    % "3.2.1")
-addSbtPlugin("com.alejandrohdezma" % "sbt-ci"                % "2.16.0")
+addSbtPlugin("com.alejandrohdezma" % "sbt-ci"                % "2.17.0")
 addSbtPlugin("com.alejandrohdezma" % "sbt-fix"               % "0.7.2")
 addSbtPlugin("com.alejandrohdezma" % "sbt-modules"           % "0.3.2")
 addSbtPlugin("com.alejandrohdezma" % "sbt-scalafix-defaults" % "0.13.1")
