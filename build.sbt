@@ -26,7 +26,7 @@ lazy val `sbt-github` = module
   .settings(scriptedLaunchOpts += s"-Dplugin.version=${version.value}")
   .settings(libraryDependencies += "org.typelevel" %% "jawn-parser" % "1.6.0")
   .settings(libraryDependencies += "org.scalameta" %% "munit" % "1.1.1" % Test)
-  .settings(libraryDependencies += "org.http4s" %% "http4s-dsl" % "0.23.30" % Test)
+  .settings(libraryDependencies += "org.http4s" %% "http4s-dsl" % "0.23.33" % Test)
   .settings(libraryDependencies += "org.http4s" %% "http4s-blaze-server" % "0.23.17" % Test)
 
 lazy val `sbt-github-mdoc` = module
