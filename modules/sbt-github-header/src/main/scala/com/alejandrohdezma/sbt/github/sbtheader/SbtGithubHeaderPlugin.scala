@@ -22,9 +22,9 @@ import sbt._
 
 import com.alejandrohdezma.sbt.github.SbtGithubPlugin
 import com.alejandrohdezma.sbt.github.SbtGithubPlugin.autoImport._
-import de.heikoseeberger.sbtheader.HeaderPlugin
-import de.heikoseeberger.sbtheader.HeaderPlugin.autoImport._
-import de.heikoseeberger.sbtheader.LicenseDetection
+import sbtheader.HeaderPlugin
+import sbtheader.HeaderPlugin.autoImport._
+import sbtheader.LicenseDetection
 
 /** Populates the `headerLicense` setting from [[https://github.com/sbt/sbt-header sbt-header]] with values extracted
   * from Github by `SbtGithubPlugin`:

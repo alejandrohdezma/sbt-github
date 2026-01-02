@@ -10,7 +10,7 @@ addCommandAlias("ci-publish", "versionCheck; github; ci-release")
 
 val `sbt-mdoc` = "org.scalameta" % "sbt-mdoc" % "[2.0,)" % Provided // scala-steward:off
 
-val `sbt-header` = "de.heikoseeberger" % "sbt-header" % "[5.6.0,)" % Provided // scala-steward:off
+val `sbt-header` = "com.github.sbt" % "sbt-header" % "[5.11.0,)" % Provided // scala-steward:off
 
 lazy val documentation = project.enablePlugins(MdocPlugin)
 
