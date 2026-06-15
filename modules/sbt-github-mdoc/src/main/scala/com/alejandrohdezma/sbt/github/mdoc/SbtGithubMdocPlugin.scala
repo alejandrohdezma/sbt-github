@@ -87,7 +87,7 @@ object SbtGithubMdocPlugin extends AutoPlugin {
     Seq(
       displayName                  := SbtGithubPlugin.info.value._2,
       removeVersionTimestampInMdoc := true,
-      mdocVariables ++= Map(
+      mdocVariables               ++= Map(
         "ORGANIZATION"             -> organization.value,
         "NAME"                     -> displayName.value,
         "REPO"                     -> repository.value.map(_.name).getOrElse(""),
@@ -107,7 +107,7 @@ object SbtGithubMdocPlugin extends AutoPlugin {
         "COLLABORATORS"            -> collaborators.value.markdownList,
         "COLLABORATORS_LIST"       -> collaborators.value.markdownList,
         "COLLABORATORS_TABLE"      -> collaborators.value.markdownTable,
-        "COPYRIGHT_OWNER" -> organizationHomepage.value
+        "COPYRIGHT_OWNER"          -> organizationHomepage.value
           .map(url => s"${organizationName.value} <$url>")
           .getOrElse(organizationName.value)
       )

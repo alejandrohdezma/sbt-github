@@ -32,7 +32,7 @@ class OrganizationSuite extends munit.FunSuite {
 
   test("Organization.get should return Organization if everything is present") {
     withServer {
-      case r @ GET -> Root => Ok(s"""{ "organization_url": "${r.urlTo("{org}")}" } """)
+      case r @ GET -> Root     => Ok(s"""{ "organization_url": "${r.urlTo("{org}")}" } """)
       case GET -> Root / "org" =>
         Ok("""{
           "name": "My Organization",

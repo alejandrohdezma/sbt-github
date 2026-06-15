@@ -58,7 +58,7 @@ object SbtGithubPlugin extends AutoPlugin {
       excludedContributors          := List("scala-steward", """.*\[bot\]""", "traviscibot", "actions-user"),
       extraCollaborators            := List(),
       githubAuthToken               := sys.env.get("GITHUB_TOKEN").map(AuthToken),
-      repository := onGithub(default = Option.empty[Repository])(Def.setting {
+      repository                    := onGithub(default = Option.empty[Repository])(Def.setting {
         implicit val (auth, logger, url) = configuration.value
         Option(Repository.get(info.value._1, info.value._2).getOrThrow)
       }).value,
@@ -99,7 +99,7 @@ object SbtGithubPlugin extends AutoPlugin {
       homepage   := repository.value.map(_.url).orElse(homepage.value),
       licenses   := repository.value.map(_.licenses).getOrElse(licenses.value),
       startYear  := repository.value.map(_.startYear).orElse(startYear.value),
-      yearRange := startYear.value.collect {
+      yearRange  := startYear.value.collect {
         case start if start == Year.now.getValue => s"$start"
         case start                               => s"$start-${Year.now.getValue}"
       },
@@ -111,7 +111,7 @@ object SbtGithubPlugin extends AutoPlugin {
 
   override def projectSettings: Seq[Def.Setting[_]] =
     Seq(
-      description := repository.value.map(_.description).getOrElse(description.value),
+      description      := repository.value.map(_.description).getOrElse(description.value),
       organizationName := organizationMetadata.value
         .flatMap(_.name)
         .getOrElse(organizationName.value),
@@ -181,7 +181,7 @@ object SbtGithubPlugin extends AutoPlugin {
     "github"    -> ";set ThisBuild / githubEnabled := true",
     "githubOn"  -> ";set ThisBuild / githubEnabled := true",
     "githubOff" -> ";set ThisBuild / githubEnabled := false"
-  ).flatMap(addCommandAlias _ tupled)
+  ).flatMap((addCommandAlias _).tupled)
 
   private def onGithub[A](default: A)(f: Def.Initialize[A]) =
     Def.settingDyn(if (githubEnabled.value) f else Def.setting(default))

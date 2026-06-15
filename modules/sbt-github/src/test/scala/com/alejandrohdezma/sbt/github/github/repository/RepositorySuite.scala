@@ -29,7 +29,7 @@ class RepositorySuite extends munit.FunSuite {
 
   test("Repository.get should return Repository if everything is present") {
     withServer {
-      case r @ GET -> Root => Ok(s"""{ "repository_url": "${r.urlTo("{owner}/{repo}")}" } """)
+      case r @ GET -> Root               => Ok(s"""{ "repository_url": "${r.urlTo("{owner}/{repo}")}" } """)
       case GET -> Root / "user" / "repo" =>
         Ok("""{
             "full_name": "user/repo",
@@ -76,7 +76,7 @@ class RepositorySuite extends munit.FunSuite {
 
   test("Repository.get should return None organization if it is not present") {
     withServer {
-      case r @ GET -> Root => Ok(s"""{ "repository_url": "${r.urlTo("{owner}/{repo}")}" } """)
+      case r @ GET -> Root               => Ok(s"""{ "repository_url": "${r.urlTo("{owner}/{repo}")}" } """)
       case GET -> Root / "user" / "repo" =>
         Ok("""{
             "full_name": "user/repo",
@@ -120,7 +120,7 @@ class RepositorySuite extends munit.FunSuite {
 
   test("Repository.get should return error if description is not present") {
     withServer {
-      case r @ GET -> Root => Ok(s"""{ "repository_url": "${r.urlTo("{owner}/{repo}")}" } """)
+      case r @ GET -> Root               => Ok(s"""{ "repository_url": "${r.urlTo("{owner}/{repo}")}" } """)
       case GET -> Root / "user" / "repo" =>
         Ok("""{
             "full_name": "user/repo",
@@ -155,7 +155,7 @@ class RepositorySuite extends munit.FunSuite {
 
   test("Repository.get should return error if license is not present") {
     withServer {
-      case r @ GET -> Root => Ok(s"""{ "repository_url": "${r.urlTo("{owner}/{repo}")}" } """)
+      case r @ GET -> Root               => Ok(s"""{ "repository_url": "${r.urlTo("{owner}/{repo}")}" } """)
       case GET -> Root / "user" / "repo" =>
         Ok("""{
             "full_name": "user/repo",
@@ -187,7 +187,7 @@ class RepositorySuite extends munit.FunSuite {
 
   test("Repository.get should return error if license's `spdx_id` is not present") {
     withServer {
-      case r @ GET -> Root => Ok(s"""{ "repository_url": "${r.urlTo("{owner}/{repo}")}" } """)
+      case r @ GET -> Root               => Ok(s"""{ "repository_url": "${r.urlTo("{owner}/{repo}")}" } """)
       case GET -> Root / "user" / "repo" =>
         Ok("""{
             "full_name": "user/repo",
@@ -222,7 +222,7 @@ class RepositorySuite extends munit.FunSuite {
 
   test("Repository.get should return error if license's `url` is not present") {
     withServer {
-      case r @ GET -> Root => Ok(s"""{ "repository_url": "${r.urlTo("{owner}/{repo}")}" } """)
+      case r @ GET -> Root               => Ok(s"""{ "repository_url": "${r.urlTo("{owner}/{repo}")}" } """)
       case GET -> Root / "user" / "repo" =>
         Ok("""{
             "full_name": "user/repo",
@@ -257,7 +257,7 @@ class RepositorySuite extends munit.FunSuite {
 
   test("Repository.get should return generic error in other cases") {
     withServer {
-      case r @ GET -> Root => Ok(s"""{ "repository_url": "${r.urlTo("{owner}/{repo}")}" } """)
+      case r @ GET -> Root               => Ok(s"""{ "repository_url": "${r.urlTo("{owner}/{repo}")}" } """)
       case GET -> Root / "user" / "repo" =>
         Ok("""{
             "full_name": "user/repo",
