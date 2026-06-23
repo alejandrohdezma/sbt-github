@@ -16,11 +16,11 @@
 
 package com.alejandrohdezma.sbt
 
+import java.net.URI
+
 import cats.effect.IO
 import cats.effect.unsafe.implicits.global
 
-import sbt.URL
-import sbt.url
 import sbt.util.Logger
 
 import com.alejandrohdezma.sbt.github.github.Collaborator
@@ -41,7 +41,7 @@ package object github {
 
   implicit class URLInterpolator(private val sc: StringContext) extends AnyVal {
 
-    def url(args: Any*): URL = sbt.url(sc.raw(args: _*))
+    def url(args: Any*): URI = new URI(sc.raw(args: _*))
 
   }
 
@@ -55,13 +55,13 @@ package object github {
 
   }
 
-  def withServer[A](pf: PartialFunction[Request[IO], IO[Response[IO]]])(f: URL => A): A = {
+  def withServer[A](pf: PartialFunction[Request[IO], IO[Response[IO]]])(f: URI => A): A = {
     BlazeServerBuilder[IO]
       .bindAny()
       .withHttpApp(HttpRoutes.of[IO](pf).orNotFound)
       .resource
       .map(_.baseUri.renderString)
-      .map(url)
+      .map(new URI(_))
       .map(f)
       .use(IO.pure)
       .unsafeRunSync()

@@ -16,9 +16,10 @@
 
 package com.alejandrohdezma.sbt.github.github.urls
 
+import java.net.URI
+
 import scala.util.Try
 
-import sbt.URL
 import sbt.util.Logger
 
 import com.alejandrohdezma.sbt.github.github.error.GithubError
@@ -33,11 +34,11 @@ object OrganizationEntryPoint {
       auth: Authentication,
       logger: Logger,
       entryPoint: GithubEntryPoint
-  ): Try[URL] =
+  ): Try[URI] =
     client
       .get[String](entryPoint.value)(_.get[String]("organization_url"), auth, logger)
       .failAs(GithubError("Unable to connect to Github"))
       .map(_.replace("{org}", organization))
-      .map(sbt.url)
+      .map(new URI(_))
 
 }

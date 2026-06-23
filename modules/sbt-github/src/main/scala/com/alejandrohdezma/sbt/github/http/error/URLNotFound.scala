@@ -16,10 +16,10 @@
 
 package com.alejandrohdezma.sbt.github.http.error
 
+import java.net.URI
+
 import scala.util.control.NoStackTrace
 
-import sbt.URL
-
-final case class URLNotFound(url: URL)
+final case class URLNotFound(url: URI)
     extends Throwable(s"$url was not found (maybe there's no connection to the internet)")
     with NoStackTrace

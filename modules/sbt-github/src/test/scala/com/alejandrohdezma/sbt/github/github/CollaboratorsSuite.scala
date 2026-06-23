@@ -18,8 +18,6 @@ package com.alejandrohdezma.sbt.github.github
 
 import scala.annotation.nowarn
 
-import sbt.Developer
-
 import com.alejandrohdezma.sbt.github._
 
 class CollaboratorsSuite extends munit.FunSuite {
@@ -132,14 +130,18 @@ class CollaboratorsSuite extends munit.FunSuite {
     )
 
     val expected = List(
-      Developer("her", "Her", "", url"http://example.com/her"),
-      Developer("him", "Him", "", url"http://example.com/him"),
-      Developer("it", "it", "it@example.com", url"http://example.com/it"),
-      Developer("me", "Me", "", url"http://example.com/me"),
-      Developer("you", "", "", url"http://example.com/you")
+      ("her", "Her", "", "http://example.com/her"),
+      ("him", "Him", "", "http://example.com/him"),
+      ("it", "it", "it@example.com", "http://example.com/it"),
+      ("me", "Me", "", "http://example.com/me"),
+      ("you", "", "", "http://example.com/you")
     )
 
-    assertEquals(collaborators.developers, expected)
+    // Compare via stringified URLs: java.net.URL.equals resolves DNS, which is slow/blocking
+    assertEquals(
+      collaborators.developers.map(developer => (developer.id, developer.name, developer.email, s"${developer.url}")),
+      expected
+    )
   }
 
 }

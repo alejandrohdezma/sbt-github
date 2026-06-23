@@ -16,13 +16,11 @@
 
 package com.alejandrohdezma.sbt.github.json
 
+import java.net.URI
 import java.time.ZonedDateTime
 import java.time.ZonedDateTime.parse
 
 import scala.util.Try
-
-import sbt.URL
-import sbt.url
 
 import com.alejandrohdezma.sbt.github.error._
 import com.alejandrohdezma.sbt.github.json.error._
@@ -80,9 +78,9 @@ object Decoder {
     case value                => NotADateTime(value).raise
   }
 
-  implicit val URLDecoder: Decoder[URL] = {
+  implicit val URIDecoder: Decoder[URI] = {
     case Json.Null            => NotFound.raise
-    case v @ Json.Text(value) => Try(url(value)).failAs(NotAUrl(v))
+    case v @ Json.Text(value) => Try(new URI(value)).filter(_.isAbsolute).failAs(NotAUrl(v))
     case value                => NotAUrl(value).raise
   }
 

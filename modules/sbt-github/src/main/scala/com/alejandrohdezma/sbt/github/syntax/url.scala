@@ -16,24 +16,19 @@
 
 package com.alejandrohdezma.sbt.github.syntax
 
-import sbt.URI
-import sbt.URL
+import java.net.URI
 
 object url {
 
-  implicit class UrlOps(private val url: URL) extends AnyVal {
+  implicit class UrlOps(private val uri: URI) extends AnyVal {
 
-    /** Adds a query param with the given `key`/`value` pair to this `URL` ad returns it. */
-    def withQueryParam(key: String, value: String): URL = {
-      val uri = url.toURI
-
+    /** Adds a query param with the given `key`/`value` pair to this `URI` ad returns it. */
+    def withQueryParam(key: String, value: String): URI = {
       val query = Option(uri.getQuery)
         .map(_ + s"&$key=$value")
         .getOrElse(s"$key=$value")
 
-      new URI(
-        uri.getScheme, uri.getAuthority, uri.getPath, query, uri.getFragment
-      ).toURL
+      new URI(uri.getScheme, uri.getAuthority, uri.getPath, query, uri.getFragment)
     }
 
   }

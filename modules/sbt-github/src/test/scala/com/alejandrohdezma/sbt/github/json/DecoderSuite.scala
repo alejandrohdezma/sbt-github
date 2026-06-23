@@ -16,13 +16,12 @@
 
 package com.alejandrohdezma.sbt.github.json
 
+import java.net.URI
 import java.time.ZoneOffset.UTC
 import java.time.ZonedDateTime
 
 import scala.util.Failure
 import scala.util.Success
-
-import sbt.URL
 
 import com.alejandrohdezma.sbt.github.error._
 import com.alejandrohdezma.sbt.github.json.error._
@@ -205,27 +204,27 @@ class DecoderSuite extends munit.FunSuite {
   test("Decoder[URL] should decode uris") {
     val json = Json.Text("https://example.com?page=2")
 
-    val expected = sbt.url("https://example.com?page=2")
+    val expected = new URI("https://example.com?page=2")
 
-    assertEquals(json.as[URL], Success(expected))
+    assertEquals(json.as[URI], Success(expected))
   }
 
   test("Decoder[URL] should return NotFound on null") {
     val json = Json.Null
 
-    assertEquals(json.as[URL], Failure(NotFound))
+    assertEquals(json.as[URI], Failure(NotFound))
   }
 
   test("Decoder[URL] should return NotAUrl for texts not containing uris") {
     val json = Json.Text("miau")
 
-    assertEquals(json.as[URL], Failure(NotAUrl(json)))
+    assertEquals(json.as[URI], Failure(NotAUrl(json)))
   }
 
   test("Decoder[URL] should return NotAUrl for everything else") {
     val json = Json.True
 
-    assertEquals(json.as[URL], Failure(NotAUrl(json)))
+    assertEquals(json.as[URI], Failure(NotAUrl(json)))
   }
 
 }

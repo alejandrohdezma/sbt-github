@@ -36,7 +36,7 @@ final case class Collaborators(list: List[Collaborator]) {
   lazy val developers: List[Developer] = list.map { collaborator =>
     import collaborator._
 
-    Developer(login, name.getOrElse(login), email.getOrElse(""), url)
+    Developer(login, name.getOrElse(login), email.getOrElse(""), url.toURL)
   }
 
   /** Returns this list of collaborators in markdown format */

@@ -51,7 +51,7 @@ object SbtGithubPlugin extends AutoPlugin {
 
   override def buildSettings: Seq[Setting[_]] =
     aliases ++ Seq(
-      githubApiEntryPoint           := url("https://api.github.com"),
+      githubApiEntryPoint           := new URI("https://api.github.com"),
       githubEnabled                 := false,
       populateOrganizationWithOwner := true,
       githubOrganization            := "",
@@ -96,9 +96,11 @@ object SbtGithubPlugin extends AutoPlugin {
         repo.releases.getOrThrow
       }).value,
       developers := collaborators.value.developers,
-      homepage   := repository.value.map(_.url).orElse(homepage.value),
-      licenses   := repository.value.map(_.licenses).getOrElse(licenses.value),
-      startYear  := repository.value.map(_.startYear).orElse(startYear.value),
+      homepage   := repository.value.map(_.url.toURL).orElse(homepage.value),
+      licenses := repository.value
+        .map(_.licenses.map { case (id, uri) => id -> uri.toURL })
+        .getOrElse(licenses.value),
+      startYear := repository.value.map(_.startYear).orElse(startYear.value),
       yearRange := startYear.value.collect {
         case start if start == Year.now.getValue => s"$start"
         case start                               => s"$start-${Year.now.getValue}"
@@ -115,7 +117,7 @@ object SbtGithubPlugin extends AutoPlugin {
       organizationName := organizationMetadata.value
         .flatMap(_.name)
         .getOrElse(organizationName.value),
-      organizationHomepage := organizationMetadata.value.fold(organizationHomepage.value)(_.url),
+      organizationHomepage := organizationMetadata.value.fold(organizationHomepage.value)(_.url.map(_.toURL)),
       organizationEmail    := organizationMetadata.value.flatMap(_.email)
     )
 

@@ -16,9 +16,10 @@
 
 package com.alejandrohdezma.sbt.github.github
 
+import java.net.URI
+
 import scala.util.Try
 
-import sbt.URL
 import sbt.util.Logger
 
 import com.alejandrohdezma.sbt.github.github.error.GithubError
@@ -31,7 +32,7 @@ import com.alejandrohdezma.sbt.github.syntax.json._
 import com.alejandrohdezma.sbt.github.syntax.scalatry._
 
 /** Represents a repository's organization */
-final case class Organization(name: Option[String], url: Option[URL], email: Option[String])
+final case class Organization(name: Option[String], url: Option[URI], email: Option[String])
 
 object Organization {
 
@@ -52,7 +53,7 @@ object Organization {
   implicit val OrganizationDecoder: Decoder[Organization] = json =>
     for {
       name  <- json.get[Option[String]]("name")
-      url   <- json.get[Option[URL]]("blog")
+      url   <- json.get[Option[URI]]("blog")
       email <- json.get[Option[String]]("email")
     } yield Organization(name, url, email)
 

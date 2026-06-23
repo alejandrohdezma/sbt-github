@@ -16,20 +16,20 @@
 
 package com.alejandrohdezma.sbt.github.github
 
-import sbt.URL
+import java.net.URI
 
 import com.alejandrohdezma.sbt.github.json.Decoder
 import com.alejandrohdezma.sbt.github.syntax.json._
 
 /** Represents a repository's license */
-final case class License(id: String, url: URL)
+final case class License(id: String, url: URI)
 
 object License {
 
   implicit val LicenseDecoder: Decoder[License] = json =>
     for {
       spdxId <- json.get[String]("spdx_id")
-      url    <- json.get[URL]("url")
+      url    <- json.get[URI]("url")
     } yield License(spdxId, url)
 
 }

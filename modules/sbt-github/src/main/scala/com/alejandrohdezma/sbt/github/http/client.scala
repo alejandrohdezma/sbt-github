@@ -17,12 +17,12 @@
 package com.alejandrohdezma.sbt.github.http
 
 import java.io.FileNotFoundException
+import java.net.URI
 import java.util.concurrent.ConcurrentHashMap
 
 import scala.io.Source
 import scala.util.Try
 
-import sbt.URL
 import sbt.util.Logger
 
 import com.alejandrohdezma.sbt.github.http.error.URLNotFound
@@ -37,19 +37,19 @@ object client {
     * it using the provided `Decoder`.
     */
   @SuppressWarnings(Array("all"))
-  def get[A: Decoder](url: URL)(implicit auth: Authentication, logger: Logger): Try[A] =
+  def get[A: Decoder](uri: URI)(implicit auth: Authentication, logger: Logger): Try[A] =
     Try {
-      logger.verbose(s"Getting content from URL: $url")
+      logger.verbose(s"Getting content from URL: $uri")
 
-      if (cache.containsKey(url))
-        logger.verbose(s"$url contents already stored on cache")
+      if (cache.containsKey(uri))
+        logger.verbose(s"$uri contents already stored on cache")
 
       cache.computeIfAbsent(
-        url,
+        uri,
         { _ =>
-          logger.verbose(s"Content for $url not found on cache, downloading...")
+          logger.verbose(s"Content for $uri not found on cache, downloading...")
 
-          val connection = url.openConnection
+          val connection = uri.toURL.openConnection
 
           connection.setRequestProperty("Authorization", auth.header)
 
@@ -59,9 +59,9 @@ object client {
         }
       )
     }.collectFail { case _: FileNotFoundException =>
-      URLNotFound(url)
+      URLNotFound(uri)
     }.flatMap(Json.parse).as[A]
 
-  private val cache: ConcurrentHashMap[URL, String] = new ConcurrentHashMap[URL, String]()
+  private val cache: ConcurrentHashMap[URI, String] = new ConcurrentHashMap[URI, String]()
 
 }
