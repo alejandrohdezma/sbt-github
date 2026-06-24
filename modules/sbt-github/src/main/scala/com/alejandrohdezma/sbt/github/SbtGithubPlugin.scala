@@ -16,9 +16,9 @@
 
 package com.alejandrohdezma.sbt.github
 
+import java.net.URI
 import java.time.Year
 
-import scala.language.postfixOps
 import scala.util.control.NonFatal
 
 import sbt.Def
@@ -31,6 +31,7 @@ import com.alejandrohdezma.sbt.github.github.Organization
 import com.alejandrohdezma.sbt.github.github.Release
 import com.alejandrohdezma.sbt.github.github.Repository
 import com.alejandrohdezma.sbt.github.github.urls.GithubEntryPoint
+import com.alejandrohdezma.sbt.github.http.Authentication
 import com.alejandrohdezma.sbt.github.syntax.list._
 import com.alejandrohdezma.sbt.github.syntax.scalatry._
 
@@ -49,21 +50,22 @@ object SbtGithubPlugin extends AutoPlugin {
 
   override def requires: Plugins = JvmPlugin
 
-  override def buildSettings: Seq[Setting[_]] =
+  override def buildSettings =
     aliases ++ Seq(
-      githubApiEntryPoint           := url("https://api.github.com"),
+      githubApiEntryPoint           := URI.create("https://api.github.com"),
       githubEnabled                 := false,
       populateOrganizationWithOwner := true,
       githubOrganization            := "",
       excludedContributors          := List("scala-steward", """.*\[bot\]""", "traviscibot", "actions-user"),
       extraCollaborators            := List(),
-      githubAuthToken               := sys.env.get("GITHUB_TOKEN").map(AuthToken),
+      githubAuthToken               := sys.env.get("GITHUB_TOKEN").map(AuthToken(_)),
       repository := onGithub(default = Option.empty[Repository])(Def.setting {
-        implicit val (auth, logger, url) = configuration.value
+        implicit val (auth: Authentication, log: Logger, entryPoint: GithubEntryPoint) = configuration.value
+
         Option(Repository.get(info.value._1, info.value._2).getOrThrow)
       }).value,
       organizationMetadata := onRepo(default = Option.empty[Organization])(Def.setting { repo =>
-        implicit val (auth, logger, url) = configuration.value
+        implicit val (auth: Authentication, log: Logger, entryPoint: GithubEntryPoint) = configuration.value
 
         if (githubOrganization.value.nonEmpty)
           Some(Organization.get(githubOrganization.value).getOrThrow)
@@ -75,11 +77,12 @@ object SbtGithubPlugin extends AutoPlugin {
           }.map(_.getOrThrow)
       }).value,
       contributors := onRepo(default = Contributors(Nil))(Def.setting { repo =>
-        implicit val (auth, log, _) = configuration.value
+        implicit val (auth: Authentication, log: Logger, _) = configuration.value
+
         repo.contributors(excludedContributors.value).getOrThrow
       }).value,
       collaborators := onRepo(default = Collaborators(Nil))(Def.setting { repo =>
-        implicit val (auth, log, entryPoint) = configuration.value
+        implicit val (auth: Authentication, log: Logger, entryPoint: GithubEntryPoint) = configuration.value
 
         val contributorIds = contributors.value.list.map(_.login)
 
@@ -91,14 +94,16 @@ object SbtGithubPlugin extends AutoPlugin {
         collaborators.getOrThrow
       }).value,
       releases := onRepo(default = List.empty[Release])(Def.setting { repo =>
-        implicit val (auth, log, _) = configuration.value
+        implicit val (auth: Authentication, log: Logger, _) = configuration.value
 
         repo.releases.getOrThrow
       }).value,
       developers := collaborators.value.developers,
-      homepage   := repository.value.map(_.url).orElse(homepage.value),
-      licenses   := repository.value.map(_.licenses).getOrElse(licenses.value),
-      startYear  := repository.value.map(_.startYear).orElse(startYear.value),
+      homepage   := repository.value.map(repo => PluginCompat.homepage(repo.url)).orElse(homepage.value),
+      licenses := repository.value
+        .map(_.licenses.map { case (id, uri) => PluginCompat.license(id, uri) })
+        .getOrElse(licenses.value),
+      startYear := repository.value.map(_.startYear).orElse(startYear.value),
       yearRange := startYear.value.collect {
         case start if start == Year.now.getValue => s"$start"
         case start                               => s"$start-${Year.now.getValue}"
@@ -109,14 +114,16 @@ object SbtGithubPlugin extends AutoPlugin {
       }
     )
 
-  override def projectSettings: Seq[Def.Setting[_]] =
+  override def projectSettings =
     Seq(
       description := repository.value.map(_.description).getOrElse(description.value),
       organizationName := organizationMetadata.value
         .flatMap(_.name)
         .getOrElse(organizationName.value),
-      organizationHomepage := organizationMetadata.value.fold(organizationHomepage.value)(_.url),
-      organizationEmail    := organizationMetadata.value.flatMap(_.email)
+      organizationHomepage := organizationMetadata.value.fold(organizationHomepage.value)(
+        _.url.map(PluginCompat.homepage)
+      ),
+      organizationEmail := organizationMetadata.value.flatMap(_.email)
     )
 
   private[github] val configuration = Def.setting {
@@ -158,8 +165,8 @@ object SbtGithubPlugin extends AutoPlugin {
     val GitHubSsh   = s"git@github.com:$identifier/$identifier(?:\\.git)?".r
 
     val gitHubScmInfo = (user: String, repo: String) =>
-      ScmInfo(
-        url(s"https://github.com/$user/$repo"),
+      PluginCompat.scmInfo(
+        URI.create(s"https://github.com/$user/$repo"),
         s"scm:git:https://github.com/$user/$repo.git",
         Some(s"scm:git:git@github.com:$user/$repo.git")
       )
@@ -181,7 +188,7 @@ object SbtGithubPlugin extends AutoPlugin {
     "github"    -> ";set ThisBuild / githubEnabled := true",
     "githubOn"  -> ";set ThisBuild / githubEnabled := true",
     "githubOff" -> ";set ThisBuild / githubEnabled := false"
-  ).flatMap(addCommandAlias _ tupled)
+  ).flatMap { case (name, command) => addCommandAlias(name, command) }
 
   private def onGithub[A](default: A)(f: Def.Initialize[A]) =
     Def.settingDyn(if (githubEnabled.value) f else Def.setting(default))

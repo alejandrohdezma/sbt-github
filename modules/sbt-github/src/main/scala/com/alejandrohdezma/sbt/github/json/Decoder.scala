@@ -16,13 +16,11 @@
 
 package com.alejandrohdezma.sbt.github.json
 
+import java.net.URI
 import java.time.ZonedDateTime
 import java.time.ZonedDateTime.parse
 
 import scala.util.Try
-
-import sbt.URL
-import sbt.url
 
 import com.alejandrohdezma.sbt.github.error._
 import com.alejandrohdezma.sbt.github.json.error._
@@ -53,23 +51,23 @@ object Decoder {
     case json      => f.andThen(Try(_)).applyOrElse(json, error.andThen(_.raise[A]))
   }
 
-  implicit val StringDecoder: Decoder[String] = nonNull(NotAString) { case Json.Text(value) =>
+  implicit val StringDecoder: Decoder[String] = nonNull(NotAString.apply) { case Json.Text(value) =>
     value
   }
 
-  implicit val LongDecoder: Decoder[Long] = nonNull(NotANumber) { case Json.Number(value) =>
+  implicit val LongDecoder: Decoder[Long] = nonNull(NotANumber.apply) { case Json.Number(value) =>
     value.toLong
   }
 
-  implicit val IntDecoder: Decoder[Int] = nonNull(NotANumber) { case Json.Number(value) =>
+  implicit val IntDecoder: Decoder[Int] = nonNull(NotANumber.apply) { case Json.Number(value) =>
     value.toInt
   }
 
-  implicit val DoubleDecoder: Decoder[Double] = nonNull(NotANumber) { case Json.Number(value) =>
+  implicit val DoubleDecoder: Decoder[Double] = nonNull(NotANumber.apply) { case Json.Number(value) =>
     value
   }
 
-  implicit val BooleanDecoder: Decoder[Boolean] = nonNull(NotABoolean) {
+  implicit val BooleanDecoder: Decoder[Boolean] = nonNull(NotABoolean.apply) {
     case Json.True  => true
     case Json.False => false
   }
@@ -80,9 +78,9 @@ object Decoder {
     case value                => NotADateTime(value).raise
   }
 
-  implicit val URLDecoder: Decoder[URL] = {
+  implicit val URIDecoder: Decoder[URI] = {
     case Json.Null            => NotFound.raise
-    case v @ Json.Text(value) => Try(url(value)).failAs(NotAUrl(v))
+    case v @ Json.Text(value) => Try(new URI(value)).filter(_.isAbsolute).failAs(NotAUrl(v))
     case value                => NotAUrl(value).raise
   }
 
@@ -104,5 +102,7 @@ object Decoder {
     case Json.Null             => NotFound.raise
     case value                 => NotAList(value).raise
   }
+
+  implicit val JsonValueDecoder: Decoder[Json.Value] = (json: Json.Value) => Try(json)
 
 }

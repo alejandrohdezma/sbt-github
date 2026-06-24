@@ -63,7 +63,7 @@ class JsonSuite extends munit.FunSuite {
   test("Json.parse should decode Json.Collection") {
     val json = "[1, 2, 3, 4]"
 
-    val expected: Json.Value = Json.Collection(List(1d, 2d, 3d, 4d).map(Json.Number))
+    val expected: Json.Value = Json.Collection(List(1d, 2d, 3d, 4d).map(Json.Number.apply))
 
     assertEquals(Json.parse(json), Success(expected))
   }
@@ -85,7 +85,7 @@ class JsonSuite extends munit.FunSuite {
         "true"   -> Json.True,
         "false"  -> Json.False,
         "null"   -> Json.Null,
-        "array"  -> Json.Collection(List(1d, 2d, 3d, 4d).map(Json.Number))
+        "array"  -> Json.Collection(List(1d, 2d, 3d, 4d).map(Json.Number.apply))
       )
     )
 

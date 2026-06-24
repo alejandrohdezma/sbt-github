@@ -18,6 +18,8 @@ package com.alejandrohdezma.sbt.github.github
 
 import sbt.librarymanagement.Developer
 
+import com.alejandrohdezma.sbt.github.PluginCompat
+
 /** Represents a repository's list of collaborators */
 final case class Collaborators(list: List[Collaborator]) {
 
@@ -36,7 +38,7 @@ final case class Collaborators(list: List[Collaborator]) {
   lazy val developers: List[Developer] = list.map { collaborator =>
     import collaborator._
 
-    Developer(login, name.getOrElse(login), email.getOrElse(""), url)
+    PluginCompat.developer(login, name.getOrElse(login), email.getOrElse(""), url)
   }
 
   /** Returns this list of collaborators in markdown format */

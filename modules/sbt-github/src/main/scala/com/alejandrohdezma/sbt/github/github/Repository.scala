@@ -16,11 +16,11 @@
 
 package com.alejandrohdezma.sbt.github.github
 
+import java.net.URI
 import java.time.ZonedDateTime
 
 import scala.util.Try
 
-import sbt.URL
 import sbt.util.Logger
 
 import com.alejandrohdezma.sbt.github.error.NotFound
@@ -42,18 +42,18 @@ final case class Repository(
     name: String,
     description: String,
     license: License,
-    url: URL,
+    url: URI,
     startYear: Int,
     defaultBranch: String,
-    contributorsUrl: URL,
-    collaboratorsUrl: URL,
-    releasesUrl: URL,
-    organizationUrl: Option[URL],
-    ownerUrl: URL
+    contributorsUrl: URI,
+    collaboratorsUrl: URI,
+    releasesUrl: URI,
+    organizationUrl: Option[URI],
+    ownerUrl: URI
 ) {
 
   /** Returns the license extracted from github in the format that SBT is expecting */
-  def licenses: List[(String, URL)] = List(license.id -> license.url)
+  def licenses: List[(String, URI)] = List(license.id -> license.url)
 
   /** Returns the list of users who have contributed to a repository order by the number of contributions.
     *
@@ -68,7 +68,7 @@ final case class Repository(
       .get[List[Contributor]](contributorsUrl.withQueryParam("per_page", "100"))
       .map(_.sortBy(-_.contributions))
       .map(_.filterNot(contributor => excluded.exists(contributor.login.matches)))
-      .map(Contributors)
+      .map(Contributors.apply)
       .failAs(GithubError("Unable to get repository contributors"))
   }
 
@@ -167,16 +167,16 @@ object Repository {
       name             <- json.get[String]("full_name")
       description      <- json.get[String]("description")
       license          <- json.get[License]("license")
-      url              <- json.get[URL]("html_url")
+      url              <- json.get[URI]("html_url")
       startYear        <- json.get[ZonedDateTime]("created_at")
       defaultBranch    <- json.get[String]("default_branch")
-      contributors     <- json.get[URL]("contributors_url")
+      contributors     <- json.get[URI]("contributors_url")
       collaborators    <- json.get[String]("collaborators_url").map(_.replace("{/collaborator}", ""))
-      collaboratorsUrl <- Try(sbt.url(collaborators)).failAs(NotAUrl(Json.Text(collaborators)))
-      organizationUrl  <- json.get[Option[URL]]("organization", "url")
+      collaboratorsUrl <- Try(new URI(collaborators)).failAs(NotAUrl(Json.Text(collaborators)))
+      organizationUrl  <- json.get[Option[URI]]("organization", "url")
       releases         <- json.get[String]("releases_url").map(_.replace("{/id}", ""))
-      releasesUrl      <- Try(sbt.url(releases)).failAs(NotAUrl(Json.Text(releases)))
-      ownerUrl         <- json.get[URL]("owner", "url")
+      releasesUrl      <- Try(new URI(releases)).failAs(NotAUrl(Json.Text(releases)))
+      ownerUrl         <- json.get[URI]("owner", "url")
     } yield Repository(
       name, description, license, url, startYear.getYear, defaultBranch, contributors, collaboratorsUrl, releasesUrl,
       organizationUrl, ownerUrl

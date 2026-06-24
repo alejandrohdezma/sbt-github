@@ -16,7 +16,6 @@
 
 package com.alejandrohdezma.sbt.github.sbtheader
 
-import sbt.Def
 import sbt.Keys._
 import sbt._
 
@@ -54,7 +53,7 @@ object SbtGithubHeaderPlugin extends AutoPlugin {
 
   override def requires: Plugins = HeaderPlugin && SbtGithubPlugin
 
-  override def projectSettings: Seq[Def.Setting[_]] =
+  override def projectSettings =
     Seq(
       headerLicense := LicenseDetection(
         licenses.value.toList,

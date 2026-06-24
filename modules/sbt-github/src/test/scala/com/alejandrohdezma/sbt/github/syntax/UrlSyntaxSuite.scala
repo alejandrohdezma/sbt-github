@@ -16,26 +16,28 @@
 
 package com.alejandrohdezma.sbt.github.syntax
 
+import java.net.URI
+
 import com.alejandrohdezma.sbt.github.syntax.url._
 
 class UrlSyntaxSuite extends munit.FunSuite {
 
   test("uri.withQueryParam should add query param to Uri without query") {
-    val uri = sbt.url("https://example.com")
+    val uri = new URI("https://example.com")
 
     val result = uri.withQueryParam("miau", "42")
 
-    val expected = sbt.url("https://example.com?miau=42")
+    val expected = new URI("https://example.com?miau=42")
 
     assertEquals(result, expected)
   }
 
   test("uri.withQueryParam should add query param to URL with query") {
-    val uri = sbt.url("https://example.com?page=2")
+    val uri = new URI("https://example.com?page=2")
 
     val result = uri.withQueryParam("miau", "42")
 
-    val expected = sbt.url("https://example.com?page=2&miau=42")
+    val expected = new URI("https://example.com?page=2&miau=42")
 
     assertEquals(result, expected)
   }

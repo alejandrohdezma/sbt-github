@@ -41,7 +41,7 @@ trait SbtGithubKeys {
 
   val AuthToken = http.Authentication.AuthToken
 
-  val githubApiEntryPoint = settingKey[URL] {
+  val githubApiEntryPoint = settingKey[URI] {
     "Entry point for the github API, defaults to `https://api.github.com`"
   }.withRank(KeyRanks.Invisible)
 

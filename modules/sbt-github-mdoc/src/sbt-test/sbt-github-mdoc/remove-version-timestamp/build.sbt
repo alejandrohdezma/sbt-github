@@ -17,7 +17,10 @@ ThisBuild / githubApiEntryPoint := {
     bw.close()
   }
 
-  url(s"file://${github / "entrypoint.json"}")
+  (github / "entrypoint.json").toURI
 }
 
-lazy val root = project.in(file(".")).enablePlugins(MdocPlugin)
+lazy val root = project
+  .in(file("."))
+  .enablePlugins(MdocPlugin)
+  .settings(mdocOut := baseDirectory.value / "target" / "mdoc")

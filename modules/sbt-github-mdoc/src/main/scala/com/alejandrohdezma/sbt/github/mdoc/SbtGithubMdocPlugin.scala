@@ -20,6 +20,7 @@ import sbt.Keys._
 import sbt._
 import sbt.librarymanagement.CrossVersion
 
+import com.alejandrohdezma.sbt.github.PluginCompat
 import com.alejandrohdezma.sbt.github.SbtGithubPlugin
 import com.alejandrohdezma.sbt.github.SbtGithubPlugin.autoImport._
 import mdoc.MdocPlugin
@@ -83,7 +84,7 @@ object SbtGithubMdocPlugin extends AutoPlugin {
 
   override def requires: Plugins = SbtGithubPlugin && MdocPlugin
 
-  override def projectSettings: Seq[Def.Setting[_]] =
+  override def projectSettings =
     Seq(
       displayName                  := SbtGithubPlugin.info.value._2,
       removeVersionTimestampInMdoc := true,
@@ -93,7 +94,7 @@ object SbtGithubMdocPlugin extends AutoPlugin {
         "REPO"                     -> repository.value.map(_.name).getOrElse(""),
         "DEFAULT_BRANCH"           -> repository.value.map(_.defaultBranch).getOrElse(""),
         "SUPPORTED_SCALA_VERSIONS" -> supportedScalaVersionsForMDoc.value,
-        "LICENSE"                  -> licenses.value.headOption.map(_._1).getOrElse(""),
+        "LICENSE"                  -> PluginCompat.firstLicenseName(licenses.value).getOrElse(""),
         "ORG_NAME"                 -> organizationName.value,
         "DESCRIPTION"              -> description.value,
         "ORG_EMAIL"                -> organizationEmail.value.getOrElse(""),
@@ -119,9 +120,9 @@ object SbtGithubMdocPlugin extends AutoPlugin {
       .map(version => s"`$version`")
 
     versions match {
-      case list :+ last => s"${list.mkString(", ")} and $last"
-      case head :: Nil  => head
-      case Nil          => ""
+      case Seq()       => ""
+      case Seq(single) => single
+      case _           => s"${versions.init.mkString(", ")} and ${versions.last}"
     }
   }
 

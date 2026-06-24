@@ -1,3 +1,5 @@
+import sbtcompat.PluginCompat._
+
 ThisBuild / scmInfo := Some(
   ScmInfo(url("http://example.com"), "scm:git:https://github.com/alejandrohdezma/sbt-github.git")
 )
@@ -17,22 +19,25 @@ ThisBuild / githubApiEntryPoint := {
     bw.close()
   }
 
-  url(s"file://${github / "entrypoint.json"}")
+  (github / "entrypoint.json").toURI
 }
 
-TaskKey[Unit]("check", "Checks all the elements downloaded from the Github API are correct") := {
+TaskKey[Unit]("check", "Checks all the elements downloaded from the Github API are correct") := Def.uncached {
   assert(description.value == "An awesome description")
   assert(organizationName.value == "The First User")
   assert(startYear.value.contains(2018))
   assert(yearRange.value.contains(s"2018-${java.time.Year.now.getValue}"))
-  assert(homepage.value.contains(url("https://github.com/user1/repo")))
-  assert(organizationHomepage.value.contains(url("https://github.com/user1")))
+  assert(homepage.value.map(_.toString).contains("https://github.com/user1/repo"))
+  assert(organizationHomepage.value.map(_.toString).contains("https://github.com/user1"))
   assert(organizationEmail.value.contains("user1@example.com"))
-  assert(licenses.value == List("MIT" -> url("https://api.github.com/licenses/mit")))
   assert(
-    developers.value == List(
-      Developer("user1", "The First User", "user1@example.com", url("https://github.com/user1")),
-      Developer("user2", "The Second User", "", url("https://github.com/user2"))
+    com.alejandrohdezma.sbt.github.PluginCompat.licenseInfo(licenses.value) ==
+      List("MIT" -> "https://api.github.com/licenses/mit")
+  )
+  assert(
+    developers.value.map(developer => (developer.id, developer.name, developer.email, developer.url.toString)) == List(
+      ("user1", "The First User", "user1@example.com", "https://github.com/user1"),
+      ("user2", "The Second User", "", "https://github.com/user2")
     )
   )
   assert(

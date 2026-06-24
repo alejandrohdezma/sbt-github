@@ -44,7 +44,7 @@ object Json extends JavaTokenParsers {
   }
 
   def parse(s: String): Try[Json.Value] =
-    JawnParser.parseFromString(s)(JawnFacade)
+    JawnParser.parseFromString(s)(using JawnFacade)
 
   sealed trait Value
 
