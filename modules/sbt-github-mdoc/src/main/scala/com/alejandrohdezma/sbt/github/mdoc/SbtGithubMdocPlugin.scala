@@ -119,9 +119,9 @@ object SbtGithubMdocPlugin extends AutoPlugin {
       .map(version => s"`$version`")
 
     versions match {
-      case list :+ last => s"${list.mkString(", ")} and $last"
-      case head :: Nil  => head
-      case Nil          => ""
+      case Seq()       => ""
+      case Seq(single) => single
+      case _           => s"${versions.init.mkString(", ")} and ${versions.last}"
     }
   }
 

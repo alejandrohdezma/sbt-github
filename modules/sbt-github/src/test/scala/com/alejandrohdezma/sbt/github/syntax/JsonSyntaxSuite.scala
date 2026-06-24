@@ -102,12 +102,14 @@ class JsonSyntaxSuite extends munit.FunSuite {
   test("`/` extractor should allow matching path failures") {
     InvalidPath("miau", NotFound) match {
       case "miau" / NotFound => ()
+      case _                 => fail("should match")
     }
   }
 
   test("`/` extractor should allow matching nested Path failures") {
     InvalidPath("miau", InvalidPath("cat", NotFound)) match {
       case "miau" / ("cat" / NotFound) => ()
+      case _                           => fail("should match")
     }
   }
 
