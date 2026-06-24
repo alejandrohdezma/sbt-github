@@ -57,7 +57,7 @@ object SbtGithubPlugin extends AutoPlugin {
       githubOrganization            := "",
       excludedContributors          := List("scala-steward", """.*\[bot\]""", "traviscibot", "actions-user"),
       extraCollaborators            := List(),
-      githubAuthToken               := sys.env.get("GITHUB_TOKEN").map(AuthToken),
+      githubAuthToken               := sys.env.get("GITHUB_TOKEN").map(AuthToken(_)),
       repository := onGithub(default = Option.empty[Repository])(Def.setting {
         implicit val (auth, logger, url) = configuration.value
         Option(Repository.get(info.value._1, info.value._2).getOrThrow)

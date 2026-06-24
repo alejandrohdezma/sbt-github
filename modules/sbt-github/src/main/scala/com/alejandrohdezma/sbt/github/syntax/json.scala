@@ -47,10 +47,10 @@ object json {
         done: List[String]
     ): Try[A] =
       (value, remain) match {
-        case (j: Json.Value, Nil)     => j.as[A].mapFail(done.foldRight(_)(InvalidPath))
+        case (j: Json.Value, Nil)     => j.as[A].mapFail(done.foldRight(_)(InvalidPath.apply))
         case (j: Json.Object, h :: t) => recursiveGet(j.get(h), t, done :+ h)
-        case (Json.Null, _)           => Decoder[A].onNullPath.mapFail(done.foldRight(_)(InvalidPath))
-        case (v, _)                   => done.foldRight(NotAJSONObject(v): Throwable)(InvalidPath).raise
+        case (Json.Null, _)           => Decoder[A].onNullPath.mapFail(done.foldRight(_)(InvalidPath.apply))
+        case (v, _)                   => done.foldRight(NotAJSONObject(v): Throwable)(InvalidPath.apply).raise
       }
 
   }

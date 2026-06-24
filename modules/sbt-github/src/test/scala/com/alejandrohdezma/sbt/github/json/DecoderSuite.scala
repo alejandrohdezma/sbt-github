@@ -152,7 +152,7 @@ class DecoderSuite extends munit.FunSuite {
   }
 
   test("Decoder[List] should decode Json.Collection") {
-    val json = Json.Collection(List(1d, 2d, 3d).map(Json.Number))
+    val json = Json.Collection(List(1d, 2d, 3d).map(Json.Number.apply))
 
     assertEquals(json.as[List[Int]], Success(List(1, 2, 3)))
   }
@@ -170,7 +170,7 @@ class DecoderSuite extends munit.FunSuite {
   }
 
   test("Decoder[List] should propagate Decoder[A] failure") {
-    val json = Json.Collection(List("miau").map(Json.Text))
+    val json = Json.Collection(List("miau").map(Json.Text.apply))
 
     assertEquals(json.as[List[Int]], Failure(NotANumber(Json.Text("miau"))))
   }

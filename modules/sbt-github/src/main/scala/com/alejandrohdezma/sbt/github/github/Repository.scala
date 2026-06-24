@@ -68,7 +68,7 @@ final case class Repository(
       .get[List[Contributor]](contributorsUrl.withQueryParam("per_page", "100"))
       .map(_.sortBy(-_.contributions))
       .map(_.filterNot(contributor => excluded.exists(contributor.login.matches)))
-      .map(Contributors)
+      .map(Contributors.apply)
       .failAs(GithubError("Unable to get repository contributors"))
   }
 
