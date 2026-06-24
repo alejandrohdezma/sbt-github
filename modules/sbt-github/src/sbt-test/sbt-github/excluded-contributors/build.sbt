@@ -1,3 +1,5 @@
+import sbtcompat.PluginCompat._
+
 ThisBuild / scmInfo := Some(
   ScmInfo(url("http://example.com"), "scm:git:https://github.com/alejandrohdezma/sbt-github.git")
 )
@@ -21,7 +23,7 @@ ThisBuild / githubApiEntryPoint := {
   url(s"file://${github / "entrypoint.json"}")
 }
 
-TaskKey[Unit]("check", "Checks all the elements downloaded from the Github API are correct") := {
+TaskKey[Unit]("check", "Checks all the elements downloaded from the Github API are correct") := Def.uncached {
   assert(
     contributors.value.markdown ==
       """|- [![user1](http://example.com/user1.png&s=20) **user1**](https://github.com/user1)
