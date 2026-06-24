@@ -19,10 +19,11 @@ ThisBuild / githubApiEntryPoint := {
     bw.close()
   }
 
-  url(s"file://${github / "entrypoint.json"}")
+  (github / "entrypoint.json").toURI
 }
 
 lazy val root = project
   .in(file("."))
   .enablePlugins(MdocPlugin)
+  .settings(mdocOut := baseDirectory.value / "target" / "mdoc")
   .settings(yearRange := yearRange.value.map(_.replace(java.time.Year.now().getValue().toString(), "2020")))

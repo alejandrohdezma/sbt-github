@@ -20,7 +20,7 @@ ThisBuild / githubApiEntryPoint := {
     bw.close()
   }
 
-  url(s"file://${github / "entrypoint.json"}")
+  (github / "entrypoint.json").toURI
 }
 
 TaskKey[Unit]("check", "Checks all the elements downloaded from the Github API are correct") := Def.uncached {

@@ -20,11 +20,11 @@ ThisBuild / githubApiEntryPoint := {
     bw.close()
   }
 
-  url(s"file://${github / "entrypoint.json"}")
+  (github / "entrypoint.json").toURI
 }
 
 TaskKey[Unit]("check", "Checks all the elements downloaded from the Github API are correct") := Def.uncached {
   assert(organizationName.value == "default")
-  assert(organizationHomepage.value.contains(url("https://github.com/user1/repo")))
+  assert(organizationHomepage.value.map(_.toString).contains("https://github.com/user1/repo"))
   assert(organizationEmail.value.isEmpty)
 }

@@ -7,7 +7,7 @@ name := "enable-github"
 
 TaskKey[Unit]("check", "Checks all the elements downloaded from the Github API are correct") := Def.uncached {
   assert(description.value == "enable-github")
-  assert(organizationName.value == "default")
+  assert(organizationName.value == organization.value)
   assert(startYear.value.isEmpty)
   assert(yearRange.value.isEmpty)
   assert(homepage.value.isEmpty)
