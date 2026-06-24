@@ -103,4 +103,6 @@ object Decoder {
     case value                 => NotAList(value).raise
   }
 
+  implicit val JsonValueDecoder: Decoder[Json.Value] = (json: Json.Value) => Try(json)
+
 }

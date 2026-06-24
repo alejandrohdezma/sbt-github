@@ -24,6 +24,7 @@ import sbt.util.Logger
 
 import com.alejandrohdezma.sbt.github.github.error.GithubError
 import com.alejandrohdezma.sbt.github.http._
+import com.alejandrohdezma.sbt.github.json.Json
 import com.alejandrohdezma.sbt.github.syntax.json._
 import com.alejandrohdezma.sbt.github.syntax.scalatry._
 
@@ -36,7 +37,8 @@ object RepositoryEntryPoint {
       entryPoint: GithubEntryPoint
   ): Try[URI] =
     client
-      .get[String](entryPoint.value)(_.get[String]("repository_url"), auth, logger)
+      .get[Json.Value](entryPoint.value)
+      .flatMap(_.get[String]("repository_url"))
       .failAs(GithubError("Unable to connect to Github"))
       .map(_.replace("{owner}", owner).replace("{repo}", repo))
       .map(new URI(_))

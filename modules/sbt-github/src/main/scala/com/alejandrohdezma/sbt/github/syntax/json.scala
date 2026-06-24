@@ -38,7 +38,7 @@ object json {
       * Returns `Failure` with the error in case this is not a `Json.Object` or the decoding fails.
       */
     def get[A: Decoder](head: String, tail: String*): Try[A] =
-      recursiveGet(json, List(head +: tail: _*), Nil)
+      recursiveGet(json, (head +: tail).toList, Nil)
 
     @tailrec
     private def recursiveGet[A: Decoder](
