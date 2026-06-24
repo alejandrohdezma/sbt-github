@@ -17,10 +17,10 @@ This plugin enables several settings automatically by downloading them from Gith
 
 ## Installation
 
-Add the following line to your `plugins.sbt` file:
+The plugin is available for both sbt 1.x and sbt 2.x. To install it, add the following line to your `plugins.sbt` file:
 
 ```sbt
-addSbtPlugin("com.alejandrohdezma" % "sbt-github" % "0.13.0")
+addSbtPlugin("com.alejandrohdezma" % "sbt-github" % "0.14.0")
 ```
 
 > If you use [mdoc](https://scalameta.org/mdoc/) there's also available an [mdoc integration module](https://alejandrohdezma.github.io/sbt-github/docs/sbt-mdoc)
