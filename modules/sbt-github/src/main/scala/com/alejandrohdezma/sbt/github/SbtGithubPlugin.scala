@@ -30,6 +30,7 @@ import com.alejandrohdezma.sbt.github.github.Organization
 import com.alejandrohdezma.sbt.github.github.Release
 import com.alejandrohdezma.sbt.github.github.Repository
 import com.alejandrohdezma.sbt.github.github.urls.GithubEntryPoint
+import com.alejandrohdezma.sbt.github.http.Authentication
 import com.alejandrohdezma.sbt.github.syntax.list._
 import com.alejandrohdezma.sbt.github.syntax.scalatry._
 
@@ -58,11 +59,12 @@ object SbtGithubPlugin extends AutoPlugin {
       extraCollaborators            := List(),
       githubAuthToken               := sys.env.get("GITHUB_TOKEN").map(AuthToken(_)),
       repository := onGithub(default = Option.empty[Repository])(Def.setting {
-        implicit val (auth, logger, url) = configuration.value
+        implicit val (auth: Authentication, log: Logger, entryPoint: GithubEntryPoint) = configuration.value
+
         Option(Repository.get(info.value._1, info.value._2).getOrThrow)
       }).value,
       organizationMetadata := onRepo(default = Option.empty[Organization])(Def.setting { repo =>
-        implicit val (auth, logger, url) = configuration.value
+        implicit val (auth: Authentication, log: Logger, entryPoint: GithubEntryPoint) = configuration.value
 
         if (githubOrganization.value.nonEmpty)
           Some(Organization.get(githubOrganization.value).getOrThrow)
@@ -74,11 +76,12 @@ object SbtGithubPlugin extends AutoPlugin {
           }.map(_.getOrThrow)
       }).value,
       contributors := onRepo(default = Contributors(Nil))(Def.setting { repo =>
-        implicit val (auth, log, _) = configuration.value
+        implicit val (auth: Authentication, log: Logger, _) = configuration.value
+
         repo.contributors(excludedContributors.value).getOrThrow
       }).value,
       collaborators := onRepo(default = Collaborators(Nil))(Def.setting { repo =>
-        implicit val (auth, log, entryPoint) = configuration.value
+        implicit val (auth: Authentication, log: Logger, entryPoint: GithubEntryPoint) = configuration.value
 
         val contributorIds = contributors.value.list.map(_.login)
 
@@ -90,7 +93,7 @@ object SbtGithubPlugin extends AutoPlugin {
         collaborators.getOrThrow
       }).value,
       releases := onRepo(default = List.empty[Release])(Def.setting { repo =>
-        implicit val (auth, log, _) = configuration.value
+        implicit val (auth: Authentication, log: Logger, _) = configuration.value
 
         repo.releases.getOrThrow
       }).value,
