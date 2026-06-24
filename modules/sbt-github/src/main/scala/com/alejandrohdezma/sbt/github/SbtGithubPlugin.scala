@@ -49,7 +49,7 @@ object SbtGithubPlugin extends AutoPlugin {
 
   override def requires: Plugins = JvmPlugin
 
-  override def buildSettings: Seq[Setting[_]] =
+  override def buildSettings =
     aliases ++ Seq(
       githubApiEntryPoint           := new URI("https://api.github.com"),
       githubEnabled                 := false,
@@ -111,7 +111,7 @@ object SbtGithubPlugin extends AutoPlugin {
       }
     )
 
-  override def projectSettings: Seq[Def.Setting[_]] =
+  override def projectSettings =
     Seq(
       description := repository.value.map(_.description).getOrElse(description.value),
       organizationName := organizationMetadata.value

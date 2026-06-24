@@ -83,7 +83,7 @@ object SbtGithubMdocPlugin extends AutoPlugin {
 
   override def requires: Plugins = SbtGithubPlugin && MdocPlugin
 
-  override def projectSettings: Seq[Def.Setting[_]] =
+  override def projectSettings =
     Seq(
       displayName                  := SbtGithubPlugin.info.value._2,
       removeVersionTimestampInMdoc := true,
