@@ -18,7 +18,6 @@ package com.alejandrohdezma.sbt.github
 
 import java.time.Year
 
-import scala.language.postfixOps
 import scala.util.control.NonFatal
 
 import sbt.Def
@@ -183,7 +182,7 @@ object SbtGithubPlugin extends AutoPlugin {
     "github"    -> ";set ThisBuild / githubEnabled := true",
     "githubOn"  -> ";set ThisBuild / githubEnabled := true",
     "githubOff" -> ";set ThisBuild / githubEnabled := false"
-  ).flatMap(addCommandAlias _ tupled)
+  ).flatMap { case (name, command) => addCommandAlias(name, command) }
 
   private def onGithub[A](default: A)(f: Def.Initialize[A]) =
     Def.settingDyn(if (githubEnabled.value) f else Def.setting(default))
