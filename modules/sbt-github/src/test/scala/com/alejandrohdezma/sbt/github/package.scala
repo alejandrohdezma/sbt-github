@@ -41,7 +41,7 @@ package object github {
 
   implicit class URLInterpolator(private val sc: StringContext) extends AnyVal {
 
-    def url(args: Any*): URI = new URI(sc.raw(args: _*))
+    def url(args: Any*): URI = new URI(sc.raw(args *))
 
   }
 

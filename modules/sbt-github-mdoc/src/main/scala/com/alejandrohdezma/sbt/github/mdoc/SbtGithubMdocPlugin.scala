@@ -20,6 +20,7 @@ import sbt.Keys._
 import sbt._
 import sbt.librarymanagement.CrossVersion
 
+import com.alejandrohdezma.sbt.github.PluginCompat
 import com.alejandrohdezma.sbt.github.SbtGithubPlugin
 import com.alejandrohdezma.sbt.github.SbtGithubPlugin.autoImport._
 import mdoc.MdocPlugin
@@ -93,7 +94,7 @@ object SbtGithubMdocPlugin extends AutoPlugin {
         "REPO"                     -> repository.value.map(_.name).getOrElse(""),
         "DEFAULT_BRANCH"           -> repository.value.map(_.defaultBranch).getOrElse(""),
         "SUPPORTED_SCALA_VERSIONS" -> supportedScalaVersionsForMDoc.value,
-        "LICENSE"                  -> licenses.value.headOption.map(_._1).getOrElse(""),
+        "LICENSE"                  -> PluginCompat.firstLicenseName(licenses.value).getOrElse(""),
         "ORG_NAME"                 -> organizationName.value,
         "DESCRIPTION"              -> description.value,
         "ORG_EMAIL"                -> organizationEmail.value.getOrElse(""),

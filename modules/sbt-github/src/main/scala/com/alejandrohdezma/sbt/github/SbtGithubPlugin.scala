@@ -16,6 +16,7 @@
 
 package com.alejandrohdezma.sbt.github
 
+import java.net.URI
 import java.time.Year
 
 import scala.util.control.NonFatal
@@ -51,7 +52,7 @@ object SbtGithubPlugin extends AutoPlugin {
 
   override def buildSettings =
     aliases ++ Seq(
-      githubApiEntryPoint           := new URI("https://api.github.com"),
+      githubApiEntryPoint           := URI.create("https://api.github.com"),
       githubEnabled                 := false,
       populateOrganizationWithOwner := true,
       githubOrganization            := "",
@@ -98,9 +99,9 @@ object SbtGithubPlugin extends AutoPlugin {
         repo.releases.getOrThrow
       }).value,
       developers := collaborators.value.developers,
-      homepage   := repository.value.map(_.url.toURL).orElse(homepage.value),
+      homepage   := repository.value.map(repo => PluginCompat.homepage(repo.url)).orElse(homepage.value),
       licenses := repository.value
-        .map(_.licenses.map { case (id, uri) => id -> uri.toURL })
+        .map(_.licenses.map { case (id, uri) => PluginCompat.license(id, uri) })
         .getOrElse(licenses.value),
       startYear := repository.value.map(_.startYear).orElse(startYear.value),
       yearRange := startYear.value.collect {
@@ -119,8 +120,10 @@ object SbtGithubPlugin extends AutoPlugin {
       organizationName := organizationMetadata.value
         .flatMap(_.name)
         .getOrElse(organizationName.value),
-      organizationHomepage := organizationMetadata.value.fold(organizationHomepage.value)(_.url.map(_.toURL)),
-      organizationEmail    := organizationMetadata.value.flatMap(_.email)
+      organizationHomepage := organizationMetadata.value.fold(organizationHomepage.value)(
+        _.url.map(PluginCompat.homepage)
+      ),
+      organizationEmail := organizationMetadata.value.flatMap(_.email)
     )
 
   private[github] val configuration = Def.setting {
@@ -162,8 +165,8 @@ object SbtGithubPlugin extends AutoPlugin {
     val GitHubSsh   = s"git@github.com:$identifier/$identifier(?:\\.git)?".r
 
     val gitHubScmInfo = (user: String, repo: String) =>
-      ScmInfo(
-        url(s"https://github.com/$user/$repo"),
+      PluginCompat.scmInfo(
+        URI.create(s"https://github.com/$user/$repo"),
         s"scm:git:https://github.com/$user/$repo.git",
         Some(s"scm:git:git@github.com:$user/$repo.git")
       )

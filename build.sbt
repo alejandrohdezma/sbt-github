@@ -1,10 +1,11 @@
 ThisBuild / scalaVersion                  := _root_.scalafix.sbt.BuildInfo.scala212
+ThisBuild / crossScalaVersions            := Seq(scalaVersion.value, "3.8.4")
 ThisBuild / organization                  := "com.alejandrohdezma"
-ThisBuild / pluginCrossBuild / sbtVersion := "1.2.8"
+ThisBuild / pluginCrossBuild / sbtVersion := scalaVersion.value.on(2)("1.12.1").getOrElse("2.0.0")
 ThisBuild / Test / parallelExecution      := false
 ThisBuild / versionPolicyIntention        := Compatibility.BinaryAndSourceCompatible
 
-addCommandAlias("ci-test", "fix --check; versionPolicyCheck; mdoc; test; publishLocal; scripted")
+addCommandAlias("ci-test", "fix --check; +versionPolicyCheck; mdoc; +test; +publishLocal; +scripted")
 addCommandAlias("ci-docs", "github; mdoc; headerCreateAll; docusaurusPublishGhpages")
 addCommandAlias("ci-publish", "versionCheck; github; ci-release")
 
