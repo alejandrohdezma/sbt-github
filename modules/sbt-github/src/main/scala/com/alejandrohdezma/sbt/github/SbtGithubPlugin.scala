@@ -59,7 +59,7 @@ object SbtGithubPlugin extends AutoPlugin {
       excludedContributors          := List("scala-steward", """.*\[bot\]""", "traviscibot", "actions-user"),
       extraCollaborators            := List(),
       githubAuthToken               := sys.env.get("GITHUB_TOKEN").map(AuthToken(_)),
-      repository := onGithub(default = Option.empty[Repository])(Def.setting {
+      repository                    := onGithub(default = Option.empty[Repository])(Def.setting {
         implicit val (auth: Authentication, log: Logger, entryPoint: GithubEntryPoint) = configuration.value
 
         Option(Repository.get(info.value._1, info.value._2).getOrThrow)
@@ -100,7 +100,7 @@ object SbtGithubPlugin extends AutoPlugin {
       }).value,
       developers := collaborators.value.developers,
       homepage   := repository.value.map(repo => PluginCompat.homepage(repo.url)).orElse(homepage.value),
-      licenses := repository.value
+      licenses   := repository.value
         .map(_.licenses.map { case (id, uri) => PluginCompat.license(id, uri) })
         .getOrElse(licenses.value),
       startYear := repository.value.map(_.startYear).orElse(startYear.value),
@@ -116,7 +116,7 @@ object SbtGithubPlugin extends AutoPlugin {
 
   override def projectSettings =
     Seq(
-      description := repository.value.map(_.description).getOrElse(description.value),
+      description      := repository.value.map(_.description).getOrElse(description.value),
       organizationName := organizationMetadata.value
         .flatMap(_.name)
         .getOrElse(organizationName.value),
