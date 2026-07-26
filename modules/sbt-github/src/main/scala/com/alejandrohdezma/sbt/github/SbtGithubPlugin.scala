@@ -59,7 +59,7 @@ object SbtGithubPlugin extends AutoPlugin {
       excludedContributors          := List("scala-steward", """.*\[bot\]""", "traviscibot", "actions-user"),
       extraCollaborators            := List(),
       githubAuthToken               := sys.env.get("GITHUB_TOKEN").map(AuthToken(_)),
-      repository := onGithub(default = Option.empty[Repository])(Def.setting {
+      repository                    := onGithub(default = Option.empty[Repository])(Def.setting {
         implicit val (auth: Authentication, log: Logger, entryPoint: GithubEntryPoint) = configuration.value
 
         Option(Repository.get(info.value._1, info.value._2).getOrThrow)
@@ -100,7 +100,7 @@ object SbtGithubPlugin extends AutoPlugin {
       }).value,
       developers := collaborators.value.developers,
       homepage   := repository.value.map(repo => PluginCompat.homepage(repo.url)).orElse(homepage.value),
-      licenses := repository.value
+      licenses   := repository.value
         .map(_.licenses.map { case (id, uri) => PluginCompat.license(id, uri) })
         .getOrElse(licenses.value),
       startYear := repository.value.map(_.startYear).orElse(startYear.value),
@@ -108,15 +108,15 @@ object SbtGithubPlugin extends AutoPlugin {
         case start if start == Year.now.getValue => s"$start"
         case start                               => s"$start-${Year.now.getValue}"
       },
-      scmInfo ~= {
+      scmInfo := (scmInfo.value match {
         case Some(value) => Some(value)
-        case None        => defaultScmInfo
-      }
+        case None        => defaultScmInfo.value
+      })
     )
 
   override def projectSettings =
     Seq(
-      description := repository.value.map(_.description).getOrElse(description.value),
+      description      := repository.value.map(_.description).getOrElse(description.value),
       organizationName := organizationMetadata.value
         .flatMap(_.name)
         .getOrElse(organizationName.value),
@@ -156,13 +156,13 @@ object SbtGithubPlugin extends AutoPlugin {
   /** Default value for `scmInfo`, copied from:
     * https://github.com/olafurpg/sbt-ci-release/blob/master/plugin/src/main/scala/com/geirsson/CiReleasePlugin.scala
     */
-  private lazy val defaultScmInfo: Option[ScmInfo] = {
+  private lazy val defaultScmInfo = Def.setting {
     import scala.sys.process._
 
     val identifier  = """([^\/]+?)"""
     val GitHubHttps = s"https://github.com/$identifier/$identifier(?:\\.git)?".r
     val GitHubGit   = s"git://github.com:$identifier/$identifier(?:\\.git)?".r
-    val GitHubSsh   = s"git@github.com:$identifier/$identifier(?:\\.git)?".r
+    val GitHubSsh   = s"(?:ssh://)?git@github.com[:/]$identifier/$identifier(?:\\.git)?".r
 
     val gitHubScmInfo = (user: String, repo: String) =>
       PluginCompat.scmInfo(
@@ -177,10 +177,16 @@ object SbtGithubPlugin extends AutoPlugin {
         case GitHubHttps(user, repo) => Some(gitHubScmInfo(user, repo))
         case GitHubGit(user, repo)   => Some(gitHubScmInfo(user, repo))
         case GitHubSsh(user, repo)   => Some(gitHubScmInfo(user, repo))
-        case _                       => None
+        case s                       =>
+          sLog.value.warn(s"Invalid remote URL: $s")
+          None
+
       }
     } catch {
-      case NonFatal(_) => None
+      case NonFatal(e) =>
+        sLog.value.error(s"Error getting default scmInfo: $e")
+
+        None
     }
   }
 

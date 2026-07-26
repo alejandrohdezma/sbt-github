@@ -1,9 +1,9 @@
 ThisBuild / scalaVersion                  := _root_.scalafix.sbt.BuildInfo.scala212
 ThisBuild / crossScalaVersions            := Seq(scalaVersion.value, "3.8.4")
 ThisBuild / organization                  := "com.alejandrohdezma"
-ThisBuild / pluginCrossBuild / sbtVersion := scalaVersion.value.on(2)("1.12.1").getOrElse("2.0.0")
+ThisBuild / pluginCrossBuild / sbtVersion := scalaVersion.value.on(2)("1.12.13").getOrElse("2.0.0")
 ThisBuild / Test / parallelExecution      := false
-ThisBuild / versionPolicyIntention        := Compatibility.BinaryAndSourceCompatible
+ThisBuild / versionPolicyIntention        := Compatibility.None
 
 addCommandAlias("ci-test", "fix --check; +versionPolicyCheck; mdoc; +test; +publishLocal; +scripted")
 addCommandAlias("ci-docs", "github; mdoc; headerCreateAll; docusaurusPublishGhpages")
@@ -25,9 +25,9 @@ lazy val website = project
 lazy val `sbt-github` = module
   .enablePlugins(SbtPlugin)
   .settings(scriptedLaunchOpts += s"-Dplugin.version=${version.value}")
-  .settings(libraryDependencies += "org.typelevel" %% "jawn-parser" % "1.6.0")
-  .settings(libraryDependencies += "org.scalameta" %% "munit" % "1.2.1" % Test)
-  .settings(libraryDependencies += "org.http4s" %% "http4s-dsl" % "0.23.33" % Test)
+  .settings(libraryDependencies += "org.typelevel" %% "jawn-parser" % "1.7.0")
+  .settings(libraryDependencies += "org.scalameta" %% "munit" % "1.2.4" % Test)
+  .settings(libraryDependencies += "org.http4s" %% "http4s-dsl" % "0.23.36" % Test)
   .settings(libraryDependencies += "org.http4s" %% "http4s-blaze-server" % "0.23.17" % Test)
 
 lazy val `sbt-github-mdoc` = module

@@ -6,4 +6,4 @@ Compile / unmanagedSourceDirectories ++= Seq(
   (ThisBuild / baseDirectory).value.getParentFile / "modules" / "sbt-github" / "src" / "main" / "scala-2.12"
 )
 
-libraryDependencies += "org.typelevel" %% "jawn-parser" % "1.6.0"
+libraryDependencies += "org.typelevel" %% "jawn-parser" % "1.7.0"
