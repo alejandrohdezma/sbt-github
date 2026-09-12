@@ -1,0 +1,5 @@
+# this test ensures `scmInfo` is inferred from a remote URL that carries credentials, as CI clones usually do
+$ exec git init -q
+$ exec git remote add origin https://scala-steward:token@github.com/user1/repo.git
+> reload
+> check
