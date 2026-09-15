@@ -1,7 +1,7 @@
 ThisBuild / scalaVersion                  := _root_.scalafix.sbt.BuildInfo.scala212
-ThisBuild / crossScalaVersions            := Seq(scalaVersion.value, "3.8.4")
+ThisBuild / crossScalaVersions            := Seq(scalaVersion.value, "3.9.0")
 ThisBuild / organization                  := "com.alejandrohdezma"
-ThisBuild / pluginCrossBuild / sbtVersion := scalaVersion.value.on(2)("1.12.13").getOrElse("2.0.0")
+ThisBuild / pluginCrossBuild / sbtVersion := scalaVersion.value.on(2)("1.12.15").getOrElse("2.0.0")
 ThisBuild / Test / parallelExecution      := false
 ThisBuild / versionPolicyIntention        := Compatibility.BinaryAndSourceCompatible
 
@@ -26,9 +26,9 @@ lazy val `sbt-github` = module
   .enablePlugins(SbtPlugin)
   .settings(scriptedLaunchOpts += s"-Dplugin.version=${version.value}")
   .settings(libraryDependencies += "org.typelevel" %% "jawn-parser" % "1.7.0")
-  .settings(libraryDependencies += "org.scalameta" %% "munit" % "1.2.4" % Test)
-  .settings(libraryDependencies += "org.http4s" %% "http4s-dsl" % "0.23.36" % Test)
-  .settings(libraryDependencies += "org.http4s" %% "http4s-blaze-server" % "0.23.17" % Test)
+  .settings(libraryDependencies += "org.scalameta" %% "munit" % "1.3.6" % Test)
+  .settings(libraryDependencies += "org.http4s" %% "http4s-dsl" % "0.23.37" % Test)
+  .settings(libraryDependencies += "org.http4s" %% "http4s-blaze-server" % "0.23.18" % Test)
 
 lazy val `sbt-github-mdoc` = module
   .enablePlugins(SbtPlugin)
