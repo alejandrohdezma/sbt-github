@@ -1,7 +1,7 @@
 ThisBuild / scalaVersion                  := _root_.scalafix.sbt.BuildInfo.scala212
 ThisBuild / crossScalaVersions            := Seq(scalaVersion.value, "3.9.0")
 ThisBuild / organization                  := "com.alejandrohdezma"
-ThisBuild / pluginCrossBuild / sbtVersion := scalaVersion.value.on(2)("1.12.13").getOrElse("2.0.0")
+ThisBuild / pluginCrossBuild / sbtVersion := scalaVersion.value.on(2)("1.12.15").getOrElse("2.0.0")
 ThisBuild / Test / parallelExecution      := false
 ThisBuild / versionPolicyIntention        := Compatibility.BinaryAndSourceCompatible
 
