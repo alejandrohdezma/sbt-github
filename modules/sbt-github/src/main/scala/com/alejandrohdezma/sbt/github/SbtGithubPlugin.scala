@@ -160,7 +160,7 @@ object SbtGithubPlugin extends AutoPlugin {
     import scala.sys.process._
 
     val identifier  = """([^\/]+?)"""
-    val GitHubHttps = s"https://github.com/$identifier/$identifier(?:\\.git)?".r
+    val GitHubHttps = s"https://(?:[^@/]+@)?github.com/$identifier/$identifier(?:\\.git)?".r
     val GitHubGit   = s"git://github.com:$identifier/$identifier(?:\\.git)?".r
     val GitHubSsh   = s"(?:ssh://)?git@github.com[:/]$identifier/$identifier(?:\\.git)?".r
 
