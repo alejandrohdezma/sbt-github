@@ -6,21 +6,16 @@ ThisBuild / Test / parallelExecution      := false
 ThisBuild / versionPolicyIntention        := Compatibility.BinaryAndSourceCompatible
 
 addCommandAlias("ci-test", "fix --check; +versionPolicyCheck; mdoc; +test; +publishLocal; +scripted")
-addCommandAlias("ci-docs", "github; mdoc; headerCreateAll; docusaurusPublishGhpages")
+addCommandAlias("ci-docs", "github; mdoc; headerCreateAll; documentation/laikaSite")
 addCommandAlias("ci-publish", "versionCheck; github; ci-release")
 
 val `sbt-mdoc` = "org.scalameta" % "sbt-mdoc" % "[2.0,)" % Provided // scala-steward:off
 
 val `sbt-header` = "com.github.sbt" % "sbt-header" % "[5.11.0,)" % Provided // scala-steward:off
 
-lazy val documentation = project.enablePlugins(MdocPlugin)
-
-lazy val website = project
-  .enablePlugins(MdocPlugin, DocusaurusPlugin)
-  .settings(mdocIn := baseDirectory.value / "docs")
-  .settings(mdocOut := (Compile / target).value / "mdoc")
-  .settings(watchTriggers += mdocIn.value.toGlob / "*.md")
-  .settings(mdocVariables += "EXCLUDED" -> excludedContributors.value.mkString("- ", "\n- ", ""))
+lazy val documentation = project
+  .enablePlugins(MdocPlugin, LaikaDocumentationPlugin)
+  .settings(mdocVariables += "EXCLUDED" -> excludedContributors.value.mkString("- `", "`\n- `", "`"))
 
 lazy val `sbt-github` = module
   .enablePlugins(SbtPlugin)
