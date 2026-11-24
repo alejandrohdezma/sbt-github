@@ -66,10 +66,8 @@ jobs:
     name: Updates documentation and version policy after latest release
     if: github.event_name == 'push'
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      pages: write
-      id-token: write
+    outputs:
+      website: ${{ steps.website.outputs.exists }}
     steps:
       - name: Checkout project
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -93,15 +91,15 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GIT_DEPLOY_KEY: ${{ secrets.GIT_DEPLOY_KEY_BASE64 }}
 
+      - name: Check whether `sbt ci-docs` built a website
+        id: website
+        run: echo "exists=${{ hashFiles('public/index.html') != '' }}" >> "$GITHUB_OUTPUT"
+
       - name: Upload website
-        if: hashFiles('public/index.html') != ''
+        if: steps.website.outputs.exists == 'true'
         uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
         with:
           path: public
-
-      - name: Deploy website to GitHub Pages
-        if: hashFiles('public/index.html') != ''
-        uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5.0.1
 
       - name: Commit changes by `sbt ci-docs`
         uses: alejandrohdezma/actions/commit-and-push@v1
@@ -117,3 +115,15 @@ jobs:
         with:
           message: Reset `versionPolicyIntention` [skip ci]
           branch: main
+
+  website:
+    needs: [documentation]
+    name: Deploy website to GitHub Pages
+    if: needs.documentation.outputs.website == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    steps:
+      - name: Deploy website to GitHub Pages
+        uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5.0.1
